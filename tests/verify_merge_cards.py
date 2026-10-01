@@ -40,7 +40,8 @@ def drag(root, grid, source, target, after=False):
     assert grid.drag and grid.drag['path'] == source
     x, y = center(grid.cards[target], after)
     pointer(grid.cards[source]._canvas, '<B1-Motion>', x, y)
-    assert grid.drag['active'] and grid.ghost
+    pump(root, 0.08)
+    assert grid.drag['active'] and grid.ghost, {'drag': grid.drag, 'ghost': str(grid.ghost), 'timer': grid.frame_timer}
     pointer(grid.cards[source]._canvas, '<ButtonRelease-1>', x, y)
     pump(root, 0.05)
     assert grid.drag is None and grid.ghost is None and grid.grab_current() is None

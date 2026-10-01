@@ -2,6 +2,12 @@
 
 from __future__ import annotations
 
+import multiprocessing
+
+# Divert packaged thumbnail workers before importing or constructing Tk.
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
+
 import queue
 import threading
 import os

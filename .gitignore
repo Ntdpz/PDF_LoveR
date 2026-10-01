@@ -27,3 +27,6 @@ packaging/distribution-check.json
 .vscode/
 Thumbs.db
 Desktop.ini
+
+# Local before/after profiling scratchpad
+.hallmark/benchmark_drag.py

@@ -68,16 +68,22 @@ def run(root, app_class, report):
         if app.busy and time.monotonic() - started < 45:
             root.after(100, finish_merge)
             return
+        if app.merge.cards.pending and time.monotonic() - started < 45:
+            root.after(100, finish_merge)
+            return
         try:
             assert not app.busy, "Merge timeout"
             assert not failures, failures
             assert app.merge.destination, app.merge.status.get()
+            assert len(app.merge.cards.cache) == 2, "Thumbnail worker did not return both previews"
+            assert all(image is not None for image in app.merge.cards.cache.values()), "Thumbnail rendering failed"
             with pymupdf.open(app.merge.destination) as document:
                 assert document.page_count == 3
                 assert "MERGE FIRST" in document[0].get_text()
                 assert document[1].rect == pymupdf.Rect(0, 0, 144, 72)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
-                      "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified"})
+                      "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
+                      "thumbnail_worker": "separate process", "thumbnail_count": 2})
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})
 

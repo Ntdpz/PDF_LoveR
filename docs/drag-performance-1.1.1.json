@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "cards": 100,
+  "burst_motion_events": 1000,
+  "burst_dispatch_ms": 31.27,
+  "render_frames": 120,
+  "mean_frame_ms": 9.99,
+  "max_frame_ms": 14.6,
+  "max_card_paints_per_frame": 2,
+  "max_heartbeat_gap_ms": 17.19,
+  "checks": [
+    "latest-pointer frame coalescing",
+    "no same-slot card repaint",
+    "constant work with 100 cards",
+    "event loop heartbeat during dragging",
+    "thumbnail UI updates paused then resumed",
+    "correct quick release",
+    "worker crash recovery and lifecycle",
+    "no callback errors"
+  ]
+}
