@@ -53,11 +53,11 @@ def document_icon(size=48, color="accent"):
 
 
 class App:
-    """Hallmark · Workbench · Cobalt, adapted to a single native tool window."""
+    """PDF LoveR shell with a Catalogue home and the existing PNG workbench."""
 
     def __init__(self, root: ctk.CTk) -> None:
         self.root = root
-        root.title("PDF to PNG · แปลงเอกสารเป็นภาพ")
+        root.title("PDF LoveR · เครื่องมือ PDF")
         icon_path = Path(__file__).resolve().parent / "assets" / "pdf_to_png.ico"
         if icon_path.exists():
             root.iconbitmap(str(icon_path))
@@ -81,10 +81,20 @@ class App:
         self.font_bold = ctk.CTkFont(family=FONTS["body"], size=17, weight="bold")
         self.icon = document_icon()
         self.small_icon = document_icon(32, "muted")
+        root.grid_columnconfigure(0, weight=1)
+        root.grid_rowconfigure(0, weight=1)
+        self.workbench = ctk.CTkFrame(root, fg_color=C["paper"], corner_radius=0)
+        self.workbench.grid(row=0, column=0, sticky="nsew")
         self._build()
         self._render_files()
-        root.bind("<Control-o>", lambda _: self.add_files())
-        root.bind("<Control-Return>", lambda _: self.start())
+        from home_page import HomePage
+        self.home = HomePage(root, self)
+        self.home.grid(row=0, column=0, sticky="nsew")
+        self.show_home()
+        root.bind("<Control-o>", self._open_pdf_shortcut)
+        root.bind("<Control-Return>", lambda _: self.start() if self.route == "pdf-png" else None)
+        root.bind("<Control-f>", self._search_shortcut)
+        root.bind("<Alt-Left>", lambda _: self.show_home())
         root.protocol("WM_DELETE_WINDOW", self.close)
         root.after(80, self.process_events)
 
@@ -111,12 +121,19 @@ class App:
             button._canvas.bind(key, lambda _, b=button: b.invoke())
         fill = C["accent"] if primary else C["surface"]
         pressed = C["accent-pressed"] if primary else C["soft"]
-        button.bind("<ButtonPress-1>", lambda _: button.configure(fg_color=pressed) if button.cget("state") == "normal" else None)
-        button.bind("<ButtonRelease-1>", lambda _: button.configure(fg_color=fill))
+        def press(_):
+            if button.cget("state") == "normal":
+                button._resting_fill = button.cget("fg_color")
+                button.configure(fg_color=pressed)
+        def release(_):
+            if button.cget("state") == "normal":
+                button.configure(fg_color=getattr(button, "_resting_fill", fill))
+        button.bind("<ButtonPress-1>", press)
+        button.bind("<ButtonRelease-1>", release)
         return button
 
     def _build(self):
-        root = self.root
+        root = self.workbench
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(2, weight=1)
         header = ctk.CTkFrame(root, fg_color=C["surface"], corner_radius=0, height=64)
@@ -125,7 +142,9 @@ class App:
         self.label(header, "", image=document_icon(36), width=40).grid(row=0, column=0, rowspan=2, padx=(S["2xl"], S["md"]), pady=S["sm"])
         self.label(header, "PDF to PNG", font=ctk.CTkFont(family=FONTS["display"], size=21, weight="bold")).grid(row=0, column=1, sticky="sw", pady=(S["md"], 0))
         self.label(header, "เครื่องมือแปลงเอกสารเป็นภาพ", font=self.font_small, color="muted").grid(row=1, column=1, sticky="nw", pady=(0, S["md"]))
-        self.label(header, "ทำงานบนเครื่องของคุณ  /  ออฟไลน์", font=self.font_small, color="muted").grid(row=0, column=2, rowspan=2, padx=S["2xl"])
+        self.home_button = self.button(header, "เครื่องมือทั้งหมด", self.show_home, width=200)
+        self.home_button.grid(row=0, column=2, rowspan=2, padx=S["2xl"])
+        self.controls.append(self.home_button)
         intro = ctk.CTkFrame(root, fg_color="transparent")
         intro.grid(row=1, column=0, sticky="ew", padx=S["2xl"], pady=(S["lg"], S["lg"]))
         self.label(intro, "ทุกหน้า PDF เป็นภาพ PNG", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).pack(anchor="w")
@@ -223,7 +242,46 @@ class App:
         self.open_button = self.button(bottom, "เปิดโฟลเดอร์ผลลัพธ์", self.open_output, width=200)
         self.open_button.grid(row=0, column=2)
         self.open_button.configure(state="disabled")
-        root.bind("<Configure>", self._resize, add="+")
+        self.root.bind("<Configure>", self._resize, add="+")
+
+    def show_home(self):
+        if self.busy:
+            self.status.set("กำลังแปลงอยู่ · รอให้เสร็จก่อนกลับไปเลือกเครื่องมือ")
+            return False
+        self.workbench.grid_remove()
+        self.home.grid()
+        self.route = "home"
+        self.root.title("PDF LoveR · เครื่องมือ PDF")
+        return True
+
+    def show_tool(self, tool_id):
+        from tool_catalog import TOOLS
+        tool = next((item for item in TOOLS if item.id == tool_id), None)
+        if tool is None:
+            return False
+        if not tool.ready:
+            self.home.show_detail(tool)
+            return False
+        if tool.id != "pdf-png":
+            raise ValueError(f"No working view registered for tool: {tool.id}")
+        self.home.close_detail() if self.home.detail_window else None
+        self.home.grid_remove()
+        self.workbench.grid()
+        self.route = tool.id
+        self.root.title("PDF เป็น PNG · PDF LoveR")
+        self.add_button._canvas.focus_set()
+        return True
+
+    def _open_pdf_shortcut(self, _=None):
+        if not self.busy:
+            self.show_tool("pdf-png")
+            self.add_files()
+        return "break"
+
+    def _search_shortcut(self, _=None):
+        if self.show_home():
+            self.home.search_entry.focus_set()
+        return "break"
 
     def _entry_focus(self, entry):
         entry.bind("<FocusIn>", lambda _: entry.configure(border_color=C["focus"]))
@@ -367,6 +425,8 @@ class App:
     def start(self):
         if self.busy:
             return
+        if self.route != "pdf-png":
+            self.show_tool("pdf-png")
         if not self.files:
             self.validation_error("ยังไม่มี PDF · กดเพิ่ม PDF เพื่อเลือกอย่างน้อย 1 ไฟล์")
             return

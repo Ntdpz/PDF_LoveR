@@ -1,4 +1,4 @@
-"""Hallmark · Workbench · Cobalt · native Windows adaptation.
+"""Hallmark · Catalogue home / Workbench tool · Cobalt · native Windows adaptation.
 
 Pre-emit critique: Philosophy 4 / Hierarchy 5 / Execution 4 /
 Specificity 5 / Restraint 5 / Variety 4.
@@ -51,7 +51,7 @@ COLORS = {name: srgb(*value) for name, value in PALETTE.items()}
 
 
 def export_css():
-    lines = ["/* Hallmark · macrostructure: Workbench · tone: modern-minimal · anchor hue: cobalt */",
+    lines = ["/* Hallmark · macrostructure: Catalogue · tone: modern-minimal · anchor hue: cobalt */",
              "/* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 */",
              "/* Native app consumes ui_theme.py; this is its portable web token export. */", ":root {"]
     for name, (lightness, chroma, hue) in PALETTE.items():

@@ -58,6 +58,7 @@ def main():
                 document.save(name)
         root = ctk.CTk()
         app = pdf_to_png.App(root)
+        app.show_tool("pdf-png")
         root.geometry("1080x780+40+40")
         root.resizable(False, False)
         app.output.set("PNG")

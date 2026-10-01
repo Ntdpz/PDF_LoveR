@@ -24,6 +24,8 @@ required by the application.
 | File | Purpose |
 | --- | --- |
 | `pdf_to_png.py` | PDF rendering, file queue, native UI, worker events |
+| `home_page.py` | Tool discovery, category filters, planned-tool details |
+| `tool_catalog.py` | Single directory of tool names, search terms and readiness |
 | `ui_theme.py` | OKLCH color tokens, native fonts, spacing, portable CSS export |
 | `app_self_test.py` | Hidden executable smoke check |
 | `assets/pdf_to_png.ico` | Window and executable icon |
@@ -56,11 +58,16 @@ running; the ZIP contains the runtime alongside the application.
 
 ```powershell
 python .hallmark/verify_ui.py
+python .hallmark/verify_home.py
 ```
 
 This runs real PDF conversion and checks input validation, queue guards, corrupt
 files, page order, DPI dimensions, repeat conversion, UI rendering and contrast.
 The temporary PDF fixtures and converted files are created by the test.
+
+The home check also verifies tool discovery, planned-feature safety, navigation,
+retained settings, conversion through the home screen, and desktop scaling.
+See [Superapp home](SUPERAPP.md) for the current development preview and roadmap.
 
 Run distribution verification with **PowerShell 7** after building:
 

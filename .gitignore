@@ -20,6 +20,7 @@ packaging/distribution-check.json
 .hallmark/package-check.json
 .hallmark/preflight.json
 .hallmark/log.json
+.hallmark/home-check.json
 
 # Editor/system files
 .idea/

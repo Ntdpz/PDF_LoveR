@@ -67,6 +67,7 @@ def main():
 
         root = ctk.CTk()
         app = App(root)
+        app.show_tool("pdf-png")
         callback_errors = []
         root.report_callback_exception = lambda kind, value, trace: callback_errors.append(str(value))
         root.geometry("1080x780+40+40")
@@ -132,6 +133,7 @@ def main():
         root = ctk.CTk()
         root.report_callback_exception = lambda kind, value, trace: callback_errors.append(str(value))
         app = App(root)
+        app.show_tool("pdf-png")
         root.geometry("1080x780+10+10")
         pump(root)
         screenshot(root, "preview-scaled.png")
