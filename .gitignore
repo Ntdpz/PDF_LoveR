@@ -1,0 +1,28 @@
+# Local Python/runtime files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Built executables are distributed through GitHub Releases.
+dist/
+build*/
+.build-tools/
+*.egg-info/
+
+# Machine-specific verification output
+packaging/.verification/
+packaging/distribution-check.json
+.hallmark/*.png
+.hallmark/package-check.json
+.hallmark/preflight.json
+.hallmark/log.json
+
+# Editor/system files
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini

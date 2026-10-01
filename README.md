@@ -1,1 +1,122 @@
-# PDF_to_PNG
+<div align="center">
+
+<h1>PDF LoveR</h1>
+
+<p><strong>เปลี่ยนทุกหน้า PDF เป็นภาพ PNG</strong><br>
+เลือกหลายไฟล์ ตั้งค่าความละเอียด แล้วรับภาพที่เรียงตามหน้า พร้อมใช้งาน</p>
+
+<p>Windows 10 / 11 · 64-bit · ใช้งานออฟไลน์ · ไม่ต้องติดตั้ง Python</p>
+
+<p>
+  <a href="https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_to_PNG.exe"><strong>ดาวน์โหลดแบบเปิดได้ทันที</strong></a>
+  &nbsp; · &nbsp;
+  <a href="https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_to_PNG_Setup_1.0.0.exe">ดาวน์โหลดตัวติดตั้ง</a>
+  &nbsp; · &nbsp;
+  <a href="https://github.com/Ntdpz/PDF_LoveR/releases/latest">ดูไฟล์ทั้งหมด</a>
+</p>
+
+<img src="docs/images/app-queue.png" alt="หน้าต่าง PDF LoveR แสดงคิว PDF ทางซ้าย การตั้งค่าทางขวา และปุ่มเริ่มแปลงด้านล่าง" width="1080">
+
+</div>
+
+## จากเอกสารสู่ภาพ พร้อมจัดเก็บ
+
+- **หลาย PDF ในครั้งเดียว** — เพิ่มไฟล์เข้าในคิว แล้วแปลงทุกหน้าต่อเนื่อง
+- **เลือกความละเอียดได้** — ใช้ 150 DPI เป็นค่าเริ่มต้น หรือปรับได้ 36–600 DPI
+- **หาแต่ละหน้าได้ง่าย** — แยกโฟลเดอร์ตามเอกสาร พร้อมเลขหน้าในชื่อภาพ
+- **ติดตามงานได้ตลอด** — ดูความคืบหน้ารายหน้าและสถานะของแต่ละไฟล์
+- **เก็บผลลัพธ์เดิมไว้** — หากชื่อโฟลเดอร์ซ้ำ โปรแกรมจะสร้างชื่อใหม่
+- **ไฟล์อยู่บนเครื่องคุณ** — แปลงออฟไลน์ แล้วเปิดโฟลเดอร์ผลลัพธ์ได้จากโปรแกรม
+
+## ดาวน์โหลดให้เหมาะกับคุณ
+
+| รูปแบบ | เหมาะกับ | เริ่มใช้งาน |
+| --- | --- | --- |
+| **[Portable — แนะนำ](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_to_PNG.exe)** | ต้องการเปิดทันที หรือส่งไปอีกเครื่อง | ดาวน์โหลดไฟล์เดียว แล้วดับเบิลคลิก |
+| **[Installer](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_to_PNG_Setup_1.0.0.exe)** | ต้องการทางลัดใน Start Menu / Desktop | เปิดตัวติดตั้ง แล้วทำตามขั้นตอน |
+| **[ZIP โฟลเดอร์](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_to_PNG_Portable_Folder_1.0.0.zip)** | ต้องการเก็บโปรแกรมไว้เป็นโฟลเดอร์ | แตกไฟล์ทั้งหมด แล้วเปิด `PDF_to_PNG_Modern.exe` |
+
+ทุกแบบใช้ได้โดยไม่ต้องติดตั้ง Python หรือโปรแกรมอ่าน PDF เพิ่ม
+โปรเจกต์นี้เป็น Private: ดาวน์โหลดด้วยบัญชี GitHub ที่ได้รับสิทธิ์เข้าถึง
+
+## ใช้เพียง 3 ขั้นตอน
+
+1. กด **เพิ่ม PDF** แล้วเลือกเอกสารที่ต้องการ
+2. เลือก **โฟลเดอร์ปลายทาง** และ **ความละเอียดภาพ** — เริ่มที่ 150 DPI ได้เลย
+3. กด **เริ่มแปลงเป็น PNG** แล้วกด **เปิดโฟลเดอร์ผลลัพธ์** เมื่อเสร็จ
+
+<details>
+<summary><strong>ดูตัวอย่างการใช้งาน</strong></summary>
+
+<p align="center">
+  <img src="docs/images/workflow.gif" alt="ตัวอย่างจริง: เพิ่ม PDF สองไฟล์ แปลงทีละหน้า และแสดงสถานะเสร็จแล้ว" width="1080">
+</p>
+
+</details>
+
+ตัวอย่างชื่อภาพ: `Project Brief_page_001.png`, `Project Brief_page_002.png`
+
+ใช้คีย์บอร์ดได้ด้วย: **Ctrl + O** เพิ่ม PDF · **Ctrl + Enter** เริ่มแปลง
+
+## คำถามที่พบบ่อย
+
+<details>
+<summary><strong>รองรับเครื่องไหน?</strong></summary>
+
+ชุดดาวน์โหลดสำหรับ Windows 10 / 11 แบบ 64-bit ขณะนี้ทดสอบบน Windows 10 แล้ว
+ยังไม่มีชุดสำหรับ macOS, Linux หรือ Windows 32-bit
+
+</details>
+
+<details>
+<summary><strong>ดาวน์โหลดแล้วต้องติดตั้งอะไรเพิ่มไหม?</strong></summary>
+
+ไม่ต้องติดตั้งอะไรเพิ่ม แบบ Portable เปิดจากไฟล์เดียวได้เลย และอาจใช้เวลาสักครู่ตอนเริ่มเปิด
+สำหรับ ZIP ให้เก็บโฟลเดอร์ `_internal` ไว้คู่กับตัวโปรแกรมเสมอ
+
+</details>
+
+<details>
+<summary><strong>แปลงเฉพาะบางหน้า หรือบันทึกเป็น JPG ได้ไหม?</strong></summary>
+
+รุ่นนี้แปลงทุกหน้าเป็น PNG ยังเลือกช่วงหน้า บันทึกเป็น JPG หรือแปลงภาพเป็นข้อความไม่ได้
+PDF ที่ต้องใส่รหัสผ่านยังไม่รองรับ
+
+</details>
+
+<details>
+<summary><strong>บางไฟล์แปลงไม่ได้ หรือภาพใหญ่เกินไป ทำอย่างไร?</strong></summary>
+
+กด **ดูข้อผิดพลาด** เพื่อตรวจไฟล์ที่มีปัญหา แล้วตรวจว่า PDF เปิดได้และโฟลเดอร์ปลายทางเขียนไฟล์ได้
+หากภาพใช้พื้นที่มาก ให้ลด DPI เช่น 300 → 150 เอกสารที่มีหลายหน้าหรือหน้าขนาดใหญ่จะใช้เวลาและพื้นที่มากขึ้น
+
+</details>
+
+<details>
+<summary><strong>เปิดลิงก์ดาวน์โหลดไม่ได้ หรือ Windows ไม่ยอมเปิดโปรแกรม?</strong></summary>
+
+ลงชื่อเข้าใช้ GitHub ด้วยบัญชีที่มีสิทธิ์เข้าถึงโปรเจกต์นี้ก่อนดาวน์โหลด
+ไฟล์ Windows รุ่นนี้ยังไม่มีลายเซ็นดิจิทัล หากเครื่ององค์กรบล็อก ให้ผู้ดูแลเครื่องตรวจสอบและอนุญาตโปรแกรม
+
+</details>
+
+<details>
+<summary><strong>ถอนการติดตั้งแล้วภาพที่แปลงไว้จะหายไหม?</strong></summary>
+
+ภาพที่คุณสร้างไว้จะยังอยู่ ตัวติดตั้งมีทางเลือกสร้างทางลัดบน Desktop และถอนการติดตั้งได้จาก **Settings → Apps**
+แบบ Portable หยุดใช้ได้โดยลบไฟล์โปรแกรม
+
+</details>
+
+---
+
+<details>
+<summary><strong>ข้อมูลทางเทคนิค / สำหรับผู้พัฒนา</strong></summary>
+
+Python · CustomTkinter · PyMuPDF · Pillow<br>
+จัดแพ็กเกจ Windows ด้วย PyInstaller และ Inno Setup
+
+คู่มือรันซอร์ส สร้างชุดแจก และทดสอบอยู่ใน [Development](docs/DEVELOPMENT.md)
+ค่า SHA-256 สำหรับตรวจไฟล์ดาวน์โหลดอยู่ใน [Releases](https://github.com/Ntdpz/PDF_LoveR/releases/latest)
+
+</details>

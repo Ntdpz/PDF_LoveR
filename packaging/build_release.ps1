@@ -1,0 +1,34 @@
+param([string]$InnoCompiler)
+$ErrorActionPreference = 'Stop'
+$taskProjectRoot = Split-Path -Parent $PSScriptRoot
+if (-not $InnoCompiler) {
+    $taskCompilerCandidates = @(
+        (Join-Path $taskProjectRoot '.build-tools\InnoSetup\ISCC.exe'),
+        'C:\Program Files (x86)\Inno Setup 6\ISCC.exe',
+        'C:\Program Files\Inno Setup 7\ISCC.exe'
+    )
+    $InnoCompiler = $taskCompilerCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+if (-not $InnoCompiler -or -not (Test-Path -LiteralPath $InnoCompiler)) {
+    throw 'Install Inno Setup or pass -InnoCompiler with the absolute ISCC.exe path.'
+}
+Push-Location -LiteralPath $taskProjectRoot
+try {
+    & python -m PyInstaller --noconfirm --workpath build-release --distpath build-release-dist PDF_to_PNG_Modern.spec
+    if ($LASTEXITCODE -ne 0) { throw 'Folder build failed.' }
+    & python -m PyInstaller --noconfirm --workpath build-portable PDF_to_PNG_Portable.spec
+    if ($LASTEXITCODE -ne 0) { throw 'Single-file build failed.' }
+    $taskRelease = Join-Path $taskProjectRoot 'dist\Release'
+    New-Item -ItemType Directory -Path $taskRelease -Force | Out-Null
+    Copy-Item -LiteralPath 'dist\PDF_to_PNG_Portable.exe' -Destination (Join-Path $taskRelease 'PDF_to_PNG.exe')
+    Copy-Item -LiteralPath 'packaging\README_Distribution.txt' -Destination (Join-Path $taskRelease 'README_เริ่มใช้งาน.txt')
+    Copy-Item -LiteralPath 'packaging\README_Distribution.txt' -Destination 'build-release-dist\PDF_to_PNG_Modern\README_เริ่มใช้งาน.txt'
+    Compress-Archive -LiteralPath 'build-release-dist\PDF_to_PNG_Modern' -DestinationPath (Join-Path $taskRelease 'PDF_to_PNG_Portable_Folder_1.0.0.zip') -CompressionLevel Optimal -Force
+    & $InnoCompiler '/Qp' (Join-Path $PSScriptRoot 'PDF_to_PNG.iss')
+    if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
+    $taskHashes = Get-ChildItem -LiteralPath $taskRelease -File | Where-Object { $_.Extension -in '.exe', '.zip' } | Get-FileHash -Algorithm SHA256
+    $taskHashes | ForEach-Object { $_.Hash + '  ' + (Split-Path -Leaf $_.Path) } | Set-Content -LiteralPath (Join-Path $taskRelease 'SHA256SUMS.txt') -Encoding utf8
+    Get-ChildItem -LiteralPath $taskRelease -File | Select-Object Name,Length
+} finally {
+    Pop-Location
+}
