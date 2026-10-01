@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "native_library": "tkdnd",
+  "checks": [
+    "Windows OLE Tcl enter/drop/leave callbacks",
+    "child Canvas and entry hit targets resolve to root",
+    "home opens merge",
+    "multiple files preserve incoming order",
+    "Thai, Unicode, spaces and braces in filenames",
+    "case-insensitive PDF extension",
+    "duplicate suppression",
+    "mixed unsupported files and folders",
+    "missing and corrupt files",
+    "PNG and merge queues remain independent",
+    "busy drop refusal",
+    "hover feedback and cancellation",
+    "cleanup without callback errors"
+  ]
+}

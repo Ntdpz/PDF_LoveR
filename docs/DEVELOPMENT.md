@@ -29,6 +29,7 @@ required by the application.
 | `app_version.py` | Single version source for UI, filenames and Windows metadata |
 | `pdf_preview.py` | Bounded thumbnail results from a dedicated process, away from Tk and merge workers |
 | `merge_cards.py` | Virtualized native Canvas cards, mouse ordering and edge scrolling |
+| `file_drop.py` | Native Explorer drops, current-tool routing and drop feedback |
 | `merge_page.py` | Merge queue, file ordering, output selection and worker feedback |
 | `pdf_merge.py` | Page concatenation, source validation and exclusive output publication |
 | `ui_theme.py` | OKLCH color tokens, native fonts, spacing, portable CSS export |
@@ -92,13 +93,13 @@ distributed ZIP, installs into a test directory, and runs each executable with
 Python removed from PATH. It then uninstalls and checks that user-created output
 survives. Logs are local and ignored by Git. A sanitized record of the verified
 1.0.0 builds is available in [verification.json](verification.json).
-The current 1.1.3 record is [distribution-1.1.3.json](distribution-1.1.3.json).
+The current 1.1.4 record is [distribution-1.1.4.json](distribution-1.1.4.json).
 
 The original packaged tests passed on Windows 10 x64. A separate Windows 11
 machine has not been used for verification. The Windows installers are unsigned.
 
-Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.3.exe`,
-`PDF_LoveR_1.1.3_Setup.exe`, and `PDF_LoveR_1.1.3_Portable.zip`.
+Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.4.exe`,
+`PDF_LoveR_1.1.4_Setup.exe`, and `PDF_LoveR_1.1.4_Portable.zip`.
 `prepare_version.py` generates the matching EXE metadata and Inno definitions.
 
 ## Release files
@@ -108,7 +109,7 @@ committing generated EXEs, DLLs, build tools or test logs to the repository.
 Recompute `SHA256SUMS.txt` whenever an asset is rebuilt or renamed. The repository
 README links to the release assets by their exact names.
 
-## Canvas responsiveness (1.1.3)
+## Canvas responsiveness (1.1.4)
 
 The merge queue is drawn on one native Tk Canvas. Only rows near the viewport
 have canvas items; 100 queued PDFs still show fewer than 30 cards at once.
@@ -128,5 +129,25 @@ The child process follows [PyMuPDF's concurrency guidance](https://pymupdf.readt
 and [PyInstaller's multiprocessing setup](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing).
 The 100-file test measures 1,000 rapid pointer events, 120 rendered frames,
 scrolling while dragging, a Tk heartbeat, worker recovery and cleanup. See
-[drag-performance-1.1.3.json](drag-performance-1.1.3.json). Timings reflect the
+[drag-performance-1.1.4.json](drag-performance-1.1.4.json). Timings reflect the
 test machine, not a promise for every document or PC.
+
+## Explorer file drops
+
+`tkinterdnd2` loads its native TkDnD extension into the existing CTk root.
+The root accepts `DND_Files`, so child Canvas, labels and entries resolve to the
+same target. Tcl `splitlist` preserves Unicode, spaces and braces in paths.
+PDFs are added to the active tool; home opens merge. Directories, unsupported
+extensions and missing files are skipped. Existing queue validation handles
+corrupt PDFs and duplicate paths. Busy jobs refuse external drops.
+
+Both supported PyInstaller specs collect the package's native extension files.
+The packaged smoke check invokes Windows' TkDnD enter/drop/leave adapters and
+then converts and merges the dropped documents. Source interaction checks:
+
+```powershell
+python tests/verify_file_drop.py
+```
+
+See [file-drop-verification.json](file-drop-verification.json). This covers the
+Windows Tcl adapter path; it does not automate dragging with Explorer's mouse.

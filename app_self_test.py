@@ -8,6 +8,17 @@ import pymupdf
 from PIL import Image
 
 
+def native_drop(root, paths):
+    """Drive the Windows adapter used by Explorer, including Tcl substitutions."""
+    data = root.tk.call('list', *(str(path) for path in paths))
+    action = root.tk.call('tkdnd::olednd::HandleDragEnter', root._w,
+                         ('CF_HDROP',), ('copy',), (), 0, 0, ('CF_HDROP',), data)
+    assert action == 'copy', action
+    action = root.tk.call('tkdnd::olednd::HandleDrop', root._w, (), 0, 0, 'CF_HDROP', data)
+    assert action == 'copy', action
+    root.tk.call('tkdnd::olednd::HandleDragLeave', root._w)
+
+
 def run(root, app_class, report):
     root.withdraw()
     report = Path(report).resolve()
@@ -23,10 +34,11 @@ def run(root, app_class, report):
             for _ in range(2):
                 document.new_page(width=144, height=72)
             document.save(source)
-        app.add_paths([source])
+        app.show_tool('pdf-png')
+        native_drop(root, [source])
         app.output.set(str(folder / "images"))
         app.dpi.set("150")
-        app.start()
+        root.after(10, app.start)
     except Exception as error:
         failures.append(str(error))
         report.write_text(json.dumps({"passed": False, "errors": failures}, ensure_ascii=False), encoding="utf-8")
@@ -52,9 +64,9 @@ def run(root, app_class, report):
                 page.insert_text((10, 20), "MERGE FIRST", fontsize=8)
                 document.save(second)
             assert app.show_tool("merge"), "Merge route not available"
-            app.merge.add_paths([second, source])
+            native_drop(root, [second, source])
             app.merge.output.set(str(folder / "รวมเอกสาร.pdf"))
-            app.merge.start()
+            root.after(10, app.merge.start)
             root.after(100, finish_merge)
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})
@@ -83,7 +95,9 @@ def run(root, app_class, report):
                 assert document[1].rect == pymupdf.Rect(0, 0, 144, 72)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
-                      "thumbnail_worker": "separate process", "thumbnail_count": 2})
+                      "thumbnail_worker": "separate process", "thumbnail_count": 2,
+                      "file_drop": "Windows native callbacks verified for PNG and merge",
+                      "tkdnd_version": app.file_drop.version})
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})
 

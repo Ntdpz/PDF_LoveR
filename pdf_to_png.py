@@ -101,6 +101,8 @@ class App:
         self.merge = MergePage(root, self)
         self.views = {"pdf-png": self.workbench, "merge": self.merge}
         self.show_home()
+        from file_drop import FileDrop
+        self.file_drop = FileDrop(self)
         root.bind("<Control-o>", self._open_pdf_shortcut)
         root.bind("<Control-Return>", self._start_shortcut)
         root.bind("<Control-f>", self._search_shortcut)
@@ -359,7 +361,7 @@ class App:
             empty.grid(row=0, column=0)
             self.label(empty, "", image=self.icon, width=64, height=64, anchor="center").pack(pady=(0, S["lg"]))
             self.label(empty, "เริ่มจากไฟล์ PDF ของคุณ", font=self.font_bold, anchor="center").pack()
-            self.label(empty, "เพิ่มเอกสารเพื่อแปลงทุกหน้าเป็นภาพ", color="muted", anchor="center").pack(pady=(S["xs"], S["lg"]))
+            self.label(empty, "ลาก PDF มาวาง หรือเลือกไฟล์เพื่อแปลงภาพ", color="muted", anchor="center").pack(pady=(S["xs"], S["lg"]))
             empty_add = self.button(empty, "เลือกไฟล์ PDF…", self.add_files, width=176)
             empty_add.pack()
             self.total_label.configure(text="เลือก PDF ได้หลายไฟล์พร้อมกัน")
@@ -564,6 +566,7 @@ class App:
         if self.busy:
             self.active_status("กำลังทำงานอยู่ · รอให้เสร็จก่อนปิดโปรแกรม")
         else:
+            self.file_drop.close()
             self.root.destroy()
 
 

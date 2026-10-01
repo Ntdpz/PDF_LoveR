@@ -80,7 +80,7 @@ class MergePage(ctk.CTkFrame):
         self.empty = ctk.CTkFrame(self.file_area, fg_color="transparent")
         self.label(self.empty, "", image=tool_icon("pages", "accent", 48)).pack(pady=(0, S["lg"]))
         self.label(self.empty, "เอกสารไหนมาก่อน?", font=self.app.font_bold).pack()
-        self.label(self.empty, "เพิ่ม PDF อย่างน้อย 2 ไฟล์ แล้วลากการ์ดจัดลำดับ", color="muted").pack(pady=(S["xs"], S["lg"]))
+        self.label(self.empty, "ลาก PDF มาวาง หรือเลือกอย่างน้อย 2 ไฟล์เพื่อรวม", color="muted").pack(pady=(S["xs"], S["lg"]))
         self.app.button(self.empty, "เลือกไฟล์ PDF…", self.add_files, width=176).pack()
         settings = ctk.CTkFrame(self, fg_color="transparent", corner_radius=0)
         settings.grid(row=3, column=0, sticky="ew", padx=S["2xl"], pady=(S["md"], 0))

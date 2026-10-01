@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT))
 import customtkinter as ctk
 import pymupdf
 from pdf_to_png import App
+from app_version import VERSION
 from verify_merge_cards import pointer, pump
 
 
@@ -140,7 +141,7 @@ def main():
                          'latest pointer wins', 'same drop position does not repaint',
                          'event loop heartbeat during drag and edge scrolling', 'quick release',
                          'preview pause/resume and worker recovery', 'no callback errors']}
-    (ROOT/'docs/drag-performance-1.1.3.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    (ROOT/f'docs/drag-performance-{VERSION}.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report))
 
 

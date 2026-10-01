@@ -121,7 +121,7 @@ class HomePage(ctk.CTkFrame):
         header.grid(row=0, column=0, sticky="ew")
         header.grid_columnconfigure(0, weight=1)
         self.label(header, "ทุกงาน PDF เริ่มที่นี่", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).grid(row=0, column=0, sticky="w")
-        self.label(header, "เลือกเครื่องมือสำหรับเอกสารของคุณ", color="muted").grid(row=1, column=0, sticky="w", pady=(S["xs"], 0))
+        self.label(header, "เลือกเครื่องมือ หรือวาง PDF เพื่อเปิดหน้ารวมไฟล์", color="muted").grid(row=1, column=0, sticky="w", pady=(S["xs"], 0))
         self.label(header, "Windows", color="muted", font=self.app.font_small).grid(row=0, column=1, sticky="e")
         search = ctk.CTkFrame(main, fg_color="transparent")
         search.grid(row=1, column=0, sticky="ew", pady=(S["lg"], S["lg"]))

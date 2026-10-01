@@ -6,7 +6,7 @@ app_name = runpy.run_path(str(Path(SPECPATH) / "app_version.py"))["APP_FILE_NAME
 
 a = Analysis(
     ['pdf_to_png.py'],
-    pathex=[], binaries=[], datas=collect_data_files('customtkinter') + [('assets/pdf_to_png.ico', 'assets')],
+    pathex=[], binaries=[], datas=collect_data_files('customtkinter') + collect_data_files('tkinterdnd2') + [('assets/pdf_to_png.ico', 'assets')],
     hiddenimports=[], hookspath=[], hooksconfig={}, runtime_hooks=[],
     excludes=['numpy', 'pandas', 'scipy', 'pytest', 'IPython', 'matplotlib'], noarchive=False, optimize=0,
 )
