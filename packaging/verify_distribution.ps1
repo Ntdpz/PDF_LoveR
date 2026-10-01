@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = 'Stop'
 $taskProjectRoot = Split-Path -Parent $PSScriptRoot
-$taskAppBase = & python -c 'import runpy,sys; print(runpy.run_path(sys.argv[1])["APP_FILE_NAME"])' (Join-Path $taskProjectRoot 'app_version.py')
+$taskAppBase = & python -c 'import runpy,sys; print(runpy.run_path(sys.argv[1])["APP_FILE_NAME"])' (Join-Path $taskProjectRoot 'pdf_lover\version.py')
 if ($LASTEXITCODE -ne 0) { throw 'Version lookup failed.' }
 $taskRelease = Join-Path $taskProjectRoot ('dist\' + $taskAppBase)
 $taskVerifyRoot = Join-Path $PSScriptRoot ('.verification\run-' + [guid]::NewGuid().ToString('N'))

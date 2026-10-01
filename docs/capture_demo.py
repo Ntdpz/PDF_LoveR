@@ -10,7 +10,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import customtkinter as ctk
 import pymupdf
 from PIL import ImageGrab
-import pdf_to_png
+from pdf_lover.app import App
+from pdf_lover.features.png import page as png_page
 
 IMAGES = Path(__file__).resolve().parent / "images"
 
@@ -36,7 +37,7 @@ def main():
     ctk.set_appearance_mode("light")
     ctk.set_widget_scaling(1)
     ctk.set_window_scaling(1)
-    original_convert = pdf_to_png.convert_pdf
+    original_convert = png_page.convert_pdf
 
     def paced_convert(path, destination, dpi, progress):
         def page_done(page, total):
@@ -44,7 +45,7 @@ def main():
             time.sleep(0.22)
         return original_convert(path, destination, dpi, page_done)
 
-    pdf_to_png.convert_pdf = paced_convert
+    png_page.convert_pdf = paced_convert
     frames, durations = [], []
     previous_directory = Path.cwd()
     with tempfile.TemporaryDirectory(prefix="pdf-lover-demo-") as sandbox:
@@ -57,21 +58,21 @@ def main():
                     page.insert_text((24, 80), f"Sample page {index + 1}", fontsize=12)
                 document.save(name)
         root = ctk.CTk()
-        app = pdf_to_png.App(root)
+        app = App(root)
         app.show_tool("pdf-png")
         root.geometry("1080x780+40+40")
         root.resizable(False, False)
-        app.output.set("PNG")
+        app.png.output.set("PNG")
         pump(root)
         empty = capture(root)
         empty.save(IMAGES / "app-overview.png")
         frames.append(empty); durations.append(1000)
-        app.add_paths(["Project Brief.pdf", "Product Guide.pdf"])
+        app.png.add_paths(["Project Brief.pdf", "Product Guide.pdf"])
         pump(root)
         queue = capture(root)
         queue.save(IMAGES / "app-queue.png")
         frames.append(queue); durations.append(1500)
-        app.start()
+        app.png.start()
         while app.busy:
             pump(root, 0.4)
             frames.append(capture(root)); durations.append(400)
@@ -79,7 +80,7 @@ def main():
         complete = capture(root)
         complete.save(IMAGES / "app-complete.png")
         frames.append(complete); durations.append(2200)
-        assert not app.errors
+        assert not app.png.errors
         assert len(list(Path("PNG").rglob("*.png"))) == 12
         for timer in root.tk.call("after", "info"):
             root.after_cancel(timer)

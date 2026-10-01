@@ -29,7 +29,7 @@
 
 ![วาง PDF จาก File Explorer](images/file-drop.png)
 
-## รองรับใน 1.1.5
+## รองรับใน 1.2.0
 
 - หน้าต่างที่ปรับขนาดได้ และ Windows scaling 100% / 125%
 - ข้อความ ภาพ ขนาดหน้า และการหมุนหน้าของเอกสาร
@@ -46,17 +46,17 @@ Release 1.0.0 ยังเป็นตัวแปลง PNG เดิม เค
 
 ## สำหรับผู้พัฒนา
 
-`pdf_merge.py` ใช้ [PyMuPDF insert_pdf](https://pymupdf.readthedocs.io/en/latest/document.html#Document.insert_pdf)
+`pdf_lover/features/merge/service.py` ใช้ [PyMuPDF insert_pdf](https://pymupdf.readthedocs.io/en/latest/document.html#Document.insert_pdf)
 คัดลอกหน้าโดยไม่เรนเดอร์เป็นภาพ และใช้ `join_duplicates=False` เพื่อให้ช่องแบบฟอร์มชื่อซ้ำแยกกัน
 ต้องใช้ PyMuPDF 1.25.5+ การบันทึกใช้ไฟล์ชั่วคราวในโฟลเดอร์เดียวกับปลายทาง
 ตรวจจำนวนหน้าก่อนเผยแพร่ผลลัพธ์ โดยไม่แทนที่ไฟล์ที่มีอยู่
 
 ```powershell
 python -m unittest discover -s tests -v
-python .hallmark/verify_merge.py
+python tests/ui/verify_merge.py
 ```
 
 การตรวจ UI ใช้ Poppler `pdftoppm` ใน PATH เพื่อเทียบภาพต้นฉบับกับผลลัพธ์โดยอิสระ
 ผลการตรวจล่าสุดอยู่ใน [merge-verification.json](merge-verification.json)
 
-ตรวจการลากจริงด้วย `python tests/verify_merge_cards.py` (Windows)
+ตรวจการลากจริงด้วย `python tests/ui/verify_merge_cards.py` (Windows)

@@ -1,9 +1,9 @@
 # Development
 
-The downloadable Windows builds include their own Python runtime. The tools below
-are needed only to work on the source or create a new distribution.
+The Windows distributions include their own runtime. These instructions are for
+maintaining the source and producing builds.
 
-## Run from source
+## Set up and run
 
 Use Python 3.10+ on Windows:
 
@@ -12,143 +12,110 @@ git clone git@github.com:Ntdpz/PDF_LoveR.git
 cd PDF_LoveR
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python pdf_to_png.py
+python -m pip install -e .
+python -m pdf_lover
 ```
 
-No API keys, account, network service, database, or environment configuration is
-required by the application.
+`python main.py` and the installed `pdf-lover` command use the same entrypoint.
+`requirements.txt` remains an editable-install convenience; runtime dependencies
+are declared once in `pyproject.toml`. No API keys or network services are needed
+to run the application.
 
-## Source map
+## Find the code
 
-| File | Purpose |
-| --- | --- |
-| `pdf_to_png.py` | PDF rendering, file queue, native UI, worker events |
-| `home_page.py` | Tool discovery, category filters, planned-tool details |
-| `tool_catalog.py` | Single directory of tool names, search terms and readiness |
-| `app_version.py` | Single version source for UI, filenames and Windows metadata |
-| `app_paths.py` | User Documents location, including Windows folder redirection |
-| `pdf_preview.py` | Bounded thumbnail results from a dedicated process, away from Tk and merge workers |
-| `merge_cards.py` | Virtualized native Canvas cards, mouse ordering and edge scrolling |
-| `file_drop.py` | Native Explorer drops, current-tool routing and drop feedback |
-| `merge_page.py` | Merge queue, file ordering, output selection and worker feedback |
-| `pdf_merge.py` | Page concatenation, source validation and exclusive output publication |
-| `ui_theme.py` | OKLCH color tokens, native fonts, spacing, portable CSS export |
-| `app_self_test.py` | Hidden executable smoke check |
-| `assets/pdf_to_png.ico` | Window and executable icon |
-| `PDF_to_PNG_Modern.spec` | Complete folder distribution |
-| `PDF_to_PNG_Portable.spec` | Standalone executable distribution |
-| `packaging/PDF_to_PNG.iss` | Installer and uninstaller configuration |
-| `packaging/build_release.ps1` | Build installer, standalone EXE, ZIP, and hashes |
-| `packaging/verify_distribution.ps1` | Check real distributions and uninstall behavior |
+Read [Architecture](ARCHITECTURE.md) for the folder map, ownership and runtime
+flow, and [Contributing](../CONTRIBUTING.md) before adding a feature.
 
-The main thread owns all Tk widgets. A worker renders pages with PyMuPDF and sends
-queue events back to the UI. Each PDF gets a new output folder; an existing folder
-name receives a numeric suffix. The development app also concatenates PDFs with
-the merge tool. It does not yet edit PDFs, run OCR, or export Office formats.
+- `pdf_lover/app.py`: navigation, shared busy state and event dispatch.
+- `pdf_lover/features/`: one folder per tool, containing its page and PDF engine.
+- `pdf_lover/ui/`: home, shared controls, icons and theme tokens.
+- `pdf_lover/platform/`: Documents lookup and native Explorer drops.
+- `pdf_lover/catalog.py` and `features/registry.py`: tool descriptions and executable pages.
+- `pdf_lover/diagnostics/`: hidden packaged smoke check.
+- `tests/unit/` and `tests/ui/`: engine and native interaction checks.
+- `packaging/`: specs, metadata, installer, build and distribution verification.
 
-## Build for Windows
-
-Install PyInstaller and Inno Setup 6.3+ (6.7.3 was used for version 1.0.0).
+## Verify source changes
 
 ```powershell
-python -m pip install pyinstaller
+python scripts/check.py
+```
+
+This runs unit tests followed by Windows UI checks sequentially. Use
+`python scripts/check.py --unit-only` for engine-only checks or a host without
+Windows UI. The native merge fidelity check requires Poppler `pdftoppm` in PATH.
+
+Individual checks can be run directly:
+
+```powershell
+python -m unittest discover -s tests/unit -v
+python tests/ui/verify_png.py
+python tests/ui/verify_home.py
+python tests/ui/verify_merge.py
+python tests/ui/verify_merge_cards.py
+python tests/ui/verify_file_drop.py
+python tests/ui/verify_drag_performance.py
+```
+
+Fixtures and output use temporary directories. Native checks cover real PNG
+conversion, page order, forms, links, annotations, source/output safety, corrupt
+files, queue and navigation guards, file drops, desktop scaling and drag load.
+Architecture checks protect ready-tool registration and verify that PDF engines
+can import without loading Tk. PNG engine checks also preserve existing output
+on repeat conversion.
+
+Reports are stored in `docs/`; local UI captures and scratch work go into
+`build-verification/`. UI checks drive Windows TkDnD adapter callbacks rather
+than automating Explorer's physical mouse gesture.
+
+## Build and verify distributions
+
+Install the optional build dependencies and Inno Setup:
+
+```powershell
+python -m pip install -e '.[build]'
 & .\packaging\build_release.ps1 -InnoCompiler 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
-```
-
-Distributions are written to `dist/PDF_LoveR_<VERSION>/`. Folder-build staging is separate
-from `dist/PDF_to_PNG_Modern/` so an existing open app can keep running.
-The single EXE extracts its packaged runtime into a temporary directory while
-running; the ZIP contains the runtime alongside the application.
-
-## Verify
-
-```powershell
-python .hallmark/verify_ui.py
-python .hallmark/verify_home.py
-python -m unittest discover -s tests -v
-python .hallmark/verify_merge.py
-python tests/verify_merge_cards.py
-python tests/verify_drag_performance.py
-```
-
-This runs real PDF conversion and checks input validation, queue guards, corrupt
-files, page order, DPI dimensions, repeat conversion, UI rendering and contrast.
-The temporary PDF fixtures and converted files are created by the test.
-
-The home check also verifies tool discovery, planned-feature safety, navigation,
-retained settings, conversion through the home screen, and desktop scaling.
-See [Superapp home](SUPERAPP.md) for the current development preview and roadmap.
-The [merge tool](MERGE.md) check also compares output pages with originals using
-Poppler. Its unit tests cover forms, annotations, links, bookmarks, source safety,
-invalid documents, write failures and a file appearing during publication.
-
-Run distribution verification with **PowerShell 7** after building:
-
-```powershell
 & .\packaging\verify_distribution.ps1
 ```
 
-The script copies the standalone EXE to an isolated Thai-named path, extracts the
-distributed ZIP, installs into a test directory, and runs each executable with
-Python removed from PATH. It then uninstalls and checks that user-created output
-survives. Logs are local and ignored by Git. A sanitized record of the verified
-1.0.0 builds is available in [verification.json](verification.json).
-The current 1.1.5 record is [distribution-1.1.5.json](distribution-1.1.5.json).
+Use PowerShell 7 for distribution verification. `packaging/spec_common.py`
+provides the shared analysis options; `folder.spec` and `portable.spec` select
+folder and standalone packaging. The assets are packaged under `pdf_lover/assets/`.
+TkDnD's native files are included in both builds.
 
-The original packaged tests passed on Windows 10 x64. A separate Windows 11
-machine has not been used for verification. The Windows installers are unsigned.
+The single EXE extracts its runtime into a temporary directory. The ZIP contains
+the runtime alongside the executable. Inno Setup packages the folder build.
+All final files go into `dist/PDF_LoveR_<VERSION>/`; staging uses `build-release*`
+and `build-portable*` separately.
 
-Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.5.exe`,
-`PDF_LoveR_1.1.5_Setup.exe`, and `PDF_LoveR_1.1.5_Portable.zip`.
-`prepare_version.py` generates the matching EXE metadata and Inno definitions.
+Verification copies the EXE into an isolated Thai-named path, extracts the exact
+ZIP and installs into a test directory. Each executable runs without Python in
+PATH and performs native file drops, conversion, merging and thumbnail rendering.
+It then uninstalls and verifies that user-created output survives. Local logs
+are ignored; sanitized records are kept in `docs/`.
 
-## Release files
+Current record: [distribution-1.2.0.json](distribution-1.2.0.json). Tests run on
+Windows 10 x64; a separate Windows 11 machine has not been used. Installers are
+unsigned.
 
-Publish the files from `dist/PDF_LoveR_<VERSION>/` as GitHub Release assets, rather than
-committing generated EXEs, DLLs, build tools or test logs to the repository.
-Recompute `SHA256SUMS.txt` whenever an asset is rebuilt or renamed. The repository
-README links to the release assets by their exact names.
+## Version and assets
 
-## Canvas responsiveness (1.1.4)
+Edit only `pdf_lover/version.py`. Package metadata, UI and Windows filenames read
+that source. `prepare_version.py` generates the Windows metadata and Inno
+version definitions. Current outputs are `PDF_LoveR_1.2.0.exe`,
+`PDF_LoveR_1.2.0_Setup.exe` and `PDF_LoveR_1.2.0_Portable.zip`.
 
-The merge queue is drawn on one native Tk Canvas. Only rows near the viewport
-have canvas items; 100 queued PDFs still show fewer than 30 cards at once.
-Pointer events are coalesced to a 16 ms frame, the drop position is computed
-from cached row and column dimensions, and moving between slots changes only
-highlighted tiles. A drop redraws the visible rows once. Thumbnails use one
-lazily started child process, with a bounded results queue; their UI updates
-pause while dragging. The 128-image cache requests an evicted thumbnail again
-if its file comes back into view.
+Keep binaries, build tools and local logs outside Git. Recompute hashes when
+rebuilding an asset. GitHub Release 1.0.0 remains the older PNG application;
+current development builds are local until a new Release is explicitly published.
 
-The drag preview follows the pointer directly while a 120 ms lift and a 140 ms
-insertion marker animate on the same Canvas. These effects add a fixed number
-of items regardless of queue length. Windows' client-area animation setting
-disables both animations while preserving their final visual state.
+## Responsiveness
 
-The child process follows [PyMuPDF's concurrency guidance](https://pymupdf.readthedocs.io/en/latest/recipes-multiprocessing.html)
-and [PyInstaller's multiprocessing setup](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing).
-The 100-file test measures 1,000 rapid pointer events, 120 rendered frames,
-scrolling while dragging, a Tk heartbeat, worker recovery and cleanup. See
-[drag-performance-1.1.4.json](drag-performance-1.1.4.json). Timings reflect the
-test machine, not a promise for every document or PC.
-
-## Explorer file drops
-
-`tkinterdnd2` loads its native TkDnD extension into the existing CTk root.
-The root accepts `DND_Files`, so child Canvas, labels and entries resolve to the
-same target. Tcl `splitlist` preserves Unicode, spaces and braces in paths.
-PDFs are added to the active tool; home opens merge. Directories, unsupported
-extensions and missing files are skipped. Existing queue validation handles
-corrupt PDFs and duplicate paths. Busy jobs refuse external drops.
-
-Both supported PyInstaller specs collect the package's native extension files.
-The packaged smoke check invokes Windows' TkDnD enter/drop/leave adapters and
-then converts and merges the dropped documents. Source interaction checks:
-
-```powershell
-python tests/verify_file_drop.py
-```
-
-See [file-drop-verification.json](file-drop-verification.json). This covers the
-Windows Tcl adapter path; it does not automate dragging with Explorer's mouse.
+The merge page uses one virtualized Canvas, coalesces pointer motion into 16 ms
+frames and updates only affected highlights during drag. Thumbnails come from
+one lazily started child process; image application pauses during dragging.
+Lift and insertion-marker animations follow Windows' reduced-animation setting.
+The 100-file load check covers rapid pointer events, edge scrolling, Tk heartbeat,
+preview pause/resume and worker cleanup. See
+[drag-performance-1.2.0.json](drag-performance-1.2.0.json). Timings describe the
+test machine rather than every document or PC.

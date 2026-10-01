@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf-lover"
+dynamic = ["version"]
+description = "Offline PDF tools for Windows"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "PyMuPDF>=1.25.5,<2",
+    "customtkinter==5.2.2",
+    "Pillow>=10,<13",
+    "tkinterdnd2==0.4.3",
+]
+
+[project.optional-dependencies]
+build = ["pyinstaller>=6.20,<7"]
+
+[project.scripts]
+pdf-lover = "pdf_lover.__main__:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "pdf_lover.version.VERSION"}
+
+[tool.setuptools.packages.find]
+include = ["pdf_lover*"]
+
+[tool.setuptools.package-data]
+pdf_lover = ["assets/*.ico"]

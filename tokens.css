@@ -1,6 +1,6 @@
 /* Hallmark · macrostructure: Catalogue · tone: modern-minimal · anchor hue: cobalt */
 /* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 */
-/* Native app consumes ui_theme.py; this is its portable web token export. */
+/* Native app consumes pdf_lover/ui/theme.py; this is its portable web token export. */
 :root {
   --color-paper: oklch(97.8% 0.005 250);
   --color-surface: oklch(99.6% 0.002 250);

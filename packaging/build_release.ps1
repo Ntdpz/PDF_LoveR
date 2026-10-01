@@ -16,12 +16,12 @@ Push-Location -LiteralPath $taskProjectRoot
 try {
     & python packaging\prepare_version.py
     if ($LASTEXITCODE -ne 0) { throw 'Version metadata generation failed.' }
-    $taskAppBase = & python -c 'from app_version import APP_FILE_NAME; print(APP_FILE_NAME)'
+    $taskAppBase = & python -c 'from pdf_lover.version import APP_FILE_NAME; print(APP_FILE_NAME)'
     if ($LASTEXITCODE -ne 0) { throw 'Version lookup failed.' }
-    $taskVersion = & python -c 'from app_version import VERSION; print(VERSION)'
-    & python -m PyInstaller --noconfirm --workpath build-release --distpath build-release-dist PDF_to_PNG_Modern.spec
+    $taskVersion = & python -c 'from pdf_lover.version import VERSION; print(VERSION)'
+    & python -m PyInstaller --noconfirm --workpath build-release --distpath build-release-dist packaging\folder.spec
     if ($LASTEXITCODE -ne 0) { throw 'Folder build failed.' }
-    & python -m PyInstaller --noconfirm --workpath build-portable --distpath build-portable-dist PDF_to_PNG_Portable.spec
+    & python -m PyInstaller --noconfirm --workpath build-portable --distpath build-portable-dist packaging\portable.spec
     if ($LASTEXITCODE -ne 0) { throw 'Single-file build failed.' }
     $taskRelease = Join-Path $taskProjectRoot ('dist\' + $taskAppBase)
     New-Item -ItemType Directory -Path $taskRelease -Force | Out-Null

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "version": "1.2.0",
+  "unit_tests": 17,
+  "native_ui_suites": 6,
+  "checks": [
+    "full scripts/check.py completed successfully",
+    "PDF engines import without Tk",
+    "ready tools match the page registry",
+    "lazy page creation and retained queues/settings",
+    "one shell-owned event polling timer",
+    "PNG and merge output fidelity and safety",
+    "external file drops and keyboard/card ordering",
+    "100-file drag load",
+    "installed module and CLI entrypoints outside repository",
+    "standalone/ZIP/installer without Python in PATH",
+    "uninstall preserves user output"
+  ],
+  "reports": [
+    "home-verification.json",
+    "merge-verification.json",
+    "merge-cards-verification.json",
+    "file-drop-verification.json",
+    "drag-performance-1.2.0.json",
+    "distribution-1.2.0.json"
+  ]
+}
