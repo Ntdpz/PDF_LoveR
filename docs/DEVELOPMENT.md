@@ -27,6 +27,7 @@ required by the application.
 | `home_page.py` | Tool discovery, category filters, planned-tool details |
 | `tool_catalog.py` | Single directory of tool names, search terms and readiness |
 | `app_version.py` | Single version source for UI, filenames and Windows metadata |
+| `app_paths.py` | User Documents location, including Windows folder redirection |
 | `pdf_preview.py` | Bounded thumbnail results from a dedicated process, away from Tk and merge workers |
 | `merge_cards.py` | Virtualized native Canvas cards, mouse ordering and edge scrolling |
 | `file_drop.py` | Native Explorer drops, current-tool routing and drop feedback |
@@ -93,13 +94,13 @@ distributed ZIP, installs into a test directory, and runs each executable with
 Python removed from PATH. It then uninstalls and checks that user-created output
 survives. Logs are local and ignored by Git. A sanitized record of the verified
 1.0.0 builds is available in [verification.json](verification.json).
-The current 1.1.4 record is [distribution-1.1.4.json](distribution-1.1.4.json).
+The current 1.1.5 record is [distribution-1.1.5.json](distribution-1.1.5.json).
 
 The original packaged tests passed on Windows 10 x64. A separate Windows 11
 machine has not been used for verification. The Windows installers are unsigned.
 
-Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.4.exe`,
-`PDF_LoveR_1.1.4_Setup.exe`, and `PDF_LoveR_1.1.4_Portable.zip`.
+Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.5.exe`,
+`PDF_LoveR_1.1.5_Setup.exe`, and `PDF_LoveR_1.1.5_Portable.zip`.
 `prepare_version.py` generates the matching EXE metadata and Inno definitions.
 
 ## Release files

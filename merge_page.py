@@ -9,6 +9,7 @@ from tkinter import filedialog
 import customtkinter as ctk
 
 from home_page import tool_icon
+from app_paths import documents_folder
 from merge_cards import MergeCards
 from pdf_merge import inspect_pdf, merge_pdfs, MergeError
 from ui_theme import COLORS as C, FONTS, RADIUS, SPACE as S
@@ -21,7 +22,7 @@ class MergePage(ctk.CTkFrame):
         self.files = []
         self.page_counts = {}
         self.events = queue.Queue()
-        self.output = tk.StringVar()
+        self.output = tk.StringVar(value=str(documents_folder() / "รวมเอกสาร.pdf"))
         self.status = tk.StringVar(value="เพิ่ม PDF อย่างน้อย 2 ไฟล์ แล้วจัดลำดับก่อนรวม")
         self.busy = False
         self.destination = None
@@ -196,7 +197,7 @@ class MergePage(ctk.CTkFrame):
     def choose_output(self):
         if self.app.busy:
             return
-        initial = Path(self.output.get()) if self.output.get() else (self.files[0].parent if self.files else Path.home()) / "รวมเอกสาร.pdf"
+        initial = Path(self.output.get()).expanduser() if self.output.get().strip() else documents_folder() / "รวมเอกสาร.pdf"
         path = filedialog.asksaveasfilename(parent=self.app.root, title="เลือกที่บันทึก PDF ที่รวมแล้ว", defaultextension=".pdf",
                                            filetypes=[("PDF", "*.pdf")], initialdir=str(initial.parent), initialfile=initial.name,
                                            confirmoverwrite=False)

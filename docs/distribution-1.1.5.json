@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-01T22:30:01.5368544+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 2,
+    "file_drop": "Windows native callbacks verified for PNG and merge",
+    "tkdnd_version": "2.9.4"
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 2,
+    "file_drop": "Windows native callbacks verified for PNG and merge",
+    "tkdnd_version": "2.9.4"
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 2,
+    "file_drop": "Windows native callbacks verified for PNG and merge",
+    "tkdnd_version": "2.9.4"
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.1.5",
+  "assets": {
+    "PDF_LoveR_1.1.5.exe": "ecfb514850cd6980c85b6b013439f66a35511f00b6778b78deb1e88f1f69f897",
+    "PDF_LoveR_1.1.5_Portable.zip": "935a6ea8e8a357b56453f83a569c0e42381efff7d86090f5e8b6156673fe30a7",
+    "PDF_LoveR_1.1.5_Setup.exe": "b2eac455f4320789bbbf3ad50d0d5cfadf37bb2036d542374bd98f6975f5ddac"
+  }
+}

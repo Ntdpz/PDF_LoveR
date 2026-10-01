@@ -21,6 +21,7 @@ import pymupdf
 from PIL import Image, ImageDraw
 
 from app_version import VERSION
+from app_paths import documents_folder
 from ui_theme import COLORS as C, FONTS, RADIUS, SPACE as S
 
 
@@ -73,7 +74,7 @@ class App:
         root.configure(fg_color=C["paper"])
         self.files: list[Path] = []
         self.events: queue.Queue[tuple] = queue.Queue()
-        self.output = tk.StringVar(value=str(Path.home() / "Pictures"))
+        self.output = tk.StringVar(value=str(documents_folder()))
         self.dpi = tk.StringVar(value="150")
         self.status = tk.StringVar(value="เลือกไฟล์ PDF แล้วเริ่มแปลงได้เลย")
         self.busy = False
@@ -443,7 +444,9 @@ class App:
     def choose_output(self):
         if self.busy:
             return
-        path = filedialog.askdirectory(parent=self.root, title="เลือกโฟลเดอร์ปลายทาง")
+        initial = Path(self.output.get()).expanduser() if self.output.get().strip() else documents_folder()
+        path = filedialog.askdirectory(parent=self.root, title="เลือกโฟลเดอร์ปลายทาง",
+                                      initialdir=str(initial if initial.is_dir() else documents_folder()))
         if path:
             self.output.set(path)
 
