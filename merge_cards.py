@@ -1,350 +1,487 @@
-"""Hallmark · component: document cards · Cobalt · native Windows.
+"""Native, virtualized PDF cards on one Canvas.
 
-Pre-emit critique: P4 H5 E4 S5 R5 V4. Keyboard focus, hover, pressed,
-disabled, preview loading/error and reorder success use the existing tokens.
+Hallmark component: Cobalt document workspace. One native drawing surface keeps
+pointer motion and scrolling independent of queue length.
 """
 import math
 import queue
 import time
+import tkinter as tk
 from collections import OrderedDict
+from pathlib import Path
+from tkinter import font as tkfont
 
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image, ImageTk
 
 from pdf_preview import PreviewWorker
-from ui_theme import COLORS as C, SPACE as S, RADIUS
+from ui_theme import COLORS as C, FONTS, SPACE as S
 
 
-class MergeCards(ctk.CTkScrollableFrame):
-    """Row-major cards; committing a drop is the only mouse order mutation."""
+class MergeCards(ctk.CTkFrame):
+    GAP = 12
+    HEIGHT = 180
+    MIN_WIDTH = 176
+    MAX_PREVIEWS = 128
+    HINT = "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป"
+
     def __init__(self, parent, page):
-        super().__init__(parent, fg_color="transparent", corner_radius=0,
-                         scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
+        super().__init__(parent, fg_color="transparent", corner_radius=0)
         self.page = page
-        self.cards = {}
-        self.previews = {}
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        self.canvas = tk.Canvas(self, bg=C["surface"], highlightthickness=0, bd=0,
+                                takefocus=1, cursor="arrow", xscrollincrement=1, yscrollincrement=1)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self._scroll,
+                                           fg_color=C["surface"], button_color=C["rule"],
+                                           button_hover_color=C["muted"], width=14)
+        self.scrollbar.grid(row=0, column=1, sticky="ns")
+        self.canvas.configure(yscrollcommand=self._on_scroll)
         self.cache = OrderedDict()
+        self.photos = OrderedDict()
         self.pending = set()
+        self.preview_keys = {}
         self.worker = PreviewWorker()
-        self.styles = {}
-        self.frame_timer = None
-        self.drag_styles = set()
-        self.columns = 0
-        self.card_width = 0
+        self.visible = {}
+        self.columns = 1
+        self.card_width = self.MIN_WIDTH
+        self.step_x = self.MIN_WIDTH + self.GAP
+        self.step_y = self.HEIGHT + self.GAP
+        self.scaling = 1
+        self.selected = None
+        self.hovered = None
         self.drag = None
-        self.scroll_timer = None
-        self.layout_timer = None
-        self.preview_timer = None
         self.ghost = None
-        self.bind("<Configure>", self._resize, add="+")
+        self.frame_timer = None
+        self.draw_timer = None
+        self.scroll_timer = None
+        self.preview_timer = None
+        self.mouse_down = False
+        self.paints = 0
+        self.scrollregion = None
+        self.font_bold = tkfont.Font(family=FONTS["body"], size=14, weight="bold")
+        self.font_small = tkfont.Font(family=FONTS["body"], size=12)
+        self.canvas.bind("<Configure>", self._resize)
+        self.canvas.bind("<ButtonPress-1>", self.press)
+        self.canvas.bind("<B1-Motion>", self.motion)
+        self.canvas.bind("<ButtonRelease-1>", self.release)
+        self.canvas.bind("<Motion>", self._motion_idle)
+        self.canvas.bind("<Leave>", self._leave)
+        self.canvas.bind("<MouseWheel>", self._wheel)
+        self.canvas.bind("<Button-4>", lambda _: self._wheel_steps(-1))
+        self.canvas.bind("<Button-5>", lambda _: self._wheel_steps(1))
+        self.canvas.bind("<Escape>", lambda _: self.cancel_drag())
+        self.canvas.bind("<FocusIn>", lambda _: self._style(self.selected))
+        self.canvas.bind("<FocusOut>", self._focus_out)
+        for key, step in (("Left", -1), ("Right", 1), ("Up", -self.columns), ("Down", self.columns)):
+            self.canvas.bind(f"<{key}>", lambda event, name=key: self._keyboard(name))
+        self.canvas.bind("<Delete>", self._delete_selected)
         self.preview_timer = self.page.app.root.after(80, self._poll_previews)
 
     def _resize(self, event):
-        if self.layout_timer:
-            self.page.app.root.after_cancel(self.layout_timer)
-        self.layout_timer = self.page.app.root.after(80, self._layout)
-
-    def _layout(self):
-        self.layout_timer = None
         scale = ctk.ScalingTracker.get_widget_scaling(self)
-        width = max(160, int(self.winfo_width() / scale))
-        columns = max(1, width // 176)
-        card_width = max(152, width // columns - S["md"])
-        if (columns, card_width) == (self.columns, self.card_width):
-            return
-        self.cancel_drag()
-        for column in range(max(columns, self.columns)):
-            self.grid_columnconfigure(column, weight=0, minsize=0, uniform="")
-        self.columns, self.card_width = columns, card_width
-        for column in range(columns):
-            self.grid_columnconfigure(column, weight=1, uniform="documents")
-        self._place_cards()
+        gap = round(self.GAP * scale)
+        columns = max(1, (event.width - gap) // round((self.MIN_WIDTH + self.GAP) * scale))
+        width = max(round(152 * scale), (event.width - gap * (columns + 1)) // columns)
+        if (columns, width, scale) != (self.columns, self.card_width, self.scaling):
+            self.cancel_drag()
+            self.columns, self.card_width, self.scaling = columns, width, scale
+            self.step_x = width + gap
+            self.step_y = round((self.HEIGHT + self.GAP) * scale)
+            self.font_bold = tkfont.Font(family=FONTS["body"], size=round(14 * scale), weight="bold")
+            self.font_small = tkfont.Font(family=FONTS["body"], size=round(12 * scale))
+            self._update_scrollregion()
+        self._schedule_draw()
 
-    def _place_cards(self):
-        for index, path in enumerate(self.page.files):
-            card = self.cards[path]
-            if card.layout_width != self.card_width:
-                card.configure(width=self.card_width, height=180)
-                card.name.configure(text=self.page.app.fit_filename(path.name, self.card_width - 28))
-                card.layout_width = self.card_width
-            cell = (index // max(1, self.columns), index % max(1, self.columns))
-            if card.cell != cell:
-                card.grid(row=cell[0], column=cell[1], sticky="ew", padx=S["xs"], pady=(S["xs"], S["sm"]))
-                card.cell = cell
-            if card.order != index:
-                card.number.configure(text=str(index + 1))
-                card.order = index
+    def _update_scrollregion(self):
+        rows = math.ceil(len(self.page.files) / max(1, self.columns))
+        extent = max(self.canvas.winfo_height(), rows * self.step_y + round(self.GAP * self.scaling))
+        region = (0, 0, self.canvas.winfo_width(), extent)
+        if region != self.scrollregion:
+            self.scrollregion = region
+            self.canvas.configure(scrollregion=region)
 
     def render(self):
         self.cancel_drag()
-        for path in list(self.cards):
-            if path not in self.page.files:
-                self.cards.pop(path).destroy()
-                self.previews.pop(path, None)
-                self.styles.pop(path, None)
-        for path in self.page.files:
-            if path not in self.cards:
-                self._make_card(path)
-            card = self.cards[path]
-            if card.busy_state != self.page.app.busy:
-                card.close.configure(state="disabled" if self.page.app.busy else "normal")
-                card._canvas.configure(takefocus=0 if self.page.app.busy else 1)
-                card.busy_state = self.page.app.busy
-            self._paint(path, "soft" if self.page.app.busy else "paper", cursor="arrow" if self.page.app.busy else "hand2")
-        self._layout()
-        self._place_cards()
+        files = set(self.page.files)
+        self.preview_keys = {path: key for path, key in self.preview_keys.items() if path in files}
+        if self.selected not in files:
+            self.selected = self.page.files[0] if self.page.files else None
+        if self.hovered not in files:
+            self.hovered = None
+        self._update_scrollregion()
+        self._schedule_draw()
 
-    def _make_card(self, path):
-        card = ctk.CTkFrame(self, width=176, height=180, corner_radius=RADIUS["control"],
-                            fg_color=C["paper"], border_color=C["rule"], border_width=2, cursor="hand2")
-        card.grid_propagate(False)
-        card.layout_width = card.cell = card.order = card.busy_state = None
-        card.grid_columnconfigure(0, weight=1)
-        card.number = self.page.label(card, "", font=self.page.app.font_bold, color="accent", width=24)
-        card.number.grid(row=0, column=0, sticky="w", padx=S["md"], pady=(S["xs"], 0))
-        card.close = self.page.app.button(card, "×", lambda: self.page.remove_file(path), width=44)
-        card.close.grid(row=0, column=1, padx=(0, S["xs"]), pady=(S["xs"], 0))
-        preview = self.page.label(card, "กำลังโหลดภาพ…", font=self.page.app.font_small,
-                                  color="muted", height=76, anchor="center")
-        preview.grid(row=1, column=0, columnspan=2, sticky="ew", padx=S["sm"])
-        card.name = self.page.label(card, "", font=self.page.app.font_bold, height=26)
-        card.name.grid(row=2, column=0, columnspan=2, sticky="w", padx=S["md"], pady=(S["xs"], 0))
-        pages = self.page.label(card, f"{self.page.page_counts[path]} หน้า", font=self.page.app.font_small, color="muted", height=20)
-        pages.grid(row=3, column=0, columnspan=2, sticky="w", padx=S["md"], pady=(0, S["sm"]))
-        self.cards[path] = card
-        self.previews[path] = preview
-        for widget in (card, card.number, preview, card.name, pages):
-            widget.bind("<ButtonPress-1>", lambda event, p=path: self.press(p, event), add="+")
-            widget.bind("<B1-Motion>", self.motion, add="+")
-            widget.bind("<ButtonRelease-1>", self.release, add="+")
-            widget.bind("<Enter>", lambda event, p=path: self._hover(p, True), add="+")
-            widget.bind("<Leave>", lambda event, p=path: self._hover(p, False), add="+")
-        card._canvas.bind("<FocusIn>", lambda event: self._focus(path, True))
-        card._canvas.bind("<FocusOut>", lambda event: self._focus(path, False))
-        for key, direction in (("Left", -1), ("Right", 1), ("Up", -1), ("Down", 1)):
-            card._canvas.bind(f"<{key}>", lambda event, p=path, d=direction: self._keyboard(p, d))
-        card._canvas.bind("<Escape>", lambda event: self.cancel_drag())
-        card.bind("<Escape>", lambda event: self.cancel_drag(), add="+")
-        try:
-            stat = path.stat()
-            key = (path, stat.st_mtime_ns, stat.st_size)
-        except OSError:
-            key = (path, None, None)
-        card.preview_key = key
-        if key in self.cache:
-            self._apply_preview(path, self.cache[key])
-        elif key not in self.pending:
+    def _schedule_draw(self):
+        if self.draw_timer is None:
+            self.draw_timer = self.page.app.root.after(12, self._draw_visible)
+
+    def _on_scroll(self, start, end):
+        self.scrollbar.set(start, end)
+        self._schedule_draw()
+
+    def _scroll(self, *args):
+        self.canvas.yview(*args)
+        self._schedule_draw()
+
+    def _wheel(self, event):
+        if event.delta:
+            self._wheel_steps(-int(event.delta / 120))
+        return "break"
+
+    def _wheel_steps(self, steps):
+        self.canvas.yview_scroll(steps * round(56 * self.scaling), "units")
+        self._schedule_draw()
+        return "break"
+
+    def _bounds(self, index):
+        row, column = divmod(index, self.columns)
+        gap = round(self.GAP * self.scaling)
+        x = gap + column * self.step_x
+        y = gap + row * self.step_y
+        return x, y, x + self.card_width, y + round(self.HEIGHT * self.scaling)
+
+    def card_bounds(self, path):
+        index = self.page.files.index(path)
+        x1, y1, x2, y2 = self._bounds(index)
+        offset = self.canvas.canvasy(0)
+        return (self.canvas.winfo_rootx() + x1, self.canvas.winfo_rooty() + y1 - offset,
+                self.canvas.winfo_rootx() + x2, self.canvas.winfo_rooty() + y2 - offset)
+
+    def card_center(self, path, after=False):
+        x1, y1, x2, y2 = self.card_bounds(path)
+        return x1 + (x2 - x1) * (0.8 if after else 0.2), y1 + round(70 * self.scaling)
+
+    def _draw_visible(self):
+        self.draw_timer = None
+        if not self.winfo_exists():
+            return
+        self._update_scrollregion()
+        top = self.canvas.canvasy(0)
+        bottom = top + self.canvas.winfo_height()
+        first_row = max(0, int(top // self.step_y) - 1)
+        last_row = min(math.ceil(len(self.page.files) / self.columns), int(bottom // self.step_y) + 2)
+        self.canvas.delete("card")
+        self.visible.clear()
+        for index in range(first_row * self.columns, min(last_row * self.columns, len(self.page.files))):
+            self._draw_card(index)
+        self._raise_ghost()
+
+    def _draw_card(self, index):
+        path = self.page.files[index]
+        x1, y1, x2, y2 = self._bounds(index)
+        scale = self.scaling
+        fill, outline = self._colors(index)
+        rect = self.canvas.create_rectangle(x1, y1, x2, y2, fill=fill, outline=outline,
+                                             width=max(1, round(2 * scale)), tags="card")
+        self.canvas.create_text(x1 + round(12 * scale), y1 + round(22 * scale), text=str(index + 1),
+                                anchor="w", fill=C["accent"], font=self.font_bold, tags="card")
+        close_size = round(40 * scale)
+        cx, cy = x2 - close_size - round(4 * scale), y1 + round(4 * scale)
+        self.canvas.create_rectangle(cx, cy, cx + close_size, cy + close_size,
+                                     fill=C["surface"], outline=C["rule"], tags="card")
+        self.canvas.create_text(cx + close_size / 2, cy + close_size / 2, text="×",
+                                fill=C["muted"] if self.page.app.busy else C["ink"],
+                                font=self.font_bold, tags="card")
+        key = self._preview_key(path)
+        image = self._photo(key) if key in self.cache else None
+        if image is not None:
+            self.canvas.create_image((x1 + x2) / 2, y1 + round(87 * scale), image=image, tags="card")
+        else:
+            self.canvas.create_text((x1 + x2) / 2, y1 + round(87 * scale),
+                                    text="กำลังโหลดภาพ…" if key in self.pending else "ไม่มีภาพตัวอย่าง",
+                                    fill=C["muted"], font=self.font_small, tags="card")
+        width = self.card_width - round(28 * scale)
+        name = self._fit_name(path.name, width)
+        self.canvas.create_text(x1 + round(12 * scale), y1 + round(142 * scale), text=name,
+                                anchor="w", fill=C["ink"], font=self.font_bold, tags="card")
+        self.canvas.create_text(x1 + round(12 * scale), y1 + round(163 * scale),
+                                text=f"{self.page.page_counts[path]} หน้า", anchor="w", fill=C["muted"],
+                                font=self.font_small, tags="card")
+        self.visible[index] = rect
+
+    def _fit_name(self, name, width):
+        if self.font_bold.measure(name) <= width:
+            return name
+        stem, suffix = Path(name).stem, Path(name).suffix
+        while stem and self.font_bold.measure(stem + "…" + suffix) > width:
+            stem = stem[:-1]
+        return stem + "…" + suffix if stem else name[:4] + "…"
+
+    def _preview_key(self, path):
+        if path not in self.preview_keys:
+            try:
+                stat = path.stat()
+                key = (path, stat.st_mtime_ns, stat.st_size)
+            except OSError:
+                key = (path, None, None)
+            self.preview_keys[path] = key
+        key = self.preview_keys[path]
+        # An old thumbnail may have been evicted while the user scrolled away.
+        if key not in self.cache and key not in self.pending:
             if self.worker.submit(key):
                 self.pending.add(key)
             else:
-                self._apply_preview(path, None)
+                self.cache[key] = None
+        return key
 
-    def _keyboard(self, path, direction):
-        self.page.move_file(path, direction)
-        if path in self.cards and not self.page.app.busy:
-            self.cards[path]._canvas.focus_set()
-            self._focus(path, True)
-            self._reveal(path)
-        return "break"
+    def _photo(self, key):
+        if key not in self.photos:
+            preview = self.cache[key]
+            if preview is None:
+                return None
+            scaled = preview.copy()
+            scaled.thumbnail((self.card_width - round(32 * self.scaling), round(74 * self.scaling)),
+                             Image.Resampling.LANCZOS)
+            self.photos[key] = ImageTk.PhotoImage(scaled, master=self.canvas)
+            while len(self.photos) > self.MAX_PREVIEWS:
+                self.photos.popitem(last=False)
+        return self.photos[key]
 
-    def _reveal(self, path):
-        canvas = self._parent_canvas
-        card = self.cards[path]
-        top = card.winfo_y()
-        height = max(1, self.winfo_height())
-        visible_top = canvas.canvasy(0)
-        if top < visible_top:
-            canvas.yview_moveto(top / height)
-        elif top + card.winfo_height() > visible_top + canvas.winfo_height():
-            canvas.yview_moveto((top + card.winfo_height() - canvas.winfo_height()) / height)
+    def _colors(self, index):
+        path = self.page.files[index]
+        focused = self.canvas.focus_get() is self.canvas and self.selected == path
+        highlighted = self.drag and self.drag["slot"] == index
+        active = self.drag and self.drag["path"] == path
+        if self.page.app.busy:
+            return C["soft"], C["rule"]
+        return (C["tint"] if highlighted or active or self.hovered == path else C["paper"],
+                C["focus"] if highlighted or focused else C["rule"])
 
-    def _hover(self, path, inside):
-        if not self.drag and not self.page.app.busy and path in self.cards:
-            card = self.cards[path]
-            focused = self.focus_get() is card._canvas
-            self._paint(path, "tint" if inside else "paper", "focus" if focused else "rule")
-            scale = ctk.ScalingTracker.get_widget_scaling(self)
-            name = self.page.app.fit_filename(path.name, max(160, self.page.winfo_width() / scale - 320))
-            self.page.order_hint.configure(text=f"ลำดับ {self.page.files.index(path) + 1} · {name}" if inside
-                                           else "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป")
+    def _style(self, path):
+        if path in self.page.files:
+            index = self.page.files.index(path)
+            if index in self.visible:
+                fill, outline = self._colors(index)
+                self.canvas.itemconfigure(self.visible[index], fill=fill, outline=outline)
+                self.paints += 1
 
-    def _paint(self, path, background="paper", border="rule", cursor="hand2"):
-        style = (background, border, cursor)
-        if path in self.cards and self.styles.get(path) != style:
-            self.cards[path].configure(fg_color=C[background], border_color=C[border], cursor=cursor)
-            self.styles[path] = style
+    def _hit_index(self, x, y):
+        count = len(self.page.files)
+        if not count:
+            return None
+        cx, cy = self.canvas.canvasx(x), self.canvas.canvasy(y)
+        gap = round(self.GAP * self.scaling)
+        row = max(0, int((cy - gap) // self.step_y))
+        col = max(0, int((cx - gap) // self.step_x))
+        index = row * self.columns + col
+        if index >= count:
+            return None
+        x1, y1, x2, y2 = self._bounds(index)
+        return index if x1 <= cx <= x2 and y1 <= cy <= y2 else None
 
-    def _focus(self, path, focused):
-        if not self.drag and not self.page.app.busy:
-            background, _, cursor = self.styles.get(path, ("paper", "rule", "hand2"))
-            self._paint(path, background, "focus" if focused else "rule", cursor)
+    def _motion_idle(self, event):
+        if self.drag or self.page.app.busy:
+            return
+        index = self._hit_index(event.x, event.y)
+        path = self.page.files[index] if index is not None else None
+        if path == self.hovered:
+            return
+        previous = self.hovered
+        self.hovered = path
+        self._style(previous)
+        self._style(path)
+        self.canvas.configure(cursor="hand2" if path else "arrow")
+        text = (f"ลำดับ {index + 1} · {self.page.app.fit_filename(path.name, max(160, self.winfo_width() - 320))}"
+                if path else self.HINT)
+        self.page.order_hint.configure(text=text)
 
-    def press(self, path, event):
-        if self.page.app.busy or path not in self.cards:
+    def _leave(self, event):
+        if self.drag:
+            return
+        previous = self.hovered
+        self.hovered = None
+        self._style(previous)
+        self.page.order_hint.configure(text=self.HINT)
+
+    def press(self, event):
+        if self.page.app.busy:
+            return
+        index = self._hit_index(event.x, event.y)
+        if index is None:
+            return
+        path = self.page.files[index]
+        x1, y1, x2, y2 = self._bounds(index)
+        cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        close_size = round(40 * self.scaling)
+        if x2 - close_size - round(4 * self.scaling) <= cx <= x2 - round(4 * self.scaling) and cy <= y1 + round(44 * self.scaling):
+            self.page.remove_file(path)
             return
         self.cancel_drag()
-        card = self.cards[path]
-        card._canvas.focus_set()
-        paths = tuple(self.page.files)
-        first = self.cards[paths[0]]
-        scale = ctk.ScalingTracker.get_widget_scaling(self)
-        # Cache row/column geometry once. No scan or per-card Tcl calls on motion.
-        xstep = (self.cards[paths[1]].winfo_x() - first.winfo_x()
-                 if len(paths) > 1 and self.columns > 1 else first.winfo_width() + S["sm"] * scale)
-        ystep = (self.cards[paths[self.columns]].winfo_y() - first.winfo_y()
-                 if len(paths) > self.columns else first.winfo_height() + S["md"] * scale)
-        self.drag = {"path": path, "paths": paths, "source": paths.index(path),
-                     "origin": (event.x_root, event.y_root), "pointer": (event.x_root, event.y_root),
-                     "active": False, "slot": None, "shown_slot": None, "painted": False,
-                     "geometry": (first.winfo_x(), first.winfo_y(), first.winfo_width(),
-                                  first.winfo_height(), max(1, xstep), max(1, ystep))}
-        self.drag_styles = {path}
-        self._paint(path, "tint", "focus")
-        card.grab_set()
+        self.canvas.focus_set()
+        self.selected = path
+        self.mouse_down = True
+        self.drag = {"path": path, "source": index, "origin": (event.x_root, event.y_root),
+                     "pointer": (event.x_root, event.y_root), "active": False, "slot": None,
+                     "shown_slot": None}
+        self.canvas.grab_set()
+        self._style(path)
 
     def motion(self, event):
         if not self.drag or self.page.app.busy:
             return
         self.drag["pointer"] = (event.x_root, event.y_root)
-        if math.dist(self.drag["origin"], self.drag["pointer"]) < 6 and not self.drag["active"]:
+        if not self.drag["active"] and math.dist(self.drag["origin"], self.drag["pointer"]) < 6:
             return
         self.drag["active"] = True
-        # Coalesce fast mouse events: one render using the latest pointer per frame.
         if self.frame_timer is None:
             self.frame_timer = self.page.app.root.after(16, self._drag_frame)
 
     def _drag_frame(self):
         self.frame_timer = None
-        if not self.drag or not self.drag["active"] or self.page.app.busy:
+        if not self.drag or not self.drag["active"]:
             return
-        if self.ghost is None:
-            self.ghost = ctk.CTkLabel(self.page, text=self.page.app.fit_filename(self.drag["path"].name, 180),
-                                     width=204, height=44, fg_color=C["accent"], text_color=C["accent-ink"],
-                                     corner_radius=RADIUS["control"], font=self.page.app.font_small)
-            self.ghost.lift()
-            self._paint(self.drag["path"], "tint", "focus", "fleur")
         self._target()
         if self.scroll_timer is None:
-            self.scroll_timer = self.page.app.root.after(60, self._auto_scroll)
+            self.scroll_timer = self.page.app.root.after(55, self._auto_scroll)
 
     def _target(self):
         x, y = self.drag["pointer"]
-        if self.ghost:
-            scale = ctk.ScalingTracker.get_widget_scaling(self)
-            gx = min(max(0, (x - self.page.winfo_rootx()) / scale + 16), self.page.winfo_width() / scale - 204)
-            gy = min(max(0, (y - self.page.winfo_rooty()) / scale + 16), self.page.winfo_height() / scale - 44)
-            self.ghost.place(x=gx, y=gy)
-        canvas = self._parent_canvas
-        left, top = canvas.winfo_rootx(), canvas.winfo_rooty()
+        left, top = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
+        width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
+        if self.ghost is None:
+            box = self.canvas.create_rectangle(0, 0, round(204 * self.scaling), round(42 * self.scaling),
+                                                fill=C["accent"], outline=C["accent"], tags="ghost")
+            label = self.canvas.create_text(0, 0, text=self._fit_name(self.drag["path"].name, round(180 * self.scaling)),
+                                            fill=C["accent-ink"], anchor="w", font=self.font_small, tags="ghost")
+            self.ghost = (box, label)
+        gx = min(max(self.canvas.canvasx(x - left + 16), self.canvas.canvasx(0)),
+                 self.canvas.canvasx(max(0, width - round(204 * self.scaling))))
+        gy = min(max(self.canvas.canvasy(y - top + 16), self.canvas.canvasy(0)),
+                 self.canvas.canvasy(max(0, height - round(42 * self.scaling))))
+        box, label = self.ghost
+        self.canvas.coords(box, gx, gy, gx + round(204 * self.scaling), gy + round(42 * self.scaling))
+        self.canvas.coords(label, gx + round(12 * self.scaling), gy + round(21 * self.scaling))
+        self.canvas.tag_raise("ghost")
         slot = None
-        if left <= x <= left + canvas.winfo_width() and top <= y <= top + canvas.winfo_height():
-            origin_x, origin_y, width, height, xstep, ystep = self.drag["geometry"]
-            cx, cy = canvas.canvasx(x - left), canvas.canvasy(y - top)
-            count = len(self.drag["paths"])
-            row = min(max(0, math.floor((cy - origin_y - height / 2) / ystep + 0.5)), (count - 1) // self.columns)
-            columns = min(self.columns, count - row * self.columns)
-            column = min(max(0, math.floor((cx - origin_x - width / 2) / xstep + 0.5)), columns - 1)
-            nearest = row * self.columns + column
-            slot = nearest + (cx > origin_x + column * xstep + width / 2)
+        if left <= x <= left + width and top <= y <= top + height:
+            cx, cy = self.canvas.canvasx(x - left), self.canvas.canvasy(y - top)
+            row = min(max(0, math.floor((cy - round(self.GAP * self.scaling) - self.HEIGHT * self.scaling / 2) / self.step_y + 0.5)),
+                      (len(self.page.files) - 1) // self.columns)
+            count = min(self.columns, len(self.page.files) - row * self.columns)
+            col = min(max(0, math.floor((cx - round(self.GAP * self.scaling) - self.card_width / 2) / self.step_x + 0.5)), count - 1)
+            nearest = row * self.columns + col
+            bx1, _, bx2, _ = self._bounds(nearest)
+            slot = nearest + (cx > (bx1 + bx2) / 2)
             slot -= slot > self.drag["source"]
         self.drag["slot"] = slot
-        if self.drag["painted"] and self.drag["shown_slot"] == slot:
-            return
-        self.drag["shown_slot"], self.drag["painted"] = slot, True
-        self.page.order_hint.configure(text=f"วางที่ลำดับ {slot + 1} · Esc ยกเลิก" if slot is not None
-                                       else "ลากกลับเข้ารายการเพื่อวาง · Esc ยกเลิก")
-        highlighted = {self.drag["path"]}
-        if slot is not None:
-            highlighted.add(self.drag["paths"][slot])
-        for path in self.drag_styles - highlighted:
-            self._paint(path)
-        for path in highlighted:
-            self._paint(path, "tint", "focus" if slot is not None and path == self.drag["paths"][slot] else "rule",
-                        "fleur" if path == self.drag["path"] else "hand2")
-        self.drag_styles = highlighted
+        if self.drag["shown_slot"] != slot:
+            old = self.drag["shown_slot"]
+            self.drag["shown_slot"] = slot
+            self._style(self.drag["path"])
+            if old is not None:
+                self._style(self.page.files[old])
+            if slot is not None:
+                self._style(self.page.files[slot])
+            self.page.order_hint.configure(text=f"วางที่ลำดับ {slot + 1} · Esc ยกเลิก" if slot is not None
+                                           else "ลากกลับเข้ารายการเพื่อวาง · Esc ยกเลิก")
+
+    def _raise_ghost(self):
+        if self.ghost:
+            self.canvas.tag_raise("ghost")
 
     def _auto_scroll(self):
         self.scroll_timer = None
         if not self.drag or not self.drag["active"] or self.page.app.busy:
             return
-        canvas = self._parent_canvas
         x, y = self.drag["pointer"]
-        top = canvas.winfo_rooty()
-        if canvas.winfo_rootx() <= x <= canvas.winfo_rootx() + canvas.winfo_width():
-            direction = -1 if y < top + 36 else (1 if y > top + canvas.winfo_height() - 36 else 0)
+        left, top = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
+        if left <= x <= left + self.canvas.winfo_width():
+            direction = -1 if top <= y < top + 38 else (1 if top + self.canvas.winfo_height() - 38 < y <= top + self.canvas.winfo_height() else 0)
             if direction:
-                canvas.yview_scroll(direction * 20, "units")
+                self.canvas.yview_scroll(direction * round(25 * self.scaling), "units")
+                self._schedule_draw()
                 self._target()
-        self.scroll_timer = self.page.app.root.after(60, self._auto_scroll)
+        self.scroll_timer = self.page.app.root.after(55, self._auto_scroll)
 
     def release(self, event):
         if not self.drag:
             return
         if self.drag["active"]:
             self.drag["pointer"] = (event.x_root, event.y_root)
-            # Resolve the release immediately, even before a scheduled frame runs.
             self._target()
         path, slot, active = self.drag["path"], self.drag["slot"], self.drag["active"]
         self.cancel_drag()
         if active and slot is not None and not self.page.app.busy:
             self.page.reorder_file(path, slot)
             self.page.status.set(f"จัดลำดับแล้ว · {path.name} อยู่ลำดับ {slot + 1}")
-            self.cards[path]._canvas.focus_set()
-            self._focus(path, True)
+            self.selected = path
+            self.canvas.focus_set()
+            self._reveal(path)
+            self._schedule_draw()
 
     def cancel_drag(self):
-        for name in ("scroll_timer", "frame_timer"):
+        for name in ("frame_timer", "scroll_timer"):
             timer = getattr(self, name)
             if timer:
                 self.page.app.root.after_cancel(timer)
                 setattr(self, name, None)
         if self.ghost:
-            self.ghost.destroy()
+            self.canvas.delete("ghost")
             self.ghost = None
         if self.drag:
-            card = self.cards.get(self.drag["path"])
-            if card:
-                card.grab_release()
+            self.canvas.grab_release()
             self.drag = None
-            for path in self.drag_styles:
-                self._paint(path, "soft" if self.page.app.busy else "paper", cursor="arrow" if self.page.app.busy else "hand2")
-            self.drag_styles.clear()
-        self.page.order_hint.configure(text="ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป")
+            self.mouse_down = False
+            self._style(self.selected)
+        self.page.order_hint.configure(text=self.HINT)
 
-    def _apply_preview(self, path, preview):
-        label = self.previews[path]
-        if preview is None:
-            label.configure(text="ไม่มีภาพตัวอย่าง", image=None)
-        else:
-            image = ctk.CTkImage(light_image=preview, dark_image=preview,
-                                 size=(max(1, preview.width // 2), max(1, preview.height // 2)))
-            label.configure(text="", image=image)
+    def _focus_out(self, event):
+        if self.drag:
+            self.cancel_drag()
+        self._style(self.selected)
+
+    def _keyboard(self, name):
+        if self.page.app.busy or not self.page.files:
+            return "break"
+        if self.selected not in self.page.files:
+            self.selected = self.page.files[0]
+        step = {"Left": -1, "Right": 1, "Up": -self.columns, "Down": self.columns}[name]
+        path = self.selected
+        old = self.page.files.index(path)
+        index = max(0, min(len(self.page.files) - 1, old + step))
+        self.page.reorder_file(path, index)
+        self.selected = path
+        self._reveal(path)
+        self._schedule_draw()
+        return "break"
+
+    def _delete_selected(self, event):
+        if not self.page.app.busy and self.selected in self.page.files:
+            self.page.remove_file(self.selected)
+        return "break"
+
+    def _reveal(self, path):
+        x1, y1, x2, y2 = self._bounds(self.page.files.index(path))
+        top = self.canvas.canvasy(0)
+        height = self.canvas.winfo_height()
+        extent = max(1, math.ceil(len(self.page.files) / self.columns) * self.step_y)
+        if y1 < top:
+            self.canvas.yview_moveto(y1 / extent)
+        elif y2 > top + height:
+            self.canvas.yview_moveto(max(0, (y2 - height) / extent))
+        self._schedule_draw()
 
     def _poll_previews(self):
-        # Creating Tk images can cost a frame. Defer it while the user is dragging.
         if self.drag is None:
             if self.pending and self.worker.process is not None and not self.worker.process.is_alive():
                 for key in self.pending:
-                    path = key[0]
-                    if path in self.cards and self.cards[path].preview_key == key:
-                        self._apply_preview(path, None)
+                    self.cache[key] = None
                 self.pending.clear()
-                # A crashed writer may leave an incomplete packet in the pipe.
-                # Close its queues instead of attempting to read that packet.
                 self.worker.failed = True
                 self.worker.close()
+                self._schedule_draw()
             deadline = time.perf_counter() + 0.004
             try:
                 for _ in range(2):
                     key, payload = self.worker.get_nowait()
                     self.pending.discard(key)
-                    preview = Image.frombytes("RGB", payload[:2], payload[2]) if payload else None
-                    self.cache[key] = preview
-                    while len(self.cache) > 128:
-                        self.cache.popitem(last=False)
-                    path = key[0]
-                    if path in self.cards and self.cards[path].preview_key == key:
-                        self._apply_preview(path, preview)
+                    self.cache[key] = Image.frombytes("RGB", payload[:2], payload[2]) if payload else None
+                    while len(self.cache) > self.MAX_PREVIEWS:
+                        old_key, _ = self.cache.popitem(last=False)
+                        self.photos.pop(old_key, None)
+                    self._schedule_draw()
                     if time.perf_counter() >= deadline:
                         break
             except queue.Empty:
@@ -352,7 +489,7 @@ class MergeCards(ctk.CTkScrollableFrame):
         self.preview_timer = self.page.app.root.after(80, self._poll_previews)
 
     def destroy(self):
-        for timer in (self.layout_timer, self.scroll_timer, self.frame_timer, self.preview_timer):
+        for timer in (self.frame_timer, self.draw_timer, self.scroll_timer, self.preview_timer):
             if timer:
                 self.page.app.root.after_cancel(timer)
         self.worker.close()

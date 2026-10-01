@@ -3,17 +3,16 @@
   "files_tested": 30,
   "merged_pages": 6,
   "checks": [
-    "real Tk drag events from preview label",
-    "left/right and cross-row drops",
-    "keyboard focus and reorder",
+    "native Canvas press/drag/drop",
+    "cross-row reorder",
+    "keyboard and remove",
     "escape/outside/navigation cancellation",
-    "remove button",
     "edge autoscroll",
     "busy guard",
     "920/1080/1440 widths",
     "125% scaling",
-    "preview rendering",
-    "merged order follows dropped cards",
+    "visible-card virtualization",
+    "merged PDF follows card order",
     "no callback errors"
   ]
 }
