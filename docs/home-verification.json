@@ -2,7 +2,7 @@
   "passed": true,
   "tools": 34,
   "categories": 7,
-  "ready": 1,
+  "ready": 2,
   "checks": [
     "Thai/English search",
     "category/status filtering",
@@ -24,6 +24,8 @@
       300,
       150
     ],
+    "merged_pages": 3,
+    "merge_order": "verified",
     "clean_process_path": true
   }
 }

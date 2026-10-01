@@ -34,7 +34,7 @@ CATEGORIES = (
 
 TOOLS = (
     Tool("pdf-png", "PDF เป็น PNG", "from-pdf", "แปลงทุกหน้าเป็นภาพ PNG เลือกความละเอียดและหลายไฟล์ได้", "image", "ภาพ รูป photo picture", True),
-    Tool("merge", "รวม PDF", "organize", "รวมหลายเอกสารเป็นไฟล์เดียว ตามลำดับที่คุณเลือก", "pages", "merge combine รวมไฟล์"),
+    Tool("merge", "รวม PDF", "organize", "รวมหลายเอกสารเป็นไฟล์เดียว ตามลำดับที่คุณเลือก", "pages", "merge combine รวมไฟล์", True),
     Tool("split", "แยก PDF", "organize", "แบ่งเอกสารตามช่วงหน้า หรือแยกทุกหน้าเป็นไฟล์ใหม่", "split", "split แบ่ง"),
     Tool("delete-pages", "ลบหน้าออก", "organize", "เลือกหน้าที่ไม่ต้องการ แล้วบันทึกเอกสารที่เหลือ", "split", "delete remove ลบหน้า"),
     Tool("extract-pages", "แยกหน้า", "organize", "เลือกเฉพาะหน้าที่ต้องการ แล้วสร้าง PDF ไฟล์ใหม่", "pages", "extract เลือกหน้า"),

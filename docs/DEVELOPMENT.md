@@ -26,6 +26,8 @@ required by the application.
 | `pdf_to_png.py` | PDF rendering, file queue, native UI, worker events |
 | `home_page.py` | Tool discovery, category filters, planned-tool details |
 | `tool_catalog.py` | Single directory of tool names, search terms and readiness |
+| `merge_page.py` | Merge queue, file ordering, output selection and worker feedback |
+| `pdf_merge.py` | Page concatenation, source validation and exclusive output publication |
 | `ui_theme.py` | OKLCH color tokens, native fonts, spacing, portable CSS export |
 | `app_self_test.py` | Hidden executable smoke check |
 | `assets/pdf_to_png.ico` | Window and executable icon |
@@ -37,8 +39,8 @@ required by the application.
 
 The main thread owns all Tk widgets. A worker renders pages with PyMuPDF and sends
 queue events back to the UI. Each PDF gets a new output folder; an existing folder
-name receives a numeric suffix. The bundled app remains a PDF-to-PNG converter:
-it does not edit PDFs, extract searchable text, or export other image formats.
+name receives a numeric suffix. The development app also concatenates PDFs with
+the merge tool. It does not yet edit PDFs, run OCR, or export Office formats.
 
 ## Build for Windows
 
@@ -59,6 +61,8 @@ running; the ZIP contains the runtime alongside the application.
 ```powershell
 python .hallmark/verify_ui.py
 python .hallmark/verify_home.py
+python -m unittest discover -s tests -v
+python .hallmark/verify_merge.py
 ```
 
 This runs real PDF conversion and checks input validation, queue guards, corrupt
@@ -68,6 +72,9 @@ The temporary PDF fixtures and converted files are created by the test.
 The home check also verifies tool discovery, planned-feature safety, navigation,
 retained settings, conversion through the home screen, and desktop scaling.
 See [Superapp home](SUPERAPP.md) for the current development preview and roadmap.
+The [merge tool](MERGE.md) check also compares output pages with originals using
+Poppler. Its unit tests cover forms, annotations, links, bookmarks, source safety,
+invalid documents, write failures and a file appearing during publication.
 
 Run distribution verification with **PowerShell 7** after building:
 

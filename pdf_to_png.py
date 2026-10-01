@@ -90,9 +90,12 @@ class App:
         from home_page import HomePage
         self.home = HomePage(root, self)
         self.home.grid(row=0, column=0, sticky="nsew")
+        from merge_page import MergePage
+        self.merge = MergePage(root, self)
+        self.views = {"pdf-png": self.workbench, "merge": self.merge}
         self.show_home()
         root.bind("<Control-o>", self._open_pdf_shortcut)
-        root.bind("<Control-Return>", lambda _: self.start() if self.route == "pdf-png" else None)
+        root.bind("<Control-Return>", self._start_shortcut)
         root.bind("<Control-f>", self._search_shortcut)
         root.bind("<Alt-Left>", lambda _: self.show_home())
         root.protocol("WM_DELETE_WINDOW", self.close)
@@ -246,9 +249,10 @@ class App:
 
     def show_home(self):
         if self.busy:
-            self.status.set("กำลังแปลงอยู่ · รอให้เสร็จก่อนกลับไปเลือกเครื่องมือ")
+            self.active_status("กำลังทำงานอยู่ · รอให้เสร็จก่อนกลับไปเลือกเครื่องมือ")
             return False
-        self.workbench.grid_remove()
+        for view in self.views.values():
+            view.grid_remove()
         self.home.grid()
         self.route = "home"
         self.root.title("PDF LoveR · เครื่องมือ PDF")
@@ -262,21 +266,40 @@ class App:
         if not tool.ready:
             self.home.show_detail(tool)
             return False
-        if tool.id != "pdf-png":
+        if self.busy and self.route != tool_id:
+            return False
+        if tool.id not in self.views:
             raise ValueError(f"No working view registered for tool: {tool.id}")
         self.home.close_detail() if self.home.detail_window else None
         self.home.grid_remove()
-        self.workbench.grid()
+        for key, view in self.views.items():
+            if key == tool_id:
+                view.grid(row=0, column=0, sticky="nsew")
+            else:
+                view.grid_remove()
         self.route = tool.id
-        self.root.title("PDF เป็น PNG · PDF LoveR")
-        self.add_button._canvas.focus_set()
+        self.root.title(tool.title + " · PDF LoveR")
+        (self.merge.add_button if tool_id == "merge" else self.add_button)._canvas.focus_set()
         return True
 
     def _open_pdf_shortcut(self, _=None):
         if not self.busy:
-            self.show_tool("pdf-png")
-            self.add_files()
+            if self.route == "merge":
+                self.merge.add_files()
+            else:
+                self.show_tool("pdf-png")
+                self.add_files()
         return "break"
+
+    def _start_shortcut(self, _=None):
+        if self.route == "merge":
+            self.merge.start()
+        elif self.route == "pdf-png":
+            self.start()
+        return "break"
+
+    def active_status(self, message):
+        (self.merge.status if self.route == "merge" else self.status).set(message)
 
     def _search_shortcut(self, _=None):
         if self.show_home():
@@ -487,6 +510,7 @@ class App:
         self.percent_label.configure(text=f"{value:.0%}")
 
     def process_events(self):
+        self.merge.process_events()
         try:
             # Bound each batch so long documents cannot starve the UI event loop.
             for _ in range(100):
@@ -531,7 +555,7 @@ class App:
 
     def close(self):
         if self.busy:
-            self.status.set("กำลังแปลงอยู่ · รอให้เสร็จก่อนปิดโปรแกรม")
+            self.active_status("กำลังทำงานอยู่ · รอให้เสร็จก่อนปิดโปรแกรม")
         else:
             self.root.destroy()
 

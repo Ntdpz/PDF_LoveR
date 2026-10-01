@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "merged_pages": 3,
+  "ready_tools": 2,
+  "checks": [
+    "adding/reordering/removing files",
+    "invalid PDF rejected",
+    "input/output overwrite guard",
+    "retained merge state across tools",
+    "busy navigation/reorder/start guards",
+    "successful merge and file order",
+    "missing source recovery",
+    "Poppler pixel equivalence",
+    "920x700 layout",
+    "125% scaling",
+    "no callback errors",
+    "independent pypdf canonical AcroForm fields and values"
+  ],
+  "standalone_preview": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "clean_process_path": true
+  }
+}
