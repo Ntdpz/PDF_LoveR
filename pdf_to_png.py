@@ -14,6 +14,7 @@ import customtkinter as ctk
 import pymupdf
 from PIL import Image, ImageDraw
 
+from app_version import VERSION
 from ui_theme import COLORS as C, FONTS, RADIUS, SPACE as S
 
 
@@ -57,7 +58,7 @@ class App:
 
     def __init__(self, root: ctk.CTk) -> None:
         self.root = root
-        root.title("PDF LoveR · เครื่องมือ PDF")
+        root.title(f"PDF LoveR {VERSION} · เครื่องมือ PDF")
         icon_path = Path(__file__).resolve().parent / "assets" / "pdf_to_png.ico"
         if icon_path.exists():
             root.iconbitmap(str(icon_path))
@@ -255,7 +256,7 @@ class App:
             view.grid_remove()
         self.home.grid()
         self.route = "home"
-        self.root.title("PDF LoveR · เครื่องมือ PDF")
+        self.root.title(f"PDF LoveR {VERSION} · เครื่องมือ PDF")
         return True
 
     def show_tool(self, tool_id):
@@ -278,7 +279,7 @@ class App:
             else:
                 view.grid_remove()
         self.route = tool.id
-        self.root.title(tool.title + " · PDF LoveR")
+        self.root.title(tool.title + f" · PDF LoveR {VERSION}")
         (self.merge.add_button if tool_id == "merge" else self.add_button)._canvas.focus_set()
         return True
 

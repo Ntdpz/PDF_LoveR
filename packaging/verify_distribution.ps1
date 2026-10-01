@@ -1,6 +1,8 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $taskProjectRoot = Split-Path -Parent $PSScriptRoot
-$taskRelease = Join-Path $taskProjectRoot 'dist\Release'
+$taskAppBase = & python -c 'import runpy,sys; print(runpy.run_path(sys.argv[1])["APP_FILE_NAME"])' (Join-Path $taskProjectRoot 'app_version.py')
+if ($LASTEXITCODE -ne 0) { throw 'Version lookup failed.' }
+$taskRelease = Join-Path $taskProjectRoot ('dist\' + $taskAppBase)
 $taskVerifyRoot = Join-Path $PSScriptRoot ('.verification\run-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $taskVerifyRoot -Force | Out-Null
 
@@ -24,7 +26,7 @@ function Invoke-VerifiedProcess {
 function Test-Application {
     param([string]$File, [string]$Report, [string]$WorkingDir)
     Invoke-VerifiedProcess -File $File -ProcessArgs @('--self-test', $Report) -WorkingDir $WorkingDir
-    $taskResult = Get-Content -LiteralPath $Report -Raw | ConvertFrom-Json
+    $taskResult = Get-Content -LiteralPath $Report -Raw -Encoding utf8 | ConvertFrom-Json
     if (-not $taskResult.passed) { throw ('Application smoke check failed: ' + $Report) }
     return $taskResult
 }
@@ -32,21 +34,21 @@ function Test-Application {
 # One copied EXE, with no _internal/source/Python folder beside it.
 $taskStandaloneDir = Join-Path $taskVerifyRoot 'portable เครื่องทดสอบ'
 New-Item -ItemType Directory -Path $taskStandaloneDir | Out-Null
-$taskStandaloneExe = Join-Path $taskStandaloneDir 'PDF_to_PNG.exe'
-Copy-Item -LiteralPath (Join-Path $taskRelease 'PDF_to_PNG.exe') -Destination $taskStandaloneExe
+$taskStandaloneExe = Join-Path $taskStandaloneDir ($taskAppBase + '.exe')
+Copy-Item -LiteralPath (Join-Path $taskRelease ($taskAppBase + '.exe')) -Destination $taskStandaloneExe
 $taskStandalone = Test-Application -File $taskStandaloneExe -Report (Join-Path $taskVerifyRoot 'standalone.json') -WorkingDir $taskStandaloneDir
 
 # Extract exactly the ZIP supplied to users, then execute the extracted app.
 $taskZipDir = Join-Path $taskVerifyRoot 'zip extracted'
-Expand-Archive -LiteralPath (Join-Path $taskRelease 'PDF_to_PNG_Portable_Folder_1.0.0.zip') -DestinationPath $taskZipDir
-$taskZipApp = Join-Path $taskZipDir 'PDF_to_PNG_Modern\PDF_to_PNG_Modern.exe'
+Expand-Archive -LiteralPath (Join-Path $taskRelease ($taskAppBase + '_Portable.zip')) -DestinationPath $taskZipDir
+$taskZipApp = Join-Path $taskZipDir ($taskAppBase + '\' + $taskAppBase + '.exe')
 $taskZip = Test-Application -File $taskZipApp -Report (Join-Path $taskVerifyRoot 'zip.json') -WorkingDir $taskZipDir
 
 # Install into an isolated test directory. Suppress shortcuts during verification.
 $taskInstallDir = Join-Path $taskVerifyRoot 'installed app'
-$taskInstaller = Join-Path $taskRelease 'PDF_to_PNG_Setup_1.0.0.exe'
+$taskInstaller = Join-Path $taskRelease ($taskAppBase + '_Setup.exe')
 Invoke-VerifiedProcess -File $taskInstaller -ProcessArgs @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-','/NOICONS',('/DIR=' + $taskInstallDir),('/LOG=' + (Join-Path $taskVerifyRoot 'install.log'))) -WorkingDir $taskVerifyRoot
-$taskInstalledExe = Join-Path $taskInstallDir 'PDF_to_PNG_Modern.exe'
+$taskInstalledExe = Join-Path $taskInstallDir ($taskAppBase + '.exe')
 $taskInstalled = Test-Application -File $taskInstalledExe -Report (Join-Path $taskVerifyRoot 'installed.json') -WorkingDir $taskInstallDir
 
 # A file created after installation must survive uninstall.

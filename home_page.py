@@ -6,6 +6,7 @@ import customtkinter as ctk
 from PIL import Image, ImageDraw
 
 from tool_catalog import CATEGORIES, TOOLS, find_tools
+from app_version import VERSION
 from ui_theme import COLORS as C, FONTS, RADIUS, SPACE as S
 
 
@@ -109,7 +110,7 @@ class HomePage(ctk.CTkFrame):
         foot = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         foot.grid(row=5, column=0, sticky="ew", padx=S["xl"], pady=S["xl"])
         self.label(foot, "พร้อมใช้บนเครื่องคุณ", font=self.app.font_small, color="muted").pack(anchor="w")
-        self.label(foot, "PNG และรวม PDF · ออฟไลน์", font=self.app.font_small).pack(anchor="w", pady=(S["xs"], 0))
+        self.label(foot, f"v{VERSION} · ทำงานออฟไลน์", font=self.app.font_small).pack(anchor="w", pady=(S["xs"], 0))
 
     def _build_content(self):
         main = ctk.CTkFrame(self, fg_color="transparent", corner_radius=0)

@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-01T17:03:47.4236089+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified"
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified"
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified"
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.1.0",
+  "assets": {
+    "PDF_LoveR_1.1.0.exe": "52669793647099766eff55a51ad8ea58637f985548747c90db8bf9d2d2327beb",
+    "PDF_LoveR_1.1.0_Portable.zip": "bde69ee497983570958e03e2fd715a6112fbed2c8bca041c8c59612def4af2ab",
+    "PDF_LoveR_1.1.0_Setup.exe": "0ea2ce074e12885b6094c22104c8e3dc1ca857ab040f331247aec934908288bf"
+  }
+}

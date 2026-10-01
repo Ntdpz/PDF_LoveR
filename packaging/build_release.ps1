@@ -1,4 +1,4 @@
-param([string]$InnoCompiler)
+﻿param([string]$InnoCompiler)
 $ErrorActionPreference = 'Stop'
 $taskProjectRoot = Split-Path -Parent $PSScriptRoot
 if (-not $InnoCompiler) {
@@ -14,16 +14,22 @@ if (-not $InnoCompiler -or -not (Test-Path -LiteralPath $InnoCompiler)) {
 }
 Push-Location -LiteralPath $taskProjectRoot
 try {
+    & python packaging\prepare_version.py
+    if ($LASTEXITCODE -ne 0) { throw 'Version metadata generation failed.' }
+    $taskAppBase = & python -c 'from app_version import APP_FILE_NAME; print(APP_FILE_NAME)'
+    if ($LASTEXITCODE -ne 0) { throw 'Version lookup failed.' }
+    $taskVersion = & python -c 'from app_version import VERSION; print(VERSION)'
     & python -m PyInstaller --noconfirm --workpath build-release --distpath build-release-dist PDF_to_PNG_Modern.spec
     if ($LASTEXITCODE -ne 0) { throw 'Folder build failed.' }
-    & python -m PyInstaller --noconfirm --workpath build-portable PDF_to_PNG_Portable.spec
+    & python -m PyInstaller --noconfirm --workpath build-portable --distpath build-portable-dist PDF_to_PNG_Portable.spec
     if ($LASTEXITCODE -ne 0) { throw 'Single-file build failed.' }
-    $taskRelease = Join-Path $taskProjectRoot 'dist\Release'
+    $taskRelease = Join-Path $taskProjectRoot ('dist\' + $taskAppBase)
     New-Item -ItemType Directory -Path $taskRelease -Force | Out-Null
-    Copy-Item -LiteralPath 'dist\PDF_to_PNG_Portable.exe' -Destination (Join-Path $taskRelease 'PDF_to_PNG.exe')
-    Copy-Item -LiteralPath 'packaging\README_Distribution.txt' -Destination (Join-Path $taskRelease 'README_เริ่มใช้งาน.txt')
-    Copy-Item -LiteralPath 'packaging\README_Distribution.txt' -Destination 'build-release-dist\PDF_to_PNG_Modern\README_เริ่มใช้งาน.txt'
-    Compress-Archive -LiteralPath 'build-release-dist\PDF_to_PNG_Modern' -DestinationPath (Join-Path $taskRelease 'PDF_to_PNG_Portable_Folder_1.0.0.zip') -CompressionLevel Optimal -Force
+    Copy-Item -LiteralPath ('build-portable-dist\' + $taskAppBase + '.exe') -Destination (Join-Path $taskRelease ($taskAppBase + '.exe'))
+    $taskGuide = (Get-Content -LiteralPath 'packaging\README_Distribution.txt' -Raw -Encoding utf8).Replace('{{VERSION}}', $taskVersion)
+    $taskGuide | Set-Content -LiteralPath (Join-Path $taskRelease 'README_เริ่มใช้งาน.txt') -Encoding utf8
+    $taskGuide | Set-Content -LiteralPath ('build-release-dist\' + $taskAppBase + '\README_เริ่มใช้งาน.txt') -Encoding utf8
+    Compress-Archive -LiteralPath ('build-release-dist\' + $taskAppBase) -DestinationPath (Join-Path $taskRelease ($taskAppBase + '_Portable.zip')) -CompressionLevel Optimal -Force
     & $InnoCompiler '/Qp' (Join-Path $PSScriptRoot 'PDF_to_PNG.iss')
     if ($LASTEXITCODE -ne 0) { throw 'Installer build failed.' }
     $taskHashes = Get-ChildItem -LiteralPath $taskRelease -File | Where-Object { $_.Extension -in '.exe', '.zip' } | Get-FileHash -Algorithm SHA256

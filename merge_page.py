@@ -9,6 +9,7 @@ from tkinter import filedialog
 import customtkinter as ctk
 
 from home_page import tool_icon
+from merge_cards import MergeCards
 from pdf_merge import inspect_pdf, merge_pdfs, MergeError
 from ui_theme import COLORS as C, FONTS, RADIUS, SPACE as S
 
@@ -25,10 +26,10 @@ class MergePage(ctk.CTkFrame):
         self.busy = False
         self.destination = None
         self.controls = []
-        self.name_labels = []
         self._build()
         self.render_files()
         self.app.root.bind("<Configure>", self._resize, add="+")
+        self.bind("<Unmap>", lambda event: self.cards.cancel_drag(), add="+")
 
     def label(self, parent, text="", **kwargs):
         return self.app.label(parent, text, **kwargs)
@@ -45,20 +46,18 @@ class MergePage(ctk.CTkFrame):
         self.home_button.grid(row=0, column=2, padx=S["2xl"], pady=S["md"])
         self.controls.append(self.home_button)
         intro = ctk.CTkFrame(self, fg_color="transparent")
-        intro.grid(row=1, column=0, sticky="ew", padx=S["2xl"], pady=(S["lg"], S["lg"]))
-        self.label(intro, "รวม PDF ตามลำดับของคุณ", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).pack(anchor="w")
-        self.label(intro, "เพิ่มเอกสาร เรียงลำดับ แล้วบันทึกทุกหน้าเป็น PDF ไฟล์เดียว", color="muted").pack(anchor="w", pady=(S["xs"], 0))
+        intro.grid(row=1, column=0, sticky="ew", padx=S["2xl"], pady=S["sm"])
+        self.label(intro, "ลากการ์ดเรียงซ้ายไปขวา แล้วรวมทุกหน้าเป็น PDF ไฟล์เดียว · ทำงานออฟไลน์", color="muted").pack(anchor="w", pady=(S["xs"], 0))
         body = ctk.CTkFrame(self, fg_color="transparent")
         body.grid(row=2, column=0, sticky="nsew", padx=S["2xl"])
         body.grid_columnconfigure(0, weight=1)
-        body.grid_columnconfigure(1, minsize=304)
         body.grid_rowconfigure(0, weight=1)
         panel = ctk.CTkFrame(body, fg_color=C["surface"], border_color=C["rule"], border_width=1, corner_radius=RADIUS["panel"])
-        panel.grid(row=0, column=0, sticky="nsew", padx=(0, S["xl"]))
+        panel.grid(row=0, column=0, sticky="nsew")
         panel.grid_columnconfigure(0, weight=1)
         panel.grid_rowconfigure(1, weight=1)
         toolbar = ctk.CTkFrame(panel, fg_color="transparent")
-        toolbar.grid(row=0, column=0, sticky="ew", padx=S["xl"], pady=S["lg"])
+        toolbar.grid(row=0, column=0, sticky="ew", padx=S["xl"], pady=S["sm"])
         toolbar.grid_columnconfigure(0, weight=1)
         self.count_label = self.label(toolbar, "ลำดับเอกสาร", font=self.app.font_bold)
         self.count_label.grid(row=0, column=0, sticky="w")
@@ -70,34 +69,36 @@ class MergePage(ctk.CTkFrame):
         self.file_area.grid_columnconfigure(0, weight=1)
         self.file_area.grid_rowconfigure(0, weight=1)
         bottom = ctk.CTkFrame(panel, fg_color="transparent")
-        bottom.grid(row=2, column=0, sticky="ew", padx=S["xl"], pady=S["lg"])
+        bottom.grid(row=2, column=0, sticky="ew", padx=S["xl"], pady=S["sm"])
         bottom.grid_columnconfigure(0, weight=1)
-        self.label(bottom, "ใช้ปุ่มขึ้น / ลงเพื่อเปลี่ยนลำดับ", font=self.app.font_small, color="muted").grid(row=0, column=0, sticky="w")
+        self.order_hint = self.label(bottom, "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป", font=self.app.font_small, color="muted", wraplength=360, justify="left")
+        self.order_hint.grid(row=0, column=0, sticky="w")
         self.clear_button = self.app.button(bottom, "ล้างรายการ", self.clear_files, width=104)
         self.clear_button.grid(row=0, column=1)
         self.controls.append(self.clear_button)
-        settings = ctk.CTkScrollableFrame(body, width=284, fg_color="transparent", corner_radius=0,
-                                        scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
-        settings.grid(row=0, column=1, sticky="nsew")
+        self.cards = MergeCards(self.file_area, self)
+        self.empty = ctk.CTkFrame(self.file_area, fg_color="transparent")
+        self.label(self.empty, "", image=tool_icon("pages", "accent", 48)).pack(pady=(0, S["lg"]))
+        self.label(self.empty, "เอกสารไหนมาก่อน?", font=self.app.font_bold).pack()
+        self.label(self.empty, "เพิ่ม PDF อย่างน้อย 2 ไฟล์ แล้วลากการ์ดจัดลำดับ", color="muted").pack(pady=(S["xs"], S["lg"]))
+        self.app.button(self.empty, "เลือกไฟล์ PDF…", self.add_files, width=176).pack()
+        settings = ctk.CTkFrame(self, fg_color="transparent", corner_radius=0)
+        settings.grid(row=3, column=0, sticky="ew", padx=S["2xl"], pady=(S["md"], 0))
         settings.grid_columnconfigure(0, weight=1)
-        self.label(settings, "ไฟล์ผลลัพธ์", font=self.app.font_bold).grid(row=0, column=0, sticky="w", pady=(S["sm"], S["lg"]))
-        self.label(settings, "ตำแหน่งและชื่อไฟล์ PDF").grid(row=1, column=0, sticky="w", pady=(0, S["sm"]))
+        self.label(settings, "บันทึกเป็น PDF ใหม่", font=self.app.font_bold).grid(row=0, column=0, sticky="w")
+        self.summary = self.label(settings, "0 ไฟล์ · 0 หน้า", font=self.app.font_small, color="muted")
+        self.summary.grid(row=0, column=1, sticky="e")
         self.output_entry = ctk.CTkEntry(settings, textvariable=self.output, height=44, font=self.app.font_small,
                                         fg_color=C["surface"], text_color=C["ink"], border_color=C["rule"], border_width=2,
                                         corner_radius=RADIUS["control"])
-        self.output_entry.grid(row=2, column=0, sticky="ew", pady=(0, S["sm"]))
+        self.output_entry.grid(row=1, column=0, sticky="ew", pady=(S["xs"], 0), padx=(0, S["sm"]))
         self.app._entry_focus(self.output_entry)
         self.controls.append(self.output_entry)
         self.browse_button = self.app.button(settings, "เลือกที่บันทึก…", self.choose_output, width=200)
-        self.browse_button.grid(row=3, column=0, sticky="ew", pady=(0, S["lg"]))
+        self.browse_button.grid(row=1, column=1, pady=(S["xs"], 0))
         self.controls.append(self.browse_button)
-        self.label(settings, "เลือกชื่อใหม่เพื่อเก็บไฟล์เดิมไว้", font=self.app.font_small, color="muted").grid(row=4, column=0, sticky="w")
-        self.summary = self.label(settings, "0 ไฟล์ · 0 หน้า", font=ctk.CTkFont(family=FONTS["body"], size=23, weight="bold"))
-        self.summary.grid(row=5, column=0, sticky="w", pady=(S["2xl"], S["sm"]))
-        self.label(settings, "ทุกหน้าตามลำดับในรายการ\nข้อความและภาพยังอยู่ใน PDF", color="muted", justify="left").grid(row=6, column=0, sticky="w")
-        self.label(settings, "ทำงานออฟไลน์บนเครื่องคุณ", font=self.app.font_small, color="muted").grid(row=7, column=0, sticky="w", pady=(S["xl"], 0))
         activity = ctk.CTkFrame(self, fg_color=C["surface"], border_color=C["rule"], border_width=1, corner_radius=RADIUS["panel"])
-        activity.grid(row=3, column=0, sticky="ew", padx=S["2xl"], pady=(S["lg"], S["md"]))
+        activity.grid(row=4, column=0, sticky="ew", padx=S["2xl"], pady=(S["lg"], S["md"]))
         activity.grid_columnconfigure(0, weight=1)
         self.activity_title = self.label(activity, "พร้อมเมื่อคุณเลือกเอกสาร", font=self.app.font_bold)
         self.activity_title.grid(row=0, column=0, sticky="w", padx=S["xl"], pady=(S["lg"], 0))
@@ -109,7 +110,7 @@ class MergePage(ctk.CTkFrame):
         self.start_button = self.app.button(activity, "รวมและบันทึก PDF", self.start, primary=True, width=220)
         self.start_button.grid(row=0, column=1, rowspan=3, padx=(S["sm"], S["xl"]), pady=S["lg"])
         foot = ctk.CTkFrame(self, fg_color="transparent")
-        foot.grid(row=4, column=0, sticky="ew", padx=S["2xl"], pady=(0, S["md"]))
+        foot.grid(row=5, column=0, sticky="ew", padx=S["2xl"], pady=(0, S["md"]))
         foot.grid_columnconfigure(0, weight=1)
         self.label(foot, "Ctrl + O เพิ่ม PDF  ·  Ctrl + Enter รวมไฟล์", font=self.app.font_small, color="muted").grid(row=0, column=0, sticky="w")
         self.open_button = self.app.button(foot, "เปิด PDF ที่รวมแล้ว", self.open_result, width=200)
@@ -120,46 +121,19 @@ class MergePage(ctk.CTkFrame):
         if event.widget is self.app.root:
             scale = ctk.ScalingTracker.get_widget_scaling(self)
             self.status_label.configure(wraplength=max(260, event.width / scale - 380))
-            for path, label in self.name_labels:
-                label.configure(text=self.app.fit_filename(path.name, max(140, event.width / scale - 580)))
+            self.order_hint.configure(wraplength=max(170, event.width / scale - 270))
 
     def render_files(self):
-        for child in self.file_area.winfo_children():
-            child.destroy()
-        self.name_labels.clear()
         self.count_label.configure(text=f"ลำดับเอกสาร · {len(self.files)} ไฟล์" if self.files else "ลำดับเอกสาร")
         self.summary.configure(text=f"{len(self.files)} ไฟล์ · {sum(self.page_counts.get(path, 0) for path in self.files)} หน้า")
         self.clear_button.configure(state="normal" if self.files and not self.busy else "disabled")
-        if not self.files:
-            empty = ctk.CTkFrame(self.file_area, fg_color="transparent")
-            empty.grid(row=0, column=0)
-            self.label(empty, "", image=tool_icon("pages", "accent", 48)).pack(pady=(0, S["lg"]))
-            self.label(empty, "เอกสารไหนมาก่อน?", font=self.app.font_bold).pack()
-            self.label(empty, "เพิ่ม PDF อย่างน้อย 2 ไฟล์เพื่อเริ่มรวม", color="muted").pack(pady=(S["xs"], S["lg"]))
-            self.app.button(empty, "เลือกไฟล์ PDF…", self.add_files, width=176).pack()
-            return
-        scroll = ctk.CTkScrollableFrame(self.file_area, fg_color="transparent", corner_radius=0,
-                                        scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
-        scroll.grid(row=0, column=0, sticky="nsew")
-        scroll.grid_columnconfigure(0, weight=1)
-        for index, path in enumerate(self.files):
-            row = ctk.CTkFrame(scroll, fg_color=C["paper"], corner_radius=RADIUS["control"])
-            row.grid(row=index, column=0, sticky="ew", pady=(0, S["sm"]))
-            row.grid_columnconfigure(1, weight=1)
-            self.label(row, str(index + 1), font=self.app.font_bold, color="muted", width=32, anchor="center").grid(row=0, column=0, rowspan=2, padx=S["sm"], pady=S["lg"])
-            scale = ctk.ScalingTracker.get_widget_scaling(self)
-            label = self.label(row, self.app.fit_filename(path.name, max(140, self.app.root.winfo_width() / scale - 580)), font=self.app.font_bold)
-            label.grid(row=0, column=1, sticky="w", pady=(S["md"], 0))
-            self.name_labels.append((path, label))
-            self.label(row, f"{self.page_counts[path]} หน้า", font=self.app.font_small, color="muted").grid(row=1, column=1, sticky="w", pady=(0, S["md"]))
-            for column, (text, action, enabled) in enumerate((
-                ("ขึ้น", lambda p=path: self.move_file(p, -1), index > 0),
-                ("ลง", lambda p=path: self.move_file(p, 1), index < len(self.files) - 1),
-                ("×", lambda p=path: self.remove_file(p), True),
-            ), start=2):
-                button = self.app.button(row, text, action, width=44)
-                button.grid(row=0, column=column, rowspan=2, padx=(S["xs"], S["xs"]))
-                button.configure(state="normal" if enabled and not self.busy else "disabled")
+        self.cards.render()
+        if self.files:
+            self.empty.grid_remove()
+            self.cards.grid(row=0, column=0, sticky="nsew")
+        else:
+            self.cards.grid_remove()
+            self.empty.grid(row=0, column=0)
 
     def changed(self):
         self.progress.set(0)
@@ -192,14 +166,18 @@ class MergePage(ctk.CTkFrame):
         if errors:
             self.error("เพิ่มบางไฟล์ไม่ได้ · " + " | ".join(errors[:2]) + (f" · อีก {len(errors) - 2} ไฟล์" if len(errors) > 2 else ""))
 
+    def reorder_file(self, path, index):
+        if not self.app.busy and path in self.files:
+            self.files.remove(path)
+            self.files.insert(max(0, min(index, len(self.files))), path)
+            self.render_files()
+            self.changed()
+
     def move_file(self, path, direction):
         if not self.app.busy and path in self.files:
-            index = self.files.index(path)
-            other = index + direction
-            if 0 <= other < len(self.files):
-                self.files[index], self.files[other] = self.files[other], self.files[index]
-                self.render_files()
-                self.changed()
+            index = self.files.index(path) + direction
+            if 0 <= index < len(self.files):
+                self.reorder_file(path, index)
 
     def remove_file(self, path):
         if not self.app.busy and path in self.files:

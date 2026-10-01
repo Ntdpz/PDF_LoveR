@@ -26,6 +26,8 @@ required by the application.
 | `pdf_to_png.py` | PDF rendering, file queue, native UI, worker events |
 | `home_page.py` | Tool discovery, category filters, planned-tool details |
 | `tool_catalog.py` | Single directory of tool names, search terms and readiness |
+| `app_version.py` | Single version source for UI, filenames and Windows metadata |
+| `merge_cards.py` | Responsive document cards, previews, drag ordering and edge scrolling |
 | `merge_page.py` | Merge queue, file ordering, output selection and worker feedback |
 | `pdf_merge.py` | Page concatenation, source validation and exclusive output publication |
 | `ui_theme.py` | OKLCH color tokens, native fonts, spacing, portable CSS export |
@@ -51,7 +53,7 @@ python -m pip install pyinstaller
 & .\packaging\build_release.ps1 -InnoCompiler 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
 ```
 
-Distributions are written to `dist/Release/`. Folder-build staging is separate
+Distributions are written to `dist/PDF_LoveR_<VERSION>/`. Folder-build staging is separate
 from `dist/PDF_to_PNG_Modern/` so an existing open app can keep running.
 The single EXE extracts its packaged runtime into a temporary directory while
 running; the ZIP contains the runtime alongside the application.
@@ -63,6 +65,7 @@ python .hallmark/verify_ui.py
 python .hallmark/verify_home.py
 python -m unittest discover -s tests -v
 python .hallmark/verify_merge.py
+python tests/verify_merge_cards.py
 ```
 
 This runs real PDF conversion and checks input validation, queue guards, corrupt
@@ -87,13 +90,18 @@ distributed ZIP, installs into a test directory, and runs each executable with
 Python removed from PATH. It then uninstalls and checks that user-created output
 survives. Logs are local and ignored by Git. A sanitized record of the verified
 1.0.0 builds is available in [verification.json](verification.json).
+The current 1.1.0 record is [distribution-1.1.0.json](distribution-1.1.0.json).
 
 The original packaged tests passed on Windows 10 x64. A separate Windows 11
 machine has not been used for verification. The Windows installers are unsigned.
 
+Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.0.exe`,
+`PDF_LoveR_1.1.0_Setup.exe`, and `PDF_LoveR_1.1.0_Portable.zip`.
+`prepare_version.py` generates the matching EXE metadata and Inno definitions.
+
 ## Release files
 
-Publish the files from `dist/Release/` as GitHub Release assets, rather than
+Publish the files from `dist/PDF_LoveR_<VERSION>/` as GitHub Release assets, rather than
 committing generated EXEs, DLLs, build tools or test logs to the repository.
 Recompute `SHA256SUMS.txt` whenever an asset is rebuilt or renamed. The repository
 README links to the release assets by their exact names.
