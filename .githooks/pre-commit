@@ -1,0 +1,3 @@
+#!/bin/sh
+# Check the staged source and staged evidence, not unstaged working files.
+exec python scripts/update_diagrams.py --check --staged

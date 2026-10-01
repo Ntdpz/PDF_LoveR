@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "PDF LoveR · โครงสร้างโปรแกรม",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1300,
+      610
+    ]
+  },
+  "components": [
+    {
+      "id": "launch",
+      "type": "backend",
+      "label": "เริ่มโปรแกรม",
+      "sublabel": "main.py / python -m pdf_lover",
+      "pos": [
+        60,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "shell",
+      "type": "frontend",
+      "label": "ศูนย์ควบคุม App",
+      "sublabel": "เส้นทาง · busy · event polling",
+      "pos": [
+        500,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "backend",
+      "label": "ทะเบียนฟีเจอร์",
+      "sublabel": "ToolPage + PAGE_FACTORIES",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "home",
+      "type": "frontend",
+      "label": "หน้าเลือกเครื่องมือ",
+      "sublabel": "ค้นหา · หมวดหมู่ · สถานะพร้อมใช้",
+      "pos": [
+        60,
+        190
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "windows",
+      "type": "external",
+      "label": "ระบบ Windows",
+      "sublabel": "TkDnD · โฟลเดอร์ Documents",
+      "pos": [
+        500,
+        190
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "pages",
+      "type": "frontend",
+      "label": "หน้าฟีเจอร์ที่พร้อมใช้",
+      "sublabel": "PDF เป็น PNG / รวม PDF",
+      "pos": [
+        940,
+        190
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "องค์ประกอบ UI ร่วม",
+      "sublabel": "controls · icons · theme",
+      "pos": [
+        60,
+        340
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "cards",
+      "type": "frontend",
+      "label": "การ์ดจัดลำดับ PDF",
+      "sublabel": "Canvas · ลากวาง · วาดแถวที่เห็น",
+      "pos": [
+        500,
+        340
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "services",
+      "type": "backend",
+      "label": "ส่วนประมวลผล PDF",
+      "sublabel": "convert_pdf / merge_pdfs",
+      "pos": [
+        940,
+        340
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "preview",
+      "type": "backend",
+      "label": "กระบวนการภาพตัวอย่าง",
+      "sublabel": "spawn process · คิวจำกัดขนาด",
+      "pos": [
+        500,
+        490
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "files",
+      "type": "external",
+      "label": "ไฟล์ในเครื่องผู้ใช้",
+      "sublabel": "ภาพ PNG / PDF ที่รวมแล้ว",
+      "pos": [
+        940,
+        490
+      ],
+      "size": [
+        280,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "boot",
+      "from": "launch",
+      "to": "shell",
+      "label": "freeze_support",
+      "variant": "emphasis"
+    },
+    {
+      "id": "register",
+      "from": "shell",
+      "to": "registry",
+      "label": "ตรวจ ready IDs"
+    },
+    {
+      "id": "choose",
+      "from": "shell",
+      "to": "home",
+      "label": "เลือกเครื่องมือ"
+    },
+    {
+      "id": "platform",
+      "from": "shell",
+      "to": "windows",
+      "label": "ผูก native drop",
+      "labelDy": 30
+    },
+    {
+      "id": "instantiate",
+      "from": "registry",
+      "to": "pages",
+      "label": "สร้างเมื่อเปิดใช้",
+      "labelDy": 30
+    },
+    {
+      "id": "theme",
+      "from": "home",
+      "to": "ui",
+      "label": "ใช้ธีมร่วม",
+      "labelDy": 30
+    },
+    {
+      "id": "order",
+      "from": "pages",
+      "to": "cards",
+      "label": "จัดลำดับไฟล์"
+    },
+    {
+      "id": "execute",
+      "from": "pages",
+      "to": "services",
+      "label": "worker thread",
+      "labelDy": 30
+    },
+    {
+      "id": "thumbnail",
+      "from": "cards",
+      "to": "preview",
+      "label": "คิวภาพตัวอย่าง",
+      "labelDy": 30
+    },
+    {
+      "id": "save",
+      "from": "services",
+      "to": "files",
+      "label": "บันทึกผลลัพธ์",
+      "labelDy": 30
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "หน้าจอและเส้นทาง",
+      "items": [
+        "Tk ทำงานบน main thread เท่านั้น",
+        "เปิดหน้าฟีเจอร์ครั้งแรกแล้วเก็บสถานะไว้"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "การทำงานเบื้องหลัง",
+      "items": [
+        "services ไม่พึ่ง Tk หรือหน้าจอ",
+        "worker ส่งผลผ่าน queue; App อ่านทุก 80 ms"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "ขอบเขตปัจจุบัน",
+      "items": [
+        "มี 2 ฟีเจอร์พร้อมใช้; เครื่องมืออื่นอยู่ในแผน",
+        "อ่านและบันทึกเอกสารภายในเครื่อง"
+      ]
+    }
+  ]
+}

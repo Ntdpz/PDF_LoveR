@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "type": "architecture",
+  "specification": {
+    "sha256": "fc5acdf789dfea56ba397696bc0503d090ffda6fe6ca886f6fa36a73e6c1e83c",
+    "bytes": 6169,
+    "path": "docs/diagrams/application.architecture.json"
+  },
+  "artifact": {
+    "sha256": "65ad8df794b5c2bc6d06d70de69ac3bebd31c465b5a92853d289208595a5136e",
+    "bytes": 814475,
+    "path": "docs/diagrams/application.html"
+  },
+  "checks": [
+    {
+      "name": "single_svg",
+      "ok": true,
+      "details": [
+        "found 1 <svg> block(s)"
+      ]
+    },
+    {
+      "name": "finite_svg",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "orthogonal_arrows",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "label_route_clearance",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "relationship_crossings",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "relationship_corridors",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "container_border_runs",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "route_rhythm",
+      "ok": true,
+      "details": []
+    },
+    {
+      "name": "legend_clearance",
+      "ok": true,
+      "details": []
+    }
+  ],
+  "composition": {
+    "schemaVersion": 1,
+    "profile": "showcase",
+    "status": "pass",
+    "summary": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "metrics": {
+      "properCrossings": 0,
+      "ambiguousCorridors": 0,
+      "containerBorderRuns": 0,
+      "labelRouteClearanceIssues": 0,
+      "minLabelRouteClearance": 20,
+      "desktopReadabilityIssues": 0,
+      "minProjectedNodeTextPx": null,
+      "maxBends": 2,
+      "routesOverSuggestedBends": 0,
+      "maxStretch": 1,
+      "routesOverSuggestedStretch": 0,
+      "minSegmentPx": 60,
+      "minInteriorSegmentPx": 143,
+      "shortSegmentCount": 0,
+      "shortEndpointSegmentCount": 0,
+      "shortInteriorSegmentCount": 0,
+      "microSegmentCount": 0
+    },
+    "suggestedLimits": {
+      "bendsPerRelationship": 2,
+      "stretch": 1.35,
+      "segmentPx": 16,
+      "microSegmentPx": 8
+    },
+    "issues": []
+  }
+}

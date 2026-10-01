@@ -28,5 +28,8 @@ packaging/distribution-check.json
 Thumbs.db
 Desktop.ini
 
+# Local Archify browser screenshots and evidence sidecars
+docs/diagrams/*.visual-check.*
+
 # Local before/after profiling scratchpad
 .hallmark/benchmark_drag.py

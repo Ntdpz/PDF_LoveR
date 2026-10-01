@@ -1,5 +1,9 @@
 # Application structure
 
+Explore the checked [Archify diagrams](DIAGRAMS.md) for the component map,
+document-processing path and development/distribution flow. Their JSON sources,
+delivered HTML and source-freshness manifest live in `docs/diagrams/`.
+
 ```text
 PDF_LoveR/
 ├── main.py                         Windows/source launcher

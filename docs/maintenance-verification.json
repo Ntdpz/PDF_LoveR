@@ -1,0 +1,175 @@
+{
+  "cleanup": [
+    {
+      "workspace": "git checkout",
+      "targets": 47,
+      "bytes_removed": 2185275552,
+      "source_preserved": true,
+      "dist_preserved": true
+    },
+    {
+      "workspace": "original Program",
+      "targets": 16,
+      "bytes_removed": 263367976,
+      "source_preserved": true,
+      "dist_preserved": true
+    }
+  ],
+  "tests": {
+    "unit": 22,
+    "native_ui_suites": 6,
+    "passed": true
+  },
+  "diagrams": [
+    {
+      "name": "application",
+      "diagram_type": "architecture",
+      "output": "diagrams/application.html",
+      "specification": {
+        "sha256": "fc5acdf789dfea56ba397696bc0503d090ffda6fe6ca886f6fa36a73e6c1e83c",
+        "bytes": 6169,
+        "path": "docs/diagrams/application.architecture.json"
+      },
+      "artifact": {
+        "sha256": "65ad8df794b5c2bc6d06d70de69ac3bebd31c465b5a92853d289208595a5136e",
+        "bytes": 814475,
+        "path": "docs/diagrams/application.html"
+      },
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "visual_review_scope": "Light/dark screenshots at 2048x1320 and light at 1440x900; Thai text, nodes, routes and cards inspected",
+      "correction_rounds": 1,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "scrollHeight": 900,
+          "ok": true
+        },
+        {
+          "width": 1600,
+          "height": 1000,
+          "scrollWidth": 1600,
+          "scrollHeight": 1000,
+          "ok": true
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "scrollHeight": 1080,
+          "ok": true
+        },
+        {
+          "width": 2048,
+          "height": 1320,
+          "scrollWidth": 2048,
+          "scrollHeight": 1320,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "processing",
+      "diagram_type": "workflow",
+      "output": "diagrams/processing.html",
+      "specification": {
+        "sha256": "2c766edca6769c3e81afc219ba53a0d21b5a4482be39ecff4d320ce1d9426eee",
+        "bytes": 5644,
+        "path": "docs/diagrams/processing.workflow.json"
+      },
+      "artifact": {
+        "sha256": "0572c9bf93dd1c82d07350dd1dd2eca36443eafadefc386bc67aa76256df1419",
+        "bytes": 814963,
+        "path": "docs/diagrams/processing.html"
+      },
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "visual_review_scope": "Light/dark screenshots at 2048x1320 and light at 1440x900; Thai text, nodes, routes and cards inspected",
+      "correction_rounds": 1,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "scrollHeight": 900,
+          "ok": true
+        },
+        {
+          "width": 1600,
+          "height": 1000,
+          "scrollWidth": 1600,
+          "scrollHeight": 1000,
+          "ok": true
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "scrollHeight": 1080,
+          "ok": true
+        },
+        {
+          "width": 2048,
+          "height": 1320,
+          "scrollWidth": 2048,
+          "scrollHeight": 1320,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "name": "maintenance",
+      "diagram_type": "architecture",
+      "output": "diagrams/maintenance.html",
+      "specification": {
+        "sha256": "9b3c13ade81d63021daee662b16e4f29acaf823a5e2956da0648b6f976d59ad5",
+        "bytes": 4350,
+        "path": "docs/diagrams/maintenance.architecture.json"
+      },
+      "artifact": {
+        "sha256": "7388389b0815fe956d8a37f5948ce7d5612e0b026669c61a9b411739c13cac0b",
+        "bytes": 806714,
+        "path": "docs/diagrams/maintenance.html"
+      },
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "visual_review_scope": "Light/dark screenshots at 2048x1320 and light at 1440x900; Thai text, nodes, routes and cards inspected",
+      "correction_rounds": 1,
+      "viewports": [
+        {
+          "width": 1440,
+          "height": 900,
+          "scrollWidth": 1440,
+          "scrollHeight": 900,
+          "ok": true
+        },
+        {
+          "width": 1600,
+          "height": 1000,
+          "scrollWidth": 1600,
+          "scrollHeight": 1000,
+          "ok": true
+        },
+        {
+          "width": 1920,
+          "height": 1080,
+          "scrollWidth": 1920,
+          "scrollHeight": 1080,
+          "ok": true
+        },
+        {
+          "width": 2048,
+          "height": 1320,
+          "scrollWidth": 2048,
+          "scrollHeight": 1320,
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

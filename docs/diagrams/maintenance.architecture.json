@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "PDF LoveR · พัฒนาและสร้างชุดแจก",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1300,
+      610
+    ]
+  },
+  "components": [
+    {
+      "id": "implement",
+      "type": "backend",
+      "label": "เพิ่มหรือแก้ฟีเจอร์",
+      "sublabel": "page · service · registry · catalog",
+      "pos": [
+        60,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "document",
+      "type": "frontend",
+      "label": "อัปเดตเอกสารและ JSON",
+      "sublabel": "ARCHITECTURE · Archify source",
+      "pos": [
+        500,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "diagram",
+      "type": "backend",
+      "label": "สร้างแผนภาพใหม่",
+      "sublabel": "validate → deliver → visual-check",
+      "pos": [
+        940,
+        40
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "tests",
+      "type": "security",
+      "label": "ตรวจโค้ดและ freshness",
+      "sublabel": "scripts/check.py · pre-commit hook",
+      "pos": [
+        940,
+        190
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "version",
+      "type": "backend",
+      "label": "กำหนดรุ่นแจก",
+      "sublabel": "pdf_lover/version.py",
+      "pos": [
+        500,
+        190
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "build",
+      "type": "backend",
+      "label": "สร้าง EXE และ installer",
+      "sublabel": "PyInstaller · Inno Setup",
+      "pos": [
+        500,
+        340
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "security",
+      "label": "ตรวจชุดแจกบน Windows",
+      "sublabel": "EXE · ZIP · install · uninstall",
+      "pos": [
+        940,
+        340
+      ],
+      "size": [
+        280,
+        90
+      ]
+    },
+    {
+      "id": "distribute",
+      "type": "external",
+      "label": "ชุดแจกพร้อมส่ง",
+      "sublabel": "dist/PDF_LoveR_[Version]",
+      "pos": [
+        940,
+        490
+      ],
+      "size": [
+        280,
+        90
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "implement",
+      "to": "document",
+      "label": "พฤติกรรมจริง"
+    },
+    {
+      "from": "document",
+      "to": "diagram",
+      "label": "agent อัปเดต"
+    },
+    {
+      "from": "diagram",
+      "to": "tests",
+      "label": "เก็บหลักฐาน",
+      "labelDy": 30
+    },
+    {
+      "from": "tests",
+      "to": "version",
+      "label": "ผ่านก่อนแจก"
+    },
+    {
+      "from": "version",
+      "to": "build",
+      "label": "build_release.ps1",
+      "labelDy": 30
+    },
+    {
+      "from": "build",
+      "to": "verify",
+      "label": "ตรวจ output"
+    },
+    {
+      "from": "verify",
+      "to": "distribute",
+      "label": "ตรวจผ่าน",
+      "labelDy": 30
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "agent hook",
+      "items": [
+        "เปลี่ยนพฤติกรรมแล้วแก้คำอธิบายใน JSON",
+        "ตรวจ hash โค้ด/JSON/HTML ก่อน commit"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "เครื่องมือพัฒนา",
+      "items": [
+        "Node + Archify ใช้ตอนสร้างแผนภาพเท่านั้น",
+        "HTML เปิดได้โดยไม่ติดตั้ง Archify"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "การแจกโปรแกรม",
+      "items": [
+        "เก็บ SHA256 และผลตรวจไว้ใน docs",
+        "dist ไม่เข้า Git; repository คงเป็น Private"
+      ]
+    }
+  ]
+}

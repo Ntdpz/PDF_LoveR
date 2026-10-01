@@ -1,0 +1,212 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "PDF LoveR · จากเอกสารถึงผลลัพธ์",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "frontend": {
+          "label": "หน้าจอ"
+        },
+        "backend": {
+          "label": "ประมวลผล"
+        },
+        "security": {
+          "label": "ตรวจและล็อก"
+        },
+        "messagebus": {
+          "label": "คิวเหตุการณ์"
+        },
+        "external": {
+          "label": "ไฟล์ผลลัพธ์"
+        }
+      }
+    }
+  },
+  "lanes": [
+    {
+      "id": "screen",
+      "label": "หน้าจอ · main thread"
+    },
+    {
+      "id": "worker",
+      "label": "ประมวลผล · worker thread"
+    },
+    {
+      "id": "failure",
+      "label": "ข้อผิดพลาด",
+      "variant": "exception"
+    }
+  ],
+  "mainPath": [
+    "input",
+    "validate",
+    "lock",
+    "engine",
+    "publish",
+    "events",
+    "restore"
+  ],
+  "nodes": [
+    {
+      "id": "input",
+      "lane": "screen",
+      "col": 0,
+      "type": "frontend",
+      "label": "เพิ่ม PDF",
+      "sublabel": "เลือกไฟล์ / ลากจาก Explorer",
+      "width": 160
+    },
+    {
+      "id": "validate",
+      "lane": "screen",
+      "col": 1,
+      "type": "backend",
+      "label": "ตรวจข้อมูล",
+      "sublabel": "ไฟล์ · DPI · ปลายทาง",
+      "width": 160
+    },
+    {
+      "id": "lock",
+      "lane": "screen",
+      "col": 2,
+      "type": "security",
+      "label": "เริ่มงาน",
+      "sublabel": "busy = True · ล็อก controls",
+      "width": 160
+    },
+    {
+      "id": "engine",
+      "lane": "worker",
+      "col": 2,
+      "type": "backend",
+      "label": "ประมวลผล PDF",
+      "sublabel": "PNG ทีละหน้า / รวมตามลำดับ",
+      "width": 160
+    },
+    {
+      "id": "publish",
+      "lane": "worker",
+      "col": 3,
+      "type": "external",
+      "label": "บันทึกไฟล์",
+      "sublabel": "PNG folder / ตรวจ PDF ชั่วคราว",
+      "width": 160
+    },
+    {
+      "id": "events",
+      "lane": "screen",
+      "col": 3,
+      "type": "messagebus",
+      "label": "อ่าน event queue",
+      "sublabel": "App ทุก 80 ms · ครั้งละ ≤100",
+      "width": 160
+    },
+    {
+      "id": "restore",
+      "lane": "screen",
+      "col": 4,
+      "type": "frontend",
+      "label": "พร้อมใช้งานต่อ",
+      "sublabel": "แสดงผล · ปลด busy · เปิดผลลัพธ์",
+      "width": 160
+    },
+    {
+      "id": "reject",
+      "lane": "failure",
+      "col": 1,
+      "type": "frontend",
+      "label": "แก้ข้อมูลก่อนเริ่ม",
+      "sublabel": "แจ้งปัญหา · ยังไม่สร้าง worker",
+      "width": 160
+    },
+    {
+      "id": "error",
+      "lane": "failure",
+      "col": 3,
+      "type": "messagebus",
+      "label": "ส่งสถานะผิดพลาด",
+      "sublabel": "PNG รายไฟล์ / merge error",
+      "width": 160
+    }
+  ],
+  "edges": [
+    {
+      "from": "input",
+      "to": "validate",
+      "label": "ตรวจเมื่อกดเริ่ม"
+    },
+    {
+      "from": "validate",
+      "to": "lock",
+      "label": "ผ่าน"
+    },
+    {
+      "from": "lock",
+      "to": "engine",
+      "label": "snapshot รายการ",
+      "role": "async"
+    },
+    {
+      "from": "engine",
+      "to": "publish",
+      "label": "PyMuPDF"
+    },
+    {
+      "from": "publish",
+      "to": "events",
+      "label": "progress / done",
+      "role": "async"
+    },
+    {
+      "from": "events",
+      "to": "restore",
+      "label": "อัปเดต Tk"
+    },
+    {
+      "from": "validate",
+      "to": "reject",
+      "label": "ไม่ผ่าน",
+      "role": "error"
+    },
+    {
+      "from": "engine",
+      "to": "error",
+      "label": "ประมวลผลไม่ได้",
+      "role": "error"
+    },
+    {
+      "from": "error",
+      "to": "events",
+      "label": "error / done",
+      "role": "return"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "การรับไฟล์",
+      "items": [
+        "ลากบนหน้าแรกเปิดรวม PDF; Ctrl+O เปิด PNG",
+        "เพิ่มไฟล์ไม่ได้ระหว่าง busy"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "รักษาไฟล์เดิม",
+      "items": [
+        "PNG สร้างโฟลเดอร์ชื่อใหม่เมื่อชื่อซ้ำ",
+        "รวม PDF ตรวจไฟล์ชั่วคราวก่อนเผยแพร่; ไม่ทับปลายทาง"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "จบงานและปิดโปรแกรม",
+      "items": [
+        "PNG ทำไฟล์ถัดไปต่อเมื่อบางไฟล์ผิดพลาด",
+        "ระหว่าง busy รอจบงานก่อนปิด; destroy ล้าง timer/process"
+      ]
+    }
+  ]
+}

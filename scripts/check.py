@@ -11,7 +11,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--unit-only", action="store_true")
     args = parser.parse_args()
-    commands = [["-m", "unittest", "discover", "-s", "tests/unit", "-v"]]
+    commands = [["scripts/update_diagrams.py", "--check"],
+                ["-m", "unittest", "discover", "-s", "tests/unit", "-v"]]
     if not args.unit_only:
         if sys.platform != "win32":
             parser.error("Native UI checks require Windows; use --unit-only elsewhere.")

@@ -12,7 +12,8 @@ Set up the source environment and verification tools as described in
 4. Keep the page's queue and settings on that page. Use `self.busy` for the shell's shared processing guard. Disable controls during work and restore them on success and failure.
 5. Register the page factory in `pdf_lover/features/registry.py` and update the corresponding catalogue entry in `pdf_lover/catalog.py`. Registry validation rejects missing pages, duplicate IDs and ready-state mismatches.
 6. Add engine checks under `tests/unit/` and native interaction checks under `tests/ui/`. Check output fidelity, invalid inputs, existing-file safety and cancellation where relevant.
-7. Run `python scripts/check.py`, update user-facing capability/limitation documentation, and verify the packaged EXE, ZIP and installer after building.
+7. Update the affected Archify JSON and architecture documentation following [Diagram maintenance](docs/DIAGRAMS.md). Run `python scripts/update_diagrams.py --visual-check` and inspect the browser screenshots.
+8. Run `python scripts/check.py`, update user-facing capability/limitation documentation, and verify the packaged EXE, ZIP and installer after building. Stage the refreshed diagrams/manifest together with code.
 
 The shell dispatches keyboard shortcuts, file drops and queued events through
 the registered page. Pages are created on first use and retained. Avoid loading
@@ -20,6 +21,10 @@ large optional backends when importing a page module. Feature-specific UI belong
 tool should not require new branches in navigation or the drop handler.
 
 ## Shared changes
+
+Install the staged-documentation guard once per Git checkout with
+`python scripts/install_hooks.py`. The pre-commit hook rejects code whose diagram
+evidence is stale, including when updated working files were not staged.
 
 Use `ui/controls.py`, `ui/icons.py` and `ui/theme.py` for reusable UI behavior.
 Follow the existing named colors, fonts and spacing. Windows path lookup and
