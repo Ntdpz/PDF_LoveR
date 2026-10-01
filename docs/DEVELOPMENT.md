@@ -92,13 +92,13 @@ distributed ZIP, installs into a test directory, and runs each executable with
 Python removed from PATH. It then uninstalls and checks that user-created output
 survives. Logs are local and ignored by Git. A sanitized record of the verified
 1.0.0 builds is available in [verification.json](verification.json).
-The current 1.1.2 record is [distribution-1.1.2.json](distribution-1.1.2.json).
+The current 1.1.3 record is [distribution-1.1.3.json](distribution-1.1.3.json).
 
 The original packaged tests passed on Windows 10 x64. A separate Windows 11
 machine has not been used for verification. The Windows installers are unsigned.
 
-Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.2.exe`,
-`PDF_LoveR_1.1.2_Setup.exe`, and `PDF_LoveR_1.1.2_Portable.zip`.
+Versioned filenames come from `app_version.py`: `PDF_LoveR_1.1.3.exe`,
+`PDF_LoveR_1.1.3_Setup.exe`, and `PDF_LoveR_1.1.3_Portable.zip`.
 `prepare_version.py` generates the matching EXE metadata and Inno definitions.
 
 ## Release files
@@ -108,7 +108,7 @@ committing generated EXEs, DLLs, build tools or test logs to the repository.
 Recompute `SHA256SUMS.txt` whenever an asset is rebuilt or renamed. The repository
 README links to the release assets by their exact names.
 
-## Canvas responsiveness (1.1.2)
+## Canvas responsiveness (1.1.3)
 
 The merge queue is drawn on one native Tk Canvas. Only rows near the viewport
 have canvas items; 100 queued PDFs still show fewer than 30 cards at once.
@@ -119,9 +119,14 @@ lazily started child process, with a bounded results queue; their UI updates
 pause while dragging. The 128-image cache requests an evicted thumbnail again
 if its file comes back into view.
 
+The drag preview follows the pointer directly while a 120 ms lift and a 140 ms
+insertion marker animate on the same Canvas. These effects add a fixed number
+of items regardless of queue length. Windows' client-area animation setting
+disables both animations while preserving their final visual state.
+
 The child process follows [PyMuPDF's concurrency guidance](https://pymupdf.readthedocs.io/en/latest/recipes-multiprocessing.html)
 and [PyInstaller's multiprocessing setup](https://pyinstaller.org/en/stable/common-issues-and-pitfalls.html#multi-processing).
 The 100-file test measures 1,000 rapid pointer events, 120 rendered frames,
 scrolling while dragging, a Tk heartbeat, worker recovery and cleanup. See
-[drag-performance-1.1.2.json](drag-performance-1.1.2.json). Timings reflect the
+[drag-performance-1.1.3.json](drag-performance-1.1.3.json). Timings reflect the
 test machine, not a promise for every document or PC.

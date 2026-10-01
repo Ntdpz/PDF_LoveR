@@ -117,8 +117,8 @@ Python · CustomTkinter · PyMuPDF · Pillow<br>
 จัดแพ็กเกจ Windows ด้วย PyInstaller และ Inno Setup
 
 คู่มือรันซอร์ส สร้างชุดแจก และทดสอบอยู่ใน [Development](docs/DEVELOPMENT.md)
-ซอร์สปัจจุบัน **1.1.2** มีหน้าแรกแบบศูนย์รวมเครื่องมือและ [รวม PDF แบบลากการ์ด](docs/MERGE.md)
-ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.1.2/` — ลิงก์ดาวน์โหลดด้านบนยังเป็น Release 1.0.0
+ซอร์สปัจจุบัน **1.1.3** มีหน้าแรกแบบศูนย์รวมเครื่องมือและ [รวม PDF แบบลากการ์ด](docs/MERGE.md)
+ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.1.3/` — ลิงก์ดาวน์โหลดด้านบนยังเป็น Release 1.0.0
 ดูรายละเอียดใน [ชุดเครื่องมือ PDF](docs/SUPERAPP.md)
 ค่า SHA-256 สำหรับตรวจไฟล์ดาวน์โหลดอยู่ใน [Releases](https://github.com/Ntdpz/PDF_LoveR/releases/latest)
 

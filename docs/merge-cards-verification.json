@@ -12,6 +12,7 @@
     "920/1080/1440 widths",
     "125% scaling",
     "visible-card virtualization",
+    "reduced motion uses final visual state",
     "merged PDF follows card order",
     "no callback errors"
   ]

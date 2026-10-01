@@ -72,6 +72,29 @@ def main():
         page.output.set('รวมเอกสาร.pdf')
         pump(root, 0.7)
         assert grid.columns >= 4 and 0 < len(grid.visible) <= 15
+        sx, sy = grid.card_center(paths[0])
+        tx, ty = grid.card_center(paths[2], after=True)
+        pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
+        pointer(grid.canvas, '<B1-Motion>', tx, ty)
+        pump(root, 0.2)
+        assert grid.ghost is not None and grid.marker is not None
+        marker_height = grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1]
+        assert marker_height > 100 * grid.scaling, marker_height
+        hwnd = ctypes.windll.user32.GetParent(root.winfo_id())
+        ImageGrab.grab(window=hwnd).save(ROOT/'docs/images/merge-dragging.png')
+        pointer(grid.canvas, '<ButtonRelease-1>', tx, ty)
+        assert grid.marker is None and grid.ghost is None
+        page.reorder_file(paths[0], 0)
+        pump(root, 0.1)
+        grid.motion_enabled = False
+        pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
+        pointer(grid.canvas, '<B1-Motion>', tx, ty)
+        pump(root, 0.04)
+        assert grid.marker is not None
+        reduced_height = grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1]
+        assert reduced_height == round(grid.HEIGHT * grid.scaling) - round(20 * grid.scaling)
+        grid.cancel_drag()
+        grid.motion_enabled = True
         drag(root, grid, paths[0], paths[2], after=True)
         assert page.files[:3] == [paths[1], paths[2], paths[0]]
         drag(root, grid, paths[0], paths[1])
@@ -165,6 +188,7 @@ def main():
               'checks': ['native Canvas press/drag/drop', 'cross-row reorder', 'keyboard and remove',
                          'escape/outside/navigation cancellation', 'edge autoscroll', 'busy guard',
                          '920/1080/1440 widths', '125% scaling', 'visible-card virtualization',
+                         'reduced motion uses final visual state',
                          'merged PDF follows card order', 'no callback errors']}
     (ROOT/'docs/merge-cards-verification.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report))

@@ -3,8 +3,10 @@
 Hallmark component: Cobalt document workspace. One native drawing surface keeps
 pointer motion and scrolling independent of queue length.
 """
+import ctypes
 import math
 import queue
+import sys
 import time
 import tkinter as tk
 from collections import OrderedDict
@@ -24,6 +26,8 @@ class MergeCards(ctk.CTkFrame):
     MIN_WIDTH = 176
     MAX_PREVIEWS = 128
     HINT = "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป"
+    LIFT_SECONDS = 0.12
+    MARKER_SECONDS = 0.14
 
     def __init__(self, parent, page):
         super().__init__(parent, fg_color="transparent", corner_radius=0)
@@ -53,6 +57,8 @@ class MergeCards(ctk.CTkFrame):
         self.hovered = None
         self.drag = None
         self.ghost = None
+        self.marker = None
+        self.motion_enabled = self._system_motion_enabled()
         self.frame_timer = None
         self.draw_timer = None
         self.scroll_timer = None
@@ -78,6 +84,18 @@ class MergeCards(ctk.CTkFrame):
             self.canvas.bind(f"<{key}>", lambda event, name=key: self._keyboard(name))
         self.canvas.bind("<Delete>", self._delete_selected)
         self.preview_timer = self.page.app.root.after(80, self._poll_previews)
+
+    @staticmethod
+    def _system_motion_enabled():
+        """Follow Windows' client-area animation accessibility preference."""
+        if sys.platform != "win32":
+            return True
+        enabled = ctypes.c_int(1)
+        try:
+            return bool(ctypes.windll.user32.SystemParametersInfoW(
+                0x1042, 0, ctypes.byref(enabled), 0) and enabled.value)
+        except (AttributeError, OSError):
+            return True
 
     def _resize(self, event):
         scale = ctk.ScalingTracker.get_widget_scaling(self)
@@ -314,7 +332,7 @@ class MergeCards(ctk.CTkFrame):
         self.mouse_down = True
         self.drag = {"path": path, "source": index, "origin": (event.x_root, event.y_root),
                      "pointer": (event.x_root, event.y_root), "active": False, "slot": None,
-                     "shown_slot": None}
+                     "shown_slot": None, "lift_started": None, "marker_started": None}
         self.canvas.grab_set()
         self._style(path)
 
@@ -324,7 +342,10 @@ class MergeCards(ctk.CTkFrame):
         self.drag["pointer"] = (event.x_root, event.y_root)
         if not self.drag["active"] and math.dist(self.drag["origin"], self.drag["pointer"]) < 6:
             return
-        self.drag["active"] = True
+        if not self.drag["active"]:
+            self.drag["active"] = True
+            self.drag["lift_started"] = time.perf_counter()
+            self.canvas.configure(cursor="fleur")
         if self.frame_timer is None:
             self.frame_timer = self.page.app.root.after(16, self._drag_frame)
 
@@ -335,24 +356,40 @@ class MergeCards(ctk.CTkFrame):
         self._target()
         if self.scroll_timer is None:
             self.scroll_timer = self.page.app.root.after(55, self._auto_scroll)
+        if self.motion_enabled and (time.perf_counter() - self.drag["lift_started"] < self.LIFT_SECONDS or
+                                    self.drag["marker_started"] is not None and
+                                    time.perf_counter() - self.drag["marker_started"] < self.MARKER_SECONDS):
+            self.frame_timer = self.page.app.root.after(16, self._drag_frame)
 
     def _target(self):
         x, y = self.drag["pointer"]
         left, top = self.canvas.winfo_rootx(), self.canvas.winfo_rooty()
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         if self.ghost is None:
-            box = self.canvas.create_rectangle(0, 0, round(204 * self.scaling), round(42 * self.scaling),
-                                                fill=C["accent"], outline=C["accent"], tags="ghost")
+            shadow = self.canvas.create_rectangle(0, 0, 0, 0, fill=C["rule"], outline="", tags="ghost")
+            box = self.canvas.create_rectangle(0, 0, 0, 0, fill=C["accent"], outline=C["accent-hover"],
+                                               width=max(1, round(self.scaling)), tags="ghost")
+            symbol = self.canvas.create_text(0, 0, text="▤", fill=C["accent-ink"],
+                                             font=self.font_bold, tags="ghost")
             label = self.canvas.create_text(0, 0, text=self._fit_name(self.drag["path"].name, round(180 * self.scaling)),
                                             fill=C["accent-ink"], anchor="w", font=self.font_small, tags="ghost")
-            self.ghost = (box, label)
+            self.ghost = (shadow, box, symbol, label)
+        progress = 1.0
+        if self.motion_enabled:
+            progress = min(1.0, (time.perf_counter() - self.drag["lift_started"]) / self.LIFT_SECONDS)
+            progress = 1 - (1 - progress) ** 3
+        ghost_width = round((194 + 10 * progress) * self.scaling)
+        ghost_height = round((36 + 6 * progress) * self.scaling)
         gx = min(max(self.canvas.canvasx(x - left + 16), self.canvas.canvasx(0)),
-                 self.canvas.canvasx(max(0, width - round(204 * self.scaling))))
+                 self.canvas.canvasx(max(0, width - ghost_width - round(4 * self.scaling))))
         gy = min(max(self.canvas.canvasy(y - top + 16), self.canvas.canvasy(0)),
-                 self.canvas.canvasy(max(0, height - round(42 * self.scaling))))
-        box, label = self.ghost
-        self.canvas.coords(box, gx, gy, gx + round(204 * self.scaling), gy + round(42 * self.scaling))
-        self.canvas.coords(label, gx + round(12 * self.scaling), gy + round(21 * self.scaling))
+                 self.canvas.canvasy(max(0, height - ghost_height - round(4 * self.scaling))))
+        shadow, box, symbol, label = self.ghost
+        self.canvas.coords(shadow, gx + round(4 * self.scaling), gy + round(5 * self.scaling),
+                           gx + ghost_width + round(4 * self.scaling), gy + ghost_height + round(5 * self.scaling))
+        self.canvas.coords(box, gx, gy, gx + ghost_width, gy + ghost_height)
+        self.canvas.coords(symbol, gx + round(16 * self.scaling), gy + ghost_height / 2)
+        self.canvas.coords(label, gx + round(32 * self.scaling), gy + ghost_height / 2)
         self.canvas.tag_raise("ghost")
         slot = None
         if left <= x <= left + width and top <= y <= top + height:
@@ -369,6 +406,7 @@ class MergeCards(ctk.CTkFrame):
         if self.drag["shown_slot"] != slot:
             old = self.drag["shown_slot"]
             self.drag["shown_slot"] = slot
+            self.drag["marker_started"] = time.perf_counter() if slot is not None else None
             self._style(self.drag["path"])
             if old is not None:
                 self._style(self.page.files[old])
@@ -376,8 +414,36 @@ class MergeCards(ctk.CTkFrame):
                 self._style(self.page.files[slot])
             self.page.order_hint.configure(text=f"วางที่ลำดับ {slot + 1} · Esc ยกเลิก" if slot is not None
                                            else "ลากกลับเข้ารายการเพื่อวาง · Esc ยกเลิก")
+        self._paint_marker(slot)
+
+    def _paint_marker(self, slot):
+        """Animate one insertion cue without repainting the card grid."""
+        if slot is None:
+            if self.marker is not None:
+                self.canvas.delete("drop-marker")
+                self.marker = None
+            return
+        x1, y1, x2, y2 = self._bounds(slot)
+        gap = round(self.GAP * self.scaling)
+        x = x2 + gap / 2 if slot > self.drag["source"] else x1 - gap / 2
+        middle = (y1 + y2) / 2
+        progress = 1.0
+        if self.motion_enabled and self.drag["marker_started"] is not None:
+            progress = min(1.0, (time.perf_counter() - self.drag["marker_started"]) / self.MARKER_SECONDS)
+            progress = 1 - (1 - progress) ** 3
+        half = (y2 - y1 - round(20 * self.scaling)) * progress / 2
+        thickness = max(2, round(4 * self.scaling))
+        if self.marker is None:
+            self.marker = self.canvas.create_rectangle(0, 0, 0, 0, fill=C["accent"],
+                                                       outline="", tags="drop-marker")
+        self.canvas.coords(self.marker, x - thickness / 2, middle - half,
+                           x + thickness / 2, middle + half)
+        self.canvas.tag_raise("drop-marker")
+        self.canvas.tag_raise("ghost")
 
     def _raise_ghost(self):
+        if self.marker is not None:
+            self.canvas.tag_raise("drop-marker")
         if self.ghost:
             self.canvas.tag_raise("ghost")
 
@@ -420,10 +486,14 @@ class MergeCards(ctk.CTkFrame):
         if self.ghost:
             self.canvas.delete("ghost")
             self.ghost = None
+        if self.marker is not None:
+            self.canvas.delete("drop-marker")
+            self.marker = None
         if self.drag:
             self.canvas.grab_release()
             self.drag = None
             self.mouse_down = False
+            self.canvas.configure(cursor="arrow")
             self._style(self.selected)
         self.page.order_hint.configure(text=self.HINT)
 
