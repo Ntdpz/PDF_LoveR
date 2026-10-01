@@ -93,10 +93,47 @@ def run(root, app_class, report):
                 assert document.page_count == 3
                 assert "MERGE FIRST" in document[0].get_text()
                 assert document[1].rect == pymupdf.Rect(0, 0, 144, 72)
+            assert app.show_tool("split"), "Split route not available"
+            native_drop(root, [app.merge.destination])
+            root.after(100, prepare_split)
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    def prepare_split():
+        page = app.get_page("split")
+        if (app.busy or page.info is None) and time.monotonic() - started < 60:
+            root.after(100, prepare_split)
+            return
+        try:
+            assert page.info and not app.busy, "Split inspection timeout"
+            page.output.set(str(folder))
+            page.mode.set("ranges")
+            page.selector.expression.set("1,2-3")
+            assert [len(output.pages) for output in page.plan.outputs] == [1, 2]
+            page.start()
+            root.after(100, finish_split)
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    def finish_split():
+        page = app.get_page("split")
+        if (app.busy or page.selector.pending) and time.monotonic() - started < 60:
+            root.after(100, finish_split)
+            return
+        try:
+            assert not app.busy and page.destination, page.status.get()
+            assert len(page.selector.cache) == 3 and all(page.selector.cache.values())
+            for output in page.plan.outputs:
+                with pymupdf.open(output.path) as result:
+                    assert result.page_count == len(output.pages)
+            with pymupdf.open(page.plan.outputs[0].path) as result:
+                assert "MERGE FIRST" in result[0].get_text()
+            assert not failures, failures
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
-                      "thumbnail_worker": "separate process", "thumbnail_count": 2,
-                      "file_drop": "Windows native callbacks verified for PNG and merge",
+                      "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
+                      "thumbnail_worker": "separate process", "thumbnail_count": 5,
+                      "file_drop": "Windows native callbacks verified for PNG, merge and split",
                       "tkdnd_version": app.file_drop.version})
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})

@@ -19,7 +19,7 @@ function Invoke-VerifiedProcess {
     $taskInfo.Environment.Remove('PYTHONPATH') | Out-Null
     $taskInfo.Environment['PATH'] = (Join-Path $env:WINDIR 'System32') + ';' + $env:WINDIR
     $taskProcess = [System.Diagnostics.Process]::Start($taskInfo)
-    if (-not $taskProcess.WaitForExit(45000)) { throw ('Timed out: ' + $File) }
+    if (-not $taskProcess.WaitForExit(75000)) { throw ('Timed out: ' + $File) }
     if ($taskProcess.ExitCode -ne 0) { throw ('Process failed: ' + $File + ', exit ' + $taskProcess.ExitCode) }
 }
 

@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-02T00:27:15.0386788+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 5,
+    "file_drop": "Windows native callbacks verified for PNG, merge and split",
+    "tkdnd_version": "2.9.4"
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 5,
+    "file_drop": "Windows native callbacks verified for PNG, merge and split",
+    "tkdnd_version": "2.9.4"
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 5,
+    "file_drop": "Windows native callbacks verified for PNG, merge and split",
+    "tkdnd_version": "2.9.4"
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.3.0",
+  "assets": {
+    "PDF_LoveR_1.3.0.exe": "6b4f420b529a8d21f4d254453071b2f29250f2de936c2011db3a4f6da454cc02",
+    "PDF_LoveR_1.3.0_Portable.zip": "b211ad6f374003ed3fcdb844be871ccf9b153dfe47eb60081000535ddb085f81",
+    "PDF_LoveR_1.3.0_Setup.exe": "3caa730d19fd11b3ce755e3d0d5c41bc64219eb45a8d16a70feae22c5aa80939"
+  }
+}

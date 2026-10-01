@@ -51,7 +51,7 @@ class FileDrop:
 
     def enter(self):
         message = ("กำลังทำงานอยู่ · เพิ่มไฟล์ได้เมื่อเสร็จ" if self.app.busy else
-                   "วาง PDF เพื่อเพิ่มเข้าเครื่องมือแปลงภาพ" if self.app.route == "pdf-png" else
+                   "วาง PDF เพื่อเปิดในเครื่องมือที่เลือก" if self.app.route != "home" else
                    "วาง PDF เพื่อเพิ่มเข้าเครื่องมือรวมไฟล์")
         self.show(message)
         return self.action()

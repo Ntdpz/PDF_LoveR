@@ -55,6 +55,7 @@ python tests/ui/verify_merge.py
 python tests/ui/verify_merge_cards.py
 python tests/ui/verify_file_drop.py
 python tests/ui/verify_drag_performance.py
+python tests/ui/verify_split.py
 ```
 
 Fixtures and output use temporary directories. Native checks cover real PNG
@@ -90,11 +91,11 @@ and `build-portable*` separately.
 
 Verification copies the EXE into an isolated Thai-named path, extracts the exact
 ZIP and installs into a test directory. Each executable runs without Python in
-PATH and performs native file drops, conversion, merging and thumbnail rendering.
+PATH and performs native file drops, conversion, merging, splitting and shared thumbnail rendering.
 It then uninstalls and verifies that user-created output survives. Local logs
 are ignored; sanitized records are kept in `docs/`.
 
-Current record: [distribution-1.2.0.json](distribution-1.2.0.json). Tests run on
+Current record: [distribution-1.3.0.json](distribution-1.3.0.json). Tests run on
 Windows 10 x64; a separate Windows 11 machine has not been used. Installers are
 unsigned.
 
@@ -102,8 +103,8 @@ unsigned.
 
 Edit only `pdf_lover/version.py`. Package metadata, UI and Windows filenames read
 that source. `prepare_version.py` generates the Windows metadata and Inno
-version definitions. Current outputs are `PDF_LoveR_1.2.0.exe`,
-`PDF_LoveR_1.2.0_Setup.exe` and `PDF_LoveR_1.2.0_Portable.zip`.
+version definitions. Current outputs are `PDF_LoveR_1.3.0.exe`,
+`PDF_LoveR_1.3.0_Setup.exe` and `PDF_LoveR_1.3.0_Portable.zip`.
 
 Keep binaries, build tools and local logs outside Git. Recompute hashes when
 rebuilding an asset. GitHub Release 1.0.0 remains the older PNG application;
@@ -117,5 +118,7 @@ one lazily started child process; image application pauses during dragging.
 Lift and insertion-marker animations follow Windows' reduced-animation setting.
 The 100-file load check covers rapid pointer events, edge scrolling, Tk heartbeat,
 preview pause/resume and worker cleanup. See
-[drag-performance-1.2.0.json](drag-performance-1.2.0.json). Timings describe the
+[drag-performance-1.3.0.json](drag-performance-1.3.0.json). Timings describe the
 test machine rather than every document or PC.
+
+Split evidence: [split-verification.json](split-verification.json). The suite now has 34 unit tests and seven sequential native UI checks.

@@ -2,8 +2,10 @@
   "passed": true,
   "tools": 34,
   "categories": 7,
-  "ready": 2,
+  "ready": 3,
   "checks": [
+    "lazy page creation and retained instances",
+    "shell owns the only event polling timer",
     "Thai/English search",
     "category/status filtering",
     "planned details",
@@ -14,18 +16,5 @@
     "920/1080/1440 widths",
     "100%/125% scaling",
     "no callback errors"
-  ],
-  "standalone_preview": {
-    "passed": true,
-    "gui": "constructed",
-    "converted_pages": 2,
-    "dpi": 150,
-    "png_size": [
-      300,
-      150
-    ],
-    "merged_pages": 3,
-    "merge_order": "verified",
-    "clean_process_path": true
-  }
+  ]
 }

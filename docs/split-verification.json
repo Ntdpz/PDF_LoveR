@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "modes": [
+    "pages",
+    "ranges",
+    "chunks"
+  ],
+  "range_output_pages": [
+    3,
+    1,
+    3
+  ],
+  "checks": [
+    "native drop and one-document guard",
+    "async inspection",
+    "page thumbnails and multi-selection",
+    "range syntax/order/duplicates/bounds",
+    "N validation and final remainder",
+    "preview filenames and output conflicts",
+    "original SHA256 unchanged",
+    "Poppler pixel equivalence",
+    "retained state and busy guards",
+    "missing/corrupt source recovery",
+    "240-page bounded thumbnails and paged output preview",
+    "920x700 and 125% scaling",
+    "preview child cleanup",
+    "no Tk callback errors"
+  ]
+}

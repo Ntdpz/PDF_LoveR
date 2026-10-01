@@ -27,6 +27,14 @@ def pointer(canvas, event, x, y):
                           rootx=int(x), rooty=int(y))
 
 
+def wait_for(root, predicate, timeout=2):
+    """Wait for a real frame, rather than assuming Tk paints in a fixed sleep."""
+    deadline = time.monotonic() + timeout
+    while not predicate() and time.monotonic() < deadline:
+        pump(root, 0.02)
+    assert predicate(), 'Canvas did not reach the expected visual state'
+
+
 def drag(root, grid, source, target, after=False, wait=True):
     canvas = grid.canvas
     x, y = grid.card_center(source)
@@ -35,7 +43,7 @@ def drag(root, grid, source, target, after=False, wait=True):
     x, y = grid.card_center(target, after)
     pointer(canvas, '<B1-Motion>', x, y)
     if wait:
-        pump(root, 0.08)
+        wait_for(root, lambda: grid.ghost is not None)
         assert grid.ghost is not None
     pointer(canvas, '<ButtonRelease-1>', x, y)
     assert grid.drag is None and grid.ghost is None and grid.grab_current() is None
@@ -76,7 +84,8 @@ def main():
         tx, ty = grid.card_center(paths[2], after=True)
         pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
         pointer(grid.canvas, '<B1-Motion>', tx, ty)
-        pump(root, 0.2)
+        wait_for(root, lambda: grid.ghost is not None and grid.marker is not None
+                 and grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1] > 100 * grid.scaling)
         assert grid.ghost is not None and grid.marker is not None
         marker_height = grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1]
         assert marker_height > 100 * grid.scaling, marker_height
@@ -87,9 +96,11 @@ def main():
         page.reorder_file(paths[0], 0)
         pump(root, 0.1)
         grid.motion_enabled = False
+        sx, sy = grid.card_center(paths[0])
+        tx, ty = grid.card_center(paths[2], after=True)
         pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
         pointer(grid.canvas, '<B1-Motion>', tx, ty)
-        pump(root, 0.04)
+        wait_for(root, lambda: grid.marker is not None)
         assert grid.marker is not None
         reduced_height = grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1]
         assert reduced_height == round(grid.HEIGHT * grid.scaling) - round(20 * grid.scaling)
