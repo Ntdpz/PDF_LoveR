@@ -14,7 +14,7 @@ PDF_LoveR/
 │   ├── version.py                  Single version source
 │   ├── catalog.py                  Searchable tool descriptions/readiness
 │   ├── assets/                     Packaged icons
-│   ├── core/                       Reusable one-based page selection models
+│   ├── core/                       Page selection, document inspection and safe export
 │   ├── ui/                         Home, controls, icons, theme
 │   ├── platform/                   Documents paths, native file drops
 │   ├── features/
@@ -22,7 +22,10 @@ PDF_LoveR/
 │   │   ├── registry.py             Ready page factories
 │   │   ├── png/                    PNG page and rendering engine
 │   │   ├── merge/                  Merge page, engine, cards
-│   │   └── split/                  Split page, immutable plan and safe engine
+│   │   ├── split/                  Split page, immutable plan and safe engine
+│   │   ├── selection_page.py       Shared extract/delete workbench
+│   │   ├── extract/                Extract page and headless service
+│   │   └── delete_pages/           Delete page and headless service
 │   └── diagnostics/                Packaged application smoke check
 ├── tests/
 │   ├── unit/                       Engines and extension boundaries
@@ -43,6 +46,16 @@ flowchart TD
   Shell --> Windows[Windows integration]
   Registry --> PNG[PNG page]
   Registry --> Merge[Merge page]
+  Registry --> Extract[Extract page]
+  Registry --> Delete[Delete page]
+  Extract --> Workbench[Shared SelectionPage]
+  Delete --> Workbench
+  Workbench --> Selector
+  Extract --> ExtractEngine[Extract service]
+  Delete --> DeleteEngine[Delete service]
+  ExtractEngine --> SafeExport[core/pdf_output]
+  DeleteEngine --> SafeExport
+  SafeExport --> Document[core/document]
   Registry --> Split[Split page]
   Split --> SplitEngine[Split service]
   Split --> Selector[Shared PageSelector]
@@ -113,7 +126,31 @@ failure rolls back only unchanged files created by that job; an incomplete rollb
 is reported with the remaining names. The engine rejects original paths/aliases,
 existing targets and invalid Windows name prefixes. No worker reads Tk variables.
 
-Only PNG, merge and split are ready. Extract, delete and organize remain planned;
-they can reuse the parser and selector when implemented. Password PDFs, general
-zoom preview, cancellation and document-level attachments/signatures are outside
-this split feature's supported scope. See [Split](SPLIT.md) for precise behavior.
+PNG, merge, split, extract-pages and delete-pages are ready (5 of 34).
+Organize remains planned. Password PDFs, general zoom preview, cancellation and
+document-level attachments/signatures remain outside the page tools' scope.
+See [Split](SPLIT.md) and [Page tools](PAGE_TOOLS.md) for precise behavior.
+
+## Extract and delete pages
+
+`features/selection_page.py` implements the common ToolPage workbench. Feature
+pages configure its labels/modes and supply their own headless `service.py`.
+Extraction saves selected ascending pages as one PDF or one file per selected
+page. Deletion starts with no pages marked, computes the ordered complement and
+rejects deleting everything. The 25-row preview maps output page numbers to
+original numbers and shows filenames. Inspection/export run in worker threads;
+only the main thread reads variables, renders controls and consumes queues.
+
+`core/document.py` centralizes DocumentInfo, stat signatures, password checks and
+Windows filename validation; split keeps compatibility imports. `core/pdf_output.py`
+stages, reopens and checks every selected-page output before exclusive publication.
+It rechecks the source and all targets before publishing, and rolls back only
+unchanged files created by this job. Non-contiguous combined exports copy once
+and remove omitted pages with PyMuPDF, preserving/remapping retained-page links,
+widgets, annotations and rotations. Contiguous/single-page exports copy the range
+directly. Bookmarks are mapped to retained pages with valid hierarchy levels.
+Neither operation edits the source. This is page selection, not redaction.
+
+Native checks cover both tools, Explorer drop, async inspection, retained state,
+validation/recovery, 240-page bounded previews, 920x700 and 125% scaling. Independent
+Poppler renders match the originals. Packaged smoke runs all five tool routes.

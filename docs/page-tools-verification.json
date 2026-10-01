@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "tools": [
+    {
+      "tool": "extract-pages",
+      "saved_original_pages": [
+        1,
+        2,
+        3,
+        5,
+        8,
+        9,
+        10
+      ],
+      "poppler_pixel_match": true,
+      "existing_file_preserved": true,
+      "source_unchanged": true
+    },
+    {
+      "tool": "delete-pages",
+      "saved_original_pages": [
+        1,
+        2,
+        5,
+        8,
+        9,
+        10
+      ],
+      "poppler_pixel_match": true,
+      "existing_file_preserved": true,
+      "source_unchanged": true
+    }
+  ],
+  "extract_modes": [
+    "single",
+    "pages"
+  ],
+  "delete_all_blocked": true,
+  "bounded_preview": {
+    "thumbnails_visible": 4,
+    "cache": 32,
+    "table_rows": 25,
+    "document_pages": 240
+  },
+  "native_drop": true,
+  "busy_guard": true,
+  "workers_closed": true,
+  "tk_errors": [],
+  "minimum_window": [
+    920,
+    700
+  ],
+  "scaling": [
+    1,
+    1.25
+  ]
+}

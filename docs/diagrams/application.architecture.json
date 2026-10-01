@@ -84,7 +84,7 @@
       "id": "pages",
       "type": "frontend",
       "label": "หน้าฟีเจอร์ที่พร้อมใช้",
-      "sublabel": "PNG / รวม PDF / แยก PDF",
+      "sublabel": "5 เครื่องมือ · SelectionPage ร่วม",
       "pos": [
         940,
         190
@@ -126,7 +126,7 @@
       "id": "services",
       "type": "backend",
       "label": "ส่วนประมวลผล PDF",
-      "sublabel": "PNG / merge / split + core ช่วงหน้า",
+      "sublabel": "services + core เลือกหน้า / บันทึก",
       "pos": [
         940,
         340
@@ -154,7 +154,7 @@
       "id": "files",
       "type": "external",
       "label": "ไฟล์ในเครื่องผู้ใช้",
-      "sublabel": "PNG / PDF รวม / PDF แยก",
+      "sublabel": "PNG / PDF ใหม่ · เก็บต้นฉบับ",
       "pos": [
         940,
         490
@@ -247,7 +247,7 @@
       "dot": "emerald",
       "title": "การทำงานเบื้องหลัง",
       "items": [
-        "services และ core ช่วงหน้าไม่พึ่ง Tk",
+        "services + core/document/pdf_output ไม่พึ่ง Tk",
         "worker ส่ง queue; preview อยู่ spawned process"
       ]
     },
@@ -255,8 +255,8 @@
       "dot": "amber",
       "title": "ขอบเขตปัจจุบัน",
       "items": [
-        "3 ฟีเจอร์พร้อมใช้; อีก 31 เครื่องมืออยู่ในแผน",
-        "แยก PDF ตรวจทุกไฟล์ก่อนบันทึกโดยไม่ทับไฟล์เดิม"
+        "5 ฟีเจอร์พร้อมใช้; อีก 29 เครื่องมืออยู่ในแผน",
+        "แยก PDF / แยกหน้า / ลบหน้า ตรวจชุดก่อนบันทึก"
       ]
     }
   ]

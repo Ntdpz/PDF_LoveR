@@ -2,13 +2,13 @@
   "ok": true,
   "type": "workflow",
   "specification": {
-    "sha256": "2d2351870ee4b082a123247365ed283d973829828896452d60c6222ee6026a8c",
-    "bytes": 5695,
+    "sha256": "65c410e3337c43a59ebce8155423e2f6300f68ffd2766c310318afd4ef6b35c9",
+    "bytes": 5700,
     "path": "docs/diagrams/processing.workflow.json"
   },
   "artifact": {
-    "sha256": "d8229618b260e220a59a581304a7e77e2bc253eb14a92a890ab738543391dcf5",
-    "bytes": 815137,
+    "sha256": "fd03fc893f46f60b6b4376e22340a21a407c87022b94cf001aaa135adf50b17d",
+    "bytes": 815124,
     "path": "docs/diagrams/processing.html"
   },
   "checks": [

@@ -5249,15 +5249,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="1013.5999999999999" y="131" class="t-muted" font-size="8" text-anchor="middle">แสดงผล · ปลด busy · เปิดผลลัพธ์</text>
         </g>
 
-        <g id="node-engine" data-node-id="engine" data-node-label="ประมวลผล PDF" tabindex="0" role="button" aria-label="Focus ประมวลผล PDF, แปลง / รวม / แยกตามแผน, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="backend" data-node-sublabel="แปลง / รวม / แยกตามแผน" data-node-context="ประมวลผล · worker thread">
-          <title>ประมวลผล PDF · แปลง / รวม / แยกตามแผน · ประมวลผล · worker thread</title>
+        <g id="node-engine" data-node-id="engine" data-node-label="ประมวลผล PDF" tabindex="0" role="button" aria-label="Focus ประมวลผล PDF, แปลง / รวม / เลือกหน้า, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="backend" data-node-sublabel="แปลง / รวม / เลือกหน้า" data-node-context="ประมวลผล · worker thread">
+          <title>ประมวลผล PDF · แปลง / รวม / เลือกหน้า · ประมวลผล · worker thread</title>
           <rect x="500.79999999999995" y="217" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="500.79999999999995" y="217" width="160" height="52" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(506.79999999999995 223) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="580.8" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ประมวลผล PDF</text>
-          <text data-detail="context" x="580.8" y="255" class="t-muted" font-size="8" text-anchor="middle">แปลง / รวม / แยกตามแผน</text>
+          <text data-detail="context" x="580.8" y="255" class="t-muted" font-size="8" text-anchor="middle">แปลง / รวม / เลือกหน้า</text>
         </g>
 
         <g id="node-publish" data-node-id="publish" data-node-label="บันทึกไฟล์" tabindex="0" role="button" aria-label="Focus บันทึกไฟล์, ตรวจ PDF; ไม่ทับไฟล์เดิม, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="external" data-node-sublabel="ตรวจ PDF; ไม่ทับไฟล์เดิม" data-node-context="ประมวลผล · worker thread">
@@ -5286,8 +5286,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="382.8" y="379" class="t-muted" font-size="8" text-anchor="middle">แจ้งปัญหา · ยังไม่สร้าง worker</text>
         </g>
 
-        <g id="node-error" data-node-id="error" data-node-label="ส่งสถานะผิดพลาด" tabindex="0" role="button" aria-label="Focus ส่งสถานะผิดพลาด, error / คืนไฟล์แยกที่สร้าง, ข้อผิดพลาด" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="error / คืนไฟล์แยกที่สร้าง" data-node-context="ข้อผิดพลาด">
-          <title>ส่งสถานะผิดพลาด · error / คืนไฟล์แยกที่สร้าง · ข้อผิดพลาด</title>
+        <g id="node-error" data-node-id="error" data-node-label="ส่งสถานะผิดพลาด" tabindex="0" role="button" aria-label="Focus ส่งสถานะผิดพลาด, error / คืนไฟล์ของงานนี้, ข้อผิดพลาด" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="error / คืนไฟล์ของงานนี้" data-node-context="ข้อผิดพลาด">
+          <title>ส่งสถานะผิดพลาด · error / คืนไฟล์ของงานนี้ · ข้อผิดพลาด</title>
           <rect x="712.4" y="341" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="712.4" y="341" width="160" height="52" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(718.4 347) scale(0.6875)">
@@ -5297,7 +5297,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="792.4" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ส่งสถานะผิดพลาด</text>
-          <text data-detail="context" x="792.4" y="379" class="t-muted" font-size="8" text-anchor="middle">error / คืนไฟล์แยกที่สร้าง</text>
+          <text data-detail="context" x="792.4" y="379" class="t-muted" font-size="8" text-anchor="middle">error / คืนไฟล์ของงานนี้</text>
         </g>
 
         <!-- Edge labels -->
@@ -5554,8 +5554,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>การรับไฟล์</h3>
         </div>
         <ul>
-          <li>&bull; Split อ่าน PDF ผ่าน worker ก่อนเลือกช่วงหน้า</li>
-          <li>&bull; preview กลุ่มและชื่อไฟล์; busy ล็อกทุกเครื่องมือ</li>
+          <li>&bull; Split / แยกหน้า / ลบหน้า อ่าน PDF ผ่าน worker</li>
+          <li>&bull; preview หน้าและชื่อ; ลบทุกหน้าถูกป้องกัน</li>
         </ul>
       </div>
 
@@ -5566,7 +5566,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         </div>
         <ul>
           <li>&bull; PNG สร้างโฟลเดอร์ใหม่; merge ไม่ทับปลายทาง</li>
-          <li>&bull; split ตรวจชุดชั่วคราว; ชื่อชนคืนไฟล์ของงานนี้</li>
+          <li>&bull; เครื่องมือเลือกหน้า ตรวจชุดและคืนไฟล์เมื่อชื่อชน</li>
         </ul>
       </div>
 
@@ -5576,7 +5576,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>จบงานและปิดโปรแกรม</h3>
         </div>
         <ul>
-          <li>&bull; PNG ทำไฟล์ถัดไป; split แจ้งไฟล์ค้างถ้าคืนไม่ได้</li>
+          <li>&bull; PNG ทำไฟล์ถัดไป; เลือกหน้าแจ้งไฟล์ที่คืนไม่ได้</li>
           <li>&bull; รอ busy ก่อนปิด; destroy ปิด preview process</li>
         </ul>
       </div>

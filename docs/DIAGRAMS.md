@@ -13,7 +13,7 @@
 ## รายละเอียดที่ต้องรักษาเมื่อพัฒนา
 
 - เริ่มผ่าน `__main__.py` ซึ่งเรียก `multiprocessing.freeze_support()` ก่อนโหลด Tk;
-  home แสดงเครื่องมือใน `catalog.py` แต่มี PNG รวม PDF และแยก PDF ที่พร้อมใช้
+  home แสดงเครื่องมือใน `catalog.py` แต่มี PNG รวม PDF แยก PDF แยกหน้า และลบหน้าออกที่พร้อมใช้
 - `registry.py` ตรวจ ready IDs; App สร้าง page เมื่อเปิดครั้งแรกและเก็บไว้
   การนำทางและเปลี่ยนรายการถูกป้องกันระหว่าง busy; ปิดโปรแกรมต้องรอจบงาน
 - เลือกไฟล์หรือรับ native TkDnD ผ่าน `accept_paths()`; drop บน home เปิดรวม PDF,
@@ -23,8 +23,10 @@
 - ภาพตัวอย่างเรนเดอร์ใน spawned process ที่เริ่มเมื่อมีคำขอ;
   คิวผลลัพธ์จำกัด 4 รายการ, UI poll แยกทุก 80 ms, ใช้ cache;
   destroy ยกเลิก timer และปิด process/queues
-- PNG merge และ split มี worker thread และ event queue ของตนเอง แต่ใช้ busy ของ App ร่วมกัน;
+- เครื่องมือพร้อมใช้ทั้ง 5 มี worker thread และ event queue ของตนเอง แต่ใช้ busy ของ App ร่วมกัน;
   shell poll ทุก 80 ms, page อ่านไม่เกิน 100 events ต่อรอบ; worker ไม่แตะ Tk
+- แยกหน้า/ลบหน้าใช้ SelectionPage ร่วม, preview เลขหน้าใหม่/เดิมและชื่อไฟล์;
+  core/document ตรวจต้นฉบับ, core/pdf_output ตรวจชุดชั่วคราวและคืนไฟล์ของงานเมื่อผิดพลาด
 - PNG ใช้ DPI 36–600, ชื่อภาพเรียงตามหน้า, โฟลเดอร์ชื่อซ้ำเติมเลข;
   บางไฟล์ล้มเหลวยังทำไฟล์อื่นต่อและแสดงรายการผิดพลาด
 - รวม PDF ตรวจต้นฉบับ/รหัสผ่าน/จำนวนหน้า, รักษา links, annotations, forms และ bookmarks;

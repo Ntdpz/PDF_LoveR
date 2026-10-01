@@ -1,5 +1,6 @@
 """Hidden packaged-app smoke check, isolated from user documents."""
 import json
+import hashlib
 import tempfile
 import time
 from pathlib import Path
@@ -129,11 +130,58 @@ def run(root, app_class, report):
             with pymupdf.open(page.plan.outputs[0].path) as result:
                 assert "MERGE FIRST" in result[0].get_text()
             assert not failures, failures
+            start_page_tool("extract-pages")
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    page_tool_source_hash = None
+
+    def start_page_tool(tool):
+        nonlocal page_tool_source_hash
+        page_tool_source_hash = hashlib.sha256(app.merge.destination.read_bytes()).hexdigest()
+        assert app.show_tool(tool), tool + " route not available"
+        native_drop(root, [app.merge.destination])
+        root.after(100, lambda: prepare_page_tool(tool))
+
+    def prepare_page_tool(tool):
+        page = app.get_page(tool)
+        if (app.busy or page.info is None) and time.monotonic() - started < 85:
+            root.after(100, lambda: prepare_page_tool(tool))
+            return
+        try:
+            assert page.info and not app.busy, tool + " inspection timeout"
+            page.output.set(str(folder))
+            page.prefix.set(tool)
+            page.selector.expression.set("1,3" if tool == "extract-pages" else "2")
+            assert page.plan.outputs[0].pages == (1, 3)
+            page.start()
+            root.after(100, lambda: finish_page_tool(tool))
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    def finish_page_tool(tool):
+        page = app.get_page(tool)
+        if (app.busy or page.selector.pending) and time.monotonic() - started < 85:
+            root.after(100, lambda: finish_page_tool(tool))
+            return
+        try:
+            assert not app.busy and page.destination, page.status.get()
+            assert len(page.selector.cache) == 3 and all(page.selector.cache.values())
+            with pymupdf.open(page.plan.outputs[0].path) as result:
+                assert result.page_count == 2 and "MERGE FIRST" in result[0].get_text()
+                assert result[1].rect == pymupdf.Rect(0, 0, 144, 72)
+            assert hashlib.sha256(app.merge.destination.read_bytes()).hexdigest() == page_tool_source_hash
+            assert not failures, failures
+            if tool == "extract-pages":
+                start_page_tool("delete-pages")
+                return
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
                       "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
-                      "thumbnail_worker": "separate process", "thumbnail_count": 5,
-                      "file_drop": "Windows native callbacks verified for PNG, merge and split",
+                      "extract_original_pages": [1, 3], "delete_removed_pages": [2],
+                      "delete_retained_pages": [1, 3], "original_unchanged": True,
+                      "thumbnail_worker": "separate process", "thumbnail_count": 11,
+                      "file_drop": "Windows native callbacks verified for all 5 tools",
                       "tkdnd_version": app.file_drop.version})
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})

@@ -1,0 +1,248 @@
+{
+  "passed": true,
+  "version": "1.4.0",
+  "source_checkout": "PDF_LoveR",
+  "destination": "Program",
+  "method": "compare to pre-change Git HEAD and recorded Program SHA256, backup changed targets, copy and verify SHA256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "b0db27519a691dc28008230d97616a144fd8ed6d1d9d7716f6a56f3c8661989b"
+    },
+    {
+      "path": "TASKS.md",
+      "sha256": "16f17d179a23258ebada0e3f55f07c5371b3bfe95c78e7df44f253c36b2cb4f3"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.4.0/PDF_LoveR_1.4.0.exe",
+      "sha256": "c885e55cde266b9e81a38f0e75999eeff701dd26500b3954703b4aa3542f3665"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.4.0/PDF_LoveR_1.4.0_Portable.zip",
+      "sha256": "9c532443c1dbeeaa15ca3909123f4a51d721b1c99e0e5f45dd202773828061c2"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.4.0/PDF_LoveR_1.4.0_Setup.exe",
+      "sha256": "63326503f0c45613747770b0a007bf09ec07578bc4a74203d103a89718b05154"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.4.0/README_เริ่มใช้งาน.txt",
+      "sha256": "781ebb9a31cdf805cc6c21997b2260c0423c37ac8c2a90a668ae20e96596d299"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.4.0/SHA256SUMS.txt",
+      "sha256": "1c4143919477dee0bab7b861f8d15902125a72f14db95502b5e51086c778c422"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "a97938343d59274baacf74a1eb71584f7a7a440dcc68fcd6b30424f9b8df9fa2"
+    },
+    {
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "1d840305e5d6bbba86bc59dd54446d299a74d52bb840d6e1da15d136432be89a"
+    },
+    {
+      "path": "docs/DIAGRAMS.md",
+      "sha256": "0f3c1480a2b85e537204d1c8cf46920d3841c819aadbd03a3d56be1cd50ad511"
+    },
+    {
+      "path": "docs/PAGE_TOOLS.md",
+      "sha256": "0a91148f97efee5887ff58a9b135495513061fc45028ab879b43c2aa6b27eacd"
+    },
+    {
+      "path": "docs/RELEASE_1.4.0.md",
+      "sha256": "0f5b1eacc8e56cc57f3d39a9efe7283f2458b55937dfdea52173f1d7fa56a9e4"
+    },
+    {
+      "path": "docs/diagrams/application.architecture.json",
+      "sha256": "e758b5a51a8b96e2e00ac0876065e7ea01bef57bf1b045758e1c7f08723342af"
+    },
+    {
+      "path": "docs/diagrams/application.delivery.json",
+      "sha256": "d415fd6c2663e0e145d7c51d607b661b677c6b2d714188c247aad6af9e83331f"
+    },
+    {
+      "path": "docs/diagrams/application.html",
+      "sha256": "975166ff35fd6c449dfa004040b8fac63b4c4e0d6094451db10b13cc29ffa618"
+    },
+    {
+      "path": "docs/diagrams/maintenance.architecture.json",
+      "sha256": "1fffa4869970628cdbd96ecba290a7bbd00949df8c8cdd645e3146bb7b5961cd"
+    },
+    {
+      "path": "docs/diagrams/maintenance.delivery.json",
+      "sha256": "f2af3a973dd1eb04d3b5c8600eddf30e9b8d303e5df2f4a2880bbfa9bcb0dfe1"
+    },
+    {
+      "path": "docs/diagrams/maintenance.html",
+      "sha256": "c975ba10a5485cb998d18e458519cf5559ffd666d51d0902d6046d8a9690d142"
+    },
+    {
+      "path": "docs/diagrams/manifest.json",
+      "sha256": "5d4f8d3079cc88fb47982468831b33805975a0b9f63d7f67183f9adb48cab86f"
+    },
+    {
+      "path": "docs/diagrams/processing.delivery.json",
+      "sha256": "b33aea22024c61b3712408db7da3e5d40959fa7376a8833112b59f2b4482d2d4"
+    },
+    {
+      "path": "docs/diagrams/processing.html",
+      "sha256": "fd03fc893f46f60b6b4376e22340a21a407c87022b94cf001aaa135adf50b17d"
+    },
+    {
+      "path": "docs/diagrams/processing.workflow.json",
+      "sha256": "65c410e3337c43a59ebce8155423e2f6300f68ffd2766c310318afd4ef6b35c9"
+    },
+    {
+      "path": "docs/diagrams/review-1.4.0.json",
+      "sha256": "15c53c0297fa1f0565c7520d70cf3fa6b0b7990d4086c08f389468a0549cfa05"
+    },
+    {
+      "path": "docs/distribution-1.4.0.json",
+      "sha256": "611c6522570853b348b7a192b199d1ca8d30dab2f82017bb097dc2a69fe88501"
+    },
+    {
+      "path": "docs/drag-performance-1.4.0.json",
+      "sha256": "994d2110a6c657e6a0d2437b07370a55b9f63bd78d50205ab2556ea7500f3eb6"
+    },
+    {
+      "path": "docs/images/delete-pages.png",
+      "sha256": "84b78b03764cd4a5d7d8422e932b4214d0c2a0f30f1889e82b73c65edc9769d4"
+    },
+    {
+      "path": "docs/images/extract-pages.png",
+      "sha256": "80fe7ce70326424808e4594fe93fa3a1afed6a3e279e3d90c6067dc3976efd76"
+    },
+    {
+      "path": "docs/images/merge-dragging.png",
+      "sha256": "1ed37a612a82a14834fa5f7688590f3a4af07d899916bbd950a921766f975371"
+    },
+    {
+      "path": "docs/merge-verification.json",
+      "sha256": "d2d553f7143a92730ee46498549a460488bf1b366ff7dbd3ec8473a4d34eec3d"
+    },
+    {
+      "path": "docs/page-tools-verification.json",
+      "sha256": "bbe48adf4f7f3180fdb88c47f36035caae6442a27845c85c98ca2c7d8697f9e3"
+    },
+    {
+      "path": "docs/verification-1.4.0.json",
+      "sha256": "4bac152267818942ec3915846380ee2b308041b5f7040c3a58e33b01191f0055"
+    },
+    {
+      "path": "packaging/README_Distribution.txt",
+      "sha256": "193453d1db37e2a63bf4a2cd2d0d8165bc0b6201b54bbd7d4c38fd312a25aa81"
+    },
+    {
+      "path": "packaging/verify_distribution.ps1",
+      "sha256": "c5c342ee1435084396409cd049b3fb294bd3ccd61558e21e8903f7157b9826de"
+    },
+    {
+      "path": "packaging/version.iss",
+      "sha256": "f2b9dc0a12adb0ba8ca14612d51511d2d4216e7aeaf6569a5f61b426a024bf9c"
+    },
+    {
+      "path": "packaging/version_info.txt",
+      "sha256": "f6059acdbb8645251800944f804b56b4e98749cc1325bbe2233189f6a221b00b"
+    },
+    {
+      "path": "pdf_lover/catalog.py",
+      "sha256": "323e88c6e3255e0e9af6caf0a4b2d4013d86ab8a6708a90f6104dabec04e68f5"
+    },
+    {
+      "path": "pdf_lover/core/document.py",
+      "sha256": "dfe8f4d015175820b21c2b8d36c678e16d7f3aa02b1b058b5d2c1a57a3eb276a"
+    },
+    {
+      "path": "pdf_lover/core/pdf_output.py",
+      "sha256": "45f4c48ce19a8c3f08d042505f222c1d9703007ca00489db1bf09e7bf277ad89"
+    },
+    {
+      "path": "pdf_lover/diagnostics/self_test.py",
+      "sha256": "21bb63f49eaf4e9b321194e333535ac67b721232f720b6a6d838dcac6f1d6019"
+    },
+    {
+      "path": "pdf_lover/features/delete_pages/__init__.py",
+      "sha256": "f9711348133b94fc0a65aa615c685b8592cd5556b6ac90f559304f29a6a11bf4"
+    },
+    {
+      "path": "pdf_lover/features/delete_pages/page.py",
+      "sha256": "9cfc42c686d8141c8ec50705501b502b8d2e06a9722eabd08380019f27b9d1aa"
+    },
+    {
+      "path": "pdf_lover/features/delete_pages/service.py",
+      "sha256": "e7ad6d04e59eb83fac701192ecfdebe5946adc6615f404cba94923d31ee40ca0"
+    },
+    {
+      "path": "pdf_lover/features/extract/__init__.py",
+      "sha256": "46790e010b8c26f9753569bf4bab23f0074617914672790fd6633eeb8b2ac508"
+    },
+    {
+      "path": "pdf_lover/features/extract/page.py",
+      "sha256": "c032a1bccb20234ad61789255470a4dd53c431acca042cdc234ee945fc9d1b19"
+    },
+    {
+      "path": "pdf_lover/features/extract/service.py",
+      "sha256": "b75d9602acb2d0b68f2570295a0150bea3a7bf1ad32943e33394e7c7bd26549f"
+    },
+    {
+      "path": "pdf_lover/features/registry.py",
+      "sha256": "3cd591fe54a08b8eb4cc62dfcb700e00ad4a7c8ae416683387409031bdc3a4ad"
+    },
+    {
+      "path": "pdf_lover/features/selection_page.py",
+      "sha256": "004fbdd45e274835a69aaed69b824e80afedf1ac92403aec52fe4d070e228e9c"
+    },
+    {
+      "path": "pdf_lover/features/split/service.py",
+      "sha256": "830d160f18bfbf300a62be03a6a5bfa6ef004858134b34e643b72aa140977d70"
+    },
+    {
+      "path": "pdf_lover/ui/page_selector.py",
+      "sha256": "dbde56cfe41397a50cf9545a78adeccc90e9ffb4656e7b90b89a32a566b4ee9c"
+    },
+    {
+      "path": "pdf_lover/version.py",
+      "sha256": "448fd27475b5047a7188f43c6182dc238d127f87fc6a1e056620b44abc943ebb"
+    },
+    {
+      "path": "scripts/check.py",
+      "sha256": "0fc5aacf22aaa943feb7c443709a1f496011a8c2010be4ca7731c095c3d44657"
+    },
+    {
+      "path": "tests/ui/verify_home.py",
+      "sha256": "7f6020bd504f23f32c77b23ad6f73fd2902bee3837507f3d68cb2e322412d574"
+    },
+    {
+      "path": "tests/ui/verify_merge.py",
+      "sha256": "66b49e530ec9e719a80919bab6e9cc7b331897494e770078abf599e1b3c6cb7c"
+    },
+    {
+      "path": "tests/ui/verify_page_tools.py",
+      "sha256": "442591dfc5eb69c50e80fca2a9706f666d43dce4ff960ffa60dc4c35e627ec3b"
+    },
+    {
+      "path": "tests/unit/test_architecture.py",
+      "sha256": "22b01df026a0df079f52fb5a797e8636fc1226f63d4b0fbecf52ee618def021c"
+    },
+    {
+      "path": "tests/unit/test_page_tools.py",
+      "sha256": "1a78a3bfd1ce79a980f02a20dc0d79e591702fd64be360f34e9f0d97fe96c086"
+    }
+  ],
+  "preserved_isolated_changes": [
+    "packaging/RELEASE_NOTES.md"
+  ],
+  "release": "dist/PDF_LoveR_1.4.0",
+  "original_documents_and_older_distributions": "untouched",
+  "followup_sync": {
+    "reason": "Final whitespace-only normalization (compiled bytecode identical) and source-freshness receipt",
+    "files": [
+      "docs/diagrams/manifest.json",
+      "docs/verification-1.4.0.json",
+      "pdf_lover/core/document.py",
+      "tests/unit/test_page_tools.py"
+    ],
+    "guard": "Program bytes matched the first sync receipt before any followup copy"
+  }
+}

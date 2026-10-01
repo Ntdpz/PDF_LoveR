@@ -1,0 +1,72 @@
+{
+  "version": "1.4.0",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "e758b5a51a8b96e2e00ac0876065e7ea01bef57bf1b045758e1c7f08723342af",
+      "artifact_sha256": "975166ff35fd6c449dfa004040b8fac63b4c4e0d6094451db10b13cc29ffa618",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "5 ready features, shared SelectionPage and core/document/pdf_output match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "diagram_type": "workflow",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "65c410e3337c43a59ebce8155423e2f6300f68ffd2766c310318afd4ef6b35c9",
+      "artifact_sha256": "fd03fc893f46f60b6b4376e22340a21a407c87022b94cf001aaa135adf50b17d",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "5 ready features, shared SelectionPage and core/document/pdf_output match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "1fffa4869970628cdbd96ecba290a7bbd00949df8c8cdd645e3146bb7b5961cd",
+      "artifact_sha256": "c975ba10a5485cb998d18e458519cf5559ffd666d51d0902d6046d8a9690d142",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "5 ready features, shared SelectionPage and core/document/pdf_output match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

@@ -17,16 +17,18 @@ class PageSelector(ctk.CTkFrame):
     """Reusable selection, polled by the shell. No feature imports or timer chain."""
     VISIBLE = 4
 
-    def __init__(self, parent, app, changed):
+    def __init__(self, parent, app, changed, *, title="หน้าที่เลือก",
+                 hint="เช่น 1-3,5,8-10 · แต่ละช่วงเป็นหนึ่งไฟล์", select_initial=True):
         super().__init__(parent, fg_color=C["surface"], corner_radius=RADIUS["panel"])
         self.app, self.changed = app, changed
+        self.select_initial = select_initial
         self.info, self.offset = None, 0
         self.enabled = self.editable = True
         self.expression = tk.StringVar(value="")
         self.worker = PreviewWorker()
         self.cache, self.pending, self.images = {}, set(), {}
         self.grid_columnconfigure(0, weight=1)
-        app.label(self, "หน้าที่เลือก", font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["lg"], pady=S["xs"])
+        app.label(self, title, font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["lg"], pady=S["xs"])
         actions = ctk.CTkFrame(self, fg_color="transparent")
         actions.grid(row=0, column=1, padx=S["lg"])
         self.all_button = app.button(actions, "ทุกหน้า", self.select_all, width=88)
@@ -37,7 +39,7 @@ class PageSelector(ctk.CTkFrame):
                                 fg_color=C["surface"], text_color=C["ink"], border_color=C["rule"], border_width=2)
         self.entry.grid(row=1, column=0, columnspan=2, sticky="ew", padx=S["lg"])
         app._entry_focus(self.entry)
-        app.label(self, "เช่น 1-3,5,8-10 · แต่ละช่วงเป็นหนึ่งไฟล์", font=app.font_small, color="muted").grid(
+        app.label(self, hint, font=app.font_small, color="muted").grid(
             row=2, column=0, columnspan=2, sticky="w", padx=S["lg"], pady=S["sm"])
         strip = ctk.CTkFrame(self, fg_color="transparent")
         strip.grid(row=3, column=0, columnspan=2, sticky="ew", padx=S["md"])
@@ -68,7 +70,7 @@ class PageSelector(ctk.CTkFrame):
         self.info, self.offset = info, 0
         self.cache.clear()
         self.images.clear()
-        self.expression.set(f"1-{info.page_count}" if info else "")
+        self.expression.set(f"1-{info.page_count}" if info and self.select_initial else "")
         self.set_enabled(self.enabled, self.editable)
 
     def select_all(self):

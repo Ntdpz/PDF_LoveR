@@ -1,0 +1,100 @@
+{
+  "version": "1.4.0",
+  "passed": true,
+  "source_checks": {
+    "command": "python scripts/check.py",
+    "unit_tests": 50,
+    "native_ui_suites": [
+      "verify_png",
+      "verify_home",
+      "verify_merge",
+      "verify_merge_cards",
+      "verify_file_drop",
+      "verify_drag_performance",
+      "verify_split",
+      "verify_page_tools"
+    ],
+    "all_passed": true
+  },
+  "ready_tools": [
+    "pdf-png",
+    "merge",
+    "split",
+    "delete-pages",
+    "extract-pages"
+  ],
+  "catalogue_total": 34,
+  "remaining_tools": 29,
+  "page_tools": {
+    "extract_modes": [
+      "single PDF",
+      "one file per selected page"
+    ],
+    "delete_all_blocked": true,
+    "source_sha256_unchanged": true,
+    "independent_poppler_pixels": "match",
+    "retained_content": [
+      "text",
+      "graphics",
+      "rotation",
+      "forms",
+      "annotations",
+      "internal/external links",
+      "mapped bookmarks"
+    ],
+    "validation": [
+      "range syntax/order/duplicates/bounds",
+      "Windows filenames",
+      "existing paths and original aliases",
+      "source changes",
+      "staged publication and collision rollback"
+    ],
+    "preview": {
+      "visible_thumbnails": 4,
+      "cache_limit": 32,
+      "rows_per_view": 25,
+      "tested_document_pages": 240
+    },
+    "ui_visual_review": {
+      "passed": true,
+      "screenshots": [
+        "docs/images/extract-pages.png",
+        "docs/images/delete-pages.png"
+      ],
+      "tokens": "existing Cobalt",
+      "framework": "native CustomTkinter + ttk",
+      "minimum_size": [
+        920,
+        700
+      ],
+      "scaling": [
+        1,
+        1.25
+      ],
+      "correction": "Replaced unsupported arrow glyph in ttk with explicit Thai mapping text"
+    }
+  },
+  "drag_performance": "docs/drag-performance-1.4.0.json",
+  "archify_review": "docs/diagrams/review-1.4.0.json",
+  "packaged_distribution": "docs/distribution-1.4.0.json",
+  "program_sync": "docs/program-sync-1.4.0.json",
+  "limits": [
+    "Password PDFs unsupported",
+    "No general zoom/cancel yet",
+    "Document-level attachments and digital signatures not preserved",
+    "Windows 11 not separately tested"
+  ],
+  "publishing": "Local distribution only; no GitHub Release or repository visibility mutation",
+  "final_whitespace_normalization": [
+    {
+      "path": "pdf_lover/core/document.py",
+      "compiled_bytecode_identical": true,
+      "compiled_sha256": "ea237074939838f575999a1f70bcc2d2f1b86812e6965ec80823577e07446c65"
+    },
+    {
+      "path": "tests/unit/test_page_tools.py",
+      "compiled_bytecode_identical": true,
+      "compiled_sha256": "76e349762505dce0718328e6a024a1d39111c6f0472a350f0cc8662d825a81df"
+    }
+  ]
+}

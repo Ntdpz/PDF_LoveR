@@ -1,0 +1,144 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-02T06:27:14.4242300+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 11,
+    "file_drop": "Windows native callbacks verified for all 5 tools",
+    "tkdnd_version": "2.9.4"
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 11,
+    "file_drop": "Windows native callbacks verified for all 5 tools",
+    "tkdnd_version": "2.9.4"
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "separate process",
+    "thumbnail_count": 11,
+    "file_drop": "Windows native callbacks verified for all 5 tools",
+    "tkdnd_version": "2.9.4"
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.4.0",
+  "assets": [
+    {
+      "name": "PDF_LoveR_1.4.0.exe",
+      "bytes": 37852931,
+      "sha256": "c885e55cde266b9e81a38f0e75999eeff701dd26500b3954703b4aa3542f3665"
+    },
+    {
+      "name": "PDF_LoveR_1.4.0_Portable.zip",
+      "bytes": 38714637,
+      "sha256": "9c532443c1dbeeaa15ca3909123f4a51d721b1c99e0e5f45dd202773828061c2"
+    },
+    {
+      "name": "PDF_LoveR_1.4.0_Setup.exe",
+      "bytes": 28088106,
+      "sha256": "63326503f0c45613747770b0a007bf09ec07578bc4a74203d103a89718b05154"
+    },
+    {
+      "name": "README_เริ่มใช้งาน.txt",
+      "bytes": 5248,
+      "sha256": "781ebb9a31cdf805cc6c21997b2260c0423c37ac8c2a90a668ae20e96596d299"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 276,
+      "sha256": "1c4143919477dee0bab7b861f8d15902125a72f14db95502b5e51086c778c422"
+    }
+  ],
+  "sha256sums_verified": true,
+  "distribution": "dist/PDF_LoveR_1.4.0",
+  "limitations": [
+    "Windows 10 x64 tested; no separate Windows 11 host",
+    "Unsigned executables and installer"
+  ]
+}

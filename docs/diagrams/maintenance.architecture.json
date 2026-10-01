@@ -168,7 +168,7 @@
       "dot": "cyan",
       "title": "agent hook",
       "items": [
-        "JSON ต้องตรงกับ 3 ฟีเจอร์และ core เลือกหน้า",
+        "JSON ต้องตรงกับ 5 ฟีเจอร์และ core เลือกหน้า",
         "ตรวจ code/JSON/HTML จาก staged index ก่อน commit"
       ]
     },
@@ -184,7 +184,7 @@
       "dot": "amber",
       "title": "การแจกโปรแกรม",
       "items": [
-        "ตรวจ split ใน EXE, ZIP, installer; เก็บ SHA256",
+        "ตรวจทั้ง 5 เครื่องมือใน EXE / ZIP / installer",
         "ซิงก์ Program แบบตรวจ hash; repo คง Private"
       ]
     }
