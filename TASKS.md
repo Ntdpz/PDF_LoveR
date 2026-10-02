@@ -1,6 +1,6 @@
 # PDF LoveR — รายการงานพัฒนาต่อ
 
-ฐานปัจจุบัน: **1.5.0 · 34 เครื่องมือใน catalogue · พร้อมใช้ 6 · ยังต้องพัฒนา 28**
+ฐานปัจจุบัน: **1.5.1 · 34 เครื่องมือใน catalogue · พร้อมใช้ 6 · ยังต้องพัฒนา 28**
 
 ตรวจจาก `pdf_lover/catalog.py` และ `features/registry.py` รายการนี้เป็นแผนพัฒนา
 ลำดับด้านล่างเป็นข้อเสนอ ยังไม่กำหนดวันส่งหรือเปิดใช้เครื่องมือที่ยังไม่เสร็จ
@@ -16,7 +16,7 @@
 - [x] รับ PDF ที่ลากจาก Explorer, ปลายทางเริ่ม Documents, เก็บสถานะเมื่อสลับหน้าฟีเจอร์
 - [x] แยกโค้ดเป็น package/feature, shared UI, registry และ services ที่ไม่พึ่งหน้าจอ
 - [x] Worker queue, shared busy guard, การ์ดแบบ virtualized และ process ภาพตัวอย่าง
-- [x] ชุดแจก 1.5.0: EXE, Portable ZIP, installer และ SHA256
+- [x] ชุดแจก 1.5.1: EXE, Portable ZIP, installer และ SHA256
 - [x] แผนภาพ Archify, กติกา agent, freshness checker และ Git pre-commit hook
 - [x] การตรวจปัจจุบัน: 62 unit tests และ 9 ชุด native UI checks
 
@@ -195,3 +195,9 @@
 หมุน PDF พร้อมใช้แล้ว ผ่าน engine/native preflight ก่อนตั้ง ready=True รองรับหลายไฟล์และเลือกหน้าแยกต่อไฟล์
 PagePreview แสดงก่อน–หลังผ่าน spawned process; publish_staged/publication_error ใช้ร่วมกับแยกหน้าและลบหน้า
 จัดระเบียบ PDF เป็นชุดถัดไปที่แนะนำ; ระบบ preview ซูมและยกเลิกงานยังอยู่ในแผน
+
+## ปรับปุ่มหมุน · 1.5.1
+
+แทนปุ่มเลือกมุมสามปุ่มด้วยไอคอนหมุนซ้าย/ขวาแบบคำสั่ง กดซ้ำสะสมทีละ 90°
+เริ่มที่ทิศเดิม กดสี่ครั้งกลับทิศเดิมและยังไม่บันทึก มี tooltip สำหรับเมาส์/คีย์บอร์ด
+จำนวนเครื่องมือยังเป็น 6/34; จัดระเบียบ PDF ยังคงเป็นงานถัดไป

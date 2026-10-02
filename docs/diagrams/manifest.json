@@ -4,8 +4,8 @@
     ".githooks/pre-commit": "ce8630aa1a3a09021d71a7218d0210954a1ce8585f07a76628dd3bc9b8475abd",
     "AGENTS.md": "8c521e41128010a779b612a7a882ab7c6ba6193b1fc93cade38a9181b9aa3947",
     "CONTRIBUTING.md": "09b2e9fd827bc67c64cca288b4fc998cd1333e742138dc7047eb6d5b669131aa",
-    "docs/ARCHITECTURE.md": "2aaf16daadd790be8fe39761362977f0228708548e62c5f13872b712d9176d41",
-    "docs/DIAGRAMS.md": "08ee08cfee866273b99e2a1450652e636160b0d8cd6c1d288b61a116a728e83d",
+    "docs/ARCHITECTURE.md": "27221717383cb9a4f71147c4c111b56b79a62638e0694026242da11c159277a7",
+    "docs/DIAGRAMS.md": "a255c624256d0756b5713317e660c4c74b8a0072e4b38b4b1a69b7a18f0bf390",
     "main.py": "f9930803372107e6bcb6ee64bc1cbae518ccb9221adfc34e8dce74de2d0fd1b0",
     "packaging/PDF_to_PNG.iss": "26cb2ccc0b932ac690e46ee912f71d7274d38cd1b67c16722d127ab319d50ecb",
     "packaging/build_release.ps1": "32ee24b5b77b37d34acfb6c9d64706687e40a302486df5dc1191e31754dbac21",
@@ -14,7 +14,7 @@
     "packaging/prepare_version.py": "9a9d44f8f408b15d8762847778db16b595b09132d6781426bafa5f935edbbf64",
     "packaging/spec_common.py": "b61c0fbc552dbfbccc373431743c6cc006c3e6e3d78d601144bb55c722fe7aba",
     "packaging/verify_distribution.ps1": "71d91cbdfb3e171630c8038266b04cdc71a97a3045c71df6c12c7228d6333c22",
-    "packaging/version.iss": "44edb5d12696c82bdfb03c69214c3646ba0472519fdc194fd09f5ab846cb5e8b",
+    "packaging/version.iss": "b71ea289072fa972c51d718919ef8516df8e43c5473b8ebac5b1d1e079c282ec",
     "pdf_lover/__init__.py": "c1c4a7512266b8c4581b3b4780643c1b66028a4db7f3ab2e2eb9c95d7a730b25",
     "pdf_lover/__main__.py": "7f873c699d79cd83557c7a4c61c36309d6432fda17190d1734e186b770cc3b15",
     "pdf_lover/app.py": "f350e6f6ad841562454ee8a2ab9d64a34cac1a1d28936289e5f4899f3ef36a8e",
@@ -24,7 +24,7 @@
     "pdf_lover/core/page_selection.py": "3dce97f5087c51ea94e3bed97b59923f1c3e89e705f15110fa9250102443aac2",
     "pdf_lover/core/pdf_output.py": "f9f9230fdd563aa54e1a3cd962916a5a22e70736404493fa6c01b52c643a8137",
     "pdf_lover/diagnostics/__init__.py": "6981b71b4746b5488116bc8877e92c1f573ef609517be29c28fef5ed14aea536",
-    "pdf_lover/diagnostics/self_test.py": "f44b1c7324601abd0a63fef17b8df63846621e63237c6a7a6b55d25f8f3727fd",
+    "pdf_lover/diagnostics/self_test.py": "07438ba00d6cccd14c7744f16d93297ec2b5f3c99fe80a917a896afbefbf3757",
     "pdf_lover/features/__init__.py": "213d7c2983870f1e7ce58c250baaaa5e0b7c7ce896ec32aefd598435200f1da0",
     "pdf_lover/features/base.py": "ab6eefac716611e3d8ef8ef7d64e4ad1077c8e6009abdcba3d444de3bc206e5d",
     "pdf_lover/features/delete_pages/__init__.py": "f9711348133b94fc0a65aa615c685b8592cd5556b6ac90f559304f29a6a11bf4",
@@ -43,7 +43,7 @@
     "pdf_lover/features/png/service.py": "8dae5ae99e6cda72667df90f2ae56a08b14d4cf59bb289828b49a232eba21b6c",
     "pdf_lover/features/registry.py": "3e37d3106ecbf7581d48b803f1e5d7fd5e828de3e849fafacbe76393e6383074",
     "pdf_lover/features/rotate/__init__.py": "54560eac7d317abdb8a0c0f4af033181bb52ba26a6c7d81403cf9a5a5f0be67a",
-    "pdf_lover/features/rotate/page.py": "734bc86ad5aa450e076af386869457d8b17b505639ae2cf33aa51f2df2df3519",
+    "pdf_lover/features/rotate/page.py": "15f94ce89542ebc133463f5ad8a0d02c4acd162df40cc04d21c1abedd7c7df65",
     "pdf_lover/features/rotate/service.py": "ac7034008e9610ad7f91539c44c6a79e9bc04fd55ed8f8788752e1b79ffd43d6",
     "pdf_lover/features/selection_page.py": "c79ab28365fd389bd311935709460e72fa8bc49f5abacd813b08a7bc7178b4f8",
     "pdf_lover/features/split/__init__.py": "55b7b580d9b0ed8f88d609a9bfd2bd912e2a12464f2e9ecb538e7640b1347deb",
@@ -55,12 +55,13 @@
     "pdf_lover/ui/__init__.py": "19c41fe5e771a5a96e4ff685a1707750beb60a28ffebb2675a4d79dc6e75d30d",
     "pdf_lover/ui/controls.py": "cba9b82c7e32948450684044898cd6008fd4d5198be8a7d53e78fe43bdde721a",
     "pdf_lover/ui/home.py": "5194912326dafcf0c245dd17a6b0b732c1ab4b3cd6e3bb80f80718f52bb45041",
-    "pdf_lover/ui/icons.py": "cf69b9b053b09648ab0a620a5e8424718192470973d4a6ee2fc5e460e289a901",
+    "pdf_lover/ui/icons.py": "beb7b0bf018edb4ef7e966ea56ae7c6bcb36901a5edfc650dc78383cce00a84c",
     "pdf_lover/ui/page_preview.py": "8b9bf8f753b3aee4226a61ca163baed8596114fcb8f8f69a9c27cc654617924d",
     "pdf_lover/ui/page_selector.py": "220a83f60c2589de1d47df5805422795361523093a5f8e2a8fa3019027e93325",
     "pdf_lover/ui/pdf_previews.py": "9b98a32d575fd464f5d5cbd46018d4f9010e7e2c301007a2588307d9a95f7daa",
     "pdf_lover/ui/theme.py": "e1c24edc4270d4e731fc45d3181d8c28487891b30b411f2944681d1d0a81d0f7",
-    "pdf_lover/version.py": "a181c253deb9fa9a91b3a38ddf07f33fad265efce11d38345f11d5f22e1f686c",
+    "pdf_lover/ui/tooltip.py": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07",
+    "pdf_lover/version.py": "faf3a2f6ce8de8a9f5db8584fd401a2e2d205cc42184fced5ad71f14170910e3",
     "pyproject.toml": "ed660cc6c0b95676730cdc5044524e1730c362cfcf10dd9aa297ff883e6881ca",
     "requirements.txt": "6876beb4cdea0141ea89b9484fbc905e9c47388a9957afb72f3565534eef3f4c",
     "scripts/check.py": "a7f3b2cf2749df99dcf017e281505ac22a4f5c8d05d8cebf35cedfa00ca80d26",
@@ -76,7 +77,7 @@
     "tests/ui/verify_merge_cards.py": "f9112d692602cda3953b0120cd0ec37ca7ae64adf7e719b55cc2e0594c691a69",
     "tests/ui/verify_page_tools.py": "442591dfc5eb69c50e80fca2a9706f666d43dce4ff960ffa60dc4c35e627ec3b",
     "tests/ui/verify_png.py": "d68a43af40bfa1285c9f35310d31e6a5e1ab9b2e1bc111e57176bc7e4b342ca2",
-    "tests/ui/verify_rotate.py": "c8562971afc03d0dba3943e69622d48429dc3c64a5aaaa28a08974761dc1e7bf",
+    "tests/ui/verify_rotate.py": "c7a86e997b49db60a25c9f5a55e2377b396797265b7fafc7ead24bccf7d44382",
     "tests/ui/verify_split.py": "a5ec4de95a47cde9f45af7745d9ed24ca95e319e9822ec0eb855a75842559529",
     "tests/unit/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
     "tests/unit/test_architecture.py": "6321000b54026739bcf4f477cead2abdf9a82880b811e63a94c0b4e1d764382f",
@@ -93,15 +94,15 @@
       "type": "architecture",
       "specification": {
         "path": "docs/diagrams/application.architecture.json",
-        "canonical_sha256": "5640473ff12ba52b91016bbc2e5a15109af5f3419d4a05498f1e3094d199b39c",
-        "sha256": "aab71e7e09751d9df590ed6d08569c8b4ee31bf5d3c2ab04273efa42a40ef2bc",
-        "bytes": 6264
+        "canonical_sha256": "ec5f89dfff87819155b7915cf2fb09b03bd5b006091c7a2b74f77c1129cd1db6",
+        "sha256": "9ee670c9ce8615e9f4c8dcd0fdb11704efc368a85b9f7de022c8c6f36b21baab",
+        "bytes": 6252
       },
       "artifact": {
         "path": "docs/diagrams/application.html",
-        "canonical_sha256": "e43ff72266d34e48134909af27d88be2163f35d21752786914cc5a4de53a458f",
-        "sha256": "e43ff72266d34e48134909af27d88be2163f35d21752786914cc5a4de53a458f",
-        "bytes": 814817
+        "canonical_sha256": "79542206a9ec4dc8db292dfaacb5b532acb57bb3451244d73d19a1b3e13442ef",
+        "sha256": "79542206a9ec4dc8db292dfaacb5b532acb57bb3451244d73d19a1b3e13442ef",
+        "bytes": 814841
       }
     },
     {
@@ -109,15 +110,15 @@
       "type": "workflow",
       "specification": {
         "path": "docs/diagrams/processing.workflow.json",
-        "canonical_sha256": "16b68ef1a0cb818d7494db4c53943c39b1e5d98ad3b7d83703b7bb531a87f78c",
-        "sha256": "96d47edeabf824a750776b3af7e2846f23a95e4047c624418c040a21c6468c9d",
-        "bytes": 5730
+        "canonical_sha256": "9f136ae56590e8ba07bd845d0b2a20a0ee401258ee8bb88c48668f4b566d8fca",
+        "sha256": "c3e1227933128e6d889bc80e7d7f5ee82ac3202c079af5fca53b65335793d5c7",
+        "bytes": 5693
       },
       "artifact": {
         "path": "docs/diagrams/processing.html",
-        "canonical_sha256": "1d222b503468b770f6e7e5a86f40cd7dbebc2626c7baaa7cc1779dc7ab4957ef",
-        "sha256": "1d222b503468b770f6e7e5a86f40cd7dbebc2626c7baaa7cc1779dc7ab4957ef",
-        "bytes": 815199
+        "canonical_sha256": "386848fb918f6c80bc274d85b27abcdb6f502a52abaf6d9ed69ffddc3efe045e",
+        "sha256": "386848fb918f6c80bc274d85b27abcdb6f502a52abaf6d9ed69ffddc3efe045e",
+        "bytes": 815162
       }
     },
     {

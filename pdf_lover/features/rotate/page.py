@@ -17,6 +17,8 @@ from pdf_lover.core.page_selection import selected_pages, format_pages, PageSele
 from pdf_lover.platform.paths import documents_folder
 from pdf_lover.ui.page_selector import PageSelector
 from pdf_lover.ui.page_preview import PagePreview
+from pdf_lover.ui.icons import rotation_icon
+from pdf_lover.ui.tooltip import Tooltip
 from pdf_lover.ui.theme import COLORS as C, SPACE as S, FONTS
 
 
@@ -26,7 +28,7 @@ class RotatePage(ToolPage):
         self.inputs=[];self.expressions={};self.active=0
         self.plan=self.destination=self.preview_window=None
         self.events=queue.Queue();self.controls=[];self.switching=False
-        self.angle=tk.StringVar(value="90")
+        self.angle=tk.StringVar(value="0")
         self.suffix=tk.StringVar(value="_หมุน")
         self.output=tk.StringVar(value=str(documents_folder()))
         self.status=tk.StringVar(value="เพิ่ม PDF · เลือกเอกสารเพื่อเลือกหน้าแต่ละไฟล์")
@@ -67,12 +69,16 @@ class RotatePage(ToolPage):
         self.controls.extend((self.documents,self.remove_button,self.add_button))
         modes = ctk.CTkFrame(self, fg_color="transparent")
         modes.grid(row=2, column=0, sticky="ew", padx=S["2xl"], pady=S["xs"])
-        self.label(modes, "หมุนเพิ่ม", font=self.font_small).grid(row=0,column=0,padx=(0,S["sm"]))
-        self.angle_buttons=[]
-        for index,(angle,title) in enumerate(((90,"ขวา 90°"),(180,"กลับหัว 180°"),(270,"ซ้าย 90°")),1):
-            button=self.button(modes,title,lambda value=angle:self.angle.set(str(value)),width=140)
+        self.label(modes, "หมุน", font=self.font_small).grid(row=0,column=0,padx=(0,S["sm"]))
+        self.rotation_buttons=[];self.rotation_tooltips=[];self.rotation_images=[]
+        for index,(step,title) in enumerate(((-90,"หมุนซ้าย 90° · กดซ้ำได้"),(90,"หมุนขวา 90° · กดซ้ำได้")),1):
+            images=(rotation_icon(step>0),rotation_icon(step>0,color="muted"))
+            button=self.button(modes,"",lambda value=step:self.rotate_step(value),width=44,image=images[0])
             button.grid(row=0,column=index,padx=(0,S["sm"]))
-            self.angle_buttons.append(button);self.controls.append(button)
+            self.rotation_buttons.append(button);self.rotation_images.append(images);self.controls.append(button)
+            self.rotation_tooltips.append(Tooltip(button,title,self.font_small))
+        self.angle_label=self.label(modes,"",font=self.font_small,color="muted")
+        self.angle_label.grid(row=0,column=3,padx=S["sm"])
         self.names_button=self.button(modes,"ดูชื่อไฟล์ทั้งหมด…",self.show_names,width=190)
         self.names_button.grid(row=0,column=4,padx=S["sm"])
         self.controls.append(self.names_button)
@@ -126,17 +132,31 @@ class RotatePage(ToolPage):
         self.destination=None;self.open_button.configure(state="disabled");self.progress.set(0)
         self._close_names();self.refresh_plan()
 
+    def rotate_step(self,step):
+        """Each toolbar invocation adds one quarter turn to the batch selection."""
+        if self.busy or not self.inputs:return
+        self.angle.set(str((int(self.angle.get())+step)%360))
+
     def refresh_plan(self):
         self.plan=None
-        raw=self.angle.get();angle=int(raw) if raw in ("90","180","270") else 0
-        for button,value in zip(self.angle_buttons,(90,180,270)):
-            button.configure(fg_color=C["tint"] if angle==value else C["surface"],border_color=C["accent"] if angle==value else C["rule"])
+        raw=self.angle.get();angle=int(raw) if raw in ("0","90","180","270") else 0
+        orientation={0:"ทิศเดิม · กดครั้งละ 90°",90:"หมุนขวา 90° · กดซ้ำได้",
+                     180:"กลับหัว 180° · กดซ้ำได้",270:"หมุนซ้าย 90° · กดซ้ำได้"}
+        self.angle_label.configure(text=orientation[angle])
+        for button,images in zip(self.rotation_buttons,self.rotation_images):
+            enabled=bool(self.inputs) and not self.busy
+            button.configure(state="normal" if enabled else "disabled",image=images[0 if enabled else 1])
         self.selector.set_enabled(not self.busy)
         self.preview.set_enabled(not self.busy)
         if self.inputs:
             try:
                 if not self.output.get().strip():raise DocumentError("เลือกโฟลเดอร์ปลายทางก่อนบันทึก")
-                self.plan=build_plan(tuple(self.inputs),self.output.get(),self.suffix.get(),angle,dict(self.expressions))
+                candidate=build_plan(tuple(self.inputs),self.output.get(),self.suffix.get(),angle or 90,dict(self.expressions))
+                if angle:self.plan=candidate
+                else:
+                    self.status.set("ยังไม่หมุน · กดไอคอนหมุนซ้ายหรือขวาเพื่อดูผลลัพธ์")
+                    self.status_label.configure(text_color=C["muted"])
+                    return self._show_unrotated_preview()
                 count=sum(len(j.selected) for j in self.plan.jobs)
                 self.status.set(f"พร้อมหมุน {count} หน้า ใน {len(self.plan.jobs)} ไฟล์ · เก็บต้นฉบับไว้")
                 self.status_label.configure(text_color=C["muted"])
@@ -150,6 +170,12 @@ class RotatePage(ToolPage):
         self.start_button.configure(state="normal" if self.plan and not self.busy else "disabled")
         self.names_button.configure(state="normal" if self.plan and not self.busy else "disabled")
         self.remove_button.configure(state="normal" if self.inputs and not self.busy else "disabled")
+
+    def _show_unrotated_preview(self):
+        info=self.inputs[self.active]
+        self.preview.set_document(info,(),0,"ยังไม่มีการหมุน")
+        self.start_button.configure(state="disabled");self.names_button.configure(state="disabled")
+        self.remove_button.configure(state="normal" if not self.busy else "disabled")
 
     def _show_document(self):
         self.switching=True
@@ -174,7 +200,8 @@ class RotatePage(ToolPage):
             info=self.inputs.pop(self.active);self.expressions.pop(info.path,None)
             self.destination=None;self.open_button.configure(state="disabled")
             self._close_names();self._show_document()
-            if not self.inputs:self.status.set("เพิ่ม PDF · เลือกเอกสารเพื่อเลือกหน้าแต่ละไฟล์")
+            if not self.inputs:
+                self.angle.set("0");self.status.set("เพิ่ม PDF · เลือกเอกสารเพื่อเลือกหน้าแต่ละไฟล์")
 
     def add_files(self):
         if not self.busy:
@@ -204,9 +231,11 @@ class RotatePage(ToolPage):
             if folder:self.output.set(folder)
 
     def _lock(self,message):
+        for tooltip in self.rotation_tooltips:tooltip.hide()
         self._close_names();self.busy=True;self.status.set(message)
         self.status_label.configure(text_color=C["muted"])
         for control in self.controls:control.configure(state="disabled")
+        for button,images in zip(self.rotation_buttons,self.rotation_images):button.configure(image=images[1])
         self.selector.set_enabled(False);self.preview.set_enabled(False)
         self.start_button.configure(state="disabled");self.open_button.configure(state="disabled")
 
@@ -234,6 +263,9 @@ class RotatePage(ToolPage):
                 self.busy=False
                 for control in self.controls:control.configure(state="normal")
                 self.documents.configure(state="readonly")
+                for button,images in zip(self.rotation_buttons,self.rotation_images):
+                    enabled=bool(self.inputs)
+                    button.configure(state="normal" if enabled else "disabled",image=images[0 if enabled else 1])
                 if event[0]=="loaded":
                     self.inputs.extend(event[1])
                     for info in event[1]:self.expressions[info.path]=f"1-{info.page_count}"

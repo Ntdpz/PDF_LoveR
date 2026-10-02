@@ -66,3 +66,14 @@ def tool_icon(kind, color="muted", size=28):
         draw.line([(26, 29), (45, 29)], fill=ink, width=3)
         draw.line([(26, 37), (40, 37)], fill=ink, width=3)
     return ctk.CTkImage(light_image=image, dark_image=image, size=(size, size))
+
+
+def rotation_icon(clockwise=True, color="ink", size=24):
+    """Mirrored circular arrows for familiar Rotate Left / Rotate Right actions."""
+    image = Image.new("RGBA", (64, 64))
+    draw = ImageDraw.Draw(image)
+    draw.arc((10, 10, 54, 54), 50, 315, fill=C[color], width=4)
+    draw.line([(36, 16), (48, 16), (48, 4)], fill=C[color], width=4, joint="curve")
+    if not clockwise:
+        image = image.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    return ctk.CTkImage(light_image=image, dark_image=image, size=(size, size))

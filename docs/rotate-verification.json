@@ -5,6 +5,11 @@
     180,
     270
   ],
+  "icon_commands": true,
+  "repeated_quarter_turns": true,
+  "starts_unrotated": true,
+  "four_clicks_restore_original": true,
+  "keyboard_and_tooltips": true,
   "relative_to_existing_rotation": true,
   "multi_file": true,
   "per_document_selection": true,

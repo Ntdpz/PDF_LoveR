@@ -1,0 +1,158 @@
+{
+  "passed": true,
+  "version": "1.5.1",
+  "source_checkout": "PDF_LoveR",
+  "destination": "Program",
+  "method": "compare to pre-change Git HEAD and recorded Program SHA256, backup changed targets, copy and verify SHA256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "eb7985fc0ac98b8613110954313f4d7b95c29621a42306eec5b4116eb521f3ac"
+    },
+    {
+      "path": "TASKS.md",
+      "sha256": "6fe727424db951e9f1a1f473b361769e2b243e2fe701a3daab317be186ca84a5"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.1/PDF_LoveR_1.5.1.exe",
+      "sha256": "9211c38d3404ffda343a8b12e3b846b0fbe9616baea34fd8310edf87d6db5db8"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.1/PDF_LoveR_1.5.1_Portable.zip",
+      "sha256": "8cb64b2659818145f606132e671ade6459f747581f9c3a1214d6a02899452bb6"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.1/PDF_LoveR_1.5.1_Setup.exe",
+      "sha256": "880382badc9069bd7401dedeb2fa2643277d34286ca9378314b00d97d9739b63"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.1/README_เริ่มใช้งาน.txt",
+      "sha256": "a828a53dc0ac05911ce86ca6ef9835ec1bdb8b467329c210a99bfe4a7a5d6607"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.1/SHA256SUMS.txt",
+      "sha256": "b324a111a33a929eff058884e837708f9a6ff84c230776cb5683dcba5bbbe995"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "b0012530004a415c592cc6021b3aa72b7bfb3646469cc5c231066d1f9b6cb39e"
+    },
+    {
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "c3107ae65f810e305d6c24f01e86aa788c72222f790d266e25266221e9cbc56a"
+    },
+    {
+      "path": "docs/DIAGRAMS.md",
+      "sha256": "2febaa631e7dc799bfeb5c3e8528dd063b89c58ac3868ec5ef9b1add5b593bf0"
+    },
+    {
+      "path": "docs/RELEASE_1.5.1.md",
+      "sha256": "67229171eceb469ca045a59a86c832f5481cd38d648cfa1c8347c3efc749b65a"
+    },
+    {
+      "path": "docs/ROTATE.md",
+      "sha256": "20f9bca644b7c7e9c500c6eeb030ee4cf8070044e6c42c463ee6f14a14fd74c3"
+    },
+    {
+      "path": "docs/diagrams/application.architecture.json",
+      "sha256": "9ee670c9ce8615e9f4c8dcd0fdb11704efc368a85b9f7de022c8c6f36b21baab"
+    },
+    {
+      "path": "docs/diagrams/application.delivery.json",
+      "sha256": "04d8872e247e1269d17d5a7b830e4515e88876675890eaba62d35488361259c4"
+    },
+    {
+      "path": "docs/diagrams/application.html",
+      "sha256": "79542206a9ec4dc8db292dfaacb5b532acb57bb3451244d73d19a1b3e13442ef"
+    },
+    {
+      "path": "docs/diagrams/manifest.json",
+      "sha256": "7b778d5da67f1a1aef9ece631e6a9687db63dbf91cb6b783df0ab4231102595f"
+    },
+    {
+      "path": "docs/diagrams/processing.delivery.json",
+      "sha256": "832d6de532ccbfa823d7d02eca80cb42930ba9611b13336579ee9f369a15b668"
+    },
+    {
+      "path": "docs/diagrams/processing.html",
+      "sha256": "386848fb918f6c80bc274d85b27abcdb6f502a52abaf6d9ed69ffddc3efe045e"
+    },
+    {
+      "path": "docs/diagrams/processing.workflow.json",
+      "sha256": "c3e1227933128e6d889bc80e7d7f5ee82ac3202c079af5fca53b65335793d5c7"
+    },
+    {
+      "path": "docs/diagrams/review-1.5.1.json",
+      "sha256": "24a51ca70b171323ff6897863c93f7782bfccc52b993f797fafa9990d46bd22b"
+    },
+    {
+      "path": "docs/distribution-1.5.1.json",
+      "sha256": "5a26f461777edb98b3dd9cfdc1d7c85e199324b8766f4f56df89e9668052e856"
+    },
+    {
+      "path": "docs/drag-performance-1.5.1.json",
+      "sha256": "835c713aac5112f04e4f626a6821f9726e8e5cfd7205c92aad81b5436e75d9cb"
+    },
+    {
+      "path": "docs/images/merge-dragging.png",
+      "sha256": "1ed37a612a82a14834fa5f7688590f3a4af07d899916bbd950a921766f975371"
+    },
+    {
+      "path": "docs/images/rotate.png",
+      "sha256": "6b838dbf68bdb71263639de9e48cc8506998d089b4d566f1ca92cf98e6802709"
+    },
+    {
+      "path": "docs/images/rotation-toolbar-states.png",
+      "sha256": "1202b5d413b1ffab032be23f0d24af93c537146a00995c495db760aab60da106"
+    },
+    {
+      "path": "docs/rotate-verification.json",
+      "sha256": "1b9f9b6286fb5718db24e879f8a1e07a75cdc2493bfa0ff079bf3c772363313c"
+    },
+    {
+      "path": "docs/verification-1.5.1.json",
+      "sha256": "59413008258c94e7da83d122397f4bf9988c7cd5bf5702999a19c2121e20a980"
+    },
+    {
+      "path": "packaging/README_Distribution.txt",
+      "sha256": "5adc6cb0edf35588ce4a3433563e7652e05aa967c8e161936793d3da1cc78c4b"
+    },
+    {
+      "path": "packaging/version.iss",
+      "sha256": "a6c9f6ea0a798031c7fbeb8f8161b8a17c0610789056ca22275473ca23f8ca79"
+    },
+    {
+      "path": "packaging/version_info.txt",
+      "sha256": "d238cc7833566d0f6e1dfdae1d1f0657cc5ca8d51b2309ab39851133380c820d"
+    },
+    {
+      "path": "pdf_lover/diagnostics/self_test.py",
+      "sha256": "4add2b0680f35138f71fe6c388d82dd526dca529796a2f51edd6305fbd11585b"
+    },
+    {
+      "path": "pdf_lover/features/rotate/page.py",
+      "sha256": "2177935e3d3c4b0378807a3bfe50743ee274f4524db2fb70155470921631fcac"
+    },
+    {
+      "path": "pdf_lover/ui/icons.py",
+      "sha256": "48c17cad8955fad870eb04f7815081b5d7f2c7b4f858810c89e542021d793f17"
+    },
+    {
+      "path": "pdf_lover/ui/tooltip.py",
+      "sha256": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07"
+    },
+    {
+      "path": "pdf_lover/version.py",
+      "sha256": "d7892864e5022c53de03e1f003a46f087103e57daab78b3b6b0a51329bc18124"
+    },
+    {
+      "path": "tests/ui/verify_rotate.py",
+      "sha256": "a07500f669f57a9688f09284908535e4ff0915ba41d6595d08cffa1e8043b581"
+    }
+  ],
+  "preserved_isolated_changes": [
+    "packaging/RELEASE_NOTES.md"
+  ],
+  "release": "dist/PDF_LoveR_1.5.1",
+  "original_documents_and_older_distributions": "untouched"
+}

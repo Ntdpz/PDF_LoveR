@@ -29,6 +29,24 @@ def main():
         capture(root,'rotate-empty.png');page.start();assert not app.busy
         native_drop(root,[a,b]);pump(root,0.05);wait(root,app)
         assert len(page.inputs)==2 and [i.page_count for i in page.inputs]==[3,1]
+        assert page.angle.get()=='0' and page.plan is None and page.start_button.cget('state')=='disabled'
+        assert page.preview.keys()[0]==page.preview.keys()[1]
+        left,right=page.rotation_buttons
+        assert left.cget('text')==right.cget('text')==''
+        assert all(b.cget('image') for b in (left,right))
+        for value in ('90','180','270','0'):
+            right.invoke();assert page.angle.get()==value
+        assert page.plan is None and page.start_button.cget('state')=='disabled'
+        page.start();assert not app.busy and page.destination is None
+        for value in ('270','180','90','0'):
+            left.invoke();assert page.angle.get()==value
+        right.invoke();left.invoke();assert page.angle.get()=='0'
+        right._canvas.focus_force();pump(root)
+        right._canvas.event_generate('<Return>');pump(root,0.1);assert page.angle.get()=='90'
+        page.rotation_tooltips[1].schedule();pump(root,0.6)
+        assert page.rotation_tooltips[1].window and page.rotation_tooltips[1].window.winfo_viewable()
+        capture(root,'rotate-tooltip.png')
+        page.rotation_tooltips[1].hide();assert page.rotation_tooltips[1].timer is None
         page.output.set(str(folder));page.selector.expression.set('2')
         page.select_document(page.documents.cget('values')[1]);assert page.selector.expression.get()=='1-1'
         page.select_document(page.documents.cget('values')[0]);assert page.selector.expression.get()=='2'
@@ -36,8 +54,9 @@ def main():
         for bad in ('','0','4','2,1','1,1','2-1'):
             page.selector.expression.set(bad);page.start();assert page.plan is None and not app.busy
         page.selector.expression.set('2');page.preview.move(1)
+        left.invoke();assert page.angle.get()=='0'
         for angle in ('90','180','270'):
-            page.angle.set(angle)
+            right.invoke();assert page.angle.get()==angle
             deadline=time.monotonic()+15
             while not all(k in page.preview.cache and page.preview.cache[k] for k in page.preview.keys()) and time.monotonic()<deadline:pump(root,0.1)
             assert all(page.preview.cache[k] for k in page.preview.keys())
@@ -46,7 +65,8 @@ def main():
                 p=doc[1];p.set_rotation((p.rotation+int(angle))%360)
                 pix=p.get_pixmap(matrix=pymupdf.Matrix(min(240/p.rect.width,300/p.rect.height),min(240/p.rect.width,300/p.rect.height)),alpha=False,colorspace=pymupdf.csRGB)
                 assert page.preview.cache[page.preview.keys()[1]]==(pix.width,pix.height,pix.samples)
-        page.angle.set('90');page.show_names();pump(root)
+        right.invoke();right.invoke();assert page.angle.get()=='90'
+        page.show_names();pump(root)
         assert len(page.names_table.get_children())==2
         assert page.names_table.item(page.names_table.get_children()[0],'values')[1]=='2'
         capture(root,'rotate-names.png');page._close_names()
@@ -57,6 +77,9 @@ def main():
         assert app.show_home();assert app.show_tool('rotate') and app.active_page is page
         pump(root);capture(root,'rotate-preview.png')
         plan=page.plan;page.start();assert app.busy and not app.show_home()
+        old_angle=page.angle.get();right.invoke();page.rotate_step(-90)
+        assert page.angle.get()==old_angle and all(b.cget('state')=='disabled' for b in (left,right))
+        assert all(t.window is None and t.timer is None for t in page.rotation_tooltips)
         page.add_paths([a]);page.remove_document();assert len(page.inputs)==2
         wait(root,app);assert page.destination and page.progress.get()==1,page.status.get()
         assert target.read_bytes()==b'keep'
@@ -97,7 +120,8 @@ def main():
         assert all(hashlib.sha256(p.read_bytes()).digest()==h for p,h in hashes.items())
         workers=(page.selector.worker,page.preview.worker);dispose(root)
         assert all(w.process is None for w in workers);assert not errors,errors
-    report={'passed':True,'angles':[90,180,270],'relative_to_existing_rotation':True,'multi_file':True,'per_document_selection':True,'preview_pixels_match_engine':True,'poppler_pixel_equivalence':True,'originals_unchanged':True,'overwrite_guard':True,'bounded_preview':{'selector':4,'comparison_pending':2,'comparison_cache':12,'document_pages':240},'minimum_window':[920,700],'scaling':[1,1.25],'tk_errors':errors,'worker_cleanup':True}
+        assert all(t.window is None and t.timer is None for t in page.rotation_tooltips)
+    report={'passed':True,'angles':[90,180,270],'icon_commands':True,'repeated_quarter_turns':True,'starts_unrotated':True,'four_clicks_restore_original':True,'keyboard_and_tooltips':True,'relative_to_existing_rotation':True,'multi_file':True,'per_document_selection':True,'preview_pixels_match_engine':True,'poppler_pixel_equivalence':True,'originals_unchanged':True,'overwrite_guard':True,'bounded_preview':{'selector':4,'comparison_pending':2,'comparison_cache':12,'document_pages':240},'minimum_window':[920,700],'scaling':[1,1.25],'tk_errors':errors,'worker_cleanup':True}
     (ROOT/'docs/rotate-verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(json.dumps(report))
 
 

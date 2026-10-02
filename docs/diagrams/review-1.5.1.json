@@ -1,0 +1,75 @@
+{
+  "version": "1.5.1",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "9ee670c9ce8615e9f4c8dcd0fdb11704efc368a85b9f7de022c8c6f36b21baab",
+      "artifact_sha256": "79542206a9ec4dc8db292dfaacb5b532acb57bb3451244d73d19a1b3e13442ef",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code",
+        "Repeatable quarter-turn commands, shared icons/tooltips, main-thread tooltip lifecycle"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "diagram_type": "workflow",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "c3e1227933128e6d889bc80e7d7f5ee82ac3202c079af5fca53b65335793d5c7",
+      "artifact_sha256": "386848fb918f6c80bc274d85b27abcdb6f502a52abaf6d9ed69ffddc3efe045e",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code",
+        "Repeatable quarter-turn commands, shared icons/tooltips, main-thread tooltip lifecycle"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "07cd42b67b46ea2953e78ce83f849a4b17ba6c8152d4ed855d1ad5d1d609b978",
+      "artifact_sha256": "9d2dd025fe4b008ee26b8add8ad2d460e8e4b38660fa68dd90aa2175000b4f66",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code",
+        "Repeatable quarter-turn commands, shared icons/tooltips, main-thread tooltip lifecycle"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

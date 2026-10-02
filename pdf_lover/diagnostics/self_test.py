@@ -197,6 +197,17 @@ def run(root, app_class, report):
             assert len(page.inputs) == 2 and not app.busy, "Rotation inspection timeout"
             page.output.set(str(folder))
             page.selector.expression.set("2")
+            assert page.angle.get() == "0" and page.plan is None
+            left, right = page.rotation_buttons
+            for expected in ("90", "180", "270", "0"):
+                right.invoke()
+                assert page.angle.get() == expected
+            assert page.plan is None
+            left.invoke()
+            assert page.angle.get() == "270"
+            right.invoke()
+            assert page.angle.get() == "0"
+            right.invoke()
             page.preview.move(1)
             assert [j.selected for j in page.plan.jobs] == [(2,), (1, 2)]
             page.start()
@@ -229,7 +240,7 @@ def run(root, app_class, report):
                       "delete_retained_pages": [1, 3], "original_unchanged": True,
                       "thumbnail_worker": "separate process", "thumbnail_count": thumbnails,
                       "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],
-                      "rotation_angle": 90, "rotation_preview": "verified",
+                      "rotation_angle": 90, "rotation_icon_cycle": "verified", "rotation_preview": "verified",
                       "file_drop": "Windows native callbacks verified for all 6 tools",
                       "tkdnd_version": app.file_drop.version})
         except Exception as error:

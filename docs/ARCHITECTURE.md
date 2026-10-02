@@ -188,3 +188,14 @@ bitmap cannot provide exact PDF pixel equivalence because raster edge sampling
 and no-rotate annotations differ. Source content is also checked after restoring
 its original orientation. Password PDFs and preserving digital signature validity
 are unsupported; general zoom/cancellation remain planned.
+
+### Rotation command toolbar
+
+The RotatePage uses shared outline Rotate Left/Right icons and native delayed
+tooltips. Each command adds -90/+90 to the batch selection modulo 360, starting
+at zero. Two clicks flip orientation, four restore it; zero shows identical
+before/after previews and disables publication. Selections remain per-document
+and the cumulative angle applies to the selected pages across the batch.
+Toolbar commands support mouse and Enter/Space through shared UIControls.
+They are disabled during inspection/export; tooltip timers/windows close on
+leave, focus loss, processing and widget destruction. PDF services are unchanged.
