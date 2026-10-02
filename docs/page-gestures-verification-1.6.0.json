@@ -1,0 +1,31 @@
+{
+  "version": "1.6.0",
+  "passed": true,
+  "hardware": "Windows-10-10.0.19045-SP0",
+  "scope": "Windows development host/source app; synthetic text PDFs; not physical 4-GiB/HDD certification",
+  "checks": [
+    "Shift-click forward/reverse/shrinking anchor",
+    "Ctrl-click toggle",
+    "Ctrl+Shift additive range",
+    "Shift-arrow extending/shrinking range",
+    "Ctrl+A",
+    "marquee replace/Ctrl toggle/Shift add",
+    "one plan update on release",
+    "Escape restores selection",
+    "busy/readonly guards",
+    "edge auto-scroll/offscreen selection/outside release",
+    "hide/resize/document/focus loss cancels grab and timers",
+    "four page tools",
+    "exported pages match selection and source hash unchanged"
+  ],
+  "document_pages": 1000,
+  "burst_events": 1000,
+  "burst_dispatch_ms": 44.84,
+  "max_frame_ms": 11.14,
+  "max_heartbeat_gap_ms": 22.69,
+  "visible_limit": 24,
+  "shared_request_limit": 16,
+  "cache_bytes": 6291456,
+  "tk_errors": [],
+  "cleanup": true
+}

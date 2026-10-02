@@ -23,8 +23,8 @@ from pdf_lover.ui.theme import COLORS as C, FONTS, SPACE as S
 
 class MergeCards(ctk.CTkFrame):
     GAP = 12
-    HEIGHT = 180
-    MIN_WIDTH = 176
+    HEIGHT = 240
+    MIN_WIDTH = 220
     MAX_PREVIEWS = 48
     HINT = "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป"
     LIFT_SECONDS = 0.12
@@ -201,7 +201,7 @@ class MergeCards(ctk.CTkFrame):
                                              width=max(1, round(2 * scale)), tags="card")
         self.canvas.create_text(x1 + round(12 * scale), y1 + round(22 * scale), text=str(index + 1),
                                 anchor="w", fill=C["accent"], font=self.font_bold, tags="card")
-        close_size = round(40 * scale)
+        close_size = round(44 * scale)
         cx, cy = x2 - close_size - round(4 * scale), y1 + round(4 * scale)
         self.canvas.create_rectangle(cx, cy, cx + close_size, cy + close_size,
                                      fill=C["surface"], outline=C["rule"], tags="card")
@@ -211,16 +211,16 @@ class MergeCards(ctk.CTkFrame):
         key = self._preview_key(path)
         image = self._photo(key) if key in self.cache else None
         if image is not None:
-            self.canvas.create_image((x1 + x2) / 2, y1 + round(87 * scale), image=image, tags="card")
+            self.canvas.create_image((x1 + x2) / 2, y1 + round(112 * scale), image=image, tags="card")
         else:
-            self.canvas.create_text((x1 + x2) / 2, y1 + round(87 * scale),
+            self.canvas.create_text((x1 + x2) / 2, y1 + round(112 * scale),
                                     text="กำลังโหลดภาพ…" if key in self.pending else "ไม่มีภาพตัวอย่าง",
                                     fill=C["muted"], font=self.font_small, tags="card")
         width = self.card_width - round(28 * scale)
         name = self._fit_name(path.name, width)
-        self.canvas.create_text(x1 + round(12 * scale), y1 + round(142 * scale), text=name,
+        self.canvas.create_text(x1 + round(12 * scale), y1 + round(192 * scale), text=name,
                                 anchor="w", fill=C["ink"], font=self.font_bold, tags="card")
-        self.canvas.create_text(x1 + round(12 * scale), y1 + round(163 * scale),
+        self.canvas.create_text(x1 + round(12 * scale), y1 + round(218 * scale),
                                 text=f"{self.page.page_counts[path]} หน้า", anchor="w", fill=C["muted"],
                                 font=self.font_small, tags="card")
         self.visible[index] = rect
@@ -256,7 +256,7 @@ class MergeCards(ctk.CTkFrame):
             if preview is None:
                 return None
             scaled = preview.copy()
-            scaled.thumbnail((self.card_width - round(32 * self.scaling), round(74 * self.scaling)),
+            scaled.thumbnail((self.card_width - round(32 * self.scaling), round(132 * self.scaling)),
                              Image.Resampling.LANCZOS)
             self.photos[key] = ImageTk.PhotoImage(scaled, master=self.canvas)
             while len(self.photos) > self.MAX_PREVIEWS:

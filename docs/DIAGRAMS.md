@@ -77,3 +77,7 @@ hook ไม่ได้แปลความหมายจากโค้ดใ
   receipt ของ visual-check จะยังระบุ `visualReview: pending` ตามสัญญาของ Archify
 - ล้าง cache และ build ชั่วคราวด้วย `python scripts/clean_workspace.py` (dry run)
   แล้ว `--apply`; ไม่ลบชุดแจกใน `dist/` หรือเครื่องมือ Inno Setup
+
+รุ่น 1.6.0: Workbench ร่วมใน ui/workbench.py; หน้าแรกเริ่มเฉพาะพร้อมใช้
+ตารางหน้า 180×200 fit, ภาพหมุน 320×400 fit แบบแท็บ; งบ cache/คิว/process เท่าเดิม
+ตรวจ geometry และภาพจริงทั้ง 6 เครื่องมือที่ 920/1080/1440 logical px และ 100%/125%

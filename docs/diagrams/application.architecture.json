@@ -56,7 +56,7 @@
       "id": "home",
       "type": "frontend",
       "label": "หน้าเลือกเครื่องมือ",
-      "sublabel": "ค้นหา · หมวดหมู่ · สถานะพร้อมใช้",
+      "sublabel": "เริ่มที่ 6 พร้อมใช้ · catalogue แยกชัด",
       "pos": [
         60,
         190
@@ -98,7 +98,7 @@
       "id": "ui",
       "type": "frontend",
       "label": "องค์ประกอบ UI ร่วม",
-      "sublabel": "controls · icons · tooltips · theme",
+      "sublabel": "Workbench · controls · Thai fonts",
       "pos": [
         60,
         340
@@ -239,8 +239,8 @@
       "dot": "cyan",
       "title": "หน้าจอและเส้นทาง",
       "items": [
-        "Tk บน main thread; import ฟีเจอร์เมื่อใช้",
-        "ลากครอบ: เฉพาะ viewport; ปล่อยเพื่อยืนยัน"
+        "Tk บน main thread; Workbench เลือก/ตรวจ/บันทึก",
+        "180×200 ภาพหน้า; cache ≤6 MiB; viewport ≤24"
       ]
     },
     {
@@ -255,8 +255,8 @@
       "dot": "amber",
       "title": "ขอบเขตปัจจุบัน",
       "items": [
-        "6 ฟีเจอร์พร้อมใช้; อีก 28 เครื่องมืออยู่ในแผน",
-        "หมุนซ้าย/ขวากดซ้ำได้ · ภาพก่อน–หลัง"
+        "6 พร้อมใช้; catalogue 28 รายการยังอยู่ในแผน",
+        "หมุนทีละ 90° · แท็บภาพ 320×400 fit"
       ]
     }
   ]

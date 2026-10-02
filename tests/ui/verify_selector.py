@@ -73,7 +73,7 @@ def main():
         assert 1000 in selector.visible and selector.focused==1000
         for key in selector.worker.required:
             with pymupdf.open(large) as doc:
-                p=doc[key[3]];factor=min(144/p.rect.width,112/p.rect.height)
+                p=doc[key[3]];factor=min(180/p.rect.width,200/p.rect.height)
                 pix=p.get_pixmap(matrix=pymupdf.Matrix(factor,factor),alpha=False,colorspace=pymupdf.csRGB)
                 assert selector.cache[key]==(pix.width,pix.height,pix.samples)
         selector.expression.set('1,1000');selector.set_enabled(False)

@@ -13,6 +13,7 @@ class ToolPage(ctk.CTkFrame, UIControls, ABC):
         self.font_body = app.font_body
         self.font_small = app.font_small
         self.font_bold = app.font_bold
+        self.font_title = app.font_title
         self.page_visible = False
 
     def set_active(self, active):

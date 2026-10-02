@@ -18,8 +18,8 @@ from pdf_lover.ui.theme import COLORS as C, SPACE as S, RADIUS
 class PageSelector(ctk.CTkFrame):
     """Reusable selection, polled by the shell. No feature imports or timer chain."""
     VISIBLE = 24
-    MIN_WIDTH = 164
-    ROW_HEIGHT = 152
+    MIN_WIDTH = 180
+    ROW_HEIGHT = 240
 
     def __init__(self, parent, app, changed, *, title="หน้าที่เลือก",
                  hint="เช่น 1-3,5,8-10 · แต่ละช่วงเป็นหนึ่งไฟล์", select_initial=True):
@@ -43,9 +43,9 @@ class PageSelector(ctk.CTkFrame):
         self.draw_timer = None
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(3, weight=1)
-        app.label(self, title, font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["lg"], pady=S["xs"])
+        app.label(self, title, font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["md"], pady=S["xs"])
         actions = ctk.CTkFrame(self, fg_color="transparent")
-        actions.grid(row=0, column=1, padx=S["lg"])
+        actions.grid(row=0, column=1, padx=S["md"])
         self.all_button = app.button(actions, "ทุกหน้า", self.select_all, width=88)
         self.all_button.pack(side="left", padx=S["xs"])
         self.none_button = app.button(actions, "ล้าง", lambda: self.expression.set(""), width=60)
@@ -54,8 +54,8 @@ class PageSelector(ctk.CTkFrame):
                                 fg_color=C["surface"], text_color=C["ink"], border_color=C["rule"], border_width=2)
         self.entry.grid(row=1, column=0, columnspan=2, sticky="ew", padx=S["lg"])
         app._entry_focus(self.entry)
-        app.label(self, hint, font=app.font_small, color="muted").grid(
-            row=2, column=0, columnspan=2, sticky="w", padx=S["lg"], pady=S["sm"])
+        self.hint_label = app.label(self, hint, font=app.font_small, color="muted")
+        self.hint_label.grid(row=2, column=0, columnspan=2, sticky="w", padx=S["lg"], pady=S["xs"])
         viewport = ctk.CTkFrame(self, fg_color="transparent")
         viewport.grid(row=3, column=0, columnspan=2, sticky="nsew", padx=S["lg"])
         viewport.grid_columnconfigure(0, weight=1)
@@ -183,13 +183,14 @@ class PageSelector(ctk.CTkFrame):
         width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
         columns = max(1, min(4, int(width / (self.MIN_WIDTH * scale))))
         # At most six intersecting rows even on tall displays; never build all pages.
-        step_y = max(self.ROW_HEIGHT * scale, math.ceil(height / 5))
+        step_y = max(min(self.ROW_HEIGHT * scale, max(160 * scale, height)), math.ceil(height / 5))
         old_page = self.offset
         changed = columns != self.columns or step_y != self.step_y
-        if scale != self.scaling:
+        if scale != self.scaling or changed or width != getattr(self, "image_width", None):
             self.canvas.delete("all")
             self.images.clear()
         self.columns, self.step_y, self.scaling = columns, step_y, scale
+        self.image_width = width
         count = self.info.page_count if self.info else 0
         total = max(height, math.ceil(count / columns) * step_y)
         self.canvas.configure(scrollregion=(0, 0, width, total), yscrollincrement=max(1, int(32 * scale)))
@@ -378,7 +379,7 @@ class PageSelector(ctk.CTkFrame):
         return "break"
 
     def _key(self, page):
-        return (self.info.path, self.info.signature[3], self.info.signature[2], page - 1, 0, 144, 112)
+        return (self.info.path, self.info.signature[3], self.info.signature[2], page - 1, 0, 180, 200)
 
     def render(self):
         if not self.preview_active:
@@ -420,7 +421,7 @@ class PageSelector(ctk.CTkFrame):
             if payload and key not in self.images:
                 pixel_width, pixel_height, samples = payload
                 image = Image.frombytes("RGB", (pixel_width, pixel_height), samples)
-                factor = min(112 * scale / pixel_width, 100 * scale / pixel_height)
+                factor = min((cell_width - 24 * scale) / pixel_width, (self.step_y - 48 * scale) / pixel_height)
                 self.images[key] = ImageTk.PhotoImage(image.resize((max(1, int(pixel_width * factor)), max(1, int(pixel_height * factor)))), master=self.canvas)
             label = f"{'✓ ' if chosen else ''}หน้า {page}"
             if key not in self.cache:
@@ -440,7 +441,7 @@ class PageSelector(ctk.CTkFrame):
                 self.canvas.create_rectangle(x1 + 3 * scale, y1 + 3 * scale, x2 - 3 * scale, y2 - 3 * scale,
                                              outline=C["focus"], width=2 * scale)
             if key in self.images:
-                self.canvas.create_image((x1 + x2) / 2, y1 + 56 * scale, image=self.images[key])
+                self.canvas.create_image((x1 + x2) / 2, y1 + (self.step_y - 40 * scale) / 2, image=self.images[key])
             self.canvas.create_text((x1 + x2) / 2, y2 - 22 * scale, text=label, font=font,
                                     fill=C["ink"] if self.enabled else C["muted"], justify="center")
         if not count:

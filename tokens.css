@@ -29,9 +29,9 @@
   --space-2xl: 32px;
   --space-3xl: 40px;
   --radius-control: 8px;
-  --radius-panel: 16px;
-  --text-sm: 14px;
-  --text-md: 16px;
+  --radius-panel: 10px;
+  --text-sm: 16px;
+  --text-md: 18px;
   --text-display: 28px;
   --rule-width: 1px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

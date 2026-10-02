@@ -67,6 +67,7 @@ def main():
     assert app.route == 'home' and app.home.winfo_ismapped()
     assert not app.png.winfo_ismapped()
     capture(root, 'home-default.png')
+    app.home.toggle_ready()
     app.home.select_category('security')
     assert len(app.home.visible_tools) == 5
     assert all(tool.category == 'security' for tool in app.home.visible_tools)
@@ -79,6 +80,7 @@ def main():
     ImageGrab.grab(window=hwnd).save(ARTIFACTS / 'home-planned.png')
     app.home.close_detail()
     app.home.reset_filters()
+    app.home.toggle_ready()
     app.home.query.set('Excel')
     pump(root)
     assert {tool.id for tool in app.home.visible_tools} == {'excel-pdf', 'pdf-excel'}
@@ -88,7 +90,7 @@ def main():
     assert not app.home.visible_tools
     capture(root, 'home-empty.png')
     app.home.reset_filters()
-    app.home.toggle_ready()
+    assert app.home.ready_only
     assert [tool.id for tool in app.home.visible_tools] == ['pdf-png', 'merge', 'split', 'delete-pages', 'extract-pages', 'rotate']
     assert not app.show_tool('unknown')
     with tempfile.TemporaryDirectory(prefix='pdf-lover-navigation-') as sandbox:

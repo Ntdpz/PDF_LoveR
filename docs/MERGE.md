@@ -60,3 +60,10 @@ python tests/ui/verify_merge.py
 ผลการตรวจล่าสุดอยู่ใน [merge-verification.json](merge-verification.json)
 
 ตรวจการลากจริงด้วย `python tests/ui/verify_merge_cards.py` (Windows)
+
+
+## หน้าจอ 1.6.0
+
+การ์ดสูง 240 logical px และภาพหน้าแรกใหญ่ขึ้น ปุ่มล้างรายการอยู่ข้างเพิ่ม PDF รองรับ viewport หลายแถวเดิม มีการตรวจ empty state หลังเปลี่ยน scaling เพื่อไม่ให้ข้อความว่างทับเอกสารที่โหลดแล้ว
+
+[ภาพก่อน–หลังและขอบเขตการตรวจ](REDESIGN.md)

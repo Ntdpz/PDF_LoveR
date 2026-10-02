@@ -17,7 +17,7 @@ class HomePage(ctk.CTkFrame):
         super().__init__(parent, fg_color=C["paper"], corner_radius=0)
         self.app = app
         self.category = "all"
-        self.ready_only = False
+        self.ready_only = True
         self.query = tk.StringVar()
         self.columns = 2
         self.cards = []
@@ -35,7 +35,7 @@ class HomePage(ctk.CTkFrame):
         return self.app.label(parent, text, **kwargs)
 
     def _build_sidebar(self):
-        self.sidebar = ctk.CTkFrame(self, width=220, corner_radius=0, fg_color=C["surface"])
+        self.sidebar = ctk.CTkFrame(self, width=196, corner_radius=0, fg_color=C["surface"])
         self.sidebar.grid(row=0, column=0, sticky="nsew")
         self.sidebar.grid_propagate(False)
         self.sidebar.grid_columnconfigure(0, weight=1)
@@ -43,9 +43,9 @@ class HomePage(ctk.CTkFrame):
         identity = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         identity.grid(row=0, column=0, sticky="ew", padx=S["xl"], pady=(S["2xl"], S["xl"]))
         self.label(identity, "PDF LoveR", font=ctk.CTkFont(family=FONTS["display"], size=23, weight="bold")).pack(anchor="w")
-        self.label(identity, "พื้นที่ทำงานเอกสารของคุณ", font=self.app.font_small, color="muted").pack(anchor="w", pady=(S["xs"], 0))
+        self.label(identity, "งานเอกสารของคุณ", font=self.app.font_small, color="muted").pack(anchor="w", pady=(S["xs"], 0))
         self.nav_buttons = {}
-        self.all_button = self.app.button(self.sidebar, "เครื่องมือทั้งหมด", lambda: self.select_category("all"), width=188, anchor="w")
+        self.all_button = self.app.button(self.sidebar, "เครื่องมือทั้งหมด", lambda: self.select_category("all"), width=164, anchor="w")
         self.all_button.grid(row=1, column=0, padx=S["lg"], sticky="ew")
         self.nav_buttons["all"] = self.all_button
         self.label(self.sidebar, "หมวดเครื่องมือ", color="muted", font=self.app.font_small).grid(row=2, column=0, sticky="w", padx=S["xl"], pady=(S["xl"], S["sm"]))
@@ -54,7 +54,7 @@ class HomePage(ctk.CTkFrame):
         navigation.grid_columnconfigure(0, weight=1)
         for row, category in enumerate(CATEGORIES):
             button = self.app.button(navigation, category.title, lambda key=category.id: self.select_category(key),
-                                     width=188, anchor="w", image=tool_icon(category.icon, size=20), compound="left")
+                                     width=164, anchor="w", image=tool_icon(category.icon, size=20), compound="left")
             button.grid(row=row, column=0, sticky="ew", pady=(0, S["xs"]))
             self.nav_buttons[category.id] = button
         foot = ctk.CTkFrame(self.sidebar, fg_color="transparent")
@@ -70,7 +70,7 @@ class HomePage(ctk.CTkFrame):
         header = ctk.CTkFrame(main, fg_color="transparent")
         header.grid(row=0, column=0, sticky="ew")
         header.grid_columnconfigure(0, weight=1)
-        self.label(header, "ทุกงาน PDF เริ่มที่นี่", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).grid(row=0, column=0, sticky="w")
+        self.label(header, "เลือกงานที่ต้องการทำ", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).grid(row=0, column=0, sticky="w")
         self.label(header, "เลือกเครื่องมือ หรือวาง PDF เพื่อเปิดหน้ารวมไฟล์", color="muted").grid(row=1, column=0, sticky="w", pady=(S["xs"], 0))
         self.label(header, "Windows", color="muted", font=self.app.font_small).grid(row=0, column=1, sticky="e")
         search = ctk.CTkFrame(main, fg_color="transparent")
@@ -91,28 +91,19 @@ class HomePage(ctk.CTkFrame):
                                            scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
         self.scroll.grid(row=2, column=0, sticky="nsew")
         self.scroll.grid_columnconfigure(0, weight=1)
-        self.feature = ctk.CTkFrame(self.scroll, fg_color=C["tint"], corner_radius=RADIUS["panel"])
-        self.feature.grid(row=0, column=0, sticky="ew", pady=(0, S["xl"]))
-        self.feature.grid_columnconfigure(0, weight=1)
-        self.label(self.feature, "PDF เป็น PNG", font=ctk.CTkFont(family=FONTS["body"], size=23, weight="bold"),
-                   image=tool_icon("image", "accent", 32), compound="left").grid(row=0, column=0, sticky="w", padx=S["xl"], pady=(S["lg"], S["xs"]))
-        self.label(self.feature, "ทุกหน้าเป็นภาพ พร้อมจัดเก็บในโฟลเดอร์ของแต่ละเอกสาร", color="muted").grid(row=1, column=0, columnspan=2, sticky="w", padx=S["xl"])
-        self.label(self.feature, "พร้อมใช้ · หลายไฟล์ · 36–600 DPI · ออฟไลน์", font=self.app.font_small, color="muted").grid(row=2, column=0, sticky="w", padx=S["xl"], pady=(S["sm"], S["lg"]))
-        self.feature_button = self.app.button(self.feature, "เปิดเครื่องมือ", lambda: self.app.show_tool("pdf-png"), primary=True, width=144)
-        self.feature_button.grid(row=2, column=1, padx=(S["sm"], S["xl"]), pady=(S["sm"], S["lg"]))
         toolbar = ctk.CTkFrame(self.scroll, fg_color="transparent")
         toolbar.grid(row=1, column=0, sticky="ew", pady=(0, S["sm"]))
         toolbar.grid_columnconfigure(0, weight=1)
         self.section_title = self.label(toolbar, "เครื่องมือทั้งหมด", font=self.app.font_bold)
         self.section_title.grid(row=0, column=0, sticky="w")
-        self.ready_button = self.app.button(toolbar, "เฉพาะที่พร้อมใช้", self.toggle_ready, width=160)
+        self.ready_button = self.app.button(toolbar, "ดูเครื่องมือในแผนด้วย", self.toggle_ready, width=220)
         self.ready_button.grid(row=0, column=1)
         self.result_label = self.label(self.scroll, "", font=self.app.font_small, color="muted")
         self.result_label.grid(row=2, column=0, sticky="w", pady=(0, S["lg"]))
         self.grid_area = ctk.CTkFrame(self.scroll, fg_color="transparent", corner_radius=0)
         self.grid_area.grid(row=3, column=0, sticky="ew")
         self.scroll._parent_canvas.bind("<Configure>", self._on_resize, add="+")
-        self.label(main, "ฟีเจอร์ “เร็ว ๆ นี้” ยังไม่เปิดใช้งาน · เลือกดูรายละเอียดได้", font=self.app.font_small, color="muted").grid(row=3, column=0, sticky="w", pady=(S["lg"], 0))
+        self.label(main, "เครื่องมือในแผนยังไม่พร้อมใช้ · ใช้งานได้เฉพาะรายการที่ระบุพร้อมใช้", font=self.app.font_small, color="muted").grid(row=3, column=0, sticky="w", pady=(S["lg"], 0))
 
     def _schedule_filter(self, *_):
         if self.search_entry.get() != self.query.get():
@@ -125,7 +116,7 @@ class HomePage(ctk.CTkFrame):
     def _on_resize(self, event):
         scale = ctk.ScalingTracker.get_widget_scaling(self)
         width = event.width / scale
-        columns = 3 if width >= 780 else 2
+        columns = 3 if width >= 840 else 2 if width >= 480 else 1
         if columns != self.columns:
             self.columns = columns
             self.render_tools(reset_scroll=False)
@@ -144,7 +135,7 @@ class HomePage(ctk.CTkFrame):
     def reset_filters(self):
         self.query.set("")
         self.category = "all"
-        self.ready_only = False
+        self.ready_only = True
         self.render_tools()
 
     def render_tools(self, reset_scroll=True):
@@ -156,20 +147,19 @@ class HomePage(ctk.CTkFrame):
         self.cards.clear()
         self.visible_tools = find_tools(self.query.get(), self.category, self.ready_only)
         scale = ctk.ScalingTracker.get_widget_scaling(self)
-        viewport = max(600, self.scroll._parent_canvas.winfo_width() / scale)
+        viewport = max(300, self.scroll._parent_canvas.winfo_width() / scale)
         card_width = (viewport - S["lg"] * (self.columns - 1)) / self.columns
         titles = {category.id: category.title for category in CATEGORIES}
-        self.section_title.configure(text=titles.get(self.category, "เครื่องมือทั้งหมด"))
+        self.section_title.configure(text=titles.get(self.category, "เครื่องมือพร้อมใช้" if self.ready_only else "เครื่องมือทั้งหมด"))
         for key, button in self.nav_buttons.items():
             active = key == self.category
             button.configure(fg_color=C["tint"] if active else C["surface"], text_color=C["accent"] if active else C["ink"],
                              border_color=C["accent"] if active else C["surface"])
-        self.ready_button.configure(text="พร้อมใช้เท่านั้น ✓" if self.ready_only else "เฉพาะที่พร้อมใช้",
+        self.ready_button.configure(text="ดูเครื่องมือในแผนด้วย" if self.ready_only else "กลับไปเครื่องมือพร้อมใช้",
                                     fg_color=C["tint"] if self.ready_only else C["surface"])
         ready = sum(tool.ready for tool in self.visible_tools)
-        self.result_label.configure(text=f"{len(self.visible_tools)} เครื่องมือ · พร้อมใช้ {ready} · เร็ว ๆ นี้ {len(self.visible_tools) - ready}")
-        self.reset_button.configure(state="normal" if self.query.get() or self.category != "all" or self.ready_only else "disabled")
-        self.feature.grid() if self.category == "all" and not self.query.get() and not self.ready_only else self.feature.grid_remove()
+        self.result_label.configure(text=f"{len(self.visible_tools)} เครื่องมือ · พร้อมใช้ {ready} · ยังไม่พร้อมใช้ {len(self.visible_tools) - ready}")
+        self.reset_button.configure(state="normal" if self.query.get() or self.category != "all" or not self.ready_only else "disabled")
         for column in range(3):
             self.grid_area.grid_columnconfigure(column, weight=1 if column < self.columns else 0, uniform="tools" if column < self.columns else "")
         if not self.visible_tools:
@@ -183,7 +173,7 @@ class HomePage(ctk.CTkFrame):
             self.label(card, tool.title, font=self.app.font_bold, image=tool_icon(tool.icon, "accent" if tool.ready else "muted"), compound="left").grid(row=0, column=0, sticky="w", padx=S["lg"], pady=(S["lg"], S["sm"]))
             description = self.label(card, tool.description, font=self.app.font_small, color="muted", wraplength=max(180, card_width - 2 * S["lg"]), justify="left", height=60)
             description.grid(row=1, column=0, sticky="ew", padx=S["lg"])
-            self.label(card, "พร้อมใช้" if tool.ready else "เร็ว ๆ นี้", color="success" if tool.ready else "muted", font=self.app.font_small).grid(row=2, column=0, sticky="w", padx=S["lg"], pady=(S["xs"], 0))
+            self.label(card, "พร้อมใช้" if tool.ready else "ยังไม่พร้อมใช้", color="success" if tool.ready else "muted", font=self.app.font_small).grid(row=2, column=0, sticky="w", padx=S["lg"], pady=(S["xs"], 0))
             action = self.app.button(card, "เปิดเครื่องมือ" if tool.ready else "ดูรายละเอียด", lambda key=tool.id: self.app.show_tool(key), width=160)
             action.grid(row=3, column=0, sticky="ew", padx=S["lg"], pady=(S["sm"], S["lg"]))
             self.cards.append((card, description))
@@ -212,7 +202,7 @@ class HomePage(ctk.CTkFrame):
         dialog.geometry(f"560x380+{max(0, x)}+{max(0, y)}")
         dialog.transient(self.app.root)
         self.label(dialog, tool.title, font=ctk.CTkFont(family=FONTS["body"], size=25, weight="bold"), image=tool_icon(tool.icon, "accent", 32), compound="left").pack(anchor="w", padx=S["2xl"], pady=(S["2xl"], S["md"]))
-        self.label(dialog, "เร็ว ๆ นี้ · อยู่ในแผนพัฒนา", font=self.app.font_bold, color="accent").pack(anchor="w", padx=S["2xl"])
+        self.label(dialog, "ยังไม่พร้อมใช้ · อยู่ในแผนพัฒนา", font=self.app.font_bold, color="accent").pack(anchor="w", padx=S["2xl"])
         self.label(dialog, tool.description, color="muted", wraplength=480, justify="left").pack(anchor="w", padx=S["2xl"], pady=(S["lg"], S["md"]))
         self.label(dialog, tool.note or "เครื่องมือนี้ยังไม่เปิดใช้งาน และยังไม่มีกำหนดวันเปิดใช้งาน", font=self.app.font_small, color="muted", wraplength=480, justify="left").pack(anchor="w", padx=S["2xl"])
         footer = ctk.CTkFrame(dialog, fg_color="transparent")

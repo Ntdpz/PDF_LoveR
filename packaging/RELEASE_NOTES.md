@@ -1,10 +1,18 @@
+# PDF LoveR 1.6.0 — document workbench
+
+2026-10-02 (Asia/Bangkok). Thai text and shared controls enlarged; ready-only home,
+document-first workbench, larger page/merge previews and original/result rotation tabs.
+Six tools; export fidelity, DPI and no-overwrite behavior retained. Distribution under
+`dist/PDF_LoveR_1.6.0/`: EXE, Portable ZIP, Setup and SHA256. No GitHub Release published.
+Native Windows 10 development-host evidence does not certify a physical 4-GiB/HDD PC.
+
 # PDF to PNG 1.0.0 — distribution
 
 Build date: 2026-10-01 (Asia/Bangkok).
 
 Shipped files under `dist/Release`:
 
-- `PDF_to_PNG.exe`: self-contained PyInstaller one-file build.
+- `PDF_to_PNG_Portable_1.0.0.exe`: self-contained PyInstaller one-file build.
 - `PDF_to_PNG_Portable_Folder_1.0.0.zip`: complete folder build and Thai guide.
 - `PDF_to_PNG_Setup_1.0.0.exe`: Inno Setup installer, current-user installation,
   optional desktop shortcut, Start Menu shortcut, and uninstaller.
@@ -38,5 +46,5 @@ Verification completed on Windows 10 x64:
 6. Created a simulated user result, uninstalled, and confirmed the executable was
    removed while the user result survived.
 
-All checks passed; a sanitized check record is in docs/verification.json.
+All checks passed; details and test log location are in distribution-check.json.
 No separate physical Windows 11 machine was available for verification.

@@ -21,12 +21,16 @@ class PagePreview(ctk.CTkFrame):
         # Keep a real empty image alive for empty/loading/error states.
         self.empty_image=ctk.CTkImage(Image.new('RGB',(1,1),C['surface']),size=(1,1))
         self.grid_columnconfigure((0,1),weight=1,uniform='preview')
+        self.grid_rowconfigure(2,weight=1)
+        self.shown=1
+        self.tabs=[]
         self.title=app.label(self,'ภาพก่อน–หลังหมุน',font=app.font_bold)
         self.title.grid(row=0,column=0,columnspan=2,sticky='w',padx=S['lg'],pady=S['xs'])
         self.labels=[]
         for col,title in enumerate(('ต้นฉบับ','ผลลัพธ์')):
-            app.label(self,title,font=app.font_small,color='muted').grid(row=1,column=col)
-            label=app.label(self,'เลือก PDF',height=120,anchor='center',font=app.font_small)
+            tab=app.button(self,title,lambda i=col:self.show_view(i),width=132)
+            tab.grid(row=1,column=col,padx=S['xs']);self.tabs.append(tab)
+            label=app.label(self,'เลือก PDF',height=80,anchor='center',font=app.font_small)
             label.grid(row=2,column=col,sticky='nsew',padx=S['sm']);self.labels.append(label)
         self.caption=app.label(self,'',font=app.font_small,wraplength=340,justify='left')
         self.caption.grid(row=3,column=0,columnspan=2,sticky='w',padx=S['lg'],pady=S['xs'])
@@ -35,7 +39,16 @@ class PagePreview(ctk.CTkFrame):
         self.previous=app.button(nav,'ก่อนหน้า',lambda:self.move(-1),width=88);self.previous.grid(row=0,column=0)
         self.counter=app.label(nav,'—',font=app.font_small,anchor='center');self.counter.grid(row=0,column=1,sticky='ew')
         self.next=app.button(nav,'ถัดไป',lambda:self.move(1),width=88);self.next.grid(row=0,column=2)
+        self.bind('<Configure>',self._resize,add='+')
         self.render()
+
+    def show_view(self,index):
+        if self.enabled:
+            self.shown=index;self.render()
+
+    def _resize(self,event):
+        if event.widget is self and self.preview_active:
+            self.render()
 
     def set_document(self,info,selected=(),angle=90,filename=''):
         if info!=self.info:
@@ -57,10 +70,23 @@ class PagePreview(ctk.CTkFrame):
         if not self.info:return ()
         base=(self.info.path,self.info.signature[3],self.info.signature[2],self.page-1)
         delta=self.angle if self.page in self.selected else 0
-        return (base+(0,240,300),base+(delta,240,300))
+        return (base+(0,320,400),base+(delta,320,400))
 
     def render(self):
         if not self.preview_active:return
+        logical_width=self.winfo_width()/self._get_widget_scaling()
+        logical_height=self.winfo_height()/self._get_widget_scaling()
+        paired=logical_width>=500
+        for index,label in enumerate(self.labels):
+            if paired:
+                label.grid(row=2,column=index,columnspan=1)
+            elif index==self.shown:
+                label.grid(row=2,column=0,columnspan=2)
+            else:
+                label.grid_forget()
+            self.tabs[index].configure(fg_color=C['tint'] if index==self.shown else C['surface'],
+                                       border_color=C['accent'] if index==self.shown else C['rule'],
+                                       state='normal' if self.enabled else 'disabled')
         if self.worker.set_required(self.keys()):self.pending.clear()
         for index,label in enumerate(self.labels):
             if not self.info:
@@ -73,8 +99,12 @@ class PagePreview(ctk.CTkFrame):
             payload=self.cache.get(key)
             if payload and key not in self.images:
                 width,height,samples=payload
-                scale=min(120/width,120/height)
+                scale=min(max(80,logical_width/(2 if paired else 1)-32)/width,max(60,logical_height-148)/height,1)
                 self.images[key]=ctk.CTkImage(Image.frombytes('RGB',(width,height),samples),size=(width*scale,height*scale))
+            elif payload:
+                width,height,_=payload
+                scale=min(max(80,logical_width/(2 if paired else 1)-32)/width,max(60,logical_height-148)/height,1)
+                self.images[key].configure(size=(width*scale,height*scale))
             label.configure(image=self.images.get(key,self.empty_image))
             label.configure(text='' if payload else 'กำลังโหลด…' if key not in self.cache else 'ไม่มีภาพตัวอย่าง')
         self.counter.configure(text=f'หน้า {self.page} / {self.info.page_count}' if self.info else '—')

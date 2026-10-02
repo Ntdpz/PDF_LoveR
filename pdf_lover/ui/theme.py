@@ -27,7 +27,7 @@ PALETTE = {
 }
 FONTS = {"display": "Segoe UI", "body": "Leelawadee UI", "mono": "Cascadia Code"}
 SPACE = {"xs": 4, "sm": 8, "md": 12, "lg": 16, "xl": 24, "2xl": 32, "3xl": 40}
-RADIUS = {"control": 8, "panel": 16}
+RADIUS = {"control": 8, "panel": 10}
 
 
 def srgb(lightness, chroma, hue):
@@ -62,7 +62,7 @@ def export_css():
         lines.append(f"  --space-{name}: {value}px;")
     for name, value in RADIUS.items():
         lines.append(f"  --radius-{name}: {value}px;")
-    lines.extend(["  --text-sm: 14px;", "  --text-md: 16px;", "  --text-display: 28px;",
+    lines.extend(["  --text-sm: 16px;", "  --text-md: 18px;", "  --text-display: 28px;",
                   "  --rule-width: 1px;", "  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);",
                   "  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);",
                   "  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);", "  --dur-micro: 120ms;", "}"])

@@ -5,9 +5,10 @@ from pdf_lover.ui.theme import COLORS as C, FONTS, RADIUS
 
 class UIControls:
     def init_fonts(self):
-        self.font_body = ctk.CTkFont(family=FONTS["body"], size=16)
-        self.font_small = ctk.CTkFont(family=FONTS["body"], size=14)
-        self.font_bold = ctk.CTkFont(family=FONTS["body"], size=17, weight="bold")
+        self.font_body = ctk.CTkFont(family=FONTS["body"], size=18)
+        self.font_small = ctk.CTkFont(family=FONTS["body"], size=16)
+        self.font_bold = ctk.CTkFont(family=FONTS["body"], size=20, weight="bold")
+        self.font_title = ctk.CTkFont(family=FONTS["body"], size=25, weight="bold")
 
     def label(self, parent, text="", font=None, color="ink", **kwargs):
         return ctk.CTkLabel(parent, text=text, font=font or self.font_body,

@@ -19,7 +19,7 @@ def main():
             parser.error("Native UI checks require Windows; use --unit-only elsewhere.")
         commands.extend([[f"tests/ui/{name}.py"] for name in (
             "verify_png", "verify_home", "verify_merge", "verify_merge_cards",
-            "verify_file_drop", "verify_drag_performance", "verify_split", "verify_page_tools", "verify_rotate", "verify_resources", "verify_selector", "verify_page_gestures")])
+            "verify_file_drop", "verify_drag_performance", "verify_split", "verify_page_tools", "verify_rotate", "verify_resources", "verify_selector", "verify_page_gestures", "verify_workbench")])
     for command in commands:
         print("Running:", " ".join(command), flush=True)
         subprocess.run([sys.executable, *command], cwd=ROOT, check=True)

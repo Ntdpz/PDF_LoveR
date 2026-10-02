@@ -1,0 +1,69 @@
+{
+  "version": "1.6.0",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "58f1cfe1d47a53d46c583b64fc0fbccd5740431cf722a7efc349668bbbeb1c1b",
+      "artifact_sha256": "f0eb005659766c583d68ce050971cca36e1987680728503c81b7602006a61600",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Workbench shared controls, six ready routes, bounded viewport preview; unchanged service/worker topology"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "3e3d5e17033d02c29ccbdd5f385daca1f117e1259b07e4f3786f700114cdf80e",
+      "artifact_sha256": "ef47b341195dc1fcfc2a9e279745cedfb2f78e9c88e3e1f8745adc18972968dc",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Workbench shared controls, six ready routes, bounded viewport preview; unchanged service/worker topology"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "51628a0623c756f060879c5bf76afa1d0bee7892f0e756457bd554b2485a8d56",
+      "artifact_sha256": "54e3caf572359af4e5c3e8b26606cd89fdc33bbb5af75efe38ba3ff8f0c229df",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Workbench shared controls, six ready routes, bounded viewport preview; unchanged service/worker topology"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

@@ -140,7 +140,7 @@ remaining height, wraps into 1–4 columns and draws at most 24 intersecting car
 only their thumbnails are requested. Wheel/scrollbar and arrow/Home/End/Page keys
 scroll vertically; Space/Enter toggles the focused page. A 16-ms redraw coalesces
 scroll events and is cancelled on hide/destroy; selection and scroll position remain.
-Its bounded 32-entry/6-MiB estimated cache uses 144×112 fit thumbnails and the
+Its bounded 32-entry/6-MiB estimated cache uses 180×200 fit thumbnails and the
 app-wide 16-request limit in `ui/pdf_previews.py`; the old
 merge import remains a compatibility facade. The shell polls both selectors and
 active feature queue. Widget destruction unregisters its client; App owns child cleanup.
@@ -244,3 +244,16 @@ adds them; an unmodified marquee replaces the selection. Edge scrolling uses one
 Escape, hide, document replacement, resizing, focus loss and disabling cancel the marquee and release its grab/timer.
 Shift-click replaces the anchor range; Ctrl+Shift adds it. Plain card clicks retain toggle behavior.
 No additional worker or dependency; automatic split modes and busy controls remain readonly.
+
+## Document workbench · 1.6.0
+
+`ui/workbench.py` composes the shared split/extract/delete and rotation layouts inside
+ToolPage. It owns no PDF engine, queue or worker. The document grid receives most
+remaining height; options scroll independently and save/open actions remain visible.
+Home defaults to six ready tools, with an explicit catalogue toggle. Shared Thai fonts
+are 16/18/20/25 logical px; controls remain 44 px. Merge cards are 240 px tall, minimum
+220 px wide, with larger existing first-page previews and the same virtualized drag path.
+PagePreview uses 320×400 fit images and original/result tabs on narrow panels; wider
+panels may compare side by side. Its cache/pending limits and visibility cleanup remain
+unchanged. No worker, service, export quality, runtime dependency or readiness changes.
+See [locked design](../design.md) and [UX review](REDESIGN.md).

@@ -166,4 +166,16 @@ def main():
     print(json.dumps(report))
 
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    # Tk synthesizes letter keysyms through the calling thread's keyboard layout.
+    # Keep the native test deterministic on a Thai desktop; restore that thread.
+    import ctypes
+    user32 = ctypes.windll.user32
+    user32.GetKeyboardLayout.restype = ctypes.c_void_p
+    user32.ActivateKeyboardLayout.argtypes = (ctypes.c_void_p, ctypes.c_uint)
+    layout = user32.GetKeyboardLayout(0)
+    user32.ActivateKeyboardLayout(0x04090409, 0)
+    try:
+        main()
+    finally:
+        user32.ActivateKeyboardLayout(layout, 0)

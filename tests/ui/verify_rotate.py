@@ -63,7 +63,7 @@ def main():
             # Process preview uses the same page rotation and fit as actual saved PDF.
             with pymupdf.open(a) as doc:
                 p=doc[1];p.set_rotation((p.rotation+int(angle))%360)
-                pix=p.get_pixmap(matrix=pymupdf.Matrix(min(240/p.rect.width,300/p.rect.height),min(240/p.rect.width,300/p.rect.height)),alpha=False,colorspace=pymupdf.csRGB)
+                pix=p.get_pixmap(matrix=pymupdf.Matrix(min(320/p.rect.width,400/p.rect.height),min(320/p.rect.width,400/p.rect.height)),alpha=False,colorspace=pymupdf.csRGB)
                 assert page.preview.cache[page.preview.keys()[1]]==(pix.width,pix.height,pix.samples)
         right.invoke();right.invoke();assert page.angle.get()=='90'
         page.show_names();pump(root)

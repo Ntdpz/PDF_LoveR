@@ -168,3 +168,13 @@ Shift/Ctrl และลากครอบใช้ PageSelector ร่วม ไ
 [ตรวจ 1,000 หน้าและ 1,000 pointer events](page-gestures-verification-1.5.4.json) ผ่าน พร้อม export ตามหน้าที่เลือกและตรวจ hash ต้นฉบับ
 วัด workload source เดิม 5 รอบ: home idle Private Bytes ค่ากลาง 68.50 → 68.78 MiB; ยังใกล้ 70 MiB ไม่อ้างว่าลดลงอย่างมีนัยสำคัญ
 หลักฐาน [หลังเพิ่ม](performance-after-1.5.4.json); ยังไม่ทดสอบ PC 4 GiB/HDD จริง งาน async preflight/PNG peak/cold-start/scanned PDFs ยังอยู่ในแผน
+
+
+## พื้นที่ตรวจเอกสาร · 1.6.0
+
+ขยาย selector preview เป็น 180×200-fit และ comparison 320×400-fit โดยรักษา coordinator หนึ่ง process, request 16/result 4, viewport 24 และ cache budgets เดิม ไม่เพิ่ม dependency หรือ animation
+[source benchmark 5 รอบ](performance-after-1.6.0.json) หลังกลับ home/idle ค่ากลาง 65.04 MiB เทียบ 68.78 MiB ใน 1.5.4; เป็นระดับใกล้เคียงเดิม ไม่อ้างการลด RAM อย่างมีนัยสำคัญ
+ระหว่างเปิดเครื่องมือสูงสุดของ stage median คือ rotate 109.22 MiB (รวม parent/preview child); ไม่ใช่ export peak
+ตรวจ [geometry 920×700 / 1080×780 / 1440×900 ที่ 100% และ 125%](workbench-verification-1.6.0.json), [resource lifecycle](resource-verification-1.6.0.json) และ gesture/merge regressions
+ยังไม่ทดสอบ PC 2-core/4-GiB/HDD หรือ Windows 11 จริง; scanned PDF, cold frozen startup และ export peak ยังไม่วัดใหม่
+การลดช่องว่าง settings และเพิ่ม keyboard focus หลัง benchmark ไม่เพิ่ม widget/process/cache หรือเปลี่ยน render sizes
