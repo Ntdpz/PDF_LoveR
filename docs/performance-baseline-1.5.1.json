@@ -1,0 +1,127 @@
+{
+  "version": "1.5.1",
+  "scope": "source application with synthetic 240-page text PDF; one run, not a low-spec/frozen/peak-memory benchmark",
+  "private_memory": "Windows PROCESS_MEMORY_COUNTERS_EX.PrivateUsage; parent plus preview workers, excluding harness shells",
+  "source_start_including_imports_ms": 2102.6,
+  "stages": [
+    {
+      "stage": "home",
+      "live_preview_processes": 0,
+      "total_private_mib": 57.26,
+      "parent_private_mib": 57.26,
+      "preview_private_mib": []
+    },
+    {
+      "stage": "pdf-png",
+      "live_preview_processes": 0,
+      "total_private_mib": 60.03,
+      "parent_private_mib": 60.03,
+      "preview_private_mib": []
+    },
+    {
+      "stage": "merge",
+      "live_preview_processes": 1,
+      "total_private_mib": 101.81,
+      "parent_private_mib": 61.3,
+      "preview_private_mib": [
+        40.51
+      ]
+    },
+    {
+      "stage": "split",
+      "live_preview_processes": 2,
+      "total_private_mib": 145.53,
+      "parent_private_mib": 64.48,
+      "preview_private_mib": [
+        40.51,
+        40.54
+      ]
+    },
+    {
+      "stage": "extract-pages",
+      "live_preview_processes": 3,
+      "total_private_mib": 188.22,
+      "parent_private_mib": 66.33,
+      "preview_private_mib": [
+        40.51,
+        40.54,
+        40.84
+      ]
+    },
+    {
+      "stage": "delete-pages",
+      "live_preview_processes": 4,
+      "total_private_mib": 230.55,
+      "parent_private_mib": 67.82,
+      "preview_private_mib": [
+        40.51,
+        40.54,
+        40.84,
+        40.84
+      ]
+    },
+    {
+      "stage": "rotate",
+      "live_preview_processes": 6,
+      "total_private_mib": 316.26,
+      "parent_private_mib": 71.54,
+      "preview_private_mib": [
+        40.51,
+        40.54,
+        40.84,
+        40.84,
+        40.72,
+        41.27
+      ]
+    },
+    {
+      "stage": "home_after_all_tools",
+      "live_preview_processes": 6,
+      "total_private_mib": 316.26,
+      "parent_private_mib": 71.54,
+      "preview_private_mib": [
+        40.51,
+        40.54,
+        40.84,
+        40.84,
+        40.72,
+        41.27
+      ]
+    }
+  ],
+  "cleanup_passed": true,
+  "tk_errors": [],
+  "source_commit": "fb51da245641bdf75086b3a5176a996224e2eff6",
+  "audit_date": "2026-10-02",
+  "host": {
+    "cpu": "Intel Core i7-11800H",
+    "physical_cores": 8,
+    "logical_processors": 16,
+    "ram_gib": 39.6,
+    "os": "Windows 10 Home Single Language x64 10.0.19045",
+    "disk_type": "not measured",
+    "python": "3.10",
+    "pymupdf": "1.28.2"
+  },
+  "method": {
+    "fixture": "240 A4 pages, one text label Page N per page, generated in a temporary directory",
+    "order": [
+      "home",
+      "pdf-png",
+      "merge",
+      "split",
+      "extract-pages",
+      "delete-pages",
+      "rotate",
+      "home_after_all_tools"
+    ],
+    "settle_seconds_per_tool": 2.5,
+    "home_return_settle_seconds": 2,
+    "samples_per_stage": 1,
+    "samples_are_peak": false,
+    "export_run": false,
+    "idle_cpu_measured": false,
+    "source_start_definition": "Timer begins before GUI/PDF/App imports and ends after App construction and a 0.2-second event pump; cache state uncontrolled",
+    "cleanup": "App.close then assert every previously live PreviewWorker.process is None and no Tk callback exceptions"
+  }
+}
