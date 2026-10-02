@@ -16,7 +16,10 @@ def render_previews(requests, results):
         try:
             with pymupdf.open(key[0]) as document:
                 page = document[key[3] if len(key) > 3 else 0]
-                factor = min(224 / page.rect.width, 144 / page.rect.height)
+                if len(key) > 4:
+                    page.set_rotation((page.rotation + key[4]) % 360)
+                width, height = key[5:7] if len(key) > 6 else (224, 144)
+                factor = min(width / page.rect.width, height / page.rect.height)
                 pix = page.get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=False,
                                       colorspace=pymupdf.csRGB)
                 payload = (pix.width, pix.height, pix.samples)

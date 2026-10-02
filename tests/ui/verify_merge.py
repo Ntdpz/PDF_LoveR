@@ -142,7 +142,7 @@ def main():
                     assert ImageChops.difference(source_image, result_image).getbbox() is None
         finally:
             os.chdir(original_cwd)
-    report = {'passed': True, 'merged_pages': 3, 'ready_tools': 5,
+    report = {'passed': True, 'merged_pages': 3, 'ready_tools': 6,
               'checks': ['adding/reordering/removing files', 'invalid PDF rejected', 'input/output overwrite guard',
                          'retained merge state across tools', 'busy navigation/reorder/start guards',
                          'successful merge and file order', 'missing source recovery', 'Poppler pixel equivalence',

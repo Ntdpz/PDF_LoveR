@@ -175,13 +175,62 @@ def run(root, app_class, report):
             if tool == "extract-pages":
                 start_page_tool("delete-pages")
                 return
+            start_rotation()
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    rotation_hashes = {}
+
+    def start_rotation():
+        for path in (app.merge.destination, source):
+            rotation_hashes[path] = hashlib.sha256(path.read_bytes()).hexdigest()
+        assert app.show_tool("rotate")
+        native_drop(root, [app.merge.destination, source])
+        root.after(100, prepare_rotation)
+
+    def prepare_rotation():
+        page = app.get_page("rotate")
+        if (app.busy or len(page.inputs) != 2) and time.monotonic() - started < 115:
+            root.after(100, prepare_rotation)
+            return
+        try:
+            assert len(page.inputs) == 2 and not app.busy, "Rotation inspection timeout"
+            page.output.set(str(folder))
+            page.selector.expression.set("2")
+            page.preview.move(1)
+            assert [j.selected for j in page.plan.jobs] == [(2,), (1, 2)]
+            page.start()
+            root.after(100, finish_rotation)
+        except Exception as error:
+            complete({"passed": False, "errors": failures + [str(error)]})
+
+    def finish_rotation():
+        page = app.get_page("rotate")
+        if (app.busy or page.selector.pending or page.preview.pending) and time.monotonic() - started < 115:
+            root.after(100, finish_rotation)
+            return
+        try:
+            assert not app.busy and page.destination, page.status.get()
+            assert all(page.selector.cache.values())
+            assert all(page.preview.cache.get(key) for key in page.preview.keys())
+            for job in page.plan.jobs:
+                with pymupdf.open(job.info.path) as original, pymupdf.open(job.output.path) as result:
+                    assert result.page_count == original.page_count
+                    for number, (before, after) in enumerate(zip(original, result), 1):
+                        assert after.rotation == (before.rotation + (90 if number in job.selected else 0)) % 360
+                        assert after.get_text() == before.get_text()
+            assert all(hashlib.sha256(path.read_bytes()).hexdigest() == value for path, value in rotation_hashes.items())
+            assert not failures, failures
+            thumbnails = 11 + len(page.selector.cache) + len(page.preview.cache)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
                       "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
                       "extract_original_pages": [1, 3], "delete_removed_pages": [2],
                       "delete_retained_pages": [1, 3], "original_unchanged": True,
-                      "thumbnail_worker": "separate process", "thumbnail_count": 11,
-                      "file_drop": "Windows native callbacks verified for all 5 tools",
+                      "thumbnail_worker": "separate process", "thumbnail_count": thumbnails,
+                      "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],
+                      "rotation_angle": 90, "rotation_preview": "verified",
+                      "file_drop": "Windows native callbacks verified for all 6 tools",
                       "tkdnd_version": app.file_drop.version})
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})

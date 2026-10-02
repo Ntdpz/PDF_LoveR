@@ -1,0 +1,98 @@
+{
+  "version": "1.5.0",
+  "passed": true,
+  "source_checks": {
+    "command": "python scripts/check.py",
+    "unit_tests": 62,
+    "native_ui_suites": [
+      "verify_png",
+      "verify_home",
+      "verify_merge",
+      "verify_merge_cards",
+      "verify_file_drop",
+      "verify_drag_performance",
+      "verify_split",
+      "verify_page_tools",
+      "verify_rotate"
+    ],
+    "all_passed": true
+  },
+  "ready_tools": [
+    "pdf-png",
+    "merge",
+    "split",
+    "delete-pages",
+    "extract-pages",
+    "rotate"
+  ],
+  "catalogue_total": 34,
+  "remaining_tools": 28,
+  "rotation": {
+    "angles": [
+      90,
+      180,
+      270
+    ],
+    "relative_to_existing_rotation": true,
+    "multiple_documents": true,
+    "per_document_selection": true,
+    "source_sha256_unchanged": true,
+    "independent_poppler_pixels": "match against PDF with directly written /Rotate entries",
+    "retained_content": [
+      "all pages and page order",
+      "text",
+      "graphics",
+      "forms",
+      "annotations",
+      "internal/external links",
+      "bookmarks",
+      "embedded attachments"
+    ],
+    "validation": [
+      "range syntax/order/duplicates/bounds",
+      "Windows filenames",
+      "existing paths and original aliases",
+      "source changes",
+      "whole-batch staging, exclusive publication and collision rollback"
+    ],
+    "preview": {
+      "comparison_pending_limit": 2,
+      "comparison_cache_limit": 12,
+      "rows_per_view": 25,
+      "tested_document_pages": 240
+    },
+    "ui_visual_review": {
+      "passed": true,
+      "screenshots": [
+        "docs/images/rotate.png"
+      ],
+      "tokens": "existing Cobalt",
+      "framework": "native CustomTkinter + ttk",
+      "minimum_size": [
+        920,
+        700
+      ],
+      "scaling": [
+        1,
+        1.25
+      ],
+      "long_filename_test": "70-character basename at minimum size and 125% scaling",
+      "corrections": [
+        "Keep a live blank CTkImage when switching documents",
+        "Fit comparison images and navigation inside minimum window",
+        "Shorten output caption; full filenames remain in paged table"
+      ]
+    }
+  },
+  "drag_performance": "docs/drag-performance-1.5.0.json",
+  "archify_review": "docs/diagrams/review-1.5.0.json",
+  "packaged_distribution": "docs/distribution-1.5.0.json",
+  "program_sync": "docs/program-sync-1.5.0.json",
+  "limits": [
+    "Password PDFs unsupported",
+    "No general zoom/cancel yet",
+    "Digital signatures invalidated by document edits",
+    "Windows 11 not separately tested"
+  ],
+  "publishing": "Local distribution only; no GitHub Release or repository visibility mutation"
+}

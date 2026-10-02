@@ -25,6 +25,7 @@ PDF_LoveR/
 │   │   ├── split/                  Split page, immutable plan and safe engine
 │   │   ├── selection_page.py       Shared extract/delete workbench
 │   │   ├── extract/                Extract page and headless service
+│   │   ├── rotate/                 Relative rotation, per-document selection, batch export
 │   │   └── delete_pages/           Delete page and headless service
 │   └── diagnostics/                Packaged application smoke check
 ├── tests/
@@ -46,6 +47,12 @@ flowchart TD
   Shell --> Windows[Windows integration]
   Registry --> PNG[PNG page]
   Registry --> Merge[Merge page]
+  Registry --> Rotate[Rotate page]
+  Rotate --> RotateEngine[Rotate service]
+  Rotate --> Comparison[Shared PagePreview]
+  Rotate --> Selector
+  RotateEngine --> Publication[Shared staged publication / rollback]
+  Comparison --> Preview
   Registry --> Extract[Extract page]
   Registry --> Delete[Delete page]
   Extract --> Workbench[Shared SelectionPage]
@@ -126,7 +133,7 @@ failure rolls back only unchanged files created by that job; an incomplete rollb
 is reported with the remaining names. The engine rejects original paths/aliases,
 existing targets and invalid Windows name prefixes. No worker reads Tk variables.
 
-PNG, merge, split, extract-pages and delete-pages are ready (5 of 34).
+PNG, merge, split, extract-pages and delete-pages and rotate are ready (6 of 34).
 Organize remains planned. Password PDFs, general zoom preview, cancellation and
 document-level attachments/signatures remain outside the page tools' scope.
 See [Split](SPLIT.md) and [Page tools](PAGE_TOOLS.md) for precise behavior.
@@ -153,4 +160,31 @@ Neither operation edits the source. This is page selection, not redaction.
 
 Native checks cover both tools, Explorer drop, async inspection, retained state,
 validation/recovery, 240-page bounded previews, 920x700 and 125% scaling. Independent
-Poppler renders match the originals. Packaged smoke runs all five tool routes.
+Poppler renders match the originals. Packaged smoke runs all six tool routes.
+
+## Rotation
+
+`features/rotate/service.py` builds a frozen RotationPlan across documents, with
+separate ascending selections per document. The chosen 90/180/270 degrees adds to
+each selected page's existing rotation modulo 360. Every page remains in place.
+Names preserve the source stem plus a suffix; duplicate basenames receive stable
+numbered names. Targets and every source signature are checked before work and
+before publishing. All files are staged and reopened to verify counts/rotations;
+`core/pdf_output.publish_staged` and `publication_error` share exclusive publication
+and ownership-aware rollback with extract/delete. Directly saving the original
+document in memory retains forms, annotations, links, bookmarks and attachments.
+
+The RotatePage owns batch inputs, each document's expression, queues and controls.
+`ui/page_preview.py` provides bounded before/after images for a navigable page, using
+the same spawned renderer with an optional relative rotation and fit dimensions.
+There are at most two pending comparison requests and 12 cached images. Empty
+images stay alive to avoid CustomTkinter's image=None Tk lifetime issue. Existing
+merge/selector request keys and dimensions retain their original behavior.
+The filename dialog shows at most 25 rows and closes when settings change.
+
+Native checks compare preview pixels with rendered rotation and final PDF output
+with an independent Poppler render of reference /Rotate entries. A simple rotated
+bitmap cannot provide exact PDF pixel equivalence because raster edge sampling
+and no-rotate annotations differ. Source content is also checked after restoring
+its original orientation. Password PDFs and preserving digital signature validity
+are unsupported; general zoom/cancellation remain planned.

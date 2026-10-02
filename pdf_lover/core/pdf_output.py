@@ -97,28 +97,38 @@ def export_pages(plan, progress=None):
             if signature(info.path) != info.signature:
                 raise DocumentError("ต้นฉบับเปลี่ยนระหว่างทำงาน · เลือกไฟล์ใหม่")
             validate_targets(plan)
-            for temporary, target, identity in staged:
-                publish_exclusive(temporary, target)
-                published.append((target, identity))
+            publish_staged(staged, published)
         return tuple(output.path for output in plan.outputs)
     except Exception as error:
-        remaining = []
-        for path, identity in reversed(published):
-            try:
-                if signature(path) == identity:
-                    path.unlink()
-                else:
-                    remaining.append(path.name)
-            except FileNotFoundError:
-                pass
-            except OSError:
+        publication_error(published, error)
+
+
+def publish_staged(staged, published):
+    """Publish exclusively, tracking identities for rollback by the caller."""
+    for temporary, target, identity in staged:
+        publish_exclusive(temporary, target)
+        published.append((target, identity))
+
+
+def publication_error(published, error):
+    """Rollback unchanged files owned by this job and raise an actionable error."""
+    remaining = []
+    for path, identity in reversed(published):
+        try:
+            if signature(path) == identity:
+                path.unlink()
+            else:
                 remaining.append(path.name)
-        if remaining:
-            raise DocumentError("บันทึกไม่ครบ · ยังมีไฟล์จากงานนี้: " + ', '.join(remaining)) from error
-        if isinstance(error, DocumentError):
-            raise
-        if isinstance(error, FileExistsError):
-            raise DocumentError("มีไฟล์ชื่อซ้ำระหว่างบันทึก · เก็บไฟล์เดิมไว้และคืนชุดงานนี้แล้ว") from error
-        if isinstance(error, OSError):
-            raise DocumentError("อ่านหรือบันทึก PDF ไม่ได้ · ตรวจพื้นที่ว่าง สิทธิ์โฟลเดอร์ และต้นฉบับ") from error
-        raise DocumentError("สร้าง PDF ไม่สำเร็จ · ตรวจต้นฉบับแล้วลองอีกครั้ง") from error
+        except FileNotFoundError:
+            pass
+        except OSError:
+            remaining.append(path.name)
+    if remaining:
+        raise DocumentError("บันทึกไม่ครบ · ยังมีไฟล์จากงานนี้: " + ', '.join(remaining)) from error
+    if isinstance(error, DocumentError):
+        raise
+    if isinstance(error, FileExistsError):
+        raise DocumentError("มีไฟล์ชื่อซ้ำระหว่างบันทึก · เก็บไฟล์เดิมไว้และคืนชุดงานนี้แล้ว") from error
+    if isinstance(error, OSError):
+        raise DocumentError("อ่านหรือบันทึก PDF ไม่ได้ · ตรวจพื้นที่ว่าง สิทธิ์โฟลเดอร์ และต้นฉบับ") from error
+    raise DocumentError("สร้าง PDF ไม่สำเร็จ · ตรวจต้นฉบับแล้วลองอีกครั้ง") from error

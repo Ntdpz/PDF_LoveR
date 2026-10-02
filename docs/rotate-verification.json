@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "angles": [
+    90,
+    180,
+    270
+  ],
+  "relative_to_existing_rotation": true,
+  "multi_file": true,
+  "per_document_selection": true,
+  "preview_pixels_match_engine": true,
+  "poppler_pixel_equivalence": true,
+  "originals_unchanged": true,
+  "overwrite_guard": true,
+  "bounded_preview": {
+    "selector": 4,
+    "comparison_pending": 2,
+    "comparison_cache": 12,
+    "document_pages": 240
+  },
+  "minimum_window": [
+    920,
+    700
+  ],
+  "scaling": [
+    1,
+    1.25
+  ],
+  "tk_errors": [],
+  "worker_cleanup": true
+}

@@ -1,0 +1,72 @@
+{
+  "version": "1.5.0",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "aab71e7e09751d9df590ed6d08569c8b4ee31bf5d3c2ab04273efa42a40ef2bc",
+      "artifact_sha256": "e43ff72266d34e48134909af27d88be2163f35d21752786914cc5a4de53a458f",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "diagram_type": "workflow",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "96d47edeabf824a750776b3af7e2846f23a95e4047c624418c040a21c6468c9d",
+      "artifact_sha256": "1d222b503468b770f6e7e5a86f40cd7dbebc2626c7baaa7cc1779dc7ab4957ef",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "diagram_type": "architecture",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "07cd42b67b46ea2953e78ce83f849a4b17ba6c8152d4ed855d1ad5d1d609b978",
+      "artifact_sha256": "9d2dd025fe4b008ee26b8add8ad2d460e8e4b38660fa68dd90aa2175000b4f66",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, nodes, relationships, explanatory cards, contrast and containment",
+        "6 ready features, per-document rotation selection, shared PagePreview and staged batch publication match code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}
