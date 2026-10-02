@@ -1,3 +1,3 @@
 """Single version source for package, UI and Windows distributions."""
-VERSION = "1.6.0"
+VERSION = "1.7.0"
 APP_FILE_NAME = f"PDF_LoveR_{VERSION}"

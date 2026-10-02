@@ -38,14 +38,8 @@ class MergePage(ToolPage):
     def _build(self):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
-        header = ctk.CTkFrame(self, fg_color=C["surface"], corner_radius=0)
-        header.grid(row=0, column=0, sticky="ew")
-        header.grid_columnconfigure(1, weight=1)
-        self.label(header, "", image=tool_icon("pages", "accent", 36)).grid(row=0, column=0, padx=(S["xl"], S["md"]), pady=S["lg"])
-        self.label(header, "รวม PDF", font=ctk.CTkFont(family=FONTS["body"], size=22, weight="bold")).grid(row=0, column=1, sticky="w")
-        self.home_button = self.app.button(header, "เครื่องมือทั้งหมด", self.app.show_home, width=200)
-        self.home_button.grid(row=0, column=2, padx=S["xl"], pady=S["sm"])
-        self.controls.append(self.home_button)
+        from pdf_lover.ui.navigation import masthead
+        masthead(self, 'รวม PDF')
         intro = ctk.CTkFrame(self, fg_color="transparent")
         intro.grid(row=1, column=0, sticky="ew", padx=S["xl"], pady=S["sm"])
 

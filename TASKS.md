@@ -1,6 +1,6 @@
 # PDF LoveR — รายการงานพัฒนาต่อ
 
-ฐานปัจจุบัน: **1.6.0 · 34 เครื่องมือใน catalogue · พร้อมใช้ 6 · ยังต้องพัฒนา 28**
+ฐานปัจจุบัน: **1.7.0 · 34 เครื่องมือใน catalogue · พร้อมใช้ 6 · ยังต้องพัฒนา 28**
 
 ตรวจจาก `pdf_lover/catalog.py` และ `features/registry.py` รายการนี้เป็นแผนพัฒนา
 ลำดับด้านล่างเป็นข้อเสนอ ยังไม่กำหนดวันส่งหรือเปิดใช้เครื่องมือที่ยังไม่เสร็จ
@@ -16,13 +16,15 @@
 - [x] รับ PDF ที่ลากจาก Explorer, ปลายทางเริ่ม Documents, เก็บสถานะเมื่อสลับหน้าฟีเจอร์
 - [x] แยกโค้ดเป็น package/feature, shared UI, registry และ services ที่ไม่พึ่งหน้าจอ
 - [x] Worker queue, shared busy guard, การ์ดแบบ virtualized และ process ภาพตัวอย่าง
-- [x] ชุดแจก 1.6.0: EXE, Portable ZIP, installer และ SHA256
+- [x] ชุดแจก 1.7.0: EXE, Portable ZIP, installer และ SHA256
 - [x] แผนภาพ Archify, กติกา agent, freshness checker และ Git pre-commit hook
 - [x] การตรวจปัจจุบัน: 79 unit tests และ 13 ชุด native UI checks
 
-## Redesign 1.6.0
+## Redesign 1.7.0 · ยกโครงหน้าจอใหม่
 
-- [x] หน้าแรกแสดง 6 เครื่องมือพร้อมใช้เป็นค่าเริ่มต้น; catalogue แยกชัดจากเครื่องมือใช้งานจริง
+- [x] หน้าแรกเต็มความกว้าง ไม่มี category sidebar; task rows แสดง 6 งานพร้อมใช้ใน 920×700
+- [x] Masthead และเมนูเปลี่ยนเครื่องมือโดยตรงร่วมทั้ง 6 หน้า; App guard/retained state เดิม
+- [x] โต๊ะเอกสารสีเข้ม แผ่นหน้าสีขาว และ footer ระบุหน้าที่เลือก
 - [x] ฟอนต์ไทย 16/18/20/25 px, controls 44 px และ tokens ร่วม
 - [x] Workbench ร่วม: เอกสารด้านซ้าย ตั้งค่า/ตรวจผลด้านขวา ปุ่มบันทึกคงที่
 - [x] ตารางหน้า viewport สูงอย่างน้อย 211 logical px ใน workload 920×700; ภาพ 180×200 fit

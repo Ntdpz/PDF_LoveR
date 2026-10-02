@@ -1,3 +1,11 @@
+# PDF LoveR 1.7.0 — full document desk redesign
+
+2026-10-02. Full-width task home replaces category sidebar and tall catalogue cards.
+All six ready tasks visible at minimum size. Graphite masthead with direct tool switcher
+across all six pages; document desk with white sheets and selected footer labels.
+Existing services, PDF/DPI, selection, drop and safe publication preserved.
+Private local distribution only; no GitHub Release.
+
 # PDF LoveR 1.6.0 — document workbench
 
 2026-10-02 (Asia/Bangkok). Thai text and shared controls enlarged; ready-only home,

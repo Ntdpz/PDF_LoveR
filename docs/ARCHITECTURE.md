@@ -257,3 +257,7 @@ PagePreview uses 320×400 fit images and original/result tabs on narrow panels; 
 panels may compare side by side. Its cache/pending limits and visibility cleanup remain
 unchanged. No worker, service, export quality, runtime dependency or readiness changes.
 See [locked design](../design.md) and [UX review](REDESIGN.md).
+
+## Document desk 1.7.0
+
+Home uses full-width compact task rows and category dropdown, all six visible at minimum size. Shared ui/navigation.py builds graphite masthead and direct ready-tool switcher on all six ToolPage pages; App still owns routing/busy guards, lazy pages and retained state. White selector sheets and selected footer tags on document-desk Canvas preserve original hit boxes and viewport bounds. No new service/worker/cache.

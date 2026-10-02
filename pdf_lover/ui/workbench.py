@@ -13,13 +13,8 @@ from pdf_lover.ui.page_preview import PagePreview
 def shell(page, title, instruction, *, scroll_review=False):
     page.grid_columnconfigure(0, weight=1)
     page.grid_rowconfigure(2, weight=1)
-    header = ctk.CTkFrame(page, fg_color=C['surface'], corner_radius=0)
-    header.grid(row=0, column=0, sticky='ew')
-    header.grid_columnconfigure(0, weight=1)
-    page.label(header, title, font=page.font_title).grid(row=0, column=0, sticky='w', padx=S['xl'], pady=S['sm'])
-    home = page.button(header, 'เครื่องมือทั้งหมด', page.app.show_home, width=180)
-    home.grid(row=0, column=1, padx=S['xl'], pady=S['sm'])
-    page.controls.append(home)
+    from pdf_lover.ui.navigation import masthead
+    masthead(page,title)
     source = ctk.CTkFrame(page, fg_color='transparent')
     source.grid(row=1, column=0, sticky='ew', padx=S['xl'], pady=S['sm'])
     source.grid_columnconfigure(0, weight=1)
@@ -104,7 +99,7 @@ def selection_workbench(page, *, split=False):
     choices = (('pages','หนึ่งไฟล์ต่อหน้า'),('ranges','แบ่งตามช่วงหน้า'),('chunks','แบ่งทุก N หน้า')) if split else (
         () if page.DELETE else (('single','PDF เดียวรวมหน้าที่เลือก'),('pages','หนึ่งไฟล์ต่อหน้าที่เลือก')))
     if choices:
-        page.label(modes, 'รูปแบบผลลัพธ์', font=page.font_bold, height=24).grid(row=0, column=0, sticky='w')
+        page.label(modes, 'ตั้งค่าผลลัพธ์', font=page.font_bold, height=24).grid(row=0, column=0, sticky='w')
         titles=dict(choices)
         page.mode_menu=ctk.CTkOptionMenu(modes,values=list(titles.values()),height=44,
                                        font=page.font_body,dropdown_font=page.font_body,

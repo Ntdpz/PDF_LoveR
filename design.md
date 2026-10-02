@@ -5,7 +5,7 @@ Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V4.
 ## Intent and native adaptation
 
 This Windows document workspace prioritizes page inspection over decoration.
-Genre: modern-minimal. Theme: existing Cobalt. Home uses a compact Catalogue;
+Genre: modern-minimal. Theme: Cobalt document desk with graphite masthead. Home is a full-width task desk with all six ready tasks visible at minimum size;
 tools use a Workbench with a document viewport, review/settings rail and persistent
 save actions at the bottom right. Native Tk layout replaces web CSS grid, ARIA,
 mobile breakpoints and browser navigation patterns. Desktop scope is 920×700 and
@@ -23,7 +23,7 @@ keyboard Return/Space activation use the existing shared controls.
 
 ## Layout and behavior
 
-- Home initially shows only the six registered tools. The explicit catalogue toggle
+- Home replaces the category sidebar and large catalogue cards with compact task rows, a document start area, search and category dropdown. It initially shows only the six registered tools. The explicit catalogue toggle
   exposes planned tools with “ยังไม่พร้อมใช้” and a details action; no runnable CTA.
   Remove the duplicate PNG spotlight so other ready tools appear sooner.
 - Split/extract/delete: responsive vertical page grid at left. Form options scroll
@@ -55,3 +55,7 @@ plus engine fidelity, keyboard/gestures, resource/drag and distribution checks.
 Hallmark web-only gates are inapplicable to the native app; do not report 58/58 web
 compliance. Existing color contrast is measured by `verify_png.py`.
 Physical 2-core/4-GiB/HDD support remains unverified.
+
+## Full rebuild 1.7.0
+
+User rejected 1.6.0 as too similar. Replace page chrome with one graphite masthead and direct ready-tool switcher on all six pages. Full-width home compact task rows show all six tasks at 920×700; category discovery moves into dropdown. Document canvas is a graphite desk with white sheets and selected footer labels. No new runtime dependency or preview worker. Existing ownership/engines unchanged.

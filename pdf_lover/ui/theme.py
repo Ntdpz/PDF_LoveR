@@ -8,7 +8,7 @@ OKLCH is the source of truth; Tk receives converted sRGB tokens.
 import math
 
 PALETTE = {
-    "paper": (0.978, 0.005, 250),
+    "paper": (0.955, 0.009, 250),
     "surface": (0.996, 0.002, 250),
     "soft": (0.948, 0.009, 250),
     "ink": (0.245, 0.024, 258),
@@ -24,6 +24,7 @@ PALETTE = {
     "error": (0.485, 0.17, 26),
     "graphite": (0.245, 0.024, 258),
     "graphite-muted": (0.79, 0.018, 250),
+    "document-desk": (0.36, 0.019, 258),
 }
 FONTS = {"display": "Segoe UI", "body": "Leelawadee UI", "mono": "Cascadia Code"}
 SPACE = {"xs": 4, "sm": 8, "md": 12, "lg": 16, "xl": 24, "2xl": 32, "3xl": 40}

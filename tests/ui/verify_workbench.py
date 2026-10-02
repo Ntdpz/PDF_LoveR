@@ -44,6 +44,8 @@ def main():
                 app.show_home();app.home.reset_filters();pump(root,.3)
                 assert len(app.home.visible_tools)==6 and all(t.ready for t in app.home.visible_tools)
                 contained(app.home.search_entry,root);contained(app.home.ready_button,root)
+                if size=='920x700':
+                    for card,_ in app.home.cards:contained(card,root)
                 if size=='920x700':capture(root,f'after-home-{scale}.png')
                 for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate'):
                     app.show_tool(tool);page=app.active_page;pump(root,.2)
@@ -76,6 +78,10 @@ def main():
                             page.preview.tabs[0].invoke();assert page.preview.shown==0
                             page.preview.tabs[1].invoke()
                         capture(root,f'after-{tool}-{scale}.png')
+        app.show_tool('split');page=app.active_page
+        page.tool_menu._dropdown_callback('หมุน PDF');pump(root,.2);assert app.route=='rotate'
+        app.active_page.tool_menu._dropdown_callback('แยก PDF');pump(root,.2);assert app.route=='split' and app.active_page.info
+        root.geometry('920x700+0+0');pump(root,.3)
         app.show_tool('delete-pages');page=app.active_page;page.selector.expression.set('12-1')
         assert page.plan is None and page.start_button.cget('state')=='disabled'
         capture(root,'redesign-error.png')

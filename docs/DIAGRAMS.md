@@ -81,3 +81,5 @@ hook ไม่ได้แปลความหมายจากโค้ดใ
 รุ่น 1.6.0: Workbench ร่วมใน ui/workbench.py; หน้าแรกเริ่มเฉพาะพร้อมใช้
 ตารางหน้า 180×200 fit, ภาพหมุน 320×400 fit แบบแท็บ; งบ cache/คิว/process เท่าเดิม
 ตรวจ geometry และภาพจริงทั้ง 6 เครื่องมือที่ 920/1080/1440 logical px และ 100%/125%
+
+1.7.0 replaces home sidebar with task desk and adds shared masthead/tool navigation; review App routing and busy lock against ui/navigation.py. Engines and preview topology unchanged.

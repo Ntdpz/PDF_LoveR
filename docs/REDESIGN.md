@@ -34,3 +34,16 @@ selector ใช้ 180×200-fit ไม่เกิน 24 visible cards, cache 32
 | ![ก่อน](images/redesign/before-split-1.png) | ![หลัง](images/redesign/after-split-1.png) |
 
 [Home หลัง](images/redesign/after-home-1.png) · [Merge หลัง](images/redesign/after-merge-1.png) · [Rotate หลัง](images/redesign/after-rotate-1.png) · [125%](images/redesign/after-split-1.25.png)
+
+
+# ยกเครื่องโครงหน้าจอ · 1.7.0
+
+ผู้ใช้เห็นว่า 1.6.0 ยังเหมือนเดิม จึงปรับโครงสร้างทั้งระบบ: หน้าแรกไม่มี category sidebar และการ์ดสูงแล้ว ใช้ task rows เต็มความกว้าง เห็น 6 งานพร้อมใช้ที่ 920×700, การค้นหาและ dropdown หมวดอยู่แถวเดียว, document start area อยู่บนสุด
+เครื่องมือทั้งหมดใช้ masthead ใหม่และเมนูเปลี่ยนเครื่องมือโดยตรง ไม่จำเป็นต้องกลับหน้าแรกก่อน; คงเอกสาร/ค่าของแต่ละ ToolPage และ App busy guard ตัวเดิม
+selector เป็นโต๊ะสีเข้ม แผ่นหน้าสีขาวและ selected footer; hit geometry, shortcuts, gesture, queue/cache และ service เดิม
+[หลักฐาน 1.7.0](verification-1.7.0.json) · [ชุดตรวจ workspace](workbench-verification-1.7.0.json)
+
+| 1.6.0 | 1.7.0 |
+|---|---|
+| ![ก่อน](images/redesign/after-home-1.png) | ![ใหม่](images/redesign-1.7.0/after-home-1.png) |
+| ![ก่อน](images/redesign/after-split-1.png) | ![ใหม่](images/redesign-1.7.0/after-split-1.png) |

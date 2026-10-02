@@ -1,0 +1,69 @@
+{
+  "version": "1.7.0",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "0e6bfd147f0596157868b4a2fb97ea725ea53ac8503da3c31ccd139e95d60eff",
+      "artifact_sha256": "78ac28015ad1c678e2deb2cd0df20347860c34cd32d239169d6759c4a2e2c9e9",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at1440x900 and2048x1320 inspected",
+        "Full-width task desk, shared masthead/direct ready-tool switcher; App routing and busy lock remain owner",
+        "Same services/worker/preview topology; six ready tools,28planned"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "862feeffa1733c249d87b82bc91afa2dc9fac14376fafe2221be24c3b96e0d73",
+      "artifact_sha256": "8b82939b00b4f05a37f97850cbef64c687194b2c3fb1267fa549a3bf85ec7c38",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at1440x900 and2048x1320 inspected",
+        "Full-width task desk, shared masthead/direct ready-tool switcher; App routing and busy lock remain owner",
+        "Same services/worker/preview topology; six ready tools,28planned"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "51628a0623c756f060879c5bf76afa1d0bee7892f0e756457bd554b2485a8d56",
+      "artifact_sha256": "54e3caf572359af4e5c3e8b26606cd89fdc33bbb5af75efe38ba3ff8f0c229df",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at1440x900 and2048x1320 inspected",
+        "Full-width task desk, shared masthead/direct ready-tool switcher; App routing and busy lock remain owner",
+        "Same services/worker/preview topology; six ready tools,28planned"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

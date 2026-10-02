@@ -24,8 +24,8 @@ class HomePage(ctk.CTkFrame):
         self.visible_tools = []
         self.filter_job = None
         self.detail_window = None
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
         self._build_sidebar()
         self._build_content()
         self.query.trace_add("write", self._schedule_filter)
@@ -35,75 +35,49 @@ class HomePage(ctk.CTkFrame):
         return self.app.label(parent, text, **kwargs)
 
     def _build_sidebar(self):
-        self.sidebar = ctk.CTkFrame(self, width=196, corner_radius=0, fg_color=C["surface"])
-        self.sidebar.grid(row=0, column=0, sticky="nsew")
-        self.sidebar.grid_propagate(False)
-        self.sidebar.grid_columnconfigure(0, weight=1)
-        self.sidebar.grid_rowconfigure(4, weight=1)
-        identity = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        identity.grid(row=0, column=0, sticky="ew", padx=S["xl"], pady=(S["2xl"], S["xl"]))
-        self.label(identity, "PDF LoveR", font=ctk.CTkFont(family=FONTS["display"], size=23, weight="bold")).pack(anchor="w")
-        self.label(identity, "งานเอกสารของคุณ", font=self.app.font_small, color="muted").pack(anchor="w", pady=(S["xs"], 0))
-        self.nav_buttons = {}
-        self.all_button = self.app.button(self.sidebar, "เครื่องมือทั้งหมด", lambda: self.select_category("all"), width=164, anchor="w")
-        self.all_button.grid(row=1, column=0, padx=S["lg"], sticky="ew")
-        self.nav_buttons["all"] = self.all_button
-        self.label(self.sidebar, "หมวดเครื่องมือ", color="muted", font=self.app.font_small).grid(row=2, column=0, sticky="w", padx=S["xl"], pady=(S["xl"], S["sm"]))
-        navigation = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        navigation.grid(row=3, column=0, sticky="ew", padx=S["lg"])
-        navigation.grid_columnconfigure(0, weight=1)
-        for row, category in enumerate(CATEGORIES):
-            button = self.app.button(navigation, category.title, lambda key=category.id: self.select_category(key),
-                                     width=164, anchor="w", image=tool_icon(category.icon, size=20), compound="left")
-            button.grid(row=row, column=0, sticky="ew", pady=(0, S["xs"]))
-            self.nav_buttons[category.id] = button
-        foot = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        foot.grid(row=5, column=0, sticky="ew", padx=S["xl"], pady=S["xl"])
-        self.label(foot, "พร้อมใช้บนเครื่องคุณ", font=self.app.font_small, color="muted").pack(anchor="w")
-        self.label(foot, f"v{VERSION} · ทำงานออฟไลน์", font=self.app.font_small).pack(anchor="w", pady=(S["xs"], 0))
+        # Full-width identity bar replaces the catalogue sidebar.
+        self.sidebar=ctk.CTkFrame(self,fg_color=C['graphite'],corner_radius=0)
+        self.sidebar.grid(row=0,column=0,sticky='ew');self.sidebar.grid_columnconfigure(1,weight=1)
+        self.label(self.sidebar,'PDF LoveR',font=self.app.font_title,color='accent-ink').grid(row=0,column=0,padx=S['xl'],pady=S['lg'])
+        self.label(self.sidebar,'โต๊ะทำงานเอกสาร',font=self.app.font_body,color='graphite-muted').grid(row=0,column=1,sticky='w')
+        self.label(self.sidebar,f'ออฟไลน์ · v{VERSION}',font=self.app.font_small,color='graphite-muted').grid(row=0,column=2,padx=S['xl'])
+        self.nav_buttons={}
+
+    def _choose_documents(self):
+        if self.app.show_tool('merge'):self.app.merge.add_files()
 
     def _build_content(self):
-        main = ctk.CTkFrame(self, fg_color="transparent", corner_radius=0)
-        main.grid(row=0, column=1, sticky="nsew", padx=(S["2xl"], S["xl"]), pady=(S["xl"], S["lg"]))
-        main.grid_columnconfigure(0, weight=1)
-        main.grid_rowconfigure(2, weight=1)
-        header = ctk.CTkFrame(main, fg_color="transparent")
-        header.grid(row=0, column=0, sticky="ew")
-        header.grid_columnconfigure(0, weight=1)
-        self.label(header, "เลือกงานที่ต้องการทำ", font=ctk.CTkFont(family=FONTS["body"], size=28, weight="bold")).grid(row=0, column=0, sticky="w")
-        self.label(header, "เลือกเครื่องมือ หรือวาง PDF เพื่อเปิดหน้ารวมไฟล์", color="muted").grid(row=1, column=0, sticky="w", pady=(S["xs"], 0))
-        self.label(header, "Windows", color="muted", font=self.app.font_small).grid(row=0, column=1, sticky="e")
-        search = ctk.CTkFrame(main, fg_color="transparent")
-        search.grid(row=1, column=0, sticky="ew", pady=(S["lg"], S["lg"]))
-        search.grid_columnconfigure(0, weight=1)
-        self.label(search, "ค้นหาเครื่องมือ", font=self.app.font_small, color="muted").grid(row=0, column=0, sticky="w", pady=(0, S["xs"]))
-        self.search_entry = ctk.CTkEntry(search, height=44, font=self.app.font_body,
-                                       placeholder_text="เช่น รวม PDF, Word, OCR", placeholder_text_color=C["muted"],
-                                       fg_color=C["surface"], text_color=C["ink"], border_color=C["rule"], border_width=2,
-                                       corner_radius=RADIUS["control"])
-        self.search_entry.grid(row=1, column=0, sticky="ew", padx=(0, S["sm"]))
-        self.search_entry.bind("<KeyRelease>", lambda _: self.query.set(self.search_entry.get()))
-        self.search_entry.bind("<<Paste>>", lambda _: self.after(0, lambda: self.query.set(self.search_entry.get())))
+        main=ctk.CTkFrame(self,fg_color='transparent',corner_radius=0)
+        main.grid(row=1,column=0,sticky='nsew',padx=S['xl'],pady=S['lg'])
+        main.grid_columnconfigure(0,weight=1);main.grid_rowconfigure(3,weight=1)
+        welcome=ctk.CTkFrame(main,fg_color=C['tint'],corner_radius=RADIUS['panel'])
+        welcome.grid(row=0,column=0,sticky='ew',pady=(0,S['lg']));welcome.grid_columnconfigure(0,weight=1)
+        self.label(welcome,'วันนี้จะจัดการเอกสารอะไร?',font=ctk.CTkFont(family=FONTS['body'],size=30,weight='bold')).grid(row=0,column=0,sticky='w',padx=S['xl'],pady=(S['lg'],0))
+        self.label(welcome,'เลือกงานด้านล่าง หรือวาง PDF ที่นี่เพื่อรวมเอกสาร',font=self.app.font_small,color='muted').grid(row=1,column=0,sticky='w',padx=S['xl'],pady=(S['xs'],S['lg']))
+        self.app.button(welcome,'เพิ่ม PDF เพื่อรวม',self._choose_documents,primary=True,width=200).grid(row=0,column=1,rowspan=2,padx=S['xl'])
+        search=ctk.CTkFrame(main,fg_color='transparent');search.grid(row=1,column=0,sticky='ew',pady=(0,S['md']));search.grid_columnconfigure(0,weight=1)
+        self.search_entry=ctk.CTkEntry(search,height=44,font=self.app.font_body,placeholder_text='ค้นหางาน เช่น รวม PDF หรือหมุนหน้า',placeholder_text_color=C['muted'],fg_color=C['surface'],text_color=C['ink'],border_color=C['rule'],border_width=1,corner_radius=RADIUS['control'])
+        self.search_entry.grid(row=0,column=0,sticky='ew',padx=(0,S['sm']))
+        self.search_entry.bind('<KeyRelease>',lambda _:self.query.set(self.search_entry.get()))
+        self.search_entry.bind('<<Paste>>',lambda _:self.after(0,lambda:self.query.set(self.search_entry.get())))
         self.app._entry_focus(self.search_entry)
-        self.reset_button = self.app.button(search, "ล้างตัวกรอง", self.reset_filters, width=124)
-        self.reset_button.grid(row=1, column=1)
-        self.scroll = ctk.CTkScrollableFrame(main, fg_color="transparent", corner_radius=0,
-                                           scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
-        self.scroll.grid(row=2, column=0, sticky="nsew")
-        self.scroll.grid_columnconfigure(0, weight=1)
-        toolbar = ctk.CTkFrame(self.scroll, fg_color="transparent")
-        toolbar.grid(row=1, column=0, sticky="ew", pady=(0, S["sm"]))
-        toolbar.grid_columnconfigure(0, weight=1)
-        self.section_title = self.label(toolbar, "เครื่องมือทั้งหมด", font=self.app.font_bold)
-        self.section_title.grid(row=0, column=0, sticky="w")
-        self.ready_button = self.app.button(toolbar, "ดูเครื่องมือในแผนด้วย", self.toggle_ready, width=220)
-        self.ready_button.grid(row=0, column=1)
-        self.result_label = self.label(self.scroll, "", font=self.app.font_small, color="muted")
-        self.result_label.grid(row=2, column=0, sticky="w", pady=(0, S["lg"]))
-        self.grid_area = ctk.CTkFrame(self.scroll, fg_color="transparent", corner_radius=0)
-        self.grid_area.grid(row=3, column=0, sticky="ew")
-        self.scroll._parent_canvas.bind("<Configure>", self._on_resize, add="+")
-        self.label(main, "เครื่องมือในแผนยังไม่พร้อมใช้ · ใช้งานได้เฉพาะรายการที่ระบุพร้อมใช้", font=self.app.font_small, color="muted").grid(row=3, column=0, sticky="w", pady=(S["lg"], 0))
+        categories={'ทุกหมวด':'all',**{c.title:c.id for c in CATEGORIES}}
+        self.category_menu=ctk.CTkOptionMenu(search,values=list(categories),height=44,width=180,font=self.app.font_small,dropdown_font=self.app.font_body,fg_color=C['surface'],text_color=C['ink'],button_color=C['soft'],button_hover_color=C['rule'],command=lambda text:self.select_category(categories[text]))
+        self.category_menu.grid(row=0,column=1,padx=(0,S['sm']))
+        self.category_menu._canvas.configure(takefocus=1)
+        self.category_menu._canvas.bind('<FocusIn>',lambda _:self.category_menu.configure(button_color=C['tint']))
+        self.category_menu._canvas.bind('<FocusOut>',lambda _:self.category_menu.configure(button_color=C['soft']))
+        for key in ('<Return>','<space>','<Alt-Down>'):self.category_menu._canvas.bind(key,lambda _:self.category_menu._open_dropdown_menu())
+        self.reset_button=self.app.button(search,'ล้าง',self.reset_filters,width=72);self.reset_button.grid(row=0,column=2)
+        toolbar=ctk.CTkFrame(main,fg_color='transparent');toolbar.grid(row=2,column=0,sticky='ew',pady=(0,S['sm']));toolbar.grid_columnconfigure(0,weight=1)
+        self.section_title=self.label(toolbar,'เลือกงาน',font=self.app.font_bold);self.section_title.grid(row=0,column=0,sticky='w')
+        self.result_label=self.label(toolbar,'',font=self.app.font_small,color='muted');self.result_label.grid(row=1,column=0,sticky='w')
+        self.ready_button=self.app.button(toolbar,'ดูเครื่องมือในแผนด้วย',self.toggle_ready,width=220);self.ready_button.grid(row=0,column=1,rowspan=2)
+        self.scroll=ctk.CTkScrollableFrame(main,fg_color='transparent',corner_radius=0,scrollbar_button_color=C['rule'])
+        self.scroll.grid(row=3,column=0,sticky='nsew');self.scroll.grid_columnconfigure(0,weight=1)
+        self.grid_area=ctk.CTkFrame(self.scroll,fg_color='transparent',corner_radius=0);self.grid_area.grid(row=0,column=0,sticky='ew')
+        self.scroll._parent_canvas.bind('<Configure>',self._on_resize,add='+')
+        self.label(main,'เลือกเอกสาร  ·  ตั้งค่าและเลือกหน้า  ·  ตรวจผล  ·  บันทึกไฟล์ใหม่',font=self.app.font_small,color='muted').grid(row=4,column=0,sticky='w',pady=(S['sm'],0))
 
     def _schedule_filter(self, *_):
         if self.search_entry.get() != self.query.get():
@@ -116,13 +90,13 @@ class HomePage(ctk.CTkFrame):
     def _on_resize(self, event):
         scale = ctk.ScalingTracker.get_widget_scaling(self)
         width = event.width / scale
-        columns = 3 if width >= 840 else 2 if width >= 480 else 1
+        columns = 3 if width >= 1180 else 2 if width >= 700 else 1
         if columns != self.columns:
             self.columns = columns
             self.render_tools(reset_scroll=False)
         card_width = max(240, (width - S["lg"] * (self.columns - 1)) / self.columns)
         for card, description in self.cards:
-            description.configure(wraplength=card_width - 2 * S["lg"])
+            description.configure(wraplength=max(140,card_width - 160))
 
     def select_category(self, category):
         self.category = category
@@ -150,7 +124,8 @@ class HomePage(ctk.CTkFrame):
         viewport = max(300, self.scroll._parent_canvas.winfo_width() / scale)
         card_width = (viewport - S["lg"] * (self.columns - 1)) / self.columns
         titles = {category.id: category.title for category in CATEGORIES}
-        self.section_title.configure(text=titles.get(self.category, "เครื่องมือพร้อมใช้" if self.ready_only else "เครื่องมือทั้งหมด"))
+        self.section_title.configure(text=titles.get(self.category, "งานที่พร้อมทำ" if self.ready_only else "เครื่องมือทั้งหมด"))
+        self.category_menu.set(titles.get(self.category,"ทุกหมวด"))
         for key, button in self.nav_buttons.items():
             active = key == self.category
             button.configure(fg_color=C["tint"] if active else C["surface"], text_color=C["accent"] if active else C["ink"],
@@ -165,17 +140,15 @@ class HomePage(ctk.CTkFrame):
         if not self.visible_tools:
             self._empty_state()
         for index, tool in enumerate(self.visible_tools):
-            card = ctk.CTkFrame(self.grid_area, fg_color=C["surface"], border_color=C["rule"], border_width=1,
-                               corner_radius=RADIUS["panel"], height=200, width=240)
-            card.grid(row=index // self.columns, column=index % self.columns, sticky="nsew",
-                      padx=(0, S["lg"] if index % self.columns != self.columns - 1 else 0), pady=(0, S["lg"]))
-            card.grid_columnconfigure(0, weight=1)
-            self.label(card, tool.title, font=self.app.font_bold, image=tool_icon(tool.icon, "accent" if tool.ready else "muted"), compound="left").grid(row=0, column=0, sticky="w", padx=S["lg"], pady=(S["lg"], S["sm"]))
-            description = self.label(card, tool.description, font=self.app.font_small, color="muted", wraplength=max(180, card_width - 2 * S["lg"]), justify="left", height=60)
-            description.grid(row=1, column=0, sticky="ew", padx=S["lg"])
-            self.label(card, "พร้อมใช้" if tool.ready else "ยังไม่พร้อมใช้", color="success" if tool.ready else "muted", font=self.app.font_small).grid(row=2, column=0, sticky="w", padx=S["lg"], pady=(S["xs"], 0))
-            action = self.app.button(card, "เปิดเครื่องมือ" if tool.ready else "ดูรายละเอียด", lambda key=tool.id: self.app.show_tool(key), width=160)
-            action.grid(row=3, column=0, sticky="ew", padx=S["lg"], pady=(S["sm"], S["lg"]))
+            card = ctk.CTkFrame(self.grid_area,fg_color=C['surface'],border_color=C['rule'],border_width=1,corner_radius=RADIUS['panel'])
+            card.grid(row=index//self.columns,column=index%self.columns,sticky='nsew',padx=(0,S['md'] if index%self.columns!=self.columns-1 else 0),pady=(0,S['md']))
+            card.grid_columnconfigure(1,weight=1)
+            self.label(card,'',image=tool_icon(tool.icon,'accent' if tool.ready else 'muted',32),width=40).grid(row=0,column=0,rowspan=2,padx=(S['lg'],S['md']),pady=S['lg'])
+            self.label(card,tool.title,font=self.app.font_bold).grid(row=0,column=1,sticky='w',pady=(S['md'],0))
+            description=self.label(card,tool.description if tool.ready else 'ยังไม่พร้อมใช้ · '+tool.description,font=self.app.font_small,color='muted',wraplength=max(140,card_width-160),justify='left',height=48)
+            description.grid(row=1,column=1,sticky='ew',pady=(0,S['md']))
+            action=self.app.button(card,'เปิด' if tool.ready else 'ข้อมูล',lambda key=tool.id:self.app.show_tool(key),width=64)
+            action.grid(row=0,column=2,rowspan=2,padx=S['md'],pady=S['lg'])
             self.cards.append((card, description))
         if reset_scroll:
             self.scroll._parent_canvas.yview_moveto(0)

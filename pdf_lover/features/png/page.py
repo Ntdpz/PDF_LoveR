@@ -37,15 +37,8 @@ class PngPage(ToolPage):
         root = self
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(2, weight=1)
-        header = ctk.CTkFrame(root, fg_color=C["surface"], corner_radius=0, height=64)
-        header.grid(row=0, column=0, sticky="ew")
-        header.grid_columnconfigure(1, weight=1)
-        self.label(header, "", image=document_icon(36), width=40).grid(row=0, column=0, rowspan=2, padx=(S["xl"], S["md"]), pady=S["sm"])
-        self.label(header, "PDF เป็น PNG", font=ctk.CTkFont(family=FONTS["display"], size=21, weight="bold")).grid(row=0, column=1, sticky="sw", pady=(S["md"], 0))
-        self.label(header, "เครื่องมือแปลงเอกสารเป็นภาพ", font=self.font_small, color="muted").grid(row=1, column=1, sticky="nw", pady=(0, S["md"]))
-        self.home_button = self.button(header, "เครื่องมือทั้งหมด", self.app.show_home, width=200)
-        self.home_button.grid(row=0, column=2, rowspan=2, padx=S["xl"])
-        self.controls.append(self.home_button)
+        from pdf_lover.ui.navigation import masthead
+        masthead(self, 'PDF เป็น PNG')
         intro = ctk.CTkFrame(root, fg_color="transparent")
         intro.grid(row=1, column=0, sticky="ew", padx=S["xl"], pady=S["sm"])
         self.label(intro, "เลือกเอกสาร · ตั้งค่า · ตรวจชื่อภาพ · บันทึก", font=ctk.CTkFont(family=FONTS["body"], size=20, weight="bold")).pack(anchor="w")

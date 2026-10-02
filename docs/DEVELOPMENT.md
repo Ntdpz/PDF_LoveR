@@ -99,7 +99,7 @@ PATH and performs native file drops, conversion, merging, splitting, extraction,
 It then uninstalls and verifies that user-created output survives. Local logs
 are ignored; sanitized records are kept in `docs/`.
 
-Current record: [distribution-1.6.0.json](distribution-1.6.0.json). Tests run on
+Current record: [distribution-1.7.0.json](distribution-1.7.0.json). Tests run on
 Windows 10 x64; a separate Windows 11 machine has not been used. Installers are
 unsigned.
 
@@ -107,8 +107,8 @@ unsigned.
 
 Edit only `pdf_lover/version.py`. Package metadata, UI and Windows filenames read
 that source. `prepare_version.py` generates the Windows metadata and Inno
-version definitions. Current outputs are `PDF_LoveR_1.6.0.exe`,
-`PDF_LoveR_1.6.0_Setup.exe` and `PDF_LoveR_1.6.0_Portable.zip`.
+version definitions. Current outputs are `PDF_LoveR_1.7.0.exe`,
+`PDF_LoveR_1.7.0_Setup.exe` and `PDF_LoveR_1.7.0_Portable.zip`.
 
 Keep binaries, build tools and local logs outside Git. Recompute hashes when
 rebuilding an asset. GitHub Release 1.0.0 remains the older PNG application;
@@ -122,7 +122,7 @@ one lazily started child process; image application pauses during dragging.
 Lift and insertion-marker animations follow Windows' reduced-animation setting.
 The 100-file load check covers rapid pointer events, edge scrolling, Tk heartbeat,
 preview pause/resume and worker cleanup. See
-[drag-performance-1.6.0.json](drag-performance-1.6.0.json). Timings describe the
+[drag-performance-1.7.0.json](drag-performance-1.7.0.json). Timings describe the
 test machine rather than every document or PC.
 
 Split evidence: [split-verification.json](split-verification.json). The suite now has 79 unit tests and thirteen sequential native UI checks.

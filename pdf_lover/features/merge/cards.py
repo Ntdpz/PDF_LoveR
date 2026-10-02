@@ -35,7 +35,7 @@ class MergeCards(ctk.CTkFrame):
         self.page = page
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        self.canvas = tk.Canvas(self, bg=C["surface"], highlightthickness=0, bd=0,
+        self.canvas = tk.Canvas(self, bg=C["document-desk"], highlightthickness=0, bd=0,
                                 takefocus=1, cursor="arrow", xscrollincrement=1, yscrollincrement=1)
         self.canvas.grid(row=0, column=0, sticky="nsew")
         self.scrollbar = ctk.CTkScrollbar(self, orientation="vertical", command=self._scroll,

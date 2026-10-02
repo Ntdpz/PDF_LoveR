@@ -60,7 +60,7 @@ class PageSelector(ctk.CTkFrame):
         viewport.grid(row=3, column=0, columnspan=2, sticky="nsew", padx=S["lg"])
         viewport.grid_columnconfigure(0, weight=1)
         viewport.grid_rowconfigure(0, weight=1)
-        self.canvas = tk.Canvas(viewport, background=C["surface"], height=100,
+        self.canvas = tk.Canvas(viewport, background=C["document-desk"], height=100,
                                 highlightthickness=0, borderwidth=0, takefocus=True)
         self.canvas.grid(row=0, column=0, sticky="nsew")
         self.scrollbar = ctk.CTkScrollbar(viewport, orientation="vertical", command=self._scroll)
@@ -432,7 +432,7 @@ class PageSelector(ctk.CTkFrame):
             x1, y1 = column * cell_width + gap / 2, row * self.step_y + gap / 2
             x2, y2 = (column + 1) * cell_width - gap / 2, (row + 1) * self.step_y - gap / 2
             self.visible[page] = (x1, y1, x2, y2)
-            fill = C["soft"] if not self.enabled else C["tint"] if chosen else C["surface"]
+            fill = C["soft"] if not self.enabled else C["surface"]
             if self.enabled and self.editable and page in (self.hovered, self.pressed):
                 fill = C["tint"] if page != self.pressed else C["soft"]
             self.canvas.create_rectangle(x1, y1, x2, y2, fill=fill,
@@ -442,10 +442,12 @@ class PageSelector(ctk.CTkFrame):
                                              outline=C["focus"], width=2 * scale)
             if key in self.images:
                 self.canvas.create_image((x1 + x2) / 2, y1 + (self.step_y - 40 * scale) / 2, image=self.images[key])
+            if chosen:
+                self.canvas.create_rectangle(x1+2*scale,y2-40*scale,x2-2*scale,y2-2*scale,fill=C["accent"],outline="")
             self.canvas.create_text((x1 + x2) / 2, y2 - 22 * scale, text=label, font=font,
-                                    fill=C["ink"] if self.enabled else C["muted"], justify="center")
+                                    fill=C["accent-ink"] if chosen else C["ink"] if self.enabled else C["muted"], justify="center")
         if not count:
-            self.canvas.create_text(gap, gap, text="เลือก PDF เพื่อดูหน้าเอกสาร", anchor="nw", font=font, fill=C["muted"])
+            self.canvas.create_text(gap, gap, text="เลือก PDF เพื่อดูหน้าเอกสาร", anchor="nw", font=font, fill=C["graphite-muted"])
         if self.gesture and self.gesture["active"]:
             self.canvas.create_rectangle(*self._rectangle(), outline=C["accent"], width=2 * scale,
                                          dash=(4, 3), tags="marquee")

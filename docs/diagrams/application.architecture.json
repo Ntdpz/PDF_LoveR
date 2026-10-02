@@ -56,7 +56,7 @@
       "id": "home",
       "type": "frontend",
       "label": "หน้าเลือกเครื่องมือ",
-      "sublabel": "เริ่มที่ 6 พร้อมใช้ · catalogue แยกชัด",
+      "sublabel": "โต๊ะงานเต็มหน้า · 6 งานพร้อมใช้",
       "pos": [
         60,
         190
@@ -98,7 +98,7 @@
       "id": "ui",
       "type": "frontend",
       "label": "องค์ประกอบ UI ร่วม",
-      "sublabel": "Workbench · controls · Thai fonts",
+      "sublabel": "masthead · เปลี่ยนเครื่องมือ · controls",
       "pos": [
         60,
         340

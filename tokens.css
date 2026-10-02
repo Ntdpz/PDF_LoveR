@@ -2,7 +2,7 @@
 /* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 */
 /* Native app consumes pdf_lover/ui/theme.py; this is its portable web token export. */
 :root {
-  --color-paper: oklch(97.8% 0.005 250);
+  --color-paper: oklch(95.5% 0.009 250);
   --color-surface: oklch(99.6% 0.002 250);
   --color-soft: oklch(94.8% 0.009 250);
   --color-ink: oklch(24.5% 0.024 258);
@@ -18,6 +18,7 @@
   --color-error: oklch(48.5% 0.17 26);
   --color-graphite: oklch(24.5% 0.024 258);
   --color-graphite-muted: oklch(79% 0.018 250);
+  --color-document-desk: oklch(36% 0.019 258);
   --font-display: "Segoe UI", sans-serif;
   --font-body: "Leelawadee UI", sans-serif;
   --font-mono: "Cascadia Code", sans-serif;

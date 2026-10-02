@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "1.6.0",
+  "version": "1.7.0",
   "decision": "accepted",
   "target": {
     "cpu_cores": 2,
@@ -8,8 +8,8 @@
     "disk": "HDD"
   },
   "impact": {
-    "memory": "Larger selector 180x200-fit and comparison 320x400-fit previews retain viewport 24, cache 32/6 MiB and 12/6 MiB estimates, shared process request16/result4. Home idle median 65.04 MiB over five fresh source runs; no all-page images or extra worker. Hidden pages release images and timers.",
-    "cpu_ui": "Shared workbench is geometry and controls only. Existing coalesced gesture/edge scrolling and merge drag retained. Larger preview pixels add bounded rendering work; no animation/new polling. Native 1000-page/1000-pointer and merge drag tests check responsiveness on development host.",
+    "memory": "Full-width compact home replaces sidebar/tall cards. Shared masthead adds one bounded ready-tool menu per lazy ToolPage. Same preview process/request16/result4/viewport24/cache budgets. Five source runs show home idle median63.73 MiB; hidden image/timer cleanup retained.",
+    "cpu_ui": "Home renders at most34 catalogue rows on filter, six initially; debounce180ms retained. Masthead calls App routing/busy guards, creates no worker/polling/animation. Selector only changes paint tokens/footer; gesture hit boxes, coalescing and merge virtualization unchanged.",
     "disk_startup": "No new backend, startup scan or preloading. Viewport coordinator renders only requested pages. PDF preflight still synchronous and HDD/cold frozen startup remains unmeasured.",
     "dependencies": "No new runtime dependency. Existing Tk/CustomTkinter/Pillow and spawned PyMuPDF. Service engines unchanged and workers never access Tk.",
     "output_quality": "Export services and DPI unchanged. Native suites check page contents, original hashes, collision refusal and real exports for all six tools. Enlarged navigation previews do not set output quality."
@@ -18,14 +18,14 @@
     "Windows 10 development PC i7-11800H/about 40 GiB RAM; physical 2-core/4-GiB/HDD and Windows 11 not tested",
     "Selector 180x200-fit and comparison 320x400-fit previews are not full-resolution zoom",
     "Cache accounting estimates PIL/Tk image copies; scanned PDFs, frozen cold-start and export peak remain unmeasured",
-    "Final spacing/focus adjustment after benchmark adds no widget, render pixels, process or cache"
+    "Final paint/navigation-label/home-action refinements after benchmark; no added widget/process/cache. Exact final canvas bytes may vary slightly."
   ],
   "source_files": {
     ".githooks/pre-commit": "0a114d26a992729d568c080400e47a4d36a0ab557bd90257a3acf43c0be3383a",
     "AGENTS.md": "86b070e4181a71d507c5ece7511d84a36ea32f35a772b0e99db56471eb889e7a",
     "CONTRIBUTING.md": "015ddba8468452ca98ec2c46b23848eb12959805562c8837911ce2318c50fc97",
-    "docs/ARCHITECTURE.md": "4a4466ea061c288ac6c34ba1567a82083846b8a8f300aa4f2bc8c0048c78a702",
-    "docs/DIAGRAMS.md": "8c8e987ba55830cda681afe77ac4066de8e843600171410140491e2ef15a391f",
+    "docs/ARCHITECTURE.md": "72d64e754bd1031c28ccf589d962bff5f901417822a48dafa2a66a397e3c7c0f",
+    "docs/DIAGRAMS.md": "ec0e4e2e808c06591d8c400586978d67877fa846821c13c7af51221b8c35d11d",
     "main.py": "f9930803372107e6bcb6ee64bc1cbae518ccb9221adfc34e8dce74de2d0fd1b0",
     "packaging/PDF_to_PNG.iss": "26cb2ccc0b932ac690e46ee912f71d7274d38cd1b67c16722d127ab319d50ecb",
     "packaging/build_release.ps1": "32ee24b5b77b37d34acfb6c9d64706687e40a302486df5dc1191e31754dbac21",
@@ -34,7 +34,7 @@
     "packaging/prepare_version.py": "9a9d44f8f408b15d8762847778db16b595b09132d6781426bafa5f935edbbf64",
     "packaging/spec_common.py": "ada64c347946f0ca152b7fcc067fa48511a618a1919a6fb0a53089574852c0c7",
     "packaging/verify_distribution.ps1": "71d91cbdfb3e171630c8038266b04cdc71a97a3045c71df6c12c7228d6333c22",
-    "packaging/version.iss": "82bc0eb0e3275e636cd8ee5792e9f52ef036d1e035cb74d8b8ef9387153be85a",
+    "packaging/version.iss": "3262a7457ccf03c109847ed4557a431bd2448f91ed2ac51483042a5433d07e5c",
     "pdf_lover/__init__.py": "c1c4a7512266b8c4581b3b4780643c1b66028a4db7f3ab2e2eb9c95d7a730b25",
     "pdf_lover/__main__.py": "7f873c699d79cd83557c7a4c61c36309d6432fda17190d1734e186b770cc3b15",
     "pdf_lover/app.py": "3f50cd179169b0f15c5806cab06c92e6698669f678a6e52ea6d27c6f714a043f",
@@ -54,12 +54,12 @@
     "pdf_lover/features/extract/page.py": "2f9213993f760c71002498868189e9e4aece0f561b4c31e41a3882af5c9d8755",
     "pdf_lover/features/extract/service.py": "b75d9602acb2d0b68f2570295a0150bea3a7bf1ad32943e33394e7c7bd26549f",
     "pdf_lover/features/merge/__init__.py": "ec55315710916db93570bc8e2ae98f3fd3ae341bd1cce5479718d79081d71d21",
-    "pdf_lover/features/merge/cards.py": "05061a6052dacd36cf13030f24a408d6496af32c4a38ce73061102ea9d8337ad",
-    "pdf_lover/features/merge/page.py": "fc70c34ec1427a698ea83c536f558c827f3a12c9638c1ef9559b33ab7a3a0a25",
+    "pdf_lover/features/merge/cards.py": "818dfa6b52545f60ff332b12f4a3e9dcbce0988836baf12aff69791d11a1981f",
+    "pdf_lover/features/merge/page.py": "20b8d52267702ee7a9de43ecaae98fbb02bced1943cca3107ff7135a954dae3b",
     "pdf_lover/features/merge/previews.py": "81c1181d22dd408992734a2190732e60d54a0fccb7ba02096514cc1e39eba5b9",
     "pdf_lover/features/merge/service.py": "2489399df048dfd778860cbf30f100a1b94ef64be10964a549e9ade144a6a9df",
     "pdf_lover/features/png/__init__.py": "a7e43ac8da29538c32151a6d51b1ca674ce278d04e3d0f837c0c345e1e82daef",
-    "pdf_lover/features/png/page.py": "54929b9a97f73cffa98fa1f2568b5c169c0d5f9963788629325332349e93ed29",
+    "pdf_lover/features/png/page.py": "42e0b65739134341798e14f843f75d7f6e863454deb6696ba4ca6ecca7abf1a1",
     "pdf_lover/features/png/service.py": "b9256f85e1896770adcc0ab904c8b1ed066028ddf553542ba06dc1e37763ed0e",
     "pdf_lover/features/registry.py": "d2e5aa84a320e4f97ead286d67873300aec9e17f87edc3c70b571a9930372143",
     "pdf_lover/features/rotate/__init__.py": "54560eac7d317abdb8a0c0f4af033181bb52ba26a6c7d81403cf9a5a5f0be67a",
@@ -74,16 +74,17 @@
     "pdf_lover/platform/paths.py": "67ea4b2afa4d9e299f511eb3e62cb800d0fe19e8d1476fe7ea14c7e359153c66",
     "pdf_lover/ui/__init__.py": "19c41fe5e771a5a96e4ff685a1707750beb60a28ffebb2675a4d79dc6e75d30d",
     "pdf_lover/ui/controls.py": "8107fe9e7d4455d34f9ecd77d646079bcb12ef4ee1b045bfbddcec078ea4968a",
-    "pdf_lover/ui/home.py": "d21b0dfa99de8a2f329d8c82df7af03a1d22b1dbd1f3e0b88182b1e1214ded8a",
+    "pdf_lover/ui/home.py": "c53abbb3c088cf9a183e56ca8c4935f0abd139c4eeb6797aba2b08f2ea3116e5",
     "pdf_lover/ui/icons.py": "beb7b0bf018edb4ef7e966ea56ae7c6bcb36901a5edfc650dc78383cce00a84c",
+    "pdf_lover/ui/navigation.py": "4644a63bd08f75fb4ea9f660d86693cb26408725c2e2dae4afdd546771d9b6b5",
     "pdf_lover/ui/page_gestures.py": "9dee33051d87e01ef1c873c20cf7a4d6b2759e79944c94126989f43864197b72",
     "pdf_lover/ui/page_preview.py": "d9f5791d96f0f3714200fe3227783f716c35fdb96134ce7f4880cd824601d96c",
-    "pdf_lover/ui/page_selector.py": "f5e61c46bc20b501289970e7c8137e9ce1eae4cb5e2d5e444277747952f36f7b",
+    "pdf_lover/ui/page_selector.py": "3ff06e5c163f75f97b12ec3b884d1205c4edf01187b21d50136ef42cd5ae64e4",
     "pdf_lover/ui/pdf_previews.py": "6b34be6b397dbbeb4fc00f6d6dcf1647c52bdcb5abc0c74357c147d369462646",
-    "pdf_lover/ui/theme.py": "ade1fd32b07b6aab6cafc3c23712ab4d8cdf842f5f6f6eb1f1388f022d571ad1",
+    "pdf_lover/ui/theme.py": "0dbdb1aea9488d6229c1e2a6547f7ab043219881e850f6500862389c733986ff",
     "pdf_lover/ui/tooltip.py": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07",
-    "pdf_lover/ui/workbench.py": "cf616b33c0df03446324a76658a513968bb500acd50b89dddee6984ec291044f",
-    "pdf_lover/version.py": "67e9b4594e96a3a7879e0ab6c6de548efd639d26361b1dd2c2387fa326e6f4e8",
+    "pdf_lover/ui/workbench.py": "2c77a442549198521a86468b5e47af65f045839950c956acd2facda933082790",
+    "pdf_lover/version.py": "15350463e18dd9c3656ad9a342e957f74b72bffaf4f63b81f27ed39cbd268915",
     "pyproject.toml": "ed660cc6c0b95676730cdc5044524e1730c362cfcf10dd9aa297ff883e6881ca",
     "requirements.txt": "6876beb4cdea0141ea89b9484fbc905e9c47388a9957afb72f3565534eef3f4c",
     "scripts/benchmark_png_memory.py": "154165dd33a0a19ead2c4ad2776d713b7e76f461e45530b7b289ea959a68d04e",
@@ -107,7 +108,7 @@
     "tests/ui/verify_rotate.py": "6d233a60ef6df981f5c6d67f46fd35bc034a31b56fda856c90bf24574f66cb3c",
     "tests/ui/verify_selector.py": "58e7be3cda271f45d2a9515e93eaa267e84d077d2918bd449008f751c50875ca",
     "tests/ui/verify_split.py": "11da711871c29e567df942ea4fd8e4bc260b3846ea5758929f6e06314bb13533",
-    "tests/ui/verify_workbench.py": "47a8d7c77807103f2c011f4ea4e52ad68c21411aef06683cafd37208cacd1ff1",
+    "tests/ui/verify_workbench.py": "d41745259102f11b796c4bf180f0a7ac3fafbf0f6b2379db8918c17efb7ebf36",
     "tests/unit/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
     "tests/unit/test_architecture.py": "00a09503bf033eb228d2be198ca8243aedf8251cce0e016896da13e2e16da24b",
     "tests/unit/test_diagram_guard.py": "9eef074f951e4862d0db68392ffd86a2a027d15fc138707409fc86d2c26aae5d",
@@ -121,35 +122,35 @@
   },
   "evidence": [
     {
-      "path": "docs/page-gestures-verification-1.6.0.json",
-      "sha256": "4a3edfbeed4e013bd3c587eaae920e6cf14d959366c649ec9d83e3cd1034d9b8"
+      "path": "docs/performance-after-1.7.0.json",
+      "sha256": "47fc80fb02c7686aa160cf26dcd07fa2b85434c6eb63e8cbac0beee505483508"
     },
     {
-      "path": "docs/selector-verification-1.6.0.json",
-      "sha256": "b0e5fb8fca421a6f1608ae2d4b2cdd194e8713302d8698274c4144288a33b191"
+      "path": "docs/workbench-verification-1.7.0.json",
+      "sha256": "5d678413abdf103153e7dd15796cf89895e3166f7e62b9d6b107bcd4a34a837b"
     },
     {
-      "path": "docs/performance-after-1.6.0.json",
-      "sha256": "a0ce044a2c00fc184ec8aa2e5380d6a9dffe5a80a9a33f6fa633a19a84a3c90b"
-    },
-    {
-      "path": "docs/workbench-verification-1.6.0.json",
-      "sha256": "aa2ea569b9ff8e04634f5b4c2779a9f024c81ea37b4559d8c8ca9092c6932d83"
-    },
-    {
-      "path": "docs/resource-verification-1.6.0.json",
+      "path": "docs/resource-verification-1.7.0.json",
       "sha256": "90b5f023feaa163992491cd8971cea083692f563aa67b89e730fc6f427915f5a"
     },
     {
-      "path": "docs/verification-1.6.0.json",
-      "sha256": "ed5d201e9b9195d093599e46daf3f985f34d726f72df8b1851e473b63b69325f"
+      "path": "docs/selector-verification-1.7.0.json",
+      "sha256": "f6ba57f144de0660a5d8e85462c9bc089e19dcdc23d6b752060d97a5f93c69f4"
     },
     {
-      "path": "docs/distribution-1.6.0.json",
-      "sha256": "bde0a4e381a3d43971889aa8454a0fc6f69167517d3731933b75366956a70b31"
+      "path": "docs/page-gestures-verification-1.7.0.json",
+      "sha256": "028d82236d80620fdefe8deab3e499a006cb78a93067c73e8c1f472e12ec6891"
     },
     {
-      "path": "docs/source-smoke-1.6.0.json",
+      "path": "docs/verification-1.7.0.json",
+      "sha256": "9b38f3a9cacf541e6d1681e02e4ace49168fc5417af54ee1355e9f9eb1f5d44b"
+    },
+    {
+      "path": "docs/distribution-1.7.0.json",
+      "sha256": "280d63d743a4aa3d1341a77b1616f8e6ceea98a06031bea0d9d48614c28d2db3"
+    },
+    {
+      "path": "docs/source-smoke-1.7.0.json",
       "sha256": "15962ed3217c652906aa25460fc62148b95deaaaa5e43cc4b5db1ca32f8f1d52"
     }
   ]

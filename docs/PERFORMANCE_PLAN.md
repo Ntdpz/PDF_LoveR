@@ -178,3 +178,7 @@ Shift/Ctrl และลากครอบใช้ PageSelector ร่วม ไ
 ตรวจ [geometry 920×700 / 1080×780 / 1440×900 ที่ 100% และ 125%](workbench-verification-1.6.0.json), [resource lifecycle](resource-verification-1.6.0.json) และ gesture/merge regressions
 ยังไม่ทดสอบ PC 2-core/4-GiB/HDD หรือ Windows 11 จริง; scanned PDF, cold frozen startup และ export peak ยังไม่วัดใหม่
 การลดช่องว่าง settings และเพิ่ม keyboard focus หลัง benchmark ไม่เพิ่ม widget/process/cache หรือเปลี่ยน render sizes
+
+## โต๊ะเอกสารเต็มหน้า · 1.7.0
+
+Home compact task rows replace sidebar and tall cards; navigation uses App routing with no new worker. Render sizes/cache/coordinator limits unchanged. [Five-run source measurement](performance-after-1.7.0.json): home idle median 63.73 MiB vs 65.04 MiB in1.6.0, similar memory level; no material optimization claim. Still no physical2-core/4-GiB/HDD or Windows11, scanned export/cold frozen-start evidence. Final paint colors do not add resource allocations.

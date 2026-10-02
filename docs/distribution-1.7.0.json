@@ -1,0 +1,242 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-02T15:37:19.2481936+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 6 tools",
+    "tkdnd_version": "2.9.4",
+    "preview_cleanup": true
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 6 tools",
+    "tkdnd_version": "2.9.4",
+    "preview_cleanup": true
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 6 tools",
+    "tkdnd_version": "2.9.4",
+    "preview_cleanup": true
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.7.0",
+  "artifacts": [
+    {
+      "name": "PDF_LoveR_1.7.0.exe",
+      "bytes": 37884462,
+      "sha256": "bb811054511d3a01c4d604d1aaf4698e83ebd727c5c5d38095dc3babefd38481"
+    },
+    {
+      "name": "PDF_LoveR_1.7.0_Portable.zip",
+      "bytes": 38745861,
+      "sha256": "baf6d05be0815077153d5de82ebc8febbf5dc2231ad08e3025ed86d3ea272e6e"
+    },
+    {
+      "name": "PDF_LoveR_1.7.0_Setup.exe",
+      "bytes": 28114995,
+      "sha256": "10ed5527476777b4cc188823185102d5e8cbfbf7270a68bcbe9a971ebc93a40c"
+    }
+  ]
+}
