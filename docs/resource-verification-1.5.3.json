@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "preview_process_limit": 1,
+  "home_preview_processes": 0,
+  "request_limit": 16,
+  "navigation_cycles": 20,
+  "hidden_caches_released": true,
+  "retained_selection": true,
+  "latest_preview_pixels_match": true,
+  "cleanup": true,
+  "tk_errors": []
+}

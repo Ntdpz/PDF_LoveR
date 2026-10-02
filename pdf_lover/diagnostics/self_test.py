@@ -27,6 +27,7 @@ def run(root, app_class, report):
     sandbox = tempfile.TemporaryDirectory(prefix="pdf-png-package-")
     folder = Path(sandbox.name)
     failures = []
+    selector_pages = {}
     root.report_callback_exception = lambda kind, value, trace: failures.append(str(value))
     try:
         app = app_class(root)
@@ -81,6 +82,26 @@ def run(root, app_class, report):
         report.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
         sandbox.cleanup()
 
+    def selector_preview_ready(page, name, timeout):
+        """Scroll every synthetic page through the withdrawn window's tiny viewport."""
+        selector = page.selector
+        required = selector.worker.required
+        seen = selector_pages.setdefault(name, set())
+        if required and all(selector.cache.get(key) for key in required):
+            seen.update(key[3] + 1 for key in required)
+            assert len(selector.visible) <= selector.VISIBLE
+            assert selector.cache.resident_bytes <= selector.cache.max_bytes
+            missing = set(range(1, selector.info.page_count + 1)) - seen
+            if not missing:
+                return True
+            number = min(missing)
+            rows = (selector.info.page_count + selector.columns - 1) // selector.columns
+            total = max(selector.canvas.winfo_height(), rows * selector.step_y)
+            selector._scroll("moveto", ((number - 1) // selector.columns * selector.step_y) / total)
+            selector.render()
+        assert time.monotonic() - started < timeout, name + " viewport thumbnail timeout"
+        return False
+
     def finish_merge():
         if app.busy and time.monotonic() - started < 45:
             root.after(100, finish_merge)
@@ -127,7 +148,9 @@ def run(root, app_class, report):
             return
         try:
             assert not app.busy and page.destination, page.status.get()
-            assert len(page.selector.cache) == 3 and all(page.selector.cache.values())
+            if not selector_preview_ready(page, "split", 60):
+                root.after(100, finish_split)
+                return
             for output in page.plan.outputs:
                 with pymupdf.open(output.path) as result:
                     assert result.page_count == len(output.pages)
@@ -170,7 +193,9 @@ def run(root, app_class, report):
             return
         try:
             assert not app.busy and page.destination, page.status.get()
-            assert len(page.selector.cache) == 3 and all(page.selector.cache.values())
+            if not selector_preview_ready(page, tool, 85):
+                root.after(100, lambda: finish_page_tool(tool))
+                return
             with pymupdf.open(page.plan.outputs[0].path) as result:
                 assert result.page_count == 2 and "MERGE FIRST" in result[0].get_text()
                 assert result[1].rect == pymupdf.Rect(0, 0, 144, 72)
@@ -226,7 +251,9 @@ def run(root, app_class, report):
             return
         try:
             assert not app.busy and page.destination, page.status.get()
-            assert all(page.selector.cache.values())
+            if not selector_preview_ready(page, "rotate", 115):
+                root.after(100, finish_rotation)
+                return
             assert all(page.preview.cache.get(key) for key in page.preview.keys())
             assert page.selector.worker.process is page.preview.worker.process is app.preview_coordinator.process
             assert app.preview_coordinator.process and app.preview_coordinator.process.is_alive()
@@ -238,7 +265,7 @@ def run(root, app_class, report):
                         assert after.get_text() == before.get_text()
             assert all(hashlib.sha256(path.read_bytes()).hexdigest() == value for path, value in rotation_hashes.items())
             assert not failures, failures
-            thumbnails = 11 + len(page.selector.cache) + len(page.preview.cache)
+            thumbnails = 2 + sum(len(pages) for pages in selector_pages.values()) + len(page.preview.cache)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
                       "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
@@ -246,6 +273,8 @@ def run(root, app_class, report):
                       "delete_retained_pages": [1, 3], "original_unchanged": True,
                       "thumbnail_worker": "single shared process", "thumbnail_count": thumbnails,
                       "preview_process_limit": 1,
+                      "selector_layout": "vertical viewport grid",
+                      "selector_preview_pages": {name: sorted(pages) for name, pages in selector_pages.items()},
                       "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],
                       "rotation_angle": 90, "rotation_icon_cycle": "verified", "rotation_preview": "verified",
                       "file_drop": "Windows native callbacks verified for all 6 tools",

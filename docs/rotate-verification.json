@@ -18,7 +18,8 @@
   "originals_unchanged": true,
   "overwrite_guard": true,
   "bounded_preview": {
-    "selector": 4,
+    "selector_visible_limit": 24,
+    "shared_requests": 16,
     "comparison_pending": 2,
     "comparison_cache": 12,
     "document_pages": 240

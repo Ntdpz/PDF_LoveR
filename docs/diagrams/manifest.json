@@ -4,8 +4,8 @@
     ".githooks/pre-commit": "0a114d26a992729d568c080400e47a4d36a0ab557bd90257a3acf43c0be3383a",
     "AGENTS.md": "86b070e4181a71d507c5ece7511d84a36ea32f35a772b0e99db56471eb889e7a",
     "CONTRIBUTING.md": "015ddba8468452ca98ec2c46b23848eb12959805562c8837911ce2318c50fc97",
-    "docs/ARCHITECTURE.md": "e1798581e91a5537d7b9cd7481288d1472769ebd8ba004c5304d9e04fe127081",
-    "docs/DIAGRAMS.md": "a4e6cc817d43ad3d03173b2c679df96c096c7193f23c4e9df10158e1e7212efb",
+    "docs/ARCHITECTURE.md": "ba1d0b691ddd54c1744af05d0817d27f7628464e16f918b911eeb158e11e355f",
+    "docs/DIAGRAMS.md": "b81c7b2a201c83373ce7a1513d8c1532f86334ca00d374fc97c2aadcdbce8690",
     "main.py": "f9930803372107e6bcb6ee64bc1cbae518ccb9221adfc34e8dce74de2d0fd1b0",
     "packaging/PDF_to_PNG.iss": "26cb2ccc0b932ac690e46ee912f71d7274d38cd1b67c16722d127ab319d50ecb",
     "packaging/build_release.ps1": "32ee24b5b77b37d34acfb6c9d64706687e40a302486df5dc1191e31754dbac21",
@@ -14,7 +14,7 @@
     "packaging/prepare_version.py": "9a9d44f8f408b15d8762847778db16b595b09132d6781426bafa5f935edbbf64",
     "packaging/spec_common.py": "ada64c347946f0ca152b7fcc067fa48511a618a1919a6fb0a53089574852c0c7",
     "packaging/verify_distribution.ps1": "71d91cbdfb3e171630c8038266b04cdc71a97a3045c71df6c12c7228d6333c22",
-    "packaging/version.iss": "d847251a082c90987fd0cad9ac47b07e6d42689abc8c320a5b295a2aa1b9320f",
+    "packaging/version.iss": "8aac16058e4ac8e19f433281bcf6ae2489d4c1991a92fc68f63d1409fffd9ebe",
     "pdf_lover/__init__.py": "c1c4a7512266b8c4581b3b4780643c1b66028a4db7f3ab2e2eb9c95d7a730b25",
     "pdf_lover/__main__.py": "7f873c699d79cd83557c7a4c61c36309d6432fda17190d1734e186b770cc3b15",
     "pdf_lover/app.py": "3f50cd179169b0f15c5806cab06c92e6698669f678a6e52ea6d27c6f714a043f",
@@ -24,7 +24,7 @@
     "pdf_lover/core/page_selection.py": "3dce97f5087c51ea94e3bed97b59923f1c3e89e705f15110fa9250102443aac2",
     "pdf_lover/core/pdf_output.py": "f9f9230fdd563aa54e1a3cd962916a5a22e70736404493fa6c01b52c643a8137",
     "pdf_lover/diagnostics/__init__.py": "6981b71b4746b5488116bc8877e92c1f573ef609517be29c28fef5ed14aea536",
-    "pdf_lover/diagnostics/self_test.py": "91450f426931e3489e329650ad511211f6d6627d0aa62490317863cd838bc165",
+    "pdf_lover/diagnostics/self_test.py": "7157c8b2b2979bf4b52c0587c8da06f272870d7a51cdb1f43134105698d6458d",
     "pdf_lover/features/__init__.py": "213d7c2983870f1e7ce58c250baaaa5e0b7c7ce896ec32aefd598435200f1da0",
     "pdf_lover/features/base.py": "0cecf386d6798546d40b6c76fc49de56b1764d0232ab3cff24f210b3dc7afd4c",
     "pdf_lover/features/delete_pages/__init__.py": "f9711348133b94fc0a65aa615c685b8592cd5556b6ac90f559304f29a6a11bf4",
@@ -57,16 +57,16 @@
     "pdf_lover/ui/home.py": "5194912326dafcf0c245dd17a6b0b732c1ab4b3cd6e3bb80f80718f52bb45041",
     "pdf_lover/ui/icons.py": "beb7b0bf018edb4ef7e966ea56ae7c6bcb36901a5edfc650dc78383cce00a84c",
     "pdf_lover/ui/page_preview.py": "e728f63df23ffa7becd807ddec35ce6dd9aa9c3341e832bec02352b51095ced4",
-    "pdf_lover/ui/page_selector.py": "fae25dccfcd30ac6d1892d85811b893243c3fce47158689a36ff5bbd16455d6c",
+    "pdf_lover/ui/page_selector.py": "feea66edc069c82b8e6b92375189f49bfae91951119ff9b898df89c864fa5e8b",
     "pdf_lover/ui/pdf_previews.py": "6b34be6b397dbbeb4fc00f6d6dcf1647c52bdcb5abc0c74357c147d369462646",
     "pdf_lover/ui/theme.py": "e1c24edc4270d4e731fc45d3181d8c28487891b30b411f2944681d1d0a81d0f7",
     "pdf_lover/ui/tooltip.py": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07",
-    "pdf_lover/version.py": "1f650c13e5dcf84efb2709417fcaacded8ef2b67e48cd6ed0e8b566a53f67f2b",
+    "pdf_lover/version.py": "710ba5ebd1c4975bc2466052a54ae21c6619ce0bd7273cc62e211a9737151cc0",
     "pyproject.toml": "ed660cc6c0b95676730cdc5044524e1730c362cfcf10dd9aa297ff883e6881ca",
     "requirements.txt": "6876beb4cdea0141ea89b9484fbc905e9c47388a9957afb72f3565534eef3f4c",
     "scripts/benchmark_png_memory.py": "154165dd33a0a19ead2c4ad2776d713b7e76f461e45530b7b289ea959a68d04e",
     "scripts/benchmark_resources.py": "ac3ed966d0e20503fcdd75e4abaaf1024a160fe0fd6428f43e4af52677eab9e2",
-    "scripts/check.py": "1e710ddd26aad7659bb8b97e2cac4e7da3e87b3f0af5bec283466ed0dd283da3",
+    "scripts/check.py": "c960125d3b8c8536deda3a0bb1a593f568089e10b8c3906dd2e08e86b6d68b4e",
     "scripts/check_low_spec.py": "528757e3439aec1e213a154b4c61c5a115996de66b78147623ada9eecb271705",
     "scripts/clean_workspace.py": "e161140ac0b97f4894e75305dffc24599695195d92b9bcca1b8b571541ebeecd",
     "scripts/install_hooks.py": "49d0a118b0bd878dd106de475550e4cc5d2166a290ffabc5fdc9e37b663471e6",
@@ -78,11 +78,12 @@
     "tests/ui/verify_home.py": "90ecabeb4eee6cb94d7a30b4e9962cbf23af1faedbff44976e60f0bfbd8e6520",
     "tests/ui/verify_merge.py": "241806ca515ee2de087055fecbc3a2faffe61cb30d442cb7288a3a3c13ec3880",
     "tests/ui/verify_merge_cards.py": "f9112d692602cda3953b0120cd0ec37ca7ae64adf7e719b55cc2e0594c691a69",
-    "tests/ui/verify_page_tools.py": "442591dfc5eb69c50e80fca2a9706f666d43dce4ff960ffa60dc4c35e627ec3b",
+    "tests/ui/verify_page_tools.py": "38170ce2650a5d8fe69e4248bc49f59525a6b60d25af9e1f30185c0bfdf3253f",
     "tests/ui/verify_png.py": "d68a43af40bfa1285c9f35310d31e6a5e1ab9b2e1bc111e57176bc7e4b342ca2",
     "tests/ui/verify_resources.py": "a68fb52e55b973ecb4f4e65422ea9a6e04080c795170eed4aafb4486c2081bc9",
-    "tests/ui/verify_rotate.py": "c7a86e997b49db60a25c9f5a55e2377b396797265b7fafc7ead24bccf7d44382",
-    "tests/ui/verify_split.py": "a5ec4de95a47cde9f45af7745d9ed24ca95e319e9822ec0eb855a75842559529",
+    "tests/ui/verify_rotate.py": "7d012fc362d1227d095befa8130fb6f0ec8489ebfe893034a2c40c11ffa79ac7",
+    "tests/ui/verify_selector.py": "0ea2a1b3e67545938fc03a946d69a08ec8f1268041897f02328456958e610d6e",
+    "tests/ui/verify_split.py": "11da711871c29e567df942ea4fd8e4bc260b3846ea5758929f6e06314bb13533",
     "tests/unit/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
     "tests/unit/test_architecture.py": "00a09503bf033eb228d2be198ca8243aedf8251cce0e016896da13e2e16da24b",
     "tests/unit/test_diagram_guard.py": "9eef074f951e4862d0db68392ffd86a2a027d15fc138707409fc86d2c26aae5d",
@@ -99,15 +100,15 @@
       "type": "architecture",
       "specification": {
         "path": "docs/diagrams/application.architecture.json",
-        "canonical_sha256": "bc2b96297863bc592c6075880d9ccfd67d30efd8592084557288d43daf281e67",
-        "sha256": "2acd867952eda69064238b9535f1a536fded0f2896a5d6a89ecf341b5cbb0eee",
-        "bytes": 6259
+        "canonical_sha256": "70e1c27252e3cc1f697dab0ba47f27db90294d623cfd3be7dd794c3a7f3b062a",
+        "sha256": "0b1937d64714858c882dbefa7cb4db2fbd931df01c88a316f4ef3ed1190e3a50",
+        "bytes": 6318
       },
       "artifact": {
         "path": "docs/diagrams/application.html",
-        "canonical_sha256": "208b21b389f795560ca528fb84bed30a9421ca242cdcdbd82b4606816431a966",
-        "sha256": "208b21b389f795560ca528fb84bed30a9421ca242cdcdbd82b4606816431a966",
-        "bytes": 814779
+        "canonical_sha256": "e3a38067f50a163dacd7488206b8f9be4642d56d60bcb73eb7715457a6d233ce",
+        "sha256": "e3a38067f50a163dacd7488206b8f9be4642d56d60bcb73eb7715457a6d233ce",
+        "bytes": 815036
       }
     },
     {
@@ -115,15 +116,15 @@
       "type": "workflow",
       "specification": {
         "path": "docs/diagrams/processing.workflow.json",
-        "canonical_sha256": "7b49462f77280d2e91cba6b07d889c506d019de00c6368c4f0a0895fa0422b94",
-        "sha256": "e65cfd824f508d9c6cfd549a556f82c48a8a5faab73f81bc59cee57804f218ff",
-        "bytes": 5644
+        "canonical_sha256": "40140eff81c0b2bc5ba6dee17af15850f7ae5add02b7fbfe22445f8b67eb6ea7",
+        "sha256": "8cf769dc924375e9a7da416ac8e086a4d9758a02871d96fdf62135d651057645",
+        "bytes": 5648
       },
       "artifact": {
         "path": "docs/diagrams/processing.html",
-        "canonical_sha256": "e1a474539b6cd1cbd9fb104140eb6b7d28ee7e8d6f8ab3c95d52c0d8266c4653",
-        "sha256": "e1a474539b6cd1cbd9fb104140eb6b7d28ee7e8d6f8ab3c95d52c0d8266c4653",
-        "bytes": 815107
+        "canonical_sha256": "834293bf60f23627ddfbae670df4b72e6b9e4c8fc8e0414bf270aa615fae5645",
+        "sha256": "834293bf60f23627ddfbae670df4b72e6b9e4c8fc8e0414bf270aa615fae5645",
+        "bytes": 815111
       }
     },
     {

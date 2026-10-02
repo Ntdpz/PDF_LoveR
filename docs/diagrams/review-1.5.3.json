@@ -1,0 +1,69 @@
+{
+  "version": "1.5.3",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "0b1937d64714858c882dbefa7cb4db2fbd931df01c88a316f4ef3ed1190e3a50",
+      "artifact_sha256": "e3a38067f50a163dacd7488206b8f9be4642d56d60bcb73eb7715457a6d233ce",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "Vertical viewport selector, single shared renderer, release on hide and source/evidence guard reflect code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "8cf769dc924375e9a7da416ac8e086a4d9758a02871d96fdf62135d651057645",
+      "artifact_sha256": "834293bf60f23627ddfbae670df4b72e6b9e4c8fc8e0414bf270aa615fae5645",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "Vertical viewport selector, single shared renderer, release on hide and source/evidence guard reflect code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "f82578b99d64f069b2327b4735c1d57f02a82d157261f27bf67e088abe6624b6",
+      "artifact_sha256": "9f6cef53033c3306b2aba03d21c34d0a1d4fb3d80fa8967c4d7d5fe42774fac7",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "Vertical viewport selector, single shared renderer, release on hide and source/evidence guard reflect code"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

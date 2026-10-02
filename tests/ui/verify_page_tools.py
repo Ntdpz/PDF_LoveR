@@ -44,8 +44,10 @@ def main():
             assert page.plan.outputs[0].pages==expected
             assert [page.results.item(r,'values')[0] for r in page.results.get_children()]==[f'{i} (เดิม {p})' for i,p in enumerate(expected,1)]
             deadline=time.monotonic()+15
-            while len(page.selector.cache)<4 and time.monotonic()<deadline:pump(root,0.1)
-            assert len(page.selector.cache)==4 and all(page.selector.cache.values())
+            while not page.selector.worker.required or not all(page.selector.cache.get(k) for k in page.selector.worker.required):
+                assert time.monotonic()<deadline, 'Visible selector previews timed out'
+                pump(root,0.1)
+            assert page.selector.visible and len(page.selector.cache)<=32
             was_selected = 2 in page.selector.selection()
             page.selector.toggle(2);assert (2 in page.selector.selection()) != was_selected
             page.selector.none_button.invoke();assert page.plan is None
@@ -97,7 +99,7 @@ def main():
             assert len(page.preview_rows()) == (239 if page.DELETE else 240)
             page.move_outputs(1);assert page.preview_offset==25
             for _ in range(6):page.selector.move(1);pump(root,0.15)
-            assert len(page.selector.pending)<=4 and len(page.selector.cache)<=32
+            assert len(page.selector.pending)<=16 and len(page.selector.cache)<=32
             root.geometry('920x700+20+20');pump(root)
             for widget in (page.selector,page.results,page.start_button,page.open_button,page.output_entry):
                 assert widget.winfo_rootx()>=root.winfo_rootx()
@@ -110,7 +112,7 @@ def main():
         dispose(root)
         assert all(w.process is None or not w.process.is_alive() for w in workers)
         assert not errors,errors
-    report={'passed':True,'tools':verified,'extract_modes':['single','pages'],'delete_all_blocked':True,'bounded_preview':{'thumbnails_visible':4,'cache':32,'table_rows':25,'document_pages':240},'native_drop':True,'busy_guard':True,'workers_closed':True,'tk_errors':errors,'minimum_window':[920,700],'scaling':[1,1.25]}
+    report={'passed':True,'tools':verified,'extract_modes':['single','pages'],'delete_all_blocked':True,'bounded_preview':{'thumbnails_visible_limit':24,'shared_requests':16,'cache':32,'table_rows':25,'document_pages':240},'native_drop':True,'busy_guard':True,'workers_closed':True,'tk_errors':errors,'minimum_window':[920,700],'scaling':[1,1.25]}
     (ROOT/'docs/page-tools-verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False))
 

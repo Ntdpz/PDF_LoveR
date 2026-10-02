@@ -39,3 +39,5 @@ PDF มีรหัสผ่านยังไม่รองรับ การ
 
 รูปแบบอ้างอิง: [Adobe Acrobat Rotate Page Left / Right](https://helpx.adobe.com/uk/acrobat/using/adjusting-pdf-views.html)
 ใช้คำสั่งหมุนเพิ่มทีละ 90° และไอคอนลูกศรโค้ง; PDF LoveR บันทึกมุมลงสำเนา PDF จริง
+
+ภาพหน้าที่เลือกเรียงหลายแถวและเลื่อนแนวตั้งตามพื้นที่ ใช้เมาส์หรือคีย์ลูกศร/Home/End/Page Up/Page Down; Space/Enter เลือกหน้า

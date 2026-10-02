@@ -135,8 +135,13 @@ See [Contributing](../CONTRIBUTING.md) for the extension procedure and
 `core/page_selection.py` parses ascending, one-based ranges and rejects duplicates,
 reversed or overlapping groups and out-of-bounds pages. Each comma item is a group.
 `ui/page_selector.py` consumes this model without importing any feature. It offers
-all/none, editable ranges and four selectable page thumbnails per view. Its bounded
-32-entry/6-MiB estimated cache and at most four pending requests use `ui/pdf_previews.py`; the old
+all/none, editable ranges and a vertical Canvas viewport grid. It fills the panel's
+remaining height, wraps into 1–4 columns and draws at most 24 intersecting cards;
+only their thumbnails are requested. Wheel/scrollbar and arrow/Home/End/Page keys
+scroll vertically; Space/Enter toggles the focused page. A 16-ms redraw coalesces
+scroll events and is cancelled on hide/destroy; selection and scroll position remain.
+Its bounded 32-entry/6-MiB estimated cache uses 144×112 fit thumbnails and the
+app-wide 16-request limit in `ui/pdf_previews.py`; the old
 merge import remains a compatibility facade. The shell polls both selectors and
 active feature queue. Widget destruction unregisters its client; App owns child cleanup.
 
@@ -177,6 +182,10 @@ Neither operation edits the source. This is page selection, not redaction.
 Native checks cover both tools, Explorer drop, async inspection, retained state,
 validation/recovery, 240-page bounded previews, 920x700 and 125% scaling. Independent
 Poppler renders match the originals. Packaged smoke runs all six tool routes.
+Its withdrawn window has a tiny Canvas viewport, so the smoke scrolls every
+synthetic page through that viewport and verifies returned previews/cache budgets;
+it never assumes all document thumbnails were loaded at once. Mapped-layout,
+mouse and keyboard evidence comes from the separate native selector suite.
 
 ## Rotation
 

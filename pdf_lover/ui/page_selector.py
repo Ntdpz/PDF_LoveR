@@ -2,12 +2,13 @@
 
 Native states: default / hover / keyboard focus / pressed / disabled / loading /
 error / selected. No spatial animation. Pre-emit critique: P4 H5 E4 S5 R5 V4.
-Four bounded thumbnails at a time, using the shared spawned preview process.
+Vertical viewport grid; bounded visible cards use the shared spawned preview process.
 """
+import math
 import queue
 import tkinter as tk
 import customtkinter as ctk
-from PIL import Image
+from PIL import Image, ImageTk
 from pdf_lover.core.page_selection import selected_pages, format_pages, PageSelectionError
 from pdf_lover.ui.pdf_previews import PreviewWorker, PreviewCache
 from pdf_lover.ui.theme import COLORS as C, SPACE as S, RADIUS
@@ -15,7 +16,9 @@ from pdf_lover.ui.theme import COLORS as C, SPACE as S, RADIUS
 
 class PageSelector(ctk.CTkFrame):
     """Reusable selection, polled by the shell. No feature imports or timer chain."""
-    VISIBLE = 4
+    VISIBLE = 24
+    MIN_WIDTH = 164
+    ROW_HEIGHT = 152
 
     def __init__(self, parent, app, changed, *, title="หน้าที่เลือก",
                  hint="เช่น 1-3,5,8-10 · แต่ละช่วงเป็นหนึ่งไฟล์", select_initial=True):
@@ -31,8 +34,12 @@ class PageSelector(ctk.CTkFrame):
         self.pending, self.images = set(), {}
         self.cache = PreviewCache(32, 6 * 1048576, lambda key: self.images.pop(key, None))
         self.selection_key, self.selection_value = None, ()
-        self.empty_image = ctk.CTkImage(Image.new("RGB", (1, 1), C["surface"]), size=(1, 1))
+        self.columns, self.step_y, self.scaling = 1, self.ROW_HEIGHT, 1
+        self.visible = {}
+        self.focused, self.hovered, self.pressed = 1, None, None
+        self.draw_timer = None
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(3, weight=1)
         app.label(self, title, font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["lg"], pady=S["xs"])
         actions = ctk.CTkFrame(self, fg_color="transparent")
         actions.grid(row=0, column=1, padx=S["lg"])
@@ -46,35 +53,44 @@ class PageSelector(ctk.CTkFrame):
         app._entry_focus(self.entry)
         app.label(self, hint, font=app.font_small, color="muted").grid(
             row=2, column=0, columnspan=2, sticky="w", padx=S["lg"], pady=S["sm"])
-        strip = ctk.CTkFrame(self, fg_color="transparent")
-        strip.grid(row=3, column=0, columnspan=2, sticky="ew", padx=S["md"])
-        self.cards = []
-        for index in range(self.VISIBLE):
-            strip.grid_columnconfigure(index, weight=1, uniform="pages")
-            button = app.button(strip, "—", lambda i=index: self.toggle(self.offset + i + 1), width=80)
-            button.configure(height=100, compound="top", font=app.font_small)
-            button.grid(row=0, column=index, sticky="ew", padx=S["xs"])
-            self.cards.append(button)
-        nav = ctk.CTkFrame(self, fg_color="transparent")
-        nav.grid(row=4, column=0, columnspan=2, sticky="ew", padx=S["lg"], pady=S["xs"])
-        nav.grid_columnconfigure(1, weight=1)
-        self.previous = app.button(nav, "ก่อนหน้า", lambda: self.move(-1), width=88)
-        self.previous.grid(row=0, column=0)
-        self.counter = app.label(nav, "ยังไม่มีเอกสาร", font=app.font_small, color="muted", anchor="center")
-        self.counter.grid(row=0, column=1, sticky="ew")
-        self.next = app.button(nav, "ถัดไป", lambda: self.move(1), width=88)
-        self.next.grid(row=0, column=2)
+        viewport = ctk.CTkFrame(self, fg_color="transparent")
+        viewport.grid(row=3, column=0, columnspan=2, sticky="nsew", padx=S["lg"])
+        viewport.grid_columnconfigure(0, weight=1)
+        viewport.grid_rowconfigure(0, weight=1)
+        self.canvas = tk.Canvas(viewport, background=C["surface"], height=100,
+                                highlightthickness=0, borderwidth=0, takefocus=True)
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+        self.scrollbar = ctk.CTkScrollbar(viewport, orientation="vertical", command=self._scroll)
+        self.scrollbar.grid(row=0, column=1, sticky="ns")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        self.counter = app.label(self, "ยังไม่มีเอกสาร", font=app.font_small, color="muted", anchor="w")
+        self.counter.grid(row=4, column=0, columnspan=2, sticky="ew", padx=S["lg"], pady=S["sm"])
+        self.canvas.bind("<Configure>", self._resize)
+        self.canvas.bind("<MouseWheel>", self._wheel)
+        self.canvas.bind("<ButtonPress-1>", self._press)
+        self.canvas.bind("<ButtonRelease-1>", self._release)
+        self.canvas.bind("<Motion>", self._hover)
+        self.canvas.bind("<Leave>", self._leave)
+        self.canvas.bind("<FocusIn>", lambda _: self.render())
+        self.canvas.bind("<FocusOut>", lambda _: self.render())
+        for key in ("Left", "Right", "Up", "Down", "Home", "End", "Prior", "Next", "space", "Return"):
+            self.canvas.bind(f"<{key}>", self._keyboard)
         self.expression.trace_add("write", self._changed)
         self.render()
 
     def destroy(self):
+        self.preview_active = False
+        self._cancel_draw()
         self.worker.close()
         super().destroy()
 
     def set_document(self, info):
         self.info, self.offset = info, 0
+        self.focused, self.hovered, self.pressed = 1, None, None
+        self.canvas.delete("all")
         self.cache.clear()
         self.images.clear()
+        self.canvas.yview_moveto(0)
         self.expression.set(f"1-{info.page_count}" if info and self.select_initial else "")
         self.set_enabled(self.enabled, self.editable)
 
@@ -98,8 +114,10 @@ class PageSelector(ctk.CTkFrame):
         if active:
             self.render()
         else:
-            for card in self.cards:
-                card.configure(image=self.empty_image)
+            self._cancel_draw()
+            self.canvas.delete("all")
+            self.visible.clear()
+            self.hovered = self.pressed = None
             self.cache.clear()
             self.images.clear()
 
@@ -108,7 +126,7 @@ class PageSelector(ctk.CTkFrame):
         self.changed()
 
     def toggle(self, page):
-        if not self.enabled or not self.editable or not self.info or page > self.info.page_count:
+        if not self.enabled or not self.editable or not self.info or not 1 <= page <= self.info.page_count:
             return
         try:
             pages = set(self.selection())
@@ -128,15 +146,123 @@ class PageSelector(ctk.CTkFrame):
 
     def move(self, direction):
         if self.enabled and self.info:
-            self.offset = max(0, min(((self.info.page_count - 1) // self.VISIBLE) * self.VISIBLE,
-                                     self.offset + direction * self.VISIBLE))
+            self.canvas.yview_scroll(direction, "pages")
             self.render()
+
+    def _cancel_draw(self):
+        if self.draw_timer is not None:
+            self.app.root.after_cancel(self.draw_timer)
+            self.draw_timer = None
+
+    def _schedule(self):
+        if self.preview_active and self.draw_timer is None:
+            self.draw_timer = self.app.root.after(16, self._draw_grid)
+
+    def _draw_grid(self):
+        self.draw_timer = None
+        self.render()
+
+    def _resize(self, _=None):
+        scale = self._get_widget_scaling()
+        width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
+        columns = max(1, min(4, int(width / (self.MIN_WIDTH * scale))))
+        # At most six intersecting rows even on tall displays; never build all pages.
+        step_y = max(self.ROW_HEIGHT * scale, math.ceil(height / 5))
+        old_page = self.offset
+        changed = columns != self.columns or step_y != self.step_y
+        if scale != self.scaling:
+            self.canvas.delete("all")
+            self.images.clear()
+        self.columns, self.step_y, self.scaling = columns, step_y, scale
+        count = self.info.page_count if self.info else 0
+        total = max(height, math.ceil(count / columns) * step_y)
+        self.canvas.configure(scrollregion=(0, 0, width, total), yscrollincrement=max(1, int(32 * scale)))
+        if changed:
+            self.canvas.yview_moveto((old_page // columns * step_y) / max(1, total))
+        self._schedule()
+
+    def _scroll(self, *args):
+        if self.enabled:
+            self.canvas.yview(*args)
+            self._schedule()
+
+    def _wheel(self, event):
+        if self.enabled and self.info:
+            self.canvas.yview_scroll(-1 if event.delta > 0 else 1, "units")
+            self._schedule()
+        return "break"
+
+    def _hit(self, event):
+        for page, (x1, y1, x2, y2) in self.visible.items():
+            if x1 <= event.x <= x2 and y1 <= self.canvas.canvasy(event.y) <= y2:
+                return page
+        return None
+
+    def _press(self, event):
+        if self.enabled:
+            self.canvas.focus_set()
+            self.pressed = self._hit(event)
+            if self.pressed is not None:
+                self.focused = self.pressed
+            self.render()
+
+    def _release(self, event):
+        page, self.pressed = self.pressed, None
+        if page is not None and page == self._hit(event):
+            self.toggle(page)
+        self.render()
+
+    def _hover(self, event):
+        hovered = self._hit(event) if self.enabled and self.editable else None
+        if hovered != self.hovered:
+            self.hovered = hovered
+            self.canvas.configure(cursor="hand2" if hovered else "")
+            self._schedule()
+
+    def _leave(self, _):
+        self.hovered = None
+        self.canvas.configure(cursor="")
+        self._schedule()
+
+    def _keyboard(self, event):
+        # Let the shell handle Ctrl+Enter rather than treating it as page selection.
+        if event.state & 0x0004:
+            return None
+        if not self.enabled or not self.info:
+            return "break"
+        key, count = event.keysym, self.info.page_count
+        if key in ("space", "Return"):
+            self.toggle(self.focused)
+            return "break"
+        steps = {"Left": -1, "Right": 1, "Up": -self.columns, "Down": self.columns,
+                 "Prior": -max(self.columns, int(self.canvas.winfo_height() / self.step_y) * self.columns),
+                 "Next": max(self.columns, int(self.canvas.winfo_height() / self.step_y) * self.columns)}
+        self.focused = 1 if key == "Home" else count if key == "End" else max(1, min(count, self.focused + steps.get(key, 0)))
+        top = ((self.focused - 1) // self.columns) * self.step_y
+        current, height = self.canvas.canvasy(0), self.canvas.winfo_height()
+        total = max(height, math.ceil(count / self.columns) * self.step_y)
+        if top < current:
+            self.canvas.yview_moveto(top / total)
+        elif top + self.step_y > current + height:
+            self.canvas.yview_moveto(max(0, top + self.step_y - height) / total)
+        self.render()
+        return "break"
+
+    def _key(self, page):
+        return (self.info.path, self.info.signature[3], self.info.signature[2], page - 1, 0, 144, 112)
 
     def render(self):
         if not self.preview_active:
             return
-        keys = [(self.info.path, self.info.signature[3], self.info.signature[2], page - 1)
-                for page in range(self.offset + 1, min(self.offset + self.VISIBLE, self.info.page_count) + 1)] if self.info else []
+        count = self.info.page_count if self.info else 0
+        width, height = self.canvas.winfo_width(), self.canvas.winfo_height()
+        total = max(height, math.ceil(count / self.columns) * self.step_y)
+        self.canvas.configure(scrollregion=(0, 0, width, total))
+        top = max(0, self.canvas.canvasy(0))
+        self.offset = int(top // self.step_y) * self.columns
+        end = min(count, math.ceil((top + height) / self.step_y) * self.columns)
+        pages = list(range(self.offset + 1, end + 1))[:self.VISIBLE]
+        keys = [self._key(page) for page in pages]
         if self.worker.set_required(keys):
             self.pending.clear()
         try:
@@ -145,13 +271,12 @@ class PageSelector(ctk.CTkFrame):
         except PageSelectionError:
             selected = set()
             self.entry.configure(border_color=C["error"])
-        count = self.info.page_count if self.info else 0
-        for index, card in enumerate(self.cards):
-            page = self.offset + index + 1
-            if page > count:
-                card.configure(text="—", image=None, state="disabled", fg_color=C["soft"], border_color=C["rule"])
-                continue
-            key = (self.info.path, self.info.signature[3], self.info.signature[2], page - 1)
+        self.canvas.delete("all")
+        self.visible.clear()
+        scale, gap = self.scaling, S["sm"] * self.scaling
+        cell_width = width / self.columns
+        font = self._apply_font_scaling(self.app.font_small)
+        for page, key in zip(pages, keys):
             if key not in self.cache and key not in self.pending and len(self.pending) < self.VISIBLE:
                 if self.worker.submit(key):
                     self.pending.add(key)
@@ -159,20 +284,37 @@ class PageSelector(ctk.CTkFrame):
                     self.cache[key] = None
             payload = self.cache.get(key)
             if payload and key not in self.images:
-                width, height, samples = payload
-                self.images[key] = ctk.CTkImage(Image.frombytes("RGB", (width, height), samples), size=(width / 3, height / 3))
+                pixel_width, pixel_height, samples = payload
+                image = Image.frombytes("RGB", (pixel_width, pixel_height), samples)
+                factor = min(112 * scale / pixel_width, 100 * scale / pixel_height)
+                self.images[key] = ImageTk.PhotoImage(image.resize((max(1, int(pixel_width * factor)), max(1, int(pixel_height * factor)))), master=self.canvas)
             label = f"{'✓ ' if page in selected else ''}หน้า {page}"
             if key not in self.cache:
                 label += "\nกำลังโหลด…"
             elif payload is None:
                 label += "\nไม่มีภาพตัวอย่าง"
-            card.configure(text=label, image=self.images.get(key, self.empty_image),
-                           state="normal" if self.enabled and self.editable else "disabled",
-                           fg_color=C["tint"] if page in selected else C["surface"],
-                           border_color=C["accent"] if page in selected else C["rule"])
-        self.counter.configure(text=f"หน้า {self.offset + 1}–{min(self.offset + self.VISIBLE, count)} / {count}" if count else "ยังไม่มีเอกสาร")
-        self.previous.configure(state="normal" if self.enabled and self.offset else "disabled")
-        self.next.configure(state="normal" if self.enabled and self.offset + self.VISIBLE < count else "disabled")
+            row, column = divmod(page - 1, self.columns)
+            x1, y1 = column * cell_width + gap / 2, row * self.step_y + gap / 2
+            x2, y2 = (column + 1) * cell_width - gap / 2, (row + 1) * self.step_y - gap / 2
+            self.visible[page] = (x1, y1, x2, y2)
+            fill = C["soft"] if not self.enabled else C["tint"] if page in selected else C["surface"]
+            if self.enabled and self.editable and page in (self.hovered, self.pressed):
+                fill = C["tint"] if page != self.pressed else C["soft"]
+            self.canvas.create_rectangle(x1, y1, x2, y2, fill=fill,
+                                         outline=C["accent"] if page in selected else C["rule"], width=2 * scale)
+            if page == self.focused and self.canvas.focus_get() == self.canvas:
+                self.canvas.create_rectangle(x1 + 3 * scale, y1 + 3 * scale, x2 - 3 * scale, y2 - 3 * scale,
+                                             outline=C["focus"], width=2 * scale)
+            if key in self.images:
+                self.canvas.create_image((x1 + x2) / 2, y1 + 56 * scale, image=self.images[key])
+            self.canvas.create_text((x1 + x2) / 2, y2 - 22 * scale, text=label, font=font,
+                                    fill=C["ink"] if self.enabled else C["muted"], justify="center")
+        if not count:
+            self.canvas.create_text(gap, gap, text="เลือก PDF เพื่อดูหน้าเอกสาร", anchor="nw", font=font, fill=C["muted"])
+        caption = f"หน้า {pages[0]}–{pages[-1]} / {count}" if pages else "ยังไม่มีเอกสาร"
+        if count and total > height:
+            caption += " · เลื่อนลงเพื่อดูหน้าถัดไป"
+        self.counter.configure(text=caption)
 
     def process_events(self):
         if not self.preview_active:

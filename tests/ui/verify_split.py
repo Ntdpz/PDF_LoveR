@@ -61,9 +61,10 @@ def main():
         rows = [page.results.item(row, 'values') for row in page.results.get_children()]
         assert len(rows) == 3 and rows[0][0] == '1–3'
         deadline = time.monotonic() + 15
-        while len(page.selector.cache) < 4 and time.monotonic() < deadline:
+        while not page.selector.worker.required or not all(page.selector.cache.get(k) for k in page.selector.worker.required):
+            assert time.monotonic() < deadline, 'Visible selector previews timed out'
             pump(root, 0.1)
-        assert len(page.selector.cache) == 4 and all(page.selector.cache.values())
+        assert page.selector.visible and len(page.selector.cache) <= 32
         page.selector.toggle(2)
         assert page.selector.expression.get() == '1,3,5,8-10'
         page.selector.select_all()
@@ -147,9 +148,10 @@ def main():
         page.move_outputs(1)
         assert page.results.item(page.results.get_children()[0], 'values')[0] == '26'
         page.mode.set('ranges')
-        for _ in range(59):
-            page.selector.move(1)
-        assert page.selector.offset == 236 and len(page.selector.pending) <= 4
+        page.selector.canvas.focus_force()
+        page.selector.canvas.event_generate('<End>')
+        pump(root, 0.1)
+        assert 240 in page.selector.visible and len(page.selector.pending) <= 16
         pump(root, 0.5)
         assert len(page.selector.cache) <= 32
         page.add_paths([source]); wait(root, app)
@@ -158,7 +160,7 @@ def main():
         capture(root, 'split-compact.png')
         for widget in (page.selector, page.results, page.start_button, page.open_button):
             assert widget.winfo_rooty() + widget.winfo_height() <= root.winfo_rooty() + root.winfo_height()
-        for widget in (*page.selector.cards, page.selector.previous, page.selector.next):
+        for widget in (page.selector.canvas, page.selector.counter):
             assert widget.winfo_rooty() + widget.winfo_height() <= page.selector.winfo_rooty() + page.selector.winfo_height()
         worker = page.selector.worker.process
         dispose(root)

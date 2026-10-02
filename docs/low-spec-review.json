@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "1.5.2",
+  "version": "1.5.3",
   "decision": "accepted",
   "target": {
     "cpu_cores": 2,
@@ -8,23 +8,23 @@
     "disk": "HDD"
   },
   "impact": {
-    "memory": "One shared preview child and 16-request/reply budget. Hidden caches released. Five-run median home idle private memory falls from 321.68 to 69.75 MiB, 78.3% lower on the stated fixture/host.",
-    "cpu_ui": "Retain virtualized drag/16-ms pointer frames. Poll only the active page, back off home to 300 ms, pause new previews while busy; native rapid navigation and rotation pixel checks passed.",
-    "disk_startup": "Lazy page imports defer the PDF backend until needed. Preview files still reopen per request; no open-document cache/locks introduced. Folder distributions retain their existing installation behavior.",
-    "dependencies": "No new runtime dependency; resource measurements use the Windows API and existing Python standard library. PyMuPDF stays in the existing spawned renderer, export concurrency remains one.",
-    "output_quality": "Selected 36–600 DPI preserved. PNG output hashes match the 1.5.1 engine in 5 runs, but 600-DPI peak working set remains about 241 MiB (no claimed export-peak reduction). PDF file-safety/fidelity behavior retained."
+    "memory": "Virtualized vertical selector draws at most 24 cards, 144x112-fit previews, 32 entries and existing 6-MiB estimated cache. Uses the same single child and 16-request shared budget; hidden images released.",
+    "cpu_ui": "Canvas draws only intersecting rows. Wheel/scrollbar resize bursts coalesce into one 16-ms redraw; no repeating selector poll timer. Mouse, keyboard, 1000-page navigation and four-tool layouts checked natively.",
+    "disk_startup": "Only visible pages generate preview requests; metadata remains async. Page imports and preview document-open behavior unchanged. No full-document render or new startup backend.",
+    "dependencies": "No new runtime dependency. Uses existing Tk Canvas, CustomTkinter, Pillow and shared spawned PyMuPDF process; no worker accesses Tk.",
+    "output_quality": "Only selector thumbnail fit dimensions change; actual export DPI and PDF content/file safety are unchanged. Independent preview pixels and existing engine/Poppler regressions are checked."
   },
   "limitations": [
-    "Measured on i7-11800H with 39.6 GiB RAM / Windows 10; no physical 2-core/4-GiB/HDD or Windows 11 PC tested.",
-    "Source GUI text fixture, not every scan/huge page, peak export or cold-start distribution benchmark; no low-spec compatibility certification.",
-    "Cache pixel-copy accounting is estimated; filesystem validation/debounce, full cold-start/large-scan budgets and optional document reuse remain follow-up work."
+    "Windows 10 development PC, i7-11800H / about 40 GiB RAM; no physical 2-core/4-GiB/HDD or Windows 11 PC tested",
+    "144x112-fit selector thumbnails are navigation previews, not full-resolution export or zoom",
+    "Cache accounting estimates raw/PIL/Tk copies; arbitrary scanned PDFs/cold frozen startup/export peak workloads remain unmeasured"
   ],
   "source_files": {
     ".githooks/pre-commit": "0a114d26a992729d568c080400e47a4d36a0ab557bd90257a3acf43c0be3383a",
     "AGENTS.md": "86b070e4181a71d507c5ece7511d84a36ea32f35a772b0e99db56471eb889e7a",
     "CONTRIBUTING.md": "015ddba8468452ca98ec2c46b23848eb12959805562c8837911ce2318c50fc97",
-    "docs/ARCHITECTURE.md": "e1798581e91a5537d7b9cd7481288d1472769ebd8ba004c5304d9e04fe127081",
-    "docs/DIAGRAMS.md": "a4e6cc817d43ad3d03173b2c679df96c096c7193f23c4e9df10158e1e7212efb",
+    "docs/ARCHITECTURE.md": "ba1d0b691ddd54c1744af05d0817d27f7628464e16f918b911eeb158e11e355f",
+    "docs/DIAGRAMS.md": "b81c7b2a201c83373ce7a1513d8c1532f86334ca00d374fc97c2aadcdbce8690",
     "main.py": "f9930803372107e6bcb6ee64bc1cbae518ccb9221adfc34e8dce74de2d0fd1b0",
     "packaging/PDF_to_PNG.iss": "26cb2ccc0b932ac690e46ee912f71d7274d38cd1b67c16722d127ab319d50ecb",
     "packaging/build_release.ps1": "32ee24b5b77b37d34acfb6c9d64706687e40a302486df5dc1191e31754dbac21",
@@ -33,7 +33,7 @@
     "packaging/prepare_version.py": "9a9d44f8f408b15d8762847778db16b595b09132d6781426bafa5f935edbbf64",
     "packaging/spec_common.py": "ada64c347946f0ca152b7fcc067fa48511a618a1919a6fb0a53089574852c0c7",
     "packaging/verify_distribution.ps1": "71d91cbdfb3e171630c8038266b04cdc71a97a3045c71df6c12c7228d6333c22",
-    "packaging/version.iss": "d847251a082c90987fd0cad9ac47b07e6d42689abc8c320a5b295a2aa1b9320f",
+    "packaging/version.iss": "8aac16058e4ac8e19f433281bcf6ae2489d4c1991a92fc68f63d1409fffd9ebe",
     "pdf_lover/__init__.py": "c1c4a7512266b8c4581b3b4780643c1b66028a4db7f3ab2e2eb9c95d7a730b25",
     "pdf_lover/__main__.py": "7f873c699d79cd83557c7a4c61c36309d6432fda17190d1734e186b770cc3b15",
     "pdf_lover/app.py": "3f50cd179169b0f15c5806cab06c92e6698669f678a6e52ea6d27c6f714a043f",
@@ -43,7 +43,7 @@
     "pdf_lover/core/page_selection.py": "3dce97f5087c51ea94e3bed97b59923f1c3e89e705f15110fa9250102443aac2",
     "pdf_lover/core/pdf_output.py": "f9f9230fdd563aa54e1a3cd962916a5a22e70736404493fa6c01b52c643a8137",
     "pdf_lover/diagnostics/__init__.py": "6981b71b4746b5488116bc8877e92c1f573ef609517be29c28fef5ed14aea536",
-    "pdf_lover/diagnostics/self_test.py": "91450f426931e3489e329650ad511211f6d6627d0aa62490317863cd838bc165",
+    "pdf_lover/diagnostics/self_test.py": "7157c8b2b2979bf4b52c0587c8da06f272870d7a51cdb1f43134105698d6458d",
     "pdf_lover/features/__init__.py": "213d7c2983870f1e7ce58c250baaaa5e0b7c7ce896ec32aefd598435200f1da0",
     "pdf_lover/features/base.py": "0cecf386d6798546d40b6c76fc49de56b1764d0232ab3cff24f210b3dc7afd4c",
     "pdf_lover/features/delete_pages/__init__.py": "f9711348133b94fc0a65aa615c685b8592cd5556b6ac90f559304f29a6a11bf4",
@@ -76,16 +76,16 @@
     "pdf_lover/ui/home.py": "5194912326dafcf0c245dd17a6b0b732c1ab4b3cd6e3bb80f80718f52bb45041",
     "pdf_lover/ui/icons.py": "beb7b0bf018edb4ef7e966ea56ae7c6bcb36901a5edfc650dc78383cce00a84c",
     "pdf_lover/ui/page_preview.py": "e728f63df23ffa7becd807ddec35ce6dd9aa9c3341e832bec02352b51095ced4",
-    "pdf_lover/ui/page_selector.py": "fae25dccfcd30ac6d1892d85811b893243c3fce47158689a36ff5bbd16455d6c",
+    "pdf_lover/ui/page_selector.py": "feea66edc069c82b8e6b92375189f49bfae91951119ff9b898df89c864fa5e8b",
     "pdf_lover/ui/pdf_previews.py": "6b34be6b397dbbeb4fc00f6d6dcf1647c52bdcb5abc0c74357c147d369462646",
     "pdf_lover/ui/theme.py": "e1c24edc4270d4e731fc45d3181d8c28487891b30b411f2944681d1d0a81d0f7",
     "pdf_lover/ui/tooltip.py": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07",
-    "pdf_lover/version.py": "1f650c13e5dcf84efb2709417fcaacded8ef2b67e48cd6ed0e8b566a53f67f2b",
+    "pdf_lover/version.py": "710ba5ebd1c4975bc2466052a54ae21c6619ce0bd7273cc62e211a9737151cc0",
     "pyproject.toml": "ed660cc6c0b95676730cdc5044524e1730c362cfcf10dd9aa297ff883e6881ca",
     "requirements.txt": "6876beb4cdea0141ea89b9484fbc905e9c47388a9957afb72f3565534eef3f4c",
     "scripts/benchmark_png_memory.py": "154165dd33a0a19ead2c4ad2776d713b7e76f461e45530b7b289ea959a68d04e",
     "scripts/benchmark_resources.py": "ac3ed966d0e20503fcdd75e4abaaf1024a160fe0fd6428f43e4af52677eab9e2",
-    "scripts/check.py": "1e710ddd26aad7659bb8b97e2cac4e7da3e87b3f0af5bec283466ed0dd283da3",
+    "scripts/check.py": "c960125d3b8c8536deda3a0bb1a593f568089e10b8c3906dd2e08e86b6d68b4e",
     "scripts/check_low_spec.py": "528757e3439aec1e213a154b4c61c5a115996de66b78147623ada9eecb271705",
     "scripts/clean_workspace.py": "e161140ac0b97f4894e75305dffc24599695195d92b9bcca1b8b571541ebeecd",
     "scripts/install_hooks.py": "49d0a118b0bd878dd106de475550e4cc5d2166a290ffabc5fdc9e37b663471e6",
@@ -97,11 +97,12 @@
     "tests/ui/verify_home.py": "90ecabeb4eee6cb94d7a30b4e9962cbf23af1faedbff44976e60f0bfbd8e6520",
     "tests/ui/verify_merge.py": "241806ca515ee2de087055fecbc3a2faffe61cb30d442cb7288a3a3c13ec3880",
     "tests/ui/verify_merge_cards.py": "f9112d692602cda3953b0120cd0ec37ca7ae64adf7e719b55cc2e0594c691a69",
-    "tests/ui/verify_page_tools.py": "442591dfc5eb69c50e80fca2a9706f666d43dce4ff960ffa60dc4c35e627ec3b",
+    "tests/ui/verify_page_tools.py": "38170ce2650a5d8fe69e4248bc49f59525a6b60d25af9e1f30185c0bfdf3253f",
     "tests/ui/verify_png.py": "d68a43af40bfa1285c9f35310d31e6a5e1ab9b2e1bc111e57176bc7e4b342ca2",
     "tests/ui/verify_resources.py": "a68fb52e55b973ecb4f4e65422ea9a6e04080c795170eed4aafb4486c2081bc9",
-    "tests/ui/verify_rotate.py": "c7a86e997b49db60a25c9f5a55e2377b396797265b7fafc7ead24bccf7d44382",
-    "tests/ui/verify_split.py": "a5ec4de95a47cde9f45af7745d9ed24ca95e319e9822ec0eb855a75842559529",
+    "tests/ui/verify_rotate.py": "7d012fc362d1227d095befa8130fb6f0ec8489ebfe893034a2c40c11ffa79ac7",
+    "tests/ui/verify_selector.py": "0ea2a1b3e67545938fc03a946d69a08ec8f1268041897f02328456958e610d6e",
+    "tests/ui/verify_split.py": "11da711871c29e567df942ea4fd8e4bc260b3846ea5758929f6e06314bb13533",
     "tests/unit/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
     "tests/unit/test_architecture.py": "00a09503bf033eb228d2be198ca8243aedf8251cce0e016896da13e2e16da24b",
     "tests/unit/test_diagram_guard.py": "9eef074f951e4862d0db68392ffd86a2a027d15fc138707409fc86d2c26aae5d",
@@ -114,24 +115,28 @@
   },
   "evidence": [
     {
-      "path": "docs/performance-after-1.5.2.json",
-      "sha256": "5e2acb65f0d054fadaf7f9eab1fd3948f776643a7d0d242ec1928d5128f16b80"
+      "path": "docs/selector-verification-1.5.3.json",
+      "sha256": "bba6a787c4515178b461207342b067dacc8d1a7dc11f52f115c1f357ffacdee6"
     },
     {
-      "path": "docs/resource-verification-1.5.2.json",
+      "path": "docs/performance-after-1.5.3.json",
+      "sha256": "6665263cd07304e2cea0ea3e466043dd0fb042322d0e2ec19ae572ca72d8e28b"
+    },
+    {
+      "path": "docs/resource-verification-1.5.3.json",
       "sha256": "90b5f023feaa163992491cd8971cea083692f563aa67b89e730fc6f427915f5a"
     },
     {
-      "path": "docs/png-memory-1.5.2.json",
-      "sha256": "9ce820f9631989ad773915cf03fffd5ab3032322cdeaebc08e29145ed5f438f3"
+      "path": "docs/verification-1.5.3.json",
+      "sha256": "f3de09d6315543b46b5c9d01fa5bd6f18163f7914e1be59bd722597e565cb2b2"
     },
     {
-      "path": "docs/verification-1.5.2.json",
-      "sha256": "ae7d18f68fb4b1ab8c30d7fc74e15f404eb9f1427736fc60bed1a7a60c30590e"
+      "path": "docs/distribution-1.5.3.json",
+      "sha256": "fd840d01cf3b2e67d6efa2d7e41428813100e2f6a7e959f25ae2d7a4c946b312"
     },
     {
-      "path": "docs/distribution-1.5.2.json",
-      "sha256": "85039b0fd2546bff23e855d9f199b954155d876cc4e222fb99d0f43c581c6fb1"
+      "path": "docs/source-smoke-1.5.3.json",
+      "sha256": "0f94b9709d640384130c52ced2541099d741e6610b9975bd978a03a4f3aafe26"
     }
   ]
 }

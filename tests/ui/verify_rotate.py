@@ -121,7 +121,7 @@ def main():
         workers=(page.selector.worker,page.preview.worker);dispose(root)
         assert all(w.process is None for w in workers);assert not errors,errors
         assert all(t.window is None and t.timer is None for t in page.rotation_tooltips)
-    report={'passed':True,'angles':[90,180,270],'icon_commands':True,'repeated_quarter_turns':True,'starts_unrotated':True,'four_clicks_restore_original':True,'keyboard_and_tooltips':True,'relative_to_existing_rotation':True,'multi_file':True,'per_document_selection':True,'preview_pixels_match_engine':True,'poppler_pixel_equivalence':True,'originals_unchanged':True,'overwrite_guard':True,'bounded_preview':{'selector':4,'comparison_pending':2,'comparison_cache':12,'document_pages':240},'minimum_window':[920,700],'scaling':[1,1.25],'tk_errors':errors,'worker_cleanup':True}
+    report={'passed':True,'angles':[90,180,270],'icon_commands':True,'repeated_quarter_turns':True,'starts_unrotated':True,'four_clicks_restore_original':True,'keyboard_and_tooltips':True,'relative_to_existing_rotation':True,'multi_file':True,'per_document_selection':True,'preview_pixels_match_engine':True,'poppler_pixel_equivalence':True,'originals_unchanged':True,'overwrite_guard':True,'bounded_preview':{'selector_visible_limit':24,'shared_requests':16,'comparison_pending':2,'comparison_cache':12,'document_pages':240},'minimum_window':[920,700],'scaling':[1,1.25],'tk_errors':errors,'worker_cleanup':True}
     (ROOT/'docs/rotate-verification.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(json.dumps(report))
 
 

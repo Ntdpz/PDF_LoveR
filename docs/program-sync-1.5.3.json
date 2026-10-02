@@ -1,0 +1,193 @@
+{
+  "version": "1.5.3",
+  "passed": true,
+  "guard": "All destinations compared with HEAD or desired content before copying; existing files backed up",
+  "preserved_independent_files": [
+    {
+      "path": "packaging/RELEASE_NOTES.md",
+      "sha256": "d233d484f8ef9fc4c3946e379bbf753d35c3a74406b9a2cd662fee9ab22d1d3e"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "12f98d8aa0f8e77b94ce24469d363038b774ea49c4205fefc0887740b3efe3e1"
+    },
+    {
+      "path": "TASKS.md",
+      "sha256": "065df1c0dbf01fda703b0bdc1706ae1e8928c4160755895f323a17d976008665"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.3/PDF_LoveR_1.5.3.exe",
+      "sha256": "edc8bac3fdd984907f72c8fc903cb9091d71ea25da800dda43a45d4062d9ec57"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.3/PDF_LoveR_1.5.3_Portable.zip",
+      "sha256": "717d080ca71552ef0e72b23e6c9674fcb54f2e2693e202f92fe662c16eecd67b"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.3/PDF_LoveR_1.5.3_Setup.exe",
+      "sha256": "04fa1d7cefa7674cb2c48f5698a1f71a0fb9d35043b220cbdf8aa24b7819322d"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.3/README_เริ่มใช้งาน.txt",
+      "sha256": "7f4db159c5a805103f3328fceb2f3928a0e3edfc94f9b625f8cc970ed7dda154"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.5.3/SHA256SUMS.txt",
+      "sha256": "f8834483a35ea7ee93bf4fdcef452cb28c2a88da06583d00a6bb9988c0a68987"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "281a106a78d3d75a986d2005ab84410d97a79860281ba8aff0b574a053f481dd"
+    },
+    {
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "9c97992b87e307da8dd7bc504602139bba1d083cb9b86e7309a00004749e89f9"
+    },
+    {
+      "path": "docs/DIAGRAMS.md",
+      "sha256": "ebe8e738f0e07fcd2187ae901acb2b66c5f8a90b6627e86762a94722e543bc31"
+    },
+    {
+      "path": "docs/PAGE_TOOLS.md",
+      "sha256": "b7cec00ea540e3e9c3476e08e623526de3bd1c1385dc72803860bba3b7b5ee9d"
+    },
+    {
+      "path": "docs/PERFORMANCE_PLAN.md",
+      "sha256": "8b9d1ca4996a795b10ce954d9d40033684b8b259f2bbd8f966053b04a5f10efa"
+    },
+    {
+      "path": "docs/ROTATE.md",
+      "sha256": "faeb0593e458e120e6d0674a3556cff8e383678adab56a2318b49ad320b6f723"
+    },
+    {
+      "path": "docs/SPLIT.md",
+      "sha256": "1467adf1343fc63420bc8cfea9cafa05a73497cc1dfc9c6e70ff6880264482af"
+    },
+    {
+      "path": "docs/diagrams/application.architecture.json",
+      "sha256": "0b1937d64714858c882dbefa7cb4db2fbd931df01c88a316f4ef3ed1190e3a50"
+    },
+    {
+      "path": "docs/diagrams/application.delivery.json",
+      "sha256": "7eeeb6403732f94884f8d7e5b8b737aaadcceafddb4504508fdf31c12182e4db"
+    },
+    {
+      "path": "docs/diagrams/application.html",
+      "sha256": "e3a38067f50a163dacd7488206b8f9be4642d56d60bcb73eb7715457a6d233ce"
+    },
+    {
+      "path": "docs/diagrams/manifest.json",
+      "sha256": "b736a4e9b3d9dd5c8122b0459d325c1e8cb44222bb28fca693c10ddedec7d748"
+    },
+    {
+      "path": "docs/diagrams/processing.delivery.json",
+      "sha256": "76879efbb796daee0362f65f7b08ef464b92a2e8d1c24a7eaba40b64291d3848"
+    },
+    {
+      "path": "docs/diagrams/processing.html",
+      "sha256": "834293bf60f23627ddfbae670df4b72e6b9e4c8fc8e0414bf270aa615fae5645"
+    },
+    {
+      "path": "docs/diagrams/processing.workflow.json",
+      "sha256": "8cf769dc924375e9a7da416ac8e086a4d9758a02871d96fdf62135d651057645"
+    },
+    {
+      "path": "docs/diagrams/review-1.5.3.json",
+      "sha256": "32f208f003614887afa103bedaa393fadfcc21f9dcc0d74e89f23f9fa14d7a6a"
+    },
+    {
+      "path": "docs/distribution-1.5.3.json",
+      "sha256": "8762ebb3a4172085cbaf9c9347ad329866810b8eecd8a5c95cd0fa631bd80cde"
+    },
+    {
+      "path": "docs/drag-performance-1.5.3.json",
+      "sha256": "6e026a8c0caebc1e3608f4a20e1d86486d735dd74e42f18bb784faf6d319e456"
+    },
+    {
+      "path": "docs/images/merge-dragging.png",
+      "sha256": "b17ca0619140b3d9e9ba8a666b4b234cf0d438ad3ebd98d997579721c7da7c15"
+    },
+    {
+      "path": "docs/images/selector-vertical.png",
+      "sha256": "93726ec0eb5dc9444879889acfd762f9d94b35e7a3b3b5e38bcf78d19a5b93c0"
+    },
+    {
+      "path": "docs/low-spec-review.json",
+      "sha256": "cc6c69ff5bf37cdfc851492cfb1f54521222deae9e2fa95c365ecedcbbe1586c"
+    },
+    {
+      "path": "docs/page-tools-verification.json",
+      "sha256": "8ac8fc1450a3a3a3c861d25939ea3efbda6c1036f3319fa333a6e6fba57bd38c"
+    },
+    {
+      "path": "docs/performance-after-1.5.3.json",
+      "sha256": "4f2f647eb3a28356311e3ae81bea8a9ebfcbc2f4adc38234b2bfefdba5f0297e"
+    },
+    {
+      "path": "docs/resource-verification-1.5.3.json",
+      "sha256": "dfb9a550d6697899551b9627014c90b2aba4723c5a769e4bfac8e42eafd53ad0"
+    },
+    {
+      "path": "docs/rotate-verification.json",
+      "sha256": "74b181ce4abd50dc5837a4a34bf4bec545223a3dc32da2621fe96e7eae4048e0"
+    },
+    {
+      "path": "docs/selector-verification-1.5.3.json",
+      "sha256": "3714a66f67d84efbdddbb360828490d655c5bec62da334e75710776e28e17b87"
+    },
+    {
+      "path": "docs/source-smoke-1.5.3.json",
+      "sha256": "06435b352a9ffb3850616881f2a860e0c1e1d5320b660fd0c98df7d33568aa57"
+    },
+    {
+      "path": "docs/verification-1.5.3.json",
+      "sha256": "bc6f9cf9c766371e3ad73764dfc488daabe4affa6d1caa1b34f624d6e7364a72"
+    },
+    {
+      "path": "packaging/README_Distribution.txt",
+      "sha256": "6ba4756be585dd3174243a34880c75cbf8005137c5e5890c136981c67c9e2759"
+    },
+    {
+      "path": "packaging/version.iss",
+      "sha256": "9b553fed59015f1eb0bd62656f6da8322d13b1b95bcd917083cd99b146f99a5b"
+    },
+    {
+      "path": "packaging/version_info.txt",
+      "sha256": "974805a008a2af30f7c349220cc8e36d82e0283a410fbf3463cb85ef5c61f65c"
+    },
+    {
+      "path": "pdf_lover/diagnostics/self_test.py",
+      "sha256": "8ecfd7f7dca754eba69f1940a1d25eb7a44a88352311eb1817a9b8c118bf81ce"
+    },
+    {
+      "path": "pdf_lover/ui/page_selector.py",
+      "sha256": "b386d2a392179e154c8194c65d6d3dd4dfd567eff1a8f524f8e5725e89ef1427"
+    },
+    {
+      "path": "pdf_lover/version.py",
+      "sha256": "ce2fd4c8ed43616b44309005a37f96ec8f319297793bb20c5f9eb306cf809b2c"
+    },
+    {
+      "path": "scripts/check.py",
+      "sha256": "002198518933db269f0866fbd2bf44113a62dad3fb0ca015a7dcbbb7a55ff9d8"
+    },
+    {
+      "path": "tests/ui/verify_page_tools.py",
+      "sha256": "38170ce2650a5d8fe69e4248bc49f59525a6b60d25af9e1f30185c0bfdf3253f"
+    },
+    {
+      "path": "tests/ui/verify_rotate.py",
+      "sha256": "bfb9aff04086fe6e9552c8a15757c7b40c3942dbc168c4c52d8ed28893fdee00"
+    },
+    {
+      "path": "tests/ui/verify_selector.py",
+      "sha256": "0ea2a1b3e67545938fc03a946d69a08ec8f1268041897f02328456958e610d6e"
+    },
+    {
+      "path": "tests/ui/verify_split.py",
+      "sha256": "11da711871c29e567df942ea4fd8e4bc260b3846ea5758929f6e06314bb13533"
+    }
+  ]
+}

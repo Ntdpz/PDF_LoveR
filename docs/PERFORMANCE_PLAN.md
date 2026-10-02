@@ -153,3 +153,10 @@ Throughput ต้องเทียบ workload/เครื่องเดี�
 ยังไม่ปิด P0/P2/P3/P4 ทั้งชุด: debounce/async filesystem preflight, codec/PNG peak budget, document reuse,
 cold-start/frozen resource benchmark, เอกสารสแกนใหญ่ และการทดสอบ PC 4 GiB/HDD/Windows 11 จริง ยังเป็นงานถัดไป
 ผลวัดบนเครื่องพัฒนาไม่รับรอง minimum requirements; DPI/คุณภาพไฟล์และจำนวนเครื่องมือยังคงเดิม
+
+## ตัวเลือกหน้าแนวตั้ง · 1.5.3
+
+ตาราง PageSelector ใช้พื้นที่แนวตั้งที่เหลือ วาดเฉพาะ viewport ไม่เกิน 24 การ์ด พร้อมคิวร่วม 16 คำขอและ cache 32/6 MiB โดยประมาณ
+[ตรวจ 1,000 หน้าและการเลื่อน/คีย์บอร์ด](selector-verification-1.5.3.json) ผ่านทั้ง 4 เครื่องมือที่ใช้ตัวเลือกนี้
+วัด source benchmark เดิม 5 รอบ: home idle Private Bytes ค่ากลาง 69.75 → 68.50 MiB; ยังประมาณ 70 MiB ไม่อ้างว่าลดลงอย่างมีนัยสำคัญ
+หลักฐาน [หลังปรับ](performance-after-1.5.3.json); ขอบเขตเครื่อง/workload และงาน Optimize ที่เหลือยังเหมือนชุดก่อน

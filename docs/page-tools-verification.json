@@ -37,7 +37,8 @@
   ],
   "delete_all_blocked": true,
   "bounded_preview": {
-    "thumbnails_visible": 4,
+    "thumbnails_visible_limit": 24,
+    "shared_requests": 16,
     "cache": 32,
     "table_rows": 25,
     "document_pages": 240
