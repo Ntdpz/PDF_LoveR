@@ -233,3 +233,14 @@ pre-commit hook runs diagram freshness plus `scripts/check_low_spec.py --staged`
 quality impact, a complete source snapshot and hashes of passed JSON evidence.
 The checker rejects stale/missing/partially staged evidence. It proves that reviewed
 source/evidence match; physical low-spec support awaits tests on that hardware.
+
+### Page selection gestures
+
+PageSelector owns the shared Shift/Ctrl click and keyboard range anchor, and a temporary marquee.
+The Tk-free ui/page_gestures.py calculates intersections from grid geometry, including offscreen rows.
+Pointer bursts coalesce into one 16-ms draw; live feedback checks only visible cards. The expression
+and feature plan change once on release, never per pointer event. Ctrl toggles intersections; Shift
+adds them; an unmodified marquee replaces the selection. Edge scrolling uses one 60-ms root timer.
+Escape, hide, document replacement, resizing, focus loss and disabling cancel the marquee and release its grab/timer.
+Shift-click replaces the anchor range; Ctrl+Shift adds it. Plain card clicks retain toggle behavior.
+No additional worker or dependency; automatic split modes and busy controls remain readonly.

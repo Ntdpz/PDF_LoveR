@@ -160,3 +160,11 @@ cold-start/frozen resource benchmark, เอกสารสแกนใหญ่
 [ตรวจ 1,000 หน้าและการเลื่อน/คีย์บอร์ด](selector-verification-1.5.3.json) ผ่านทั้ง 4 เครื่องมือที่ใช้ตัวเลือกนี้
 วัด source benchmark เดิม 5 รอบ: home idle Private Bytes ค่ากลาง 69.75 → 68.50 MiB; ยังประมาณ 70 MiB ไม่อ้างว่าลดลงอย่างมีนัยสำคัญ
 หลักฐาน [หลังปรับ](performance-after-1.5.3.json); ขอบเขตเครื่อง/workload และงาน Optimize ที่เหลือยังเหมือนชุดก่อน
+
+## เลือกหลายหน้า · 1.5.4
+
+Shift/Ctrl และลากครอบใช้ PageSelector ร่วม ไม่เพิ่ม worker/dependency; live marquee ตรวจเฉพาะ 24 การ์ดที่มองเห็น
+รวม pointer เป็นเฟรม 16 ms, edge scroll 60 ms และคำนวณแผน PDF ตอนปล่อยเมาส์ครั้งเดียว; Esc/focus/hide/resize/เปลี่ยนเอกสารคืน grab และ timer
+[ตรวจ 1,000 หน้าและ 1,000 pointer events](page-gestures-verification-1.5.4.json) ผ่าน พร้อม export ตามหน้าที่เลือกและตรวจ hash ต้นฉบับ
+วัด workload source เดิม 5 รอบ: home idle Private Bytes ค่ากลาง 68.50 → 68.78 MiB; ยังใกล้ 70 MiB ไม่อ้างว่าลดลงอย่างมีนัยสำคัญ
+หลักฐาน [หลังเพิ่ม](performance-after-1.5.4.json); ยังไม่ทดสอบ PC 4 GiB/HDD จริง งาน async preflight/PNG peak/cold-start/scanned PDFs ยังอยู่ในแผน

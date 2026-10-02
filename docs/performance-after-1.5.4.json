@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "passed": true,
+  "scope": "Windows source app, 240-page synthetic text PDF, fresh interpreter per run; cache state uncontrolled",
+  "memory_counter": "PrivateUsage; main plus distinct live preview processes",
+  "host": {
+    "logical_processors": 16,
+    "platform": 19045
+  },
+  "limitations": [
+    "No physical low-spec PC tested",
+    "Source app, not frozen/cold-start proof",
+    "Idle CPU includes 5-ms harness pump; not unattended idle baseline",
+    "No export or large scan fixture"
+  ],
+  "idle_seconds": 5,
+  "median_private_mib_by_stage": {
+    "home": 28.7,
+    "pdf-png": 59.45,
+    "merge": 103.05,
+    "split": 105.95,
+    "extract-pages": 106.73,
+    "delete-pages": 107.73,
+    "rotate": 110.52,
+    "home_after_all_tools": 68.78,
+    "home_idle": 68.78
+  },
+  "runs": [
+    {
+      "version": "1.5.4",
+      "source_start_including_imports_ms": 1923.61,
+      "stages": [
+        {
+          "stage": "home",
+          "live_preview_processes": 0,
+          "total_private_mib": 28.66,
+          "parent_private_mib": 28.66,
+          "total_working_set_mib": 42.89
+        },
+        {
+          "stage": "pdf-png",
+          "live_preview_processes": 0,
+          "total_private_mib": 59.19,
+          "parent_private_mib": 59.19,
+          "total_working_set_mib": 68.94
+        },
+        {
+          "stage": "merge",
+          "live_preview_processes": 1,
+          "total_private_mib": 102.75,
+          "parent_private_mib": 61.29,
+          "total_working_set_mib": 112.22
+        },
+        {
+          "stage": "split",
+          "live_preview_processes": 1,
+          "total_private_mib": 105.71,
+          "parent_private_mib": 64.12,
+          "total_working_set_mib": 115.36
+        },
+        {
+          "stage": "extract-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.49,
+          "parent_private_mib": 64.9,
+          "total_working_set_mib": 116.37
+        },
+        {
+          "stage": "delete-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 107.54,
+          "parent_private_mib": 65.95,
+          "total_working_set_mib": 117.55
+        },
+        {
+          "stage": "rotate",
+          "live_preview_processes": 1,
+          "total_private_mib": 110.26,
+          "parent_private_mib": 68.54,
+          "total_working_set_mib": 119.79
+        },
+        {
+          "stage": "home_after_all_tools",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.51,
+          "parent_private_mib": 68.51,
+          "total_working_set_mib": 78.12
+        },
+        {
+          "stage": "home_idle",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.51,
+          "parent_private_mib": 68.51,
+          "total_working_set_mib": 78.13
+        }
+      ],
+      "idle_cpu_percent_of_machine": 0.039,
+      "heartbeat_lateness_p95_ms": 3.52,
+      "heartbeat_lateness_max_ms": 1282.75,
+      "cleanup_passed": true
+    },
+    {
+      "version": "1.5.4",
+      "source_start_including_imports_ms": 1885.27,
+      "stages": [
+        {
+          "stage": "home",
+          "live_preview_processes": 0,
+          "total_private_mib": 28.72,
+          "parent_private_mib": 28.72,
+          "total_working_set_mib": 43.84
+        },
+        {
+          "stage": "pdf-png",
+          "live_preview_processes": 0,
+          "total_private_mib": 59.28,
+          "parent_private_mib": 59.28,
+          "total_working_set_mib": 69.79
+        },
+        {
+          "stage": "merge",
+          "live_preview_processes": 1,
+          "total_private_mib": 103.08,
+          "parent_private_mib": 61.48,
+          "total_working_set_mib": 113.39
+        },
+        {
+          "stage": "split",
+          "live_preview_processes": 1,
+          "total_private_mib": 105.95,
+          "parent_private_mib": 64.23,
+          "total_working_set_mib": 116.52
+        },
+        {
+          "stage": "extract-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.73,
+          "parent_private_mib": 65.02,
+          "total_working_set_mib": 117.65
+        },
+        {
+          "stage": "delete-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 107.79,
+          "parent_private_mib": 66.07,
+          "total_working_set_mib": 118.92
+        },
+        {
+          "stage": "rotate",
+          "live_preview_processes": 1,
+          "total_private_mib": 110.77,
+          "parent_private_mib": 68.91,
+          "total_working_set_mib": 121.11
+        },
+        {
+          "stage": "home_after_all_tools",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.88,
+          "parent_private_mib": 68.88,
+          "total_working_set_mib": 79.37
+        },
+        {
+          "stage": "home_idle",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.88,
+          "parent_private_mib": 68.88,
+          "total_working_set_mib": 79.38
+        }
+      ],
+      "idle_cpu_percent_of_machine": 0.0,
+      "heartbeat_lateness_p95_ms": 3.59,
+      "heartbeat_lateness_max_ms": 1202.0,
+      "cleanup_passed": true
+    },
+    {
+      "version": "1.5.4",
+      "source_start_including_imports_ms": 1773.3,
+      "stages": [
+        {
+          "stage": "home",
+          "live_preview_processes": 0,
+          "total_private_mib": 28.72,
+          "parent_private_mib": 28.72,
+          "total_working_set_mib": 42.89
+        },
+        {
+          "stage": "pdf-png",
+          "live_preview_processes": 0,
+          "total_private_mib": 59.45,
+          "parent_private_mib": 59.45,
+          "total_working_set_mib": 68.98
+        },
+        {
+          "stage": "merge",
+          "live_preview_processes": 1,
+          "total_private_mib": 103.05,
+          "parent_private_mib": 61.66,
+          "total_working_set_mib": 112.35
+        },
+        {
+          "stage": "split",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.05,
+          "parent_private_mib": 64.56,
+          "total_working_set_mib": 115.51
+        },
+        {
+          "stage": "extract-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.84,
+          "parent_private_mib": 65.34,
+          "total_working_set_mib": 116.63
+        },
+        {
+          "stage": "delete-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 107.89,
+          "parent_private_mib": 66.39,
+          "total_working_set_mib": 117.82
+        },
+        {
+          "stage": "rotate",
+          "live_preview_processes": 1,
+          "total_private_mib": 110.94,
+          "parent_private_mib": 69.07,
+          "total_working_set_mib": 120.25
+        },
+        {
+          "stage": "home_after_all_tools",
+          "live_preview_processes": 0,
+          "total_private_mib": 69.04,
+          "parent_private_mib": 69.04,
+          "total_working_set_mib": 78.43
+        },
+        {
+          "stage": "home_idle",
+          "live_preview_processes": 0,
+          "total_private_mib": 69.0,
+          "parent_private_mib": 69.0,
+          "total_working_set_mib": 78.45
+        }
+      ],
+      "idle_cpu_percent_of_machine": 0.0,
+      "heartbeat_lateness_p95_ms": 3.45,
+      "heartbeat_lateness_max_ms": 1154.2,
+      "cleanup_passed": true
+    },
+    {
+      "version": "1.5.4",
+      "source_start_including_imports_ms": 1853.81,
+      "stages": [
+        {
+          "stage": "home",
+          "live_preview_processes": 0,
+          "total_private_mib": 28.46,
+          "parent_private_mib": 28.46,
+          "total_working_set_mib": 42.73
+        },
+        {
+          "stage": "pdf-png",
+          "live_preview_processes": 0,
+          "total_private_mib": 59.5,
+          "parent_private_mib": 59.5,
+          "total_working_set_mib": 69.07
+        },
+        {
+          "stage": "merge",
+          "live_preview_processes": 1,
+          "total_private_mib": 102.73,
+          "parent_private_mib": 61.33,
+          "total_working_set_mib": 112.21
+        },
+        {
+          "stage": "split",
+          "live_preview_processes": 1,
+          "total_private_mib": 105.12,
+          "parent_private_mib": 64.06,
+          "total_working_set_mib": 114.83
+        },
+        {
+          "stage": "extract-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.59,
+          "parent_private_mib": 65.11,
+          "total_working_set_mib": 116.4
+        },
+        {
+          "stage": "delete-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 107.38,
+          "parent_private_mib": 65.89,
+          "total_working_set_mib": 117.61
+        },
+        {
+          "stage": "rotate",
+          "live_preview_processes": 1,
+          "total_private_mib": 110.02,
+          "parent_private_mib": 68.49,
+          "total_working_set_mib": 119.64
+        },
+        {
+          "stage": "home_after_all_tools",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.45,
+          "parent_private_mib": 68.45,
+          "total_working_set_mib": 78.09
+        },
+        {
+          "stage": "home_idle",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.46,
+          "parent_private_mib": 68.46,
+          "total_working_set_mib": 78.11
+        }
+      ],
+      "idle_cpu_percent_of_machine": 0.039,
+      "heartbeat_lateness_p95_ms": 3.55,
+      "heartbeat_lateness_max_ms": 1228.47,
+      "cleanup_passed": true
+    },
+    {
+      "version": "1.5.4",
+      "source_start_including_imports_ms": 2578.1,
+      "stages": [
+        {
+          "stage": "home",
+          "live_preview_processes": 0,
+          "total_private_mib": 28.7,
+          "parent_private_mib": 28.7,
+          "total_working_set_mib": 42.97
+        },
+        {
+          "stage": "pdf-png",
+          "live_preview_processes": 0,
+          "total_private_mib": 59.75,
+          "parent_private_mib": 59.75,
+          "total_working_set_mib": 69.12
+        },
+        {
+          "stage": "merge",
+          "live_preview_processes": 1,
+          "total_private_mib": 103.12,
+          "parent_private_mib": 61.64,
+          "total_working_set_mib": 112.44
+        },
+        {
+          "stage": "split",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.07,
+          "parent_private_mib": 64.47,
+          "total_working_set_mib": 115.56
+        },
+        {
+          "stage": "extract-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 106.88,
+          "parent_private_mib": 65.29,
+          "total_working_set_mib": 116.66
+        },
+        {
+          "stage": "delete-pages",
+          "live_preview_processes": 1,
+          "total_private_mib": 107.73,
+          "parent_private_mib": 66.14,
+          "total_working_set_mib": 117.88
+        },
+        {
+          "stage": "rotate",
+          "live_preview_processes": 1,
+          "total_private_mib": 110.52,
+          "parent_private_mib": 68.82,
+          "total_working_set_mib": 119.94
+        },
+        {
+          "stage": "home_after_all_tools",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.78,
+          "parent_private_mib": 68.78,
+          "total_working_set_mib": 78.33
+        },
+        {
+          "stage": "home_idle",
+          "live_preview_processes": 0,
+          "total_private_mib": 68.78,
+          "parent_private_mib": 68.78,
+          "total_working_set_mib": 78.36
+        }
+      ],
+      "idle_cpu_percent_of_machine": 0.02,
+      "heartbeat_lateness_p95_ms": 3.77,
+      "heartbeat_lateness_max_ms": 1694.72,
+      "cleanup_passed": true
+    }
+  ]
+}

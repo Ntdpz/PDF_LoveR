@@ -44,3 +44,5 @@
 ตัวเลือกหน้าร่วมอยู่ใน `core/page_selection.py` และ `ui/page_selector.py`
 ใช้ร่วมกับแยกหน้า ลบหน้า และหมุน PDF แล้ว; จัดระเบียบ PDF ยังอยู่ในแผน
 หลักฐานการตรวจ: [split-verification.json](split-verification.json)
+
+เลือกหลายหน้าได้ด้วย **Shift+คลิก**, **Ctrl+คลิก** และ **ลากครอบ**; ดู [วิธีเลือกหน้า](PAGE_SELECTION.md)

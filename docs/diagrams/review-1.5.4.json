@@ -1,0 +1,69 @@
+{
+  "version": "1.5.4",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "e5d59baae3f4c2cf7466a6de18ed258f6d6e6b24da82dff922cdad91fd108710",
+      "artifact_sha256": "923400952d89c2f02d1198f72ad310246a8b7752099535c279adab2b5a899987",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Shared Shift/Ctrl/marquee viewport gestures commit at release; no new worker; maintenance flow unchanged"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "92041937def8540143aa73c48db73cd13970af292c38a20b03d40d857d663489",
+      "artifact_sha256": "88e06bae3bd7eb72fd2ee5159a6a5d9259cb2838467cc945ea4540e800c8283c",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Shared Shift/Ctrl/marquee viewport gestures commit at release; no new worker; maintenance flow unchanged"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "f82578b99d64f069b2327b4735c1d57f02a82d157261f27bf67e088abe6624b6",
+      "artifact_sha256": "9f6cef53033c3306b2aba03d21c34d0a1d4fb3d80fa8967c4d7d5fe42774fac7",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai text, routes, cards, contrast and containment",
+        "Shared Shift/Ctrl/marquee viewport gestures commit at release; no new worker; maintenance flow unchanged"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

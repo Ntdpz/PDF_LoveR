@@ -49,3 +49,5 @@ PDF เดียวจะรวมทุกหน้าที่เลือก 
 หลักฐาน: [native UI และ Poppler](page-tools-verification.json),
 unit tests ใน `tests/unit/test_page_tools.py`, และ smoke ของ EXE/ZIP/installer
 ใน [ผลตรวจชุดแจก](distribution-1.4.0.json)
+
+เลือกหลายหน้าได้ด้วย **Shift+คลิก**, **Ctrl+คลิก** และ **ลากครอบ**; ดู [วิธีเลือกหน้า](PAGE_SELECTION.md)
