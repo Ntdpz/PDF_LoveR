@@ -1,0 +1,72 @@
+{
+  "version": "1.5.2",
+  "reviewer": "Codex image review",
+  "diagrams": [
+    {
+      "name": "application",
+      "output": "docs/diagrams/application.html",
+      "specification_sha256": "2acd867952eda69064238b9535f1a536fded0f2896a5d6a89ecf341b5cbb0eee",
+      "artifact_sha256": "208b21b389f795560ca528fb84bed30a9421ca242cdcdbd82b4606816431a966",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "One shared preview child, lazy factories, hidden-page release and active-page polling match code",
+        "Low-spec review and staged evidence guard match managed hook"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "processing",
+      "output": "docs/diagrams/processing.html",
+      "specification_sha256": "e65cfd824f508d9c6cfd549a556f82c48a8a5faab73f81bc59cee57804f218ff",
+      "artifact_sha256": "e1a474539b6cd1cbd9fb104140eb6b7d28ee7e8d6f8ab3c95d52c0d8266c4653",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "One shared preview child, lazy factories, hidden-page release and active-page polling match code",
+        "Low-spec review and staged evidence guard match managed hook"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    },
+    {
+      "name": "maintenance",
+      "output": "docs/diagrams/maintenance.html",
+      "specification_sha256": "f82578b99d64f069b2327b4735c1d57f02a82d157261f27bf67e088abe6624b6",
+      "artifact_sha256": "9f6cef53033c3306b2aba03d21c34d0a1d4fb3d80fa8967c4d7d5fe42774fac7",
+      "validation": "9/9 showcase, 0 errors, 0 warnings",
+      "browser_evidence": "passed",
+      "visual_review": "passed",
+      "correction_rounds": 0,
+      "review_scope": [
+        "Actual light/dark screenshots at 1440x900 and 2048x1320 inspected with image viewer",
+        "Thai labels, routes, cards, contrast and containment",
+        "One shared preview child, lazy factories, hidden-page release and active-page polling match code",
+        "Low-spec review and staged evidence guard match managed hook"
+      ],
+      "browser_viewports": [
+        "1440x900",
+        "1600x1000",
+        "1920x1080",
+        "2048x1320"
+      ]
+    }
+  ]
+}

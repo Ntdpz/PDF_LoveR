@@ -20,11 +20,11 @@
   Ctrl+O บน home เปิด PNG; ปลายทางเริ่มที่ Windows Documents
 - รวม PDF ใช้ Canvas แสดงเฉพาะแถวใกล้ viewport, รวม pointer input เป็นเฟรม 16 ms,
   มี edge scroll, keyboard และ Esc; พักการอัปเดต thumbnail ระหว่างลาก
-- ภาพตัวอย่างเรนเดอร์ใน spawned process ที่เริ่มเมื่อมีคำขอ;
-  คิวผลลัพธ์จำกัด 4 รายการ, UI poll แยกทุก 80 ms, ใช้ cache;
-  destroy ยกเลิก timer และปิด process/queues
+- App เป็นเจ้าของ spawned preview process ร่วมหนึ่งตัว; request จำกัด 16 และ result จำกัด 4
+  ใช้ client/generation เพื่อทิ้งภาพเก่า; ซ่อนหน้าแล้วคืน cache/timer แต่เก็บเอกสาร/ค่าผู้ใช้
+  home ปิด process ทันที; merge/selector/comparison จำกัดจำนวนภาพและงบสำเนาภาพโดยประมาณ
 - เครื่องมือพร้อมใช้ทั้ง 6 มี worker thread และ event queue ของตนเอง แต่ใช้ busy ของ App ร่วมกัน;
-  shell poll ทุก 80 ms, page อ่านไม่เกิน 100 events ต่อรอบ; worker ไม่แตะ Tk
+  shell poll เฉพาะหน้าปัจจุบันทุก 80 ms และ home 300 ms, page อ่านไม่เกิน 100 events ต่อรอบ; worker ไม่แตะ Tk
 - แยกหน้า/ลบหน้าใช้ SelectionPage ร่วม, preview เลขหน้าใหม่/เดิมและชื่อไฟล์;
   core/document ตรวจต้นฉบับ, core/pdf_output ตรวจชุดชั่วคราวและคืนไฟล์ของงานเมื่อผิดพลาด
 - หมุนใช้ไอคอนซ้าย/ขวาสะสมทีละ 90° เริ่ม 0° และตัวเลือกหน้าต่อเอกสาร, PagePreview ก่อน–หลัง และ staged batch publication;
@@ -55,6 +55,8 @@
 
 `--check` ใช้ Python อย่างเดียวและอ่านอย่างเดียว ตรวจชื่อ/เนื้อหา source รวมไฟล์ใหม่
 และ JSON/HTML เทียบ manifest; ปรับ CRLF/LF ให้เหมือน Git เพื่อใช้ได้บน Windows
+hook ตรวจ `docs/low-spec-review.json` เพิ่มด้วย ต้องพิจารณา CPU 2 คอร์ / RAM 4 GiB / HDD
+และผูกหลักฐานที่ผ่านกับ source ใน staged index; ไม่รับรองเครื่องที่ยังไม่ได้ทดสอบจริง
 hook ไม่ได้แปลความหมายจากโค้ดให้เอง: agent เป็นผู้ทบทวนและแก้ JSON ส่วน checker
 ป้องกันการลืมอัปเดตหลักฐาน หากแก้โค้ดที่ไม่เปลี่ยนแผนภาพก็ยังต้องทบทวนและ refresh
 

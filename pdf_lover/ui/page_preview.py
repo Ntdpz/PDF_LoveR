@@ -6,7 +6,7 @@ Pre-emit critique: P4 H5 E4 S5 R5 V4. No spatial animation or feature imports.
 import queue
 import customtkinter as ctk
 from PIL import Image
-from pdf_lover.ui.pdf_previews import PreviewWorker
+from pdf_lover.ui.pdf_previews import PreviewWorker, PreviewCache
 from pdf_lover.ui.theme import COLORS as C, SPACE as S
 
 
@@ -14,7 +14,9 @@ class PagePreview(ctk.CTkFrame):
     def __init__(self,parent,app):
         super().__init__(parent,fg_color=C['surface'])
         self.app=app;self.info=None;self.page=1;self.angle=90;self.selected=frozenset();self.enabled=True
-        self.worker=PreviewWorker();self.cache={};self.images={};self.pending=set()
+        self.worker=PreviewWorker(app.preview_coordinator);self.preview_active=False;self.worker.set_active(False)
+        self.images={};self.pending=set()
+        self.cache=PreviewCache(12,6*1048576,lambda key:self.images.pop(key,None))
         # CTkLabel leaves the native Tk image set when configured with image=None.
         # Keep a real empty image alive for empty/loading/error states.
         self.empty_image=ctk.CTkImage(Image.new('RGB',(1,1),C['surface']),size=(1,1))
@@ -58,6 +60,8 @@ class PagePreview(ctk.CTkFrame):
         return (base+(0,240,300),base+(delta,240,300))
 
     def render(self):
+        if not self.preview_active:return
+        if self.worker.set_required(self.keys()):self.pending.clear()
         for index,label in enumerate(self.labels):
             if not self.info:
                 label.configure(image=self.empty_image)
@@ -65,7 +69,7 @@ class PagePreview(ctk.CTkFrame):
             key=self.keys()[index]
             if key not in self.cache and key not in self.pending and len(self.pending)<2:
                 if self.worker.submit(key):self.pending.add(key)
-                else:self.cache[key]=None
+                elif self.worker.failed:self.cache[key]=None
             payload=self.cache.get(key)
             if payload and key not in self.images:
                 width,height,samples=payload
@@ -78,8 +82,9 @@ class PagePreview(ctk.CTkFrame):
         self.next.configure(state='normal' if self.enabled and self.info and self.page<self.info.page_count else 'disabled')
 
     def process_events(self):
+        if not self.preview_active:return
         updated=False
-        if self.pending and self.worker.process is not None and not self.worker.process.is_alive():
+        if self.pending and self.worker.failed:
             for key in self.pending:self.cache[key]=None
             self.pending.clear();updated=True
         try:
@@ -91,7 +96,15 @@ class PagePreview(ctk.CTkFrame):
                         oldest=next(iter(self.cache));self.cache.pop(oldest);self.images.pop(oldest,None)
                 updated=True
         except queue.Empty:pass
-        if updated:self.render()
+        if updated or any(key not in self.cache and key not in self.pending for key in self.worker.required):self.render()
+
+    def set_preview_active(self,active):
+        if self.preview_active==active:return
+        self.preview_active=active;self.worker.set_active(active);self.pending.clear()
+        if active:self.render()
+        else:
+            for label in self.labels:label.configure(image=self.empty_image)
+            self.cache.clear();self.images.clear()
 
     def destroy(self):
         self.worker.close();super().destroy()

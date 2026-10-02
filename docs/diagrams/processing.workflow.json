@@ -100,7 +100,7 @@
       "col": 3,
       "type": "messagebus",
       "label": "อ่าน event queue",
-      "sublabel": "App ทุก 80 ms · ครั้งละ ≤100",
+      "sublabel": "หน้าปัจจุบัน · 80/300 ms",
       "width": 160
     },
     {
@@ -204,8 +204,8 @@
       "dot": "amber",
       "title": "จบงานและปิดโปรแกรม",
       "items": [
-        "PNG ทำไฟล์ถัดไป; เลือกหน้าแจ้งไฟล์ที่คืนไม่ได้",
-        "รอ busy ก่อนปิด; destroy ปิด preview process"
+        "busy พักคำขอภาพใหม่; จบงานคืน controls",
+        "home/destroy ปิด preview; ทิ้งภาพเก่า"
       ]
     }
   ]

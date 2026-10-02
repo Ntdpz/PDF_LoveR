@@ -73,8 +73,12 @@ def run(root, app_class, report):
             complete({"passed": False, "errors": failures + [str(error)]})
 
     def complete(result):
-        report.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
         root.destroy()
+        result["preview_cleanup"] = app.preview_coordinator.process is None
+        if not result["preview_cleanup"]:
+            result["passed"] = False
+            result.setdefault("errors", []).append("Preview child survived root destruction")
+        report.write_text(json.dumps(result, ensure_ascii=False), encoding="utf-8")
         sandbox.cleanup()
 
     def finish_merge():
@@ -224,6 +228,8 @@ def run(root, app_class, report):
             assert not app.busy and page.destination, page.status.get()
             assert all(page.selector.cache.values())
             assert all(page.preview.cache.get(key) for key in page.preview.keys())
+            assert page.selector.worker.process is page.preview.worker.process is app.preview_coordinator.process
+            assert app.preview_coordinator.process and app.preview_coordinator.process.is_alive()
             for job in page.plan.jobs:
                 with pymupdf.open(job.info.path) as original, pymupdf.open(job.output.path) as result:
                     assert result.page_count == original.page_count
@@ -238,7 +244,8 @@ def run(root, app_class, report):
                       "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
                       "extract_original_pages": [1, 3], "delete_removed_pages": [2],
                       "delete_retained_pages": [1, 3], "original_unchanged": True,
-                      "thumbnail_worker": "separate process", "thumbnail_count": thumbnails,
+                      "thumbnail_worker": "single shared process", "thumbnail_count": thumbnails,
+                      "preview_process_limit": 1,
                       "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],
                       "rotation_angle": 90, "rotation_icon_cycle": "verified", "rotation_preview": "verified",
                       "file_drop": "Windows native callbacks verified for all 6 tools",

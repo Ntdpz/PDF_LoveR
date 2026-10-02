@@ -9,7 +9,7 @@ import tkinter as tk
 import customtkinter as ctk
 from PIL import Image
 from pdf_lover.core.page_selection import selected_pages, format_pages, PageSelectionError
-from pdf_lover.ui.pdf_previews import PreviewWorker
+from pdf_lover.ui.pdf_previews import PreviewWorker, PreviewCache
 from pdf_lover.ui.theme import COLORS as C, SPACE as S, RADIUS
 
 
@@ -25,8 +25,13 @@ class PageSelector(ctk.CTkFrame):
         self.info, self.offset = None, 0
         self.enabled = self.editable = True
         self.expression = tk.StringVar(value="")
-        self.worker = PreviewWorker()
-        self.cache, self.pending, self.images = {}, set(), {}
+        self.worker = PreviewWorker(app.preview_coordinator)
+        self.preview_active = False
+        self.worker.set_active(False)
+        self.pending, self.images = set(), {}
+        self.cache = PreviewCache(32, 6 * 1048576, lambda key: self.images.pop(key, None))
+        self.selection_key, self.selection_value = None, ()
+        self.empty_image = ctk.CTkImage(Image.new("RGB", (1, 1), C["surface"]), size=(1, 1))
         self.grid_columnconfigure(0, weight=1)
         app.label(self, title, font=app.font_bold).grid(row=0, column=0, sticky="w", padx=S["lg"], pady=S["xs"])
         actions = ctk.CTkFrame(self, fg_color="transparent")
@@ -78,7 +83,25 @@ class PageSelector(ctk.CTkFrame):
             self.expression.set(f"1-{self.info.page_count}")
 
     def selection(self):
-        return selected_pages(self.expression.get(), self.info.page_count) if self.info else ()
+        key = (self.expression.get(), self.info.page_count if self.info else 0)
+        if key != self.selection_key:
+            value = selected_pages(*key) if self.info else ()
+            self.selection_key, self.selection_value = key, value
+        return self.selection_value
+
+    def set_preview_active(self, active):
+        if self.preview_active == active:
+            return
+        self.preview_active = active
+        self.worker.set_active(active)
+        self.pending.clear()
+        if active:
+            self.render()
+        else:
+            for card in self.cards:
+                card.configure(image=self.empty_image)
+            self.cache.clear()
+            self.images.clear()
 
     def _changed(self, *_):
         self.render()
@@ -110,6 +133,12 @@ class PageSelector(ctk.CTkFrame):
             self.render()
 
     def render(self):
+        if not self.preview_active:
+            return
+        keys = [(self.info.path, self.info.signature[3], self.info.signature[2], page - 1)
+                for page in range(self.offset + 1, min(self.offset + self.VISIBLE, self.info.page_count) + 1)] if self.info else []
+        if self.worker.set_required(keys):
+            self.pending.clear()
         try:
             selected = set(self.selection()) if self.editable else set(range(1, self.info.page_count + 1)) if self.info else set()
             self.entry.configure(border_color=C["rule"])
@@ -126,7 +155,7 @@ class PageSelector(ctk.CTkFrame):
             if key not in self.cache and key not in self.pending and len(self.pending) < self.VISIBLE:
                 if self.worker.submit(key):
                     self.pending.add(key)
-                else:
+                elif self.worker.failed:
                     self.cache[key] = None
             payload = self.cache.get(key)
             if payload and key not in self.images:
@@ -137,7 +166,7 @@ class PageSelector(ctk.CTkFrame):
                 label += "\nกำลังโหลด…"
             elif payload is None:
                 label += "\nไม่มีภาพตัวอย่าง"
-            card.configure(text=label, image=self.images.get(key),
+            card.configure(text=label, image=self.images.get(key, self.empty_image),
                            state="normal" if self.enabled and self.editable else "disabled",
                            fg_color=C["tint"] if page in selected else C["surface"],
                            border_color=C["accent"] if page in selected else C["rule"])
@@ -146,8 +175,10 @@ class PageSelector(ctk.CTkFrame):
         self.next.configure(state="normal" if self.enabled and self.offset + self.VISIBLE < count else "disabled")
 
     def process_events(self):
+        if not self.preview_active:
+            return
         updated = False
-        if self.pending and self.worker.process is not None and not self.worker.process.is_alive():
+        if self.pending and self.worker.failed:
             for key in self.pending:
                 self.cache[key] = None
             self.pending.clear()
@@ -165,5 +196,5 @@ class PageSelector(ctk.CTkFrame):
                 updated = True
         except queue.Empty:
             pass
-        if updated:
+        if updated or any(key not in self.cache and key not in self.pending for key in self.worker.required):
             self.render()

@@ -1,6 +1,6 @@
 # แผน Optimize PDF LoveR สำหรับ PC หลายระดับ
 
-สถานะ: **แผนที่ยังไม่ได้ลงมือปรับโค้ด** อ้างอิงรุ่น 1.5.1, commit `fb51da245641bdf75086b3a5176a996224e2eff6` ณ 2 ตุลาคม 2026
+สถานะ: **ดำเนินการชุดแรกใน 1.5.2 แล้ว** ฐานก่อนปรับคือรุ่น 1.5.1, commit `fb51da245641bdf75086b3a5176a996224e2eff6` ณ 2 ตุลาคม 2026
 เครื่องมือพร้อมใช้ยังเป็น 6/34 รายการ แนะนำทำชุดนี้ก่อนจัดระเบียบ PDF เพื่อให้ฟีเจอร์ถัดไปใช้ระบบภาพตัวอย่างที่ประหยัดทรัพยากรร่วมกัน
 
 เป้าหมายเบื้องต้นคือ PC CPU 2 คอร์, RAM 4 GB, HDD และเครื่อง RAM 8 GB, SSD บน Windows 10/11
@@ -139,3 +139,17 @@ Throughput ต้องเทียบ workload/เครื่องเดี�
 
 เก็บเอกสารตัวอย่างสังเคราะห์หรือที่มีสิทธิ์ใช้ ไม่ลงเนื้อหาเอกสารของผู้ใช้ในรายงาน
 เมื่อเริ่มทำให้แบ่ง commit ตาม P0 → P1 → P2 → P3 → P4; งานนี้ยังไม่เพิ่มจำนวนเครื่องมือหรือเปลี่ยน `ready=True`
+
+## ผลชุดแรก · 1.5.2
+
+- ทำ benchmark source app ด้วย fresh interpreter 5 รอบก่อน/หลัง: [ก่อน](performance-before-1.5.2.json) / [หลัง](performance-after-1.5.2.json)
+- ค่ากลาง Private memory หลังเปิดครบ 6 เครื่องมือแล้วกลับ home: 321.62 → 69.75 MiB; หลัง idle: 321.68 → 69.75 MiB ลดประมาณ 78%
+- PreviewCoordinator ร่วมจำกัดหนึ่ง process, request 16/result 4; client/generation ทิ้งผลเก่า; home ปิด process ทันที
+- คืนภาพ/timer ของหน้าที่ซ่อน โดยรักษาเอกสาร/การเลือกหน้า; cache มีทั้งจำนวนและงบสำเนาภาพโดยประมาณ; [ตรวจสลับเร็ว 20 รอบ](resource-verification-1.5.2.json) ผ่าน
+- Poll เฉพาะหน้าปัจจุบัน 80 ms, home 300 ms; cache parse selection และ lazy import factories
+- PNG คืน Pixmap ก่อนหน้าก่อน render หน้าถัดไป แต่ [วัด peak ที่ 600 DPI](png-memory-1.5.2.json) ยังประมาณ 241 MiB ทั้งก่อนและหลัง: **ยังไม่มีหลักฐานว่าลด peak RAM ของ PNG**; hash ของภาพผลลัพธ์ตรงกันทุกหน้า
+- AGENTS และ staged pre-commit hook บังคับ low-spec impact review + source/evidence hashes ร่วมกับ diagram freshness
+
+ยังไม่ปิด P0/P2/P3/P4 ทั้งชุด: debounce/async filesystem preflight, codec/PNG peak budget, document reuse,
+cold-start/frozen resource benchmark, เอกสารสแกนใหญ่ และการทดสอบ PC 4 GiB/HDD/Windows 11 จริง ยังเป็นงานถัดไป
+ผลวัดบนเครื่องพัฒนาไม่รับรอง minimum requirements; DPI/คุณภาพไฟล์และจำนวนเครื่องมือยังคงเดิม

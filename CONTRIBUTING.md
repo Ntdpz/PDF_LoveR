@@ -30,6 +30,17 @@ Use `ui/controls.py`, `ui/icons.py` and `ui/theme.py` for reusable UI behavior.
 Follow the existing named colors, fonts and spacing. Windows path lookup and
 Explorer integration live in `platform/`.
 
+Consider the 2-core / 4-GiB / HDD target before every update. Use the app's single
+preview coordinator and ToolPage visibility lifecycle; bound queues/caches and
+release hidden images without losing user selections. Preserve output quality,
+file safety and drag virtualization. See [Performance plan](docs/PERFORMANCE_PLAN.md).
+For watched source changes, update `docs/low-spec-review.json` after reviewing
+memory, CPU/UI, disk/startup, dependencies and quality. Bind its source snapshot
+and passed evidence hashes to the resulting code, and stage them together.
+`python scripts/check_low_spec.py --staged` and the pre-commit hook reject stale
+or partially staged reviews. This check records consideration and evidence;
+it does not certify hardware that has not been tested.
+
 Keep Tk updates on the main thread. PDF work can run in the feature's worker;
 report progress and completion using its queue. PyMuPDF thumbnail rendering uses
 a separate process, with small bounded results. Preserve the launcher's early

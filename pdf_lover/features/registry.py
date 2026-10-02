@@ -1,14 +1,29 @@
 """Add a feature here when its engine and page are ready to ship."""
 from pdf_lover.catalog import TOOLS
-from pdf_lover.features.merge.page import MergePage
-from pdf_lover.features.png.page import PngPage
-from pdf_lover.features.split.page import SplitPage
-from pdf_lover.features.rotate.page import RotatePage
-from pdf_lover.features.extract.page import ExtractPage
-from pdf_lover.features.delete_pages.page import DeletePagesPage
+from dataclasses import dataclass
+from importlib import import_module
 
-PAGE_FACTORIES = {"pdf-png": PngPage, "merge": MergePage, "split": SplitPage,
-                  "extract-pages": ExtractPage, "delete-pages": DeletePagesPage, "rotate": RotatePage}
+@dataclass(frozen=True)
+class LazyPageFactory:
+    module: str
+    class_name: str
+
+    def load(self):
+        from pdf_lover.features.base import ToolPage
+        page = getattr(import_module(self.module), self.class_name)
+        if not issubclass(page, ToolPage) or page.__abstractmethods__:
+            raise ValueError(f"Page does not implement ToolPage: {self.class_name}")
+        return page
+
+    def __call__(self, parent, app):
+        return self.load()(parent, app)
+
+
+PAGE_FACTORIES = {tool: LazyPageFactory(f"pdf_lover.features.{feature}.page", page)
+                  for tool, feature, page in (
+                      ("pdf-png", "png", "PngPage"), ("merge", "merge", "MergePage"),
+                      ("split", "split", "SplitPage"), ("extract-pages", "extract", "ExtractPage"),
+                      ("delete-pages", "delete_pages", "DeletePagesPage"), ("rotate", "rotate", "RotatePage"))}
 
 
 def validate_registry(factories=PAGE_FACTORIES, tools=TOOLS):
@@ -18,3 +33,5 @@ def validate_registry(factories=PAGE_FACTORIES, tools=TOOLS):
     ready = {tool.id for tool in tools if tool.ready}
     if ready != set(factories):
         raise ValueError(f"Ready tools and registered pages differ: {ready ^ set(factories)}")
+    if not all(callable(factory) for factory in factories.values()):
+        raise ValueError("Page factories must be callable")

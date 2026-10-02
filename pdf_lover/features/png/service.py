@@ -21,6 +21,9 @@ def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress) -> Path:
         digits = max(3, len(str(document.page_count)))
         for index, page in enumerate(document, start=1):
             image = page.get_pixmap(dpi=dpi, alpha=False)
-            image.save(output_folder / f"{pdf_path.stem}_page_{index:0{digits}d}.png")
+            try:
+                image.save(output_folder / f"{pdf_path.stem}_page_{index:0{digits}d}.png")
+            finally:
+                del image
             progress(index, document.page_count)
     return output_folder

@@ -13,6 +13,18 @@ class ToolPage(ctk.CTkFrame, UIControls, ABC):
         self.font_body = app.font_body
         self.font_small = app.font_small
         self.font_bold = app.font_bold
+        self.page_visible = False
+
+    def set_active(self, active):
+        """Retain document/settings state, release preview resources on hidden pages."""
+        self.page_visible = active
+        def visit(widget):
+            if hasattr(widget, "set_preview_active"):
+                widget.set_preview_active(active)
+            for child in widget.winfo_children():
+                visit(child)
+        for child in self.winfo_children():
+            visit(child)
 
     @property
     def busy(self):

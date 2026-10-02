@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[2]
 class ArchitectureTests(unittest.TestCase):
     def test_ready_pages_implement_the_feature_contract(self):
         validate_registry()
-        for page in PAGE_FACTORIES.values():
+        for factory in PAGE_FACTORIES.values():
+            page = factory.load()
             self.assertTrue(issubclass(page, ToolPage))
             self.assertFalse(page.__abstractmethods__)
 
@@ -35,6 +36,14 @@ class ArchitectureTests(unittest.TestCase):
             "import pdf_lover.features.split.service; import pdf_lover.core.page_selection; "
             "import pdf_lover.features.extract.service; import pdf_lover.features.delete_pages.service; "
             "import pdf_lover.features.rotate.service; assert 'tkinter' not in sys.modules; assert 'customtkinter' not in sys.modules"],
+            cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_registry_validation_does_not_import_pages_or_pdf_backend(self):
+        result = subprocess.run([sys.executable, "-c",
+            "import sys; from pdf_lover.features.registry import validate_registry; "
+            "validate_registry(); assert 'pymupdf' not in sys.modules; "
+            "assert not any(m.endswith('.page') for m in sys.modules if m.startswith('pdf_lover.features.'))"],
             cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 

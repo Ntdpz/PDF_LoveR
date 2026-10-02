@@ -6,6 +6,7 @@ from pdf_lover.features.registry import PAGE_FACTORIES, validate_registry
 from pdf_lover.platform.file_drop import FileDrop
 from pdf_lover.ui.controls import UIControls
 from pdf_lover.ui.home import HomePage
+from pdf_lover.ui.pdf_previews import PreviewCoordinator
 from pdf_lover.ui.theme import COLORS as C
 from pdf_lover.version import VERSION
 
@@ -13,6 +14,7 @@ from pdf_lover.version import VERSION
 class App(UIControls):
     def __init__(self, root):
         self.root = root
+        self.preview_coordinator = PreviewCoordinator()
         self.busy = False
         self.route = "home"
         self.closed = False
@@ -42,6 +44,15 @@ class App(UIControls):
         self.event_timer = root.after(80, self.process_events)
 
     @property
+    def busy(self):
+        return self._busy
+
+    @busy.setter
+    def busy(self, value):
+        self._busy = value
+        self.preview_coordinator.paused = value
+
+    @property
     def active_page(self):
         return self.views.get(self.route)
 
@@ -64,7 +75,9 @@ class App(UIControls):
             self.active_status("กำลังทำงานอยู่ · รอให้เสร็จก่อนกลับไปเลือกเครื่องมือ")
             return False
         for view in self.views.values():
+            view.set_active(False)
             view.grid_remove()
+        self.preview_coordinator.stop()
         self.home.grid()
         self.route = "home"
         self.root.title(f"PDF LoveR {VERSION} · เครื่องมือ PDF")
@@ -84,11 +97,12 @@ class App(UIControls):
             self.home.close_detail()
         self.home.grid_remove()
         for key, view in self.views.items():
-            if key == tool_id:
-                view.grid(row=0, column=0, sticky="nsew")
-            else:
+            if key != tool_id:
+                view.set_active(False)
                 view.grid_remove()
         self.route = tool_id
+        self.active_page.grid(row=0, column=0, sticky="nsew")
+        self.active_page.set_active(True)
         self.root.title(tool.title + f" · PDF LoveR {VERSION}")
         self.active_page.add_button._canvas.focus_set()
         return True
@@ -124,13 +138,16 @@ class App(UIControls):
         self.event_timer = None
         if self.closed:
             return
-        for page in self.views.values():
-            page.process_events()
-        self.event_timer = self.root.after(80, self.process_events)
+        self.preview_coordinator.pump()
+        if self.active_page:
+            self.active_page.process_events()
+        delay = 80 if self.active_page or self.busy else 300
+        self.event_timer = self.root.after(delay, self.process_events)
 
     def _destroyed(self, event):
         if event.widget is self.root:
             self.closed = True
+            self.preview_coordinator.close()
             if self.event_timer is not None:
                 self.root.after_cancel(self.event_timer)
                 self.event_timer = None

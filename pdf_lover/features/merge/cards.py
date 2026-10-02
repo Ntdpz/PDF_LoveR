@@ -17,6 +17,7 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 
 from pdf_lover.features.merge.previews import PreviewWorker
+from pdf_lover.ui.pdf_previews import PreviewCache
 from pdf_lover.ui.theme import COLORS as C, FONTS, SPACE as S
 
 
@@ -24,7 +25,7 @@ class MergeCards(ctk.CTkFrame):
     GAP = 12
     HEIGHT = 180
     MIN_WIDTH = 176
-    MAX_PREVIEWS = 128
+    MAX_PREVIEWS = 48
     HINT = "ลากการ์ดเพื่อเรียง · ซ้ายไปขวา แล้วแถวถัดไป"
     LIFT_SECONDS = 0.12
     MARKER_SECONDS = 0.14
@@ -42,11 +43,13 @@ class MergeCards(ctk.CTkFrame):
                                            button_hover_color=C["muted"], width=14)
         self.scrollbar.grid(row=0, column=1, sticky="ns")
         self.canvas.configure(yscrollcommand=self._on_scroll)
-        self.cache = OrderedDict()
         self.photos = OrderedDict()
+        self.cache = PreviewCache(self.MAX_PREVIEWS, 16 * 1048576, lambda key: self.photos.pop(key, None))
         self.pending = set()
         self.preview_keys = {}
-        self.worker = PreviewWorker()
+        self.worker = PreviewWorker(page.app.preview_coordinator)
+        self.preview_active = False
+        self.worker.set_active(False)
         self.visible = {}
         self.columns = 1
         self.card_width = self.MIN_WIDTH
@@ -83,7 +86,6 @@ class MergeCards(ctk.CTkFrame):
         for key, step in (("Left", -1), ("Right", 1), ("Up", -self.columns), ("Down", self.columns)):
             self.canvas.bind(f"<{key}>", lambda event, name=key: self._keyboard(name))
         self.canvas.bind("<Delete>", self._delete_selected)
-        self.preview_timer = self.page.app.root.after(80, self._poll_previews)
 
     @staticmethod
     def _system_motion_enabled():
@@ -132,7 +134,7 @@ class MergeCards(ctk.CTkFrame):
         self._schedule_draw()
 
     def _schedule_draw(self):
-        if self.draw_timer is None:
+        if self.preview_active and self.draw_timer is None:
             self.draw_timer = self.page.app.root.after(12, self._draw_visible)
 
     def _on_scroll(self, start, end):
@@ -173,7 +175,7 @@ class MergeCards(ctk.CTkFrame):
 
     def _draw_visible(self):
         self.draw_timer = None
-        if not self.winfo_exists():
+        if not self.winfo_exists() or not self.preview_active:
             return
         self._update_scrollregion()
         top = self.canvas.canvasy(0)
@@ -182,7 +184,11 @@ class MergeCards(ctk.CTkFrame):
         last_row = min(math.ceil(len(self.page.files) / self.columns), int(bottom // self.step_y) + 2)
         self.canvas.delete("card")
         self.visible.clear()
-        for index in range(first_row * self.columns, min(last_row * self.columns, len(self.page.files))):
+        indexes = range(first_row * self.columns, min(last_row * self.columns, len(self.page.files)))
+        keys = [self._preview_key(self.page.files[index], submit=False) for index in indexes]
+        if self.worker.set_required(keys):
+            self.pending.clear()
+        for index in indexes:
             self._draw_card(index)
         self._raise_ghost()
 
@@ -227,7 +233,7 @@ class MergeCards(ctk.CTkFrame):
             stem = stem[:-1]
         return stem + "…" + suffix if stem else name[:4] + "…"
 
-    def _preview_key(self, path):
+    def _preview_key(self, path, submit=True):
         if path not in self.preview_keys:
             try:
                 stat = path.stat()
@@ -237,10 +243,10 @@ class MergeCards(ctk.CTkFrame):
             self.preview_keys[path] = key
         key = self.preview_keys[path]
         # An old thumbnail may have been evicted while the user scrolled away.
-        if key not in self.cache and key not in self.pending:
+        if submit and key not in self.cache and key not in self.pending:
             if self.worker.submit(key):
                 self.pending.add(key)
-            else:
+            elif self.worker.failed:
                 self.cache[key] = None
         return key
 
@@ -534,8 +540,11 @@ class MergeCards(ctk.CTkFrame):
         self._schedule_draw()
 
     def _poll_previews(self):
+        self.preview_timer = None
+        if not self.preview_active:
+            return
         if self.drag is None:
-            if self.pending and self.worker.process is not None and not self.worker.process.is_alive():
+            if self.pending and (self.worker.failed or self.worker.process is not None and not self.worker.process.is_alive()):
                 for key in self.pending:
                     self.cache[key] = None
                 self.pending.clear()
@@ -548,15 +557,35 @@ class MergeCards(ctk.CTkFrame):
                     key, payload = self.worker.get_nowait()
                     self.pending.discard(key)
                     self.cache[key] = Image.frombytes("RGB", payload[:2], payload[2]) if payload else None
-                    while len(self.cache) > self.MAX_PREVIEWS:
-                        old_key, _ = self.cache.popitem(last=False)
-                        self.photos.pop(old_key, None)
                     self._schedule_draw()
                     if time.perf_counter() >= deadline:
                         break
             except queue.Empty:
                 pass
+            if any(self.preview_keys.get(self.page.files[index]) not in self.cache for index in self.visible):
+                self._schedule_draw()
         self.preview_timer = self.page.app.root.after(80, self._poll_previews)
+
+    def set_preview_active(self, active):
+        if self.preview_active == active:
+            return
+        self.preview_active = active
+        self.worker.set_active(active)
+        self.pending.clear()
+        if active:
+            self.render()
+            self._poll_previews()
+        else:
+            self.cancel_drag()
+            for name in ("draw_timer", "preview_timer"):
+                timer = getattr(self, name)
+                if timer:
+                    self.page.app.root.after_cancel(timer)
+                    setattr(self, name, None)
+            self.canvas.delete("all")
+            self.visible.clear()
+            self.cache.clear()
+            self.photos.clear()
 
     def destroy(self):
         for timer in (self.frame_timer, self.draw_timer, self.scroll_timer, self.preview_timer):

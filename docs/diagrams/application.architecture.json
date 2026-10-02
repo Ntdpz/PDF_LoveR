@@ -42,7 +42,7 @@
       "id": "registry",
       "type": "backend",
       "label": "ทะเบียนฟีเจอร์",
-      "sublabel": "ToolPage + PAGE_FACTORIES",
+      "sublabel": "lazy import · ToolPage factory",
       "pos": [
         940,
         40
@@ -139,8 +139,8 @@
     {
       "id": "preview",
       "type": "backend",
-      "label": "กระบวนการภาพตัวอย่าง",
-      "sublabel": "spawn process · คิวจำกัดขนาด",
+      "label": "ภาพตัวอย่างร่วม",
+      "sublabel": "1 spawn · request ≤16 · result ≤4",
       "pos": [
         500,
         490
@@ -239,16 +239,16 @@
       "dot": "cyan",
       "title": "หน้าจอและเส้นทาง",
       "items": [
-        "Tk ทำงานบน main thread เท่านั้น",
-        "เปิดหน้าฟีเจอร์ครั้งแรกแล้วเก็บสถานะไว้"
+        "Tk บน main thread; import ฟีเจอร์เมื่อใช้",
+        "ซ่อนหน้า: คืนภาพ; เก็บเอกสาร/ค่าผู้ใช้"
       ]
     },
     {
       "dot": "emerald",
       "title": "การทำงานเบื้องหลัง",
       "items": [
-        "services + core/document/pdf_output ไม่พึ่ง Tk",
-        "worker ส่ง queue; preview อยู่ spawned process"
+        "services + core ไม่พึ่ง Tk; PNG คืนภาพทีละหน้า",
+        "App ดูแล preview ร่วม; home ปิด process"
       ]
     },
     {

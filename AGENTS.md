@@ -20,3 +20,13 @@
 - Run `python scripts/check.py`, then stage code, JSON, generated HTML, delivery receipts and manifest together. Before committing run `python scripts/update_diagrams.py --check --staged`.
 - Install the staged-content guard on a new checkout with `python scripts/install_hooks.py`. Preserve other hooks. This is a repository workflow hook, not an undocumented Codex event API.
 - Generated caches/build work can be cleaned with `python scripts/clean_workspace.py --apply`; inspect its dry run first. Keep `dist/`, `.build-tools/`, editable package metadata, original documents and verified documentation.
+
+## Low-spec PC review hook (required for every update)
+
+- Before any update, consider CPU 2 cores, RAM 4 GiB and HDD as the design target. Read `docs/PERFORMANCE_PLAN.md`; keep hardware assumptions distinct from measured support.
+- Review RAM/worker/cache/queue limits, CPU and Tk responsiveness, disk/startup cost, added dependencies, and output quality. Keep export concurrency at one by default, reuse the app's single preview coordinator, and release hidden preview resources while preserving user settings/documents.
+- Never load/render all pages in advance, add unbounded queues/caches, block Tk with PDF work, or silently reduce the user's DPI/quality to meet a budget. Preserve drag virtualization, worker cleanup and original/output-file safety.
+- For runtime/structural/test/dependency/packaging changes, run relevant resource and interaction checks before final acceptance. Record hardware, workloads, before/after results and limitations; CPU affinity tests do not certify a physical 4 GiB/HDD machine.
+- Maintain `docs/low-spec-review.json`: describe each impact category, reference passed JSON evidence with canonical SHA256, and bind `source_files` to the resulting source snapshot from `scripts.update_diagrams.snapshot()`. This is a reviewed record, not an automatic declaration of low-spec compatibility. Refresh it only after reviewing and checking the actual change.
+- `python scripts/check_low_spec.py` checks working evidence. Before committing, stage the review and its evidence together and run `python scripts/check_low_spec.py --staged`. The pre-commit hook checks both this record and diagram freshness against the staged index; it cannot prove human thought or untested hardware support.
+- Documentation-only changes outside the watched source may retain the current source review; still describe new requirements truthfully. AGENTS/architecture and code/packaging/test changes require renewed source review. Update the existing managed hook using `scripts/install_hooks.py`; preserve unrelated custom hooks.

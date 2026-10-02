@@ -14,7 +14,7 @@
       "id": "implement",
       "type": "backend",
       "label": "เพิ่มหรือแก้ฟีเจอร์",
-      "sublabel": "page · service · registry · catalog",
+      "sublabel": "page/service · เป้าหมาย PC 4 GiB",
       "pos": [
         60,
         40
@@ -28,7 +28,7 @@
       "id": "document",
       "type": "frontend",
       "label": "อัปเดตเอกสารและ JSON",
-      "sublabel": "ARCHITECTURE · Archify source",
+      "sublabel": "Archify + low-spec impact review",
       "pos": [
         500,
         40
@@ -56,7 +56,7 @@
       "id": "tests",
       "type": "security",
       "label": "ตรวจโค้ดและ freshness",
-      "sublabel": "scripts/check.py · pre-commit hook",
+      "sublabel": "check.py · staged evidence hook",
       "pos": [
         940,
         190
@@ -168,8 +168,8 @@
       "dot": "cyan",
       "title": "agent hook",
       "items": [
-        "JSON ต้องตรงกับ 6 ฟีเจอร์และ shared preview",
-        "ตรวจ code/JSON/HTML จาก staged index ก่อน commit"
+        "พิจารณา 2 คอร์ / 4 GiB / HDD ทุกครั้ง",
+        "review + code + หลักฐาน staged ต้องตรงกัน"
       ]
     },
     {

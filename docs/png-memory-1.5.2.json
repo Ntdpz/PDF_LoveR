@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "scope": "Windows headless fresh process per run, 3 synthetic text A4 pages at 600 DPI",
+  "baseline_commit": "fb51da245641bdf75086b3a5176a996224e2eff6",
+  "runs": [
+    {
+      "origin": "baseline",
+      "elapsed_seconds": 1.516,
+      "peak_working_set_mib": 241.31,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "current",
+      "elapsed_seconds": 1.502,
+      "peak_working_set_mib": 241.06,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "baseline",
+      "elapsed_seconds": 1.491,
+      "peak_working_set_mib": 241.22,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "current",
+      "elapsed_seconds": 1.559,
+      "peak_working_set_mib": 241.09,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "baseline",
+      "elapsed_seconds": 1.577,
+      "peak_working_set_mib": 241.3,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "current",
+      "elapsed_seconds": 1.609,
+      "peak_working_set_mib": 240.96,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "baseline",
+      "elapsed_seconds": 1.62,
+      "peak_working_set_mib": 241.29,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "current",
+      "elapsed_seconds": 1.586,
+      "peak_working_set_mib": 241.21,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "baseline",
+      "elapsed_seconds": 1.605,
+      "peak_working_set_mib": 241.3,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    },
+    {
+      "origin": "current",
+      "elapsed_seconds": 1.632,
+      "peak_working_set_mib": 241.22,
+      "png_sha256": [
+        "975950b848b98e68042139d1eada9fbd63c508f0c6cbaa4ef704e07425ca2d7c",
+        "47835553e45bdba77765a0f15c03745df07e0e4edbb530c66b4888571736f7ea",
+        "59922ae3af20c268ecf1b1e1802fecef648f44aeecf1fefea861303d8daa0226"
+      ]
+    }
+  ],
+  "median_peak_working_set_mib": {
+    "baseline": 241.3,
+    "current": 241.09
+  },
+  "output_png_hashes_identical": true,
+  "limitations": [
+    "Physical 4-GiB/HDD PC not tested",
+    "Not a large scan or huge-page workload",
+    "Peak working set includes engine/imports"
+  ]
+}

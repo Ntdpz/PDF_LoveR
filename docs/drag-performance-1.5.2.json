@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "cards": 100,
+  "burst_motion_events": 1000,
+  "burst_dispatch_ms": 29.18,
+  "render_frames": 120,
+  "mean_frame_ms": 1.48,
+  "max_frame_ms": 2.75,
+  "max_card_paints_per_frame": 3,
+  "max_heartbeat_gap_ms": 14.33,
+  "max_scroll_heartbeat_gap_ms": 18.75,
+  "checks": [
+    "single Canvas viewport",
+    "at most 30 visible cards",
+    "latest pointer wins",
+    "same drop position does not repaint",
+    "event loop heartbeat during drag and edge scrolling",
+    "quick release",
+    "preview pause/resume and worker recovery",
+    "no callback errors"
+  ]
+}

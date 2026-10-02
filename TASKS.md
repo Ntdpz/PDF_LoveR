@@ -174,7 +174,7 @@
 1. **ตัวเลือกช่วงหน้า + แยก PDF** — เสร็จใน 1.3.0
 2. **แยกหน้า + ลบหน้าออก** — เสร็จใน 1.4.0
 3. **หมุน PDF** — เสร็จใน 1.5.0
-4. **Optimize สำหรับ PC หลายระดับ** — [แผนและ baseline 1.5.1](docs/PERFORMANCE_PLAN.md): วัดก่อน–หลัง, ลด preview process/RAM, ลดงานบน Tk, คุม export และตรวจเครื่องสเปกต่ำ; ยังไม่ลงมือปรับโค้ด
+4. **Optimize สำหรับ PC หลายระดับ** — [แผนและผลชุดแรก 1.5.2](docs/PERFORMANCE_PLAN.md): preview ร่วม/คืน RAM หน้าที่ซ่อน/lazy import/low-spec hook พร้อมแล้ว; debounce, PNG peak, frozen benchmark และ PC สเปกต่ำจริงยังเหลือ
 5. **จัดระเบียบ PDF** — นำประสบการณ์การ์ดเดิมมาใช้กับหน้าภายในเอกสาร
 6. **JPG เป็น PDF + PDF เป็น JPG** — เติม workflow รูปภาพให้ครบสองทิศทาง
 
@@ -209,3 +209,12 @@ PagePreview แสดงก่อน–หลังผ่าน spawned process;
 พบว่าเปิดครบ 6 เครื่องมือแล้วกลับหน้าแรกยังมี preview process 6 ตัว และ Private memory รวมประมาณ 316 MiB ใน fixture ข้อความ 240 หน้า
 ค่าที่วัดบนเครื่องพัฒนาเป็น baseline สำรวจครั้งเดียว ยังไม่ถือว่าปรับประสิทธิภาพสำเร็จหรือรองรับ PC 4 GB ผ่านแล้ว
 งานวัดประสิทธิภาพใน checklist ยังไม่ปิด; version และจำนวนเครื่องมือคงเดิม
+
+## Optimize ชุดแรก · 1.5.2
+
+เหลือ spawned preview หนึ่ง process ขณะใช้เครื่องมือ และปิดเมื่อกลับ home; คิว/สำเนาภาพมีงบจำกัด
+คืน cache/timer ของหน้าที่ซ่อนโดยเก็บเอกสาร/ค่าที่เลือก; poll เฉพาะหน้าปัจจุบันและ lazy import factories
+วัด 5 รอบ: Private memory หลังกลับ home ลดจากค่ากลาง 321.62 เป็น 69.75 MiB (ประมาณ 78%)
+PNG คืน Pixmap ก่อน render หน้าถัดไปและผลภาพตรงเดิม แต่ peak ที่ 600 DPI ยังประมาณ 241 MiB จึงยังไม่ปิดงาน PNG peak budget
+AGENTS/managed pre-commit hook ตรวจ low-spec impact review ที่ผูกกับ code และหลักฐานใน staged index
+จำนวนเครื่องมือยัง 6/34; PC 4 GiB/HDD จริง, Windows 11, cold-start และเอกสารสแกนใหญ่ยังไม่ได้รับรอง

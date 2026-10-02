@@ -92,12 +92,28 @@ The registry validates that ready catalogue IDs exactly match executable pages.
 
 ## Work and lifecycle
 
-The main thread owns Tk. Feature workers send queue events; the shell polls all
-pages every 80 ms. The shared busy state prevents simultaneous tools from
+The main thread owns Tk. Feature workers send queue events; the shell polls
+the active page every 80 ms; home polling backs off to 300 ms. The shared busy state prevents simultaneous tools from
 processing or altering queues. Closing during processing leaves the application
 open until completion. Root destruction cancels the shell's poll timer; native
 drop callbacks cancel their deferred work; card destruction closes its preview
 process and timers.
+
+`App.preview_coordinator` owns a single lazily spawned renderer for all widgets.
+ToolPage.set_active dispatches preview visibility to nested controls; hiding a
+page releases images/pending requests and the merge preview timer while retaining
+documents/settings. Home stops the renderer immediately; root destruction closes
+it. PreviewWorker facades use client generations/required keys; the broker drops
+stale replies and bounds requests to 16/results to 4. Busy pauses new submissions;
+already queued bounded work may finish. Only the main thread creates Tk images.
+
+PreviewCache limits entries and estimated raw/PIL/Tk copies: merge 48 entries/16 MiB,
+selector 32/6 MiB, comparison 12/6 MiB. Hidden caches are empty. Fourfold pixel
+accounting is an estimate, not an exact allocator/scaling guarantee; resource
+benchmarks also measure Windows Private Bytes. Files reopen per preview request;
+document/DisplayList caching remains planned. Registry factories import the page
+module when used and verify its ToolPage contract on load. PNG releases each
+full-page Pixmap in finally before rendering the next page.
 
 Merge cards use one Canvas and draw only rows near the viewport. Pointer input
 is coalesced to 16 ms frames. Thumbnail UI updates pause during dragging and
@@ -120,9 +136,9 @@ See [Contributing](../CONTRIBUTING.md) for the extension procedure and
 reversed or overlapping groups and out-of-bounds pages. Each comma item is a group.
 `ui/page_selector.py` consumes this model without importing any feature. It offers
 all/none, editable ranges and four selectable page thumbnails per view. Its bounded
-32-entry cache and at most four pending requests use `ui/pdf_previews.py`; the old
+32-entry/6-MiB estimated cache and at most four pending requests use `ui/pdf_previews.py`; the old
 merge import remains a compatibility facade. The shell polls both selectors and
-feature queues, and widget destruction closes the child process.
+active feature queue. Widget destruction unregisters its client; App owns child cleanup.
 
 Split loads document metadata in a worker with the shared busy guard. The page
 builds a frozen `SplitPlan` and shows groups, page counts and generated filenames
@@ -177,7 +193,7 @@ document in memory retains forms, annotations, links, bookmarks and attachments.
 The RotatePage owns batch inputs, each document's expression, queues and controls.
 `ui/page_preview.py` provides bounded before/after images for a navigable page, using
 the same spawned renderer with an optional relative rotation and fit dimensions.
-There are at most two pending comparison requests and 12 cached images. Empty
+There are at most two pending comparison requests and 12 cached images (also bounded by a 6-MiB copy estimate). Empty
 images stay alive to avoid CustomTkinter's image=None Tk lifetime issue. Existing
 merge/selector request keys and dimensions retain their original behavior.
 The filename dialog shows at most 25 rows and closes when settings change.
@@ -199,3 +215,12 @@ and the cumulative angle applies to the selected pages across the batch.
 Toolbar commands support mouse and Enter/Space through shared UIControls.
 They are disabled during inspection/export; tooltip timers/windows close on
 leave, focus loss, processing and widget destruction. PDF services are unchanged.
+
+## Low-spec review guard
+
+AGENTS requires consideration of 2-core/4-GiB/HDD PCs for every update. The managed
+pre-commit hook runs diagram freshness plus `scripts/check_low_spec.py --staged`.
+`docs/low-spec-review.json` records memory, CPU/UI, disk/startup, dependencies and
+quality impact, a complete source snapshot and hashes of passed JSON evidence.
+The checker rejects stale/missing/partially staged evidence. It proves that reviewed
+source/evidence match; physical low-spec support awaits tests on that hardware.

@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+LEGACY = b'#!/bin/sh\n# Check the staged source and staged evidence, not unstaged working files.\nexec python scripts/update_diagrams.py --check --staged\n'
 
 
 def main():
@@ -12,7 +13,7 @@ def main():
         hook_dir = ROOT / hook_dir
     target = hook_dir / "pre-commit"
     source = (ROOT / ".githooks/pre-commit").read_bytes()
-    if target.exists() and target.read_bytes() != source:
+    if target.exists() and target.read_bytes().replace(b'\r\n', b'\n') not in (source.replace(b'\r\n', b'\n'), LEGACY):
         raise SystemExit(f"Existing hook preserved: {target}. Add the command from .githooks/pre-commit manually.")
     hook_dir.mkdir(parents=True, exist_ok=True)
     target.write_bytes(source)

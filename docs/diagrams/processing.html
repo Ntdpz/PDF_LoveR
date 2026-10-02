@@ -5221,8 +5221,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="580.8" y="131" class="t-muted" font-size="8" text-anchor="middle">busy = True · ล็อก controls</text>
         </g>
 
-        <g id="node-events" data-node-id="events" data-node-label="อ่าน event queue" tabindex="0" role="button" aria-label="Focus อ่าน event queue, App ทุก 80 ms · ครั้งละ ≤100, หน้าจอ · main thread" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="App ทุก 80 ms · ครั้งละ ≤100" data-node-context="หน้าจอ · main thread">
-          <title>อ่าน event queue · App ทุก 80 ms · ครั้งละ ≤100 · หน้าจอ · main thread</title>
+        <g id="node-events" data-node-id="events" data-node-label="อ่าน event queue" tabindex="0" role="button" aria-label="Focus อ่าน event queue, หน้าปัจจุบัน · 80/300 ms, หน้าจอ · main thread" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="หน้าปัจจุบัน · 80/300 ms" data-node-context="หน้าจอ · main thread">
+          <title>อ่าน event queue · หน้าปัจจุบัน · 80/300 ms · หน้าจอ · main thread</title>
           <rect x="712.4" y="93" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="712.4" y="93" width="160" height="52" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(718.4 99) scale(0.6875)">
@@ -5232,7 +5232,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="792.4" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">อ่าน event queue</text>
-          <text data-detail="context" x="792.4" y="131" class="t-muted" font-size="8" text-anchor="middle">App ทุก 80 ms · ครั้งละ ≤100</text>
+          <text data-detail="context" x="792.4" y="131" class="t-muted" font-size="8" text-anchor="middle">หน้าปัจจุบัน · 80/300 ms</text>
         </g>
 
         <g id="node-restore" data-node-id="restore" data-node-label="พร้อมใช้งานต่อ" tabindex="0" role="button" aria-label="Focus พร้อมใช้งานต่อ, แสดงผล · ปลด busy · เปิดผลลัพธ์, หน้าจอ · main thread" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="แสดงผล · ปลด busy · เปิดผลลัพธ์" data-node-context="หน้าจอ · main thread">
@@ -5576,8 +5576,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>จบงานและปิดโปรแกรม</h3>
         </div>
         <ul>
-          <li>&bull; PNG ทำไฟล์ถัดไป; เลือกหน้าแจ้งไฟล์ที่คืนไม่ได้</li>
-          <li>&bull; รอ busy ก่อนปิด; destroy ปิด preview process</li>
+          <li>&bull; busy พักคำขอภาพใหม่; จบงานคืน controls</li>
+          <li>&bull; home/destroy ปิด preview; ทิ้งภาพเก่า</li>
         </ul>
       </div>
     </div>
