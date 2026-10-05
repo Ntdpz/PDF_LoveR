@@ -2,12 +2,12 @@
   "ok": true,
   "type": "architecture",
   "specification": {
-    "sha256": "745b9f1ecbd472ad02097530b793a69d0b986fb024d0290debd1b5ea3ead3ad3",
+    "sha256": "119d7fe5621e358641edbeb16a82b287057e8fb6d5f2cff638b4d26831017937",
     "bytes": 4302,
     "path": "docs/diagrams/maintenance.architecture.json"
   },
   "artifact": {
-    "sha256": "20c6e88bc8eb59c6e7f8a33b37337a492c275b2576caa5559da03580113ed0ef",
+    "sha256": "90d0e083477d02a439f2c6efd56a724e45e42ea6c41fbaeb1de390454b17e628",
     "bytes": 806696,
     "path": "docs/diagrams/maintenance.html"
   },

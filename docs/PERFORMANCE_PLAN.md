@@ -206,3 +206,15 @@ loader ร่วมใช้ Canvas 3 ชิ้นและข้อความ
 [ตรวจวงจรงาน](activity-verification-1.8.1.json) ทุก 6 เครื่องมือ เปิด/บันทึก/ผิดพลาด
 มีการหน่วง worker เพื่อจำลอง I/O ก่อนประมวลผลจริง ทดสอบที่ 100%/125%
 ยังไม่ใช่การรับรองเครื่อง 2-core/4-GiB/HDD จริง
+
+## เลือกหน้าแปลงภาพ · 1.9.0
+
+เปิดตัวเลือกหน้าเฉพาะเมื่อกดต่อไฟล์ ใช้ PageSelector/coordinator เดิมหนึ่ง process
+viewport ≤24, requests ≤16, cache 32/6 MiB โดยประมาณ; ปิด dialog คืน client/cache/timer
+อ่าน metadata แบบ worker ที่ใช้ busy และ event queue ≤32 เดิม Export ยังคงทีละหน้า
+เลือกหน้าไม่เปลี่ยน DPI/codec/pixels ไม่เพิ่ม dependency
+[ก่อน](performance-before-1.9.0.json) / [หลัง](performance-after-1.9.0.json):
+240 หน้าสังเคราะห์ source app สอง fresh runs ต่อแบบ; home idle median 64.715 → 65.405 MiB
+อยู่ระดับใกล้เคียงกัน ไม่อ้างการลด RAM; baseline ไม่เปิด dialog และไม่วัด peak export
+[Native selection](image-selection-verification-1.9.0.json) ตรวจ dialog 1,000 หน้า
+และการคืน preview บนเครื่องพัฒนา ยังไม่ใช่การรับรอง physical 2-core/4-GiB/HDD

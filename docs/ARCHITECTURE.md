@@ -69,6 +69,7 @@ flowchart TD
   Selector --> Selection[core/page_selection]
   SplitEngine --> Selection
   Selector --> Preview
+  PNG --> Selector
   PNG --> PNGEngine[Image service]
   Merge --> MergeEngine[Merge service]
   Merge --> Cards[Virtualized cards]
@@ -304,3 +305,26 @@ preference disables ring motion while keeping running text and elapsed time. No
 percentage is invented and PDF engines, queues, quality and preview budgets are unchanged.
 Native tests exercise real inspection/export with bounded simulated I/O waits, all
 six tools, error recovery, elapsed time, idle/hidden stop and 100%/125% layout.
+
+## Per-document image selection · 1.9.0
+
+PngPage retains a committed DocumentInfo/expression per opted-in PDF. Default batch
+inputs remain all-pages and preserve existing mixed-success/error behavior. A row
+button asynchronously inspects one PDF using the shared busy lock and existing bounded
+32-event queue, then opens a modal ImagePageSelection with the shared PageSelector.
+The shell poll reads its previews; no additional poll or preview process is created.
+Ranges, thumbnail gestures and All use the same ascending parser. Apply commits a
+canonical expression, while closing cancels draft edits. Navigation, start, removal
+and destruction close the dialog and unregister its preview client/cache/timers.
+The dialog blocks starting until the choice is applied or dismissed.
+
+The main thread snapshots committed selections before the batch worker starts.
+convert_pdf accepts explicit one-based pages and an optional inspection snapshot,
+checks the source signature/count and validates ascending bounds before creating
+an output folder. It renders only selected pages one at a time, keeps original
+page numbers in filenames, streams only completed image CSV rows and reports
+completed/selected progress. DPI/codec/pixel settings and warnings are unchanged.
+A changed source or invalid selection fails that document; the batch continues.
+Defaults retain the existing all-page iterator and PNG output behavior. Native
+checks cover 1,000-page bounded previews, per-file retention/cancel, error recovery,
+source hashes, actual selected PNG pixels and 100%/125% layout.

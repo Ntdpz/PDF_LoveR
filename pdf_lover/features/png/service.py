@@ -5,6 +5,7 @@ import math
 from pathlib import Path
 import pymupdf
 from PIL import Image, features
+from pdf_lover.core.document import signature
 
 FORMATS = {"PNG": "png", "JPG": "jpg", "WebP": "webp", "TIFF": "tiff"}
 MAX_PIXELS = 40_000_000
@@ -59,23 +60,40 @@ def available_folder(parent: Path, name: str) -> Path:
 
 
 def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
-                options: ImageOptions | None = None, warning=None) -> Path:
+                options: ImageOptions | None = None, warning=None, *, pages=None, info=None) -> Path:
     options = options or ImageOptions()
     options.validate()
     if type(dpi) is not int or not 36 <= dpi <= 600:
         raise ValueError("DPI ไม่ถูกต้อง · ใส่จำนวนเต็มระหว่าง 36 ถึง 600")
+    if info is not None and (Path(pdf_path).resolve() != info.path or signature(pdf_path) != info.signature):
+        raise ValueError("ไฟล์เปลี่ยนหลังเลือกหน้า · เลือกหน้าใหม่ก่อนแปลง")
     with pymupdf.open(pdf_path) as document:
         if document.needs_pass:
             raise ValueError("PDF มีรหัสผ่าน · กรุณาปลดล็อกก่อนแปลง")
         if document.page_count == 0:
             raise ValueError("PDF ไม่มีหน้า")
+        if not document.is_pdf:
+            raise ValueError("ไฟล์นี้ไม่ใช่ PDF")
+        if info is not None and document.page_count != info.page_count:
+            raise ValueError("จำนวนหน้าเปลี่ยน · เลือกหน้าใหม่ก่อนแปลง")
+        selected = range(1, document.page_count + 1) if pages is None else tuple(pages)
+        previous = 0
+        for number in selected:
+            if type(number) is not int or not previous < number <= document.page_count:
+                raise ValueError("หน้าที่เลือกต้องเรียงจากน้อยไปมาก ไม่ซ้ำ และอยู่ใน PDF")
+            previous = number
+        if not selected:
+            raise ValueError("เลือกอย่างน้อยหนึ่งหน้า")
+        if info is not None and signature(pdf_path) != info.signature:
+            raise ValueError("ไฟล์เปลี่ยนหลังเลือกหน้า · เลือกหน้าใหม่ก่อนแปลง")
         output_folder = available_folder(output_root, pdf_path.stem)
         digits = max(3, len(str(document.page_count)))
         # Stream rows instead of retaining all results in RAM.
         with (output_folder / "image_report.csv").open("x", newline="", encoding="utf-8-sig") as report:
             writer = csv.writer(report)
             writer.writerow(("file", "width_px", "height_px", "bytes", "limit_bytes", "over_limit"))
-            for index, page in enumerate(document, start=1):
+            source_pages = enumerate(document, start=1) if pages is None else ((n, document[n - 1]) for n in selected)
+            for done, (index, page) in enumerate(source_pages, start=1):
                 size = pixel_dimensions(page, dpi, options)
                 if options.width is not None or options.height is not None:
                     scale = max(size[0] / page.rect.width, size[1] / page.rect.height)
@@ -115,5 +133,5 @@ def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
                 writer.writerow((path.name, *actual_size, byte_count, options.max_bytes or "", over))
                 if over and warning:
                     warning(path, byte_count, options.max_bytes)
-                progress(index, document.page_count)
+                progress(done, len(selected))
     return output_folder

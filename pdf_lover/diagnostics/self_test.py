@@ -63,7 +63,8 @@ def run(root, app_class, report):
             from pdf_lover.features.png.service import convert_pdf, ImageOptions, FORMATS
             for file_type, extension in FORMATS.items():
                 image_folder = convert_pdf(source, folder / "images", 150, lambda *_: None,
-                                           ImageOptions(file_type=file_type, width=200))
+                                           ImageOptions(file_type=file_type, width=200), pages=(2,))
+                assert [p.name for p in image_folder.glob("*." + extension)] == [source.stem + "_page_002." + extension]
                 with Image.open(next(image_folder.glob("*." + extension))) as image:
                     assert image.size == (200, 100), (file_type, image.size)
             second = folder / "เอกสารแรก.pdf"

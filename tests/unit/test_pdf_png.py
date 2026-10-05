@@ -33,6 +33,44 @@ class PngTests(unittest.TestCase):
             self.assertEqual(images[0].read_bytes(), before)
             self.assertEqual(hashlib.sha256(source.read_bytes()).digest(), original)
 
+    def test_selected_pages_keep_original_names_pixels_and_progress(self):
+        from pdf_lover.core.document import inspect_document
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory);source = root / "selected.pdf"
+            with pymupdf.open() as doc:
+                for index in range(5):
+                    page=doc.new_page(width=144,height=72)
+                    page.insert_text((10,30),str(index+1))
+                doc.save(source)
+            original=source.read_bytes();info=inspect_document(source)
+            for codec,extension in FORMATS.items():
+                progress=[]
+                output=convert_pdf(source,root,150,lambda *v:progress.append(v),ImageOptions(codec),pages=(2,5),info=info)
+                self.assertEqual([p.name for p in sorted(output.glob('*.'+extension))],['selected_page_002.'+extension,'selected_page_005.'+extension])
+                self.assertEqual(progress,[(1,2),(2,2)])
+                with pymupdf.open(source) as doc:
+                    for n in (2,5):
+                        with Image.open(output/f'selected_page_{n:03}.{extension}') as image:
+                            self.assertEqual(image.size,(300,150))
+                            if codec!='JPG':self.assertEqual(image.convert('RGB').tobytes(),doc[n-1].get_pixmap(dpi=150,alpha=False).samples)
+            self.assertEqual(source.read_bytes(),original)
+
+    def test_invalid_selection_and_changed_source_create_no_folder(self):
+        from pdf_lover.core.document import inspect_document
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);source=root/'range.pdf'
+            with pymupdf.open() as doc:
+                doc.new_page();doc.new_page();doc.save(source)
+            for pages in ((),(0,),(3,),(2,1),(1,1),(True,),('1',)):
+                with self.subTest(pages=pages), self.assertRaises(ValueError):
+                    convert_pdf(source,root,72,lambda *_:None,pages=pages)
+                self.assertFalse((root/'range').exists())
+            info=inspect_document(source)
+            source.write_bytes(source.read_bytes()+b'\n')
+            with self.assertRaisesRegex(ValueError,'ไฟล์เปลี่ยน'):
+                convert_pdf(source,root,72,lambda *_:None,pages=(1,),info=info)
+            self.assertFalse((root/'range').exists())
+
     def test_corrupt_source_does_not_create_an_output_folder(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

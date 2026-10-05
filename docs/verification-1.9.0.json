@@ -1,0 +1,10 @@
+{
+  "version": "1.9.0",
+  "passed": true,
+  "command": "python scripts/check.py",
+  "exit_code": 0,
+  "unit_tests": 85,
+  "native_ui_suites": 16,
+  "log_canonical_sha256": "a409c8c5a6cc99b96ec9265fc17e1c69732c01810fd606031494cf4f0a2b4919",
+  "scope": "Sequential Windows development-host source checks; no physical low-spec certification"
+}

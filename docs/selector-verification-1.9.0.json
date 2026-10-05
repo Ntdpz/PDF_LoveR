@@ -1,0 +1,38 @@
+{
+  "version": "1.9.0",
+  "passed": true,
+  "layout": "responsive vertical viewport grid",
+  "eight_pages_in_two_rows": true,
+  "vertical_mouse_wheel": true,
+  "keyboard_navigation_and_selection": true,
+  "global_save_shortcut_preserved": true,
+  "all_four_page_tools": true,
+  "native_states": [
+    "default",
+    "hover",
+    "focus",
+    "pressed",
+    "disabled",
+    "loading",
+    "error",
+    "selected"
+  ],
+  "document_pages": 1000,
+  "visible_card_limit": 24,
+  "shared_request_limit": 16,
+  "cache_limit": 32,
+  "cache_bytes": 6291456,
+  "latest_pixels_match": true,
+  "retained_scroll_and_selection": true,
+  "source_unchanged": true,
+  "scaling": [
+    1,
+    1.25
+  ],
+  "minimum_window": [
+    920,
+    700
+  ],
+  "tk_errors": [],
+  "cleanup": true
+}

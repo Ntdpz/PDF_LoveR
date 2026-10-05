@@ -11,6 +11,8 @@ import customtkinter as ctk
 from pdf_lover.features.base import ToolPage
 from pdf_lover.features.png.service import convert_pdf, ImageOptions, FORMATS
 from pdf_lover.platform.paths import documents_folder
+from pdf_lover.core.document import inspect_document
+from pdf_lover.core.page_selection import selected_pages
 from pdf_lover.ui.icons import document_icon
 from pdf_lover.ui.theme import COLORS as C, FONTS, RADIUS, SPACE as S
 
@@ -19,6 +21,9 @@ class PngPage(ToolPage):
     def __init__(self, parent, app):
         super().__init__(parent, app)
         self.files: list[Path] = []
+        self.selections = {}
+        self.selection_window = None
+        self.selection_buttons = {}
         self.events: queue.Queue[tuple] = queue.Queue(maxsize=32)
         self.output = tk.StringVar(value=str(documents_folder()))
         self.dpi = tk.StringVar(value="150")
@@ -197,7 +202,7 @@ class PngPage(ToolPage):
             scale = ctk.ScalingTracker.get_widget_scaling(self.root)
             self.status_label.configure(wraplength=max(260, event.width / scale - 420))
             for path, label in self.filename_labels.items():
-                label.configure(text=self.fit_filename(path.name, max(140, event.width / scale - 660)))
+                label.configure(text=self.fit_filename(path.name, max(90, event.width / scale - 760)))
 
     def update_quality(self, *_):
         hints = {"72": "72 DPI · ไฟล์เล็ก เหมาะสำหรับดูบนหน้าจอ",
@@ -246,6 +251,7 @@ class PngPage(ToolPage):
         for widget in self.file_area.winfo_children():
             widget.destroy()
         self.row_status.clear()
+        self.selection_buttons.clear()
         self.filename_labels.clear()
         self.count_label.configure(text=f"รายการ PDF  ·  {len(self.files)} ไฟล์" if self.files else "รายการ PDF")
         self.clear_button.configure(state="normal" if self.files and not self.busy else "disabled")
@@ -277,17 +283,27 @@ class PngPage(ToolPage):
             row.grid_columnconfigure(1, weight=1)
             self.label(row, "", image=self.small_icon, width=40).grid(row=0, column=0, rowspan=2, padx=(S["sm"], S["sm"]), pady=S["sm"])
             scale = ctk.ScalingTracker.get_widget_scaling(self.root)
-            name_label = self.label(row, self.fit_filename(path.name, max(140, self.root.winfo_width() / scale - 660)), font=self.font_bold)
+            name_label = self.label(row, self.fit_filename(path.name, max(90, self.root.winfo_width() / scale - 760)), font=self.font_bold)
             name_label.grid(row=0, column=1, sticky="w", pady=(S["md"], 0))
             self.filename_labels[path] = name_label
+            if path in self.selections:
+                info, expression = self.selections[path]
+                detail = "หน้า " + self.shorten(expression, 18)
+            else:
+                detail += " · ทุกหน้า"
             self.label(row, detail, color="muted", font=self.font_small).grid(row=1, column=1, sticky="w", pady=(0, S["md"]))
             status = self.label(row, self.file_states.get(path, "รอแปลง"), color="muted", font=self.font_small)
-            status.grid(row=0, column=2, rowspan=2, padx=S["sm"])
+            status.grid(row=0, column=3, rowspan=2, padx=S["sm"])
             self.row_status[path] = status
             remove = self.button(row, "×", lambda p=path: self.remove_file(p), width=44)
-            remove.grid(row=0, column=3, rowspan=2, padx=(0, S["sm"]))
+            remove.grid(row=0, column=4, rowspan=2, padx=(0, S["sm"]))
+            select = self.button(row, "เลือกหน้า", lambda p=path: self.choose_pages(p), width=88)
+            select.configure(font=self.font_small)
+            select.grid(row=0, column=2, rowspan=2, padx=S["xs"])
+            self.selection_buttons[path] = select
             if self.busy:
                 remove.configure(state="disabled")
+                select.configure(state="disabled")
         self.total_label.configure(text=f"{len(self.files)} ไฟล์  ·  รวม {total_size / 1024 / 1024:.2f} MB")
         self.name_example.configure(text=self.shorten(self.files[0].stem + "_page_001." + FORMATS[self.file_type.get()], 34))
 
@@ -300,6 +316,7 @@ class PngPage(ToolPage):
     def add_paths(self, paths):
         if self.busy:
             return
+        self.close_selection()
         known = {os.path.normcase(str(path.resolve())) for path in self.files}
         for name in paths:
             path = Path(name).resolve()
@@ -312,6 +329,8 @@ class PngPage(ToolPage):
 
     def remove_file(self, path):
         if not self.busy and path in self.files:
+            self.close_selection()
+            self.selections.pop(path, None)
             self.files.remove(path)
             self.file_states.pop(path, None)
             self._render_files()
@@ -319,12 +338,16 @@ class PngPage(ToolPage):
 
     def clear_files(self):
         if not self.busy:
+            self.close_selection()
+            self.selections.clear()
             self.files.clear()
             self.file_states.clear()
             self._render_files()
             self._queue_changed()
 
     def _queue_changed(self):
+        self.destination = None
+        self.open_button.configure(state="disabled")
         self.progress.set(0)
         self.percent_label.configure(text="0%")
         self.errors = []
@@ -334,6 +357,45 @@ class PngPage(ToolPage):
         self.start_button.configure(text="เริ่มแปลงเป็นภาพ")
         self.activity_title.configure(text="พร้อมแปลงเป็นภาพ" if self.files else "พร้อมเริ่มเมื่อคุณเลือกไฟล์", text_color=C["ink"])
         self.status.set(f"เลือกแล้ว {len(self.files)} ไฟล์ · ตั้งค่าปลายทางแล้วเริ่มแปลง" if self.files else "เลือกไฟล์ PDF แล้วเริ่มแปลงได้เลย")
+
+    def choose_pages(self, path):
+        if self.busy or path not in self.files:
+            return
+        self.close_selection()
+        self.busy = True
+        for control in self.controls:
+            control.configure(state="disabled")
+        self.start_button.configure(state="disabled")
+        self.open_button.configure(state="disabled")
+        self._render_files()
+        self.status.set("กำลังอ่านจำนวนหน้า PDF…")
+        threading.Thread(target=self._inspect_selection, args=(path,), daemon=True).start()
+
+    def _inspect_selection(self, path):
+        try:
+            self.events.put(("selection_loaded", inspect_document(path)))
+        except Exception as error:
+            self.events.put(("selection_error", str(error)))
+
+    def _open_selection(self, info):
+        from pdf_lover.features.png.selection import ImagePageSelection
+        previous = self.selections.get(info.path)
+        expression = previous[1] if previous and previous[0].signature == info.signature else None
+        self.selection_window = ImagePageSelection(self, info, expression)
+
+    def close_selection(self):
+        window, self.selection_window = self.selection_window, None
+        if window is not None:
+            window.destroy()
+
+    def set_active(self, active):
+        if not active:
+            self.close_selection()
+        super().set_active(active)
+
+    def destroy(self):
+        self.close_selection()
+        super().destroy()
 
     def choose_output(self):
         if self.busy:
@@ -356,6 +418,9 @@ class PngPage(ToolPage):
             return
         if self.app.route != "pdf-png":
             self.app.show_tool("pdf-png")
+        if self.selection_window is not None:
+            self.validation_error("ยืนยันหน้าที่เลือก หรือปิดหน้าต่างเลือกหน้าก่อนเริ่มแปลง")
+            return
         if not self.files:
             self.validation_error("ยังไม่มี PDF · กดเพิ่ม PDF เพื่อเลือกอย่างน้อย 1 ไฟล์")
             return
@@ -380,6 +445,8 @@ class PngPage(ToolPage):
         except OSError as error:
             self.validation_error(f"เปิดโฟลเดอร์ไม่ได้ · {error}", self.output_entry)
             return
+        selections = dict(self.selections)
+        self.close_selection()
         self.busy = True
         self.errors = []
         self.warnings = []
@@ -397,16 +464,20 @@ class PngPage(ToolPage):
         self.status.set("กำลังเปิด PDF · โปรแกรมยังทำงานต่อได้ตามปกติ")
         self.output_entry.configure(border_color=C["rule"])
         self.dpi_box.configure(border_color=C["rule"])
-        threading.Thread(target=self.convert_all, args=(list(self.files), output_root, dpi, options), daemon=True).start()
+        threading.Thread(target=self.convert_all, args=(list(self.files), output_root, dpi, options, selections), daemon=True).start()
 
-    def convert_all(self, files, output_root, dpi, options):
+    def convert_all(self, files, output_root, dpi, options, selections=None):
         errors = []
         for number, pdf_path in enumerate(files, start=1):
             self.events.put(("file_start", pdf_path))
             try:
+                selected = (selections or {}).get(pdf_path)
+                info, expression = selected if selected else (None, None)
+                pages = selected_pages(expression, info.page_count) if info else None
                 convert_pdf(pdf_path, output_root, dpi,
                             lambda page, total, n=number, p=pdf_path: self.events.put(("progress", n, len(files), p, page, total)),
-                            options=options, warning=lambda path, size, limit: self.events.put(("warning", path, size, limit)))
+                            options=options, warning=lambda path, size, limit: self.events.put(("warning", path, size, limit)),
+                            pages=pages, info=info)
                 self.events.put(("file_done", number, len(files), pdf_path, None))
             except Exception as error:
                 errors.append(f"{pdf_path.name}: {error}")
@@ -424,11 +495,25 @@ class PngPage(ToolPage):
         self.percent_label.configure(text=f"{value:.0%}")
 
     def process_events(self):
+        if self.selection_window is not None:
+            self.selection_window.selector.process_events()
         try:
             # Bound each batch so long documents cannot starve the UI event loop.
             for _ in range(100):
                 event = self.events.get_nowait()
-                if event[0] == "file_start":
+                if event[0] in ("selection_loaded", "selection_error"):
+                    self.busy = False
+                    for control in self.controls:
+                        control.configure(state="normal")
+                    self.start_button.configure(state="normal")
+                    self.update_image_settings()
+                    self._render_files()
+                    if event[0] == "selection_loaded":
+                        self._open_selection(event[1])
+                        self.status.set("เลือกหน้าต่อเอกสาร · กดยืนยัน หรือปิดเพื่อยกเลิก")
+                    else:
+                        self.validation_error(event[1])
+                elif event[0] == "file_start":
                     self.set_row_status(event[1], "กำลังเปิด…", "accent")
                 elif event[0] == "progress":
                     _, number, count, path, page, pages = event
@@ -452,6 +537,7 @@ class PngPage(ToolPage):
                     self.start_button.configure(state="normal", text="แปลงอีกครั้ง", fg_color=C["accent"], border_color=C["accent"])
                     self.open_button.configure(state="normal")
                     self.update_image_settings()
+                    self._render_files()
                     self.activity_title.configure(text=f"แปลงสำเร็จ {succeeded} ไฟล์" + (f" · มีปัญหา {len(self.errors)} ไฟล์" if self.errors else " · พร้อมใช้งาน"),
                                                   text_color=C["error"] if self.errors else C["success"])
                     self.status.set("บันทึกแล้ว · เปิดโฟลเดอร์ผลลัพธ์เพื่อดูภาพ" if not self.errors else "บางไฟล์แปลงไม่ได้ · กดดูข้อผิดพลาดเพื่อตรวจสอบ")

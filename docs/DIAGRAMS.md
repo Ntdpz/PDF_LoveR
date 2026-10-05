@@ -95,3 +95,8 @@ PNG/WebP/TIFF เป็น Lossless; JPG เป็น Lossy; ภาพเกิ�
 App.busy controls its lifecycle; the existing 80-ms shell poll advances it.
 Idle/hidden badges do no animation work; Windows reduced motion retains static status.
 No additional worker/timer or export quality change.
+
+1.9.0 reuses PageSelector for the image tool's per-document modal dialog. Async
+inspection and export use its existing queue/busy guard; Apply commits a snapshot,
+close cancels draft edits, hiding/destroying releases previews. Image output names
+keep original page numbers; progress/CSV cover only selected pages.
