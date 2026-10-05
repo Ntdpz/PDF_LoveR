@@ -13,11 +13,11 @@
 ## รายละเอียดที่ต้องรักษาเมื่อพัฒนา
 
 - เริ่มผ่าน `__main__.py` ซึ่งเรียก `multiprocessing.freeze_support()` ก่อนโหลด Tk;
-  home แสดงเครื่องมือใน `catalog.py` แต่มี PNG รวม PDF แยก PDF แยกหน้า ลบหน้าออก และหมุน PDF ที่พร้อมใช้
+  home แสดงเครื่องมือใน `catalog.py` แต่มี PDF to Image รวม PDF แยก PDF แยกหน้า ลบหน้าออก และหมุน PDF ที่พร้อมใช้
 - `registry.py` ตรวจ ready IDs; App สร้าง page เมื่อเปิดครั้งแรกและเก็บไว้
   การนำทางและเปลี่ยนรายการถูกป้องกันระหว่าง busy; ปิดโปรแกรมต้องรอจบงาน
 - เลือกไฟล์หรือรับ native TkDnD ผ่าน `accept_paths()`; drop บน home เปิดรวม PDF,
-  Ctrl+O บน home เปิด PNG; ปลายทางเริ่มที่ Windows Documents
+  Ctrl+O บน home เปิด PDF to Image; ปลายทางเริ่มที่ Windows Documents
 - รวม PDF ใช้ Canvas แสดงเฉพาะแถวใกล้ viewport, รวม pointer input เป็นเฟรม 16 ms,
   มี edge scroll, keyboard และ Esc; พักการอัปเดต thumbnail ระหว่างลาก
 - App เป็นเจ้าของ spawned preview process ร่วมหนึ่งตัว; request จำกัด 16 และ result จำกัด 4
@@ -83,3 +83,10 @@ hook ไม่ได้แปลความหมายจากโค้ดใ
 ตรวจ geometry และภาพจริงทั้ง 6 เครื่องมือที่ 920/1080/1440 logical px และ 100%/125%
 
 1.7.0 replaces home sidebar with task desk and adds shared masthead/tool navigation; review App routing and busy lock against ui/navigation.py. Engines and preview topology unchanged.
+
+## การแปลงภาพ · 1.8.0
+
+PDF to Image ใช้ route `pdf-png` เดิม แต่รองรับ PNG/JPG/WebP/TIFF, พิกเซลหรือ DPI,
+เพดานไฟล์ต่อภาพเป็นคำเตือน และ CSV ขนาดจริง ไม่ลดพิกเซล/คุณภาพเพื่อให้ผ่านเพดาน
+ประมวลผลทีละหน้า คิว events ≤32 รายการ คำเตือนรายละเอียดบนหน้าจอ ≤50
+PNG/WebP/TIFF เป็น Lossless; JPG เป็น Lossy; ภาพเกิน 40 ล้านพิกเซลถูกปฏิเสธอย่างชัดเจน

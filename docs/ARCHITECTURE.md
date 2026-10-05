@@ -20,7 +20,7 @@ PDF_LoveR/
 │   ├── features/
 │   │   ├── base.py                 Page contract and shared busy state
 │   │   ├── registry.py             Ready page factories
-│   │   ├── png/                    PNG page and rendering engine
+│   │   ├── png/                    Image page and rendering engine (legacy png module)
 │   │   ├── merge/                  Merge page, engine, cards
 │   │   ├── split/                  Split page, immutable plan and safe engine
 │   │   ├── selection_page.py       Shared extract/delete workbench
@@ -45,7 +45,7 @@ flowchart TD
   Shell --> Registry[Feature registry]
   Shell --> Home[Catalogue home]
   Shell --> Windows[Windows integration]
-  Registry --> PNG[PNG page]
+  Registry --> PNG[Image page]
   Registry --> Merge[Merge page]
   Registry --> Rotate[Rotate page]
   Rotate --> RotateEngine[Rotate service]
@@ -69,7 +69,7 @@ flowchart TD
   Selector --> Selection[core/page_selection]
   SplitEngine --> Selection
   Selector --> Preview
-  PNG --> PNGEngine[PNG service]
+  PNG --> PNGEngine[Image service]
   Merge --> MergeEngine[Merge service]
   Merge --> Cards[Virtualized cards]
   Cards --> Preview[Thumbnail child process]
@@ -261,3 +261,32 @@ See [locked design](../design.md) and [UX review](REDESIGN.md).
 ## Document desk 1.7.0
 
 Home uses full-width compact task rows and category dropdown, all six visible at minimum size. Shared ui/navigation.py builds graphite masthead and direct ready-tool switcher on all six ToolPage pages; App still owns routing/busy guards, lazy pages and retained state. White selector sheets and selected footer tags on document-desk Canvas preserve original hit boxes and viewport bounds. No new service/worker/cache.
+
+## PDF to Image · 1.8.0
+
+The existing `pdf-png` route and `features/png` package remain stable for shortcuts,
+registry consumers and settings retention. The catalogue and masthead now display
+PDF to Image. Frozen ImageOptions captures PNG/JPG/WebP/TIFF, optional width/height,
+per-image byte warning threshold and explicit JPEG quality on the Tk thread.
+Pixel mode renders at the requested scale; one dimension fixes that side and two
+form an aspect-preserving bounding box. Fractional raster edges are reconciled
+with a LANCZOS resize to the computed dimensions. DPI mode remains 36–600.
+Exports above 40 million pixels are rejected with an explicit error, never downscaled.
+
+One worker exports one page at a time. Native PNG DPI rendering preserves existing
+output bytes and memory behavior. Other codecs use Pillow RGB, release the Pixmap
+before encoding, and close each image before rendering the next page. PNG, WebP
+and Deflate TIFF preserve the resulting raster losslessly; JPEG uses the explicitly
+selected 1–100 quality and is always lossy. No codec automatically reduces quality
+or pixel count to satisfy a file-size threshold. A CSV streams actual dimensions,
+bytes and over-limit flags for every completed page. The UI event queue is bounded
+to 32; producer backpressure and the existing 100-event poll batch bound UI work.
+Warning count is exact while only 50 warning details are retained. Each conversion
+atomically creates a new numbered output directory. Failures may leave completed
+pages and an incomplete CSV there; the source and previous exports stay intact.
+
+Unit tests cover decoded pixel identity for lossless formats, rotated/cropped
+page dimensions, report bytes, password/invalid input and explicit memory guard.
+Native checks cover all formats, 61 over-limit pages, disabled controls, retained
+settings and 920×700 at 100%/125%. Packaged smoke exercises each Pillow codec.
+See IMAGE.md and image-resources-1.8.0.json for scope and measurement limits.

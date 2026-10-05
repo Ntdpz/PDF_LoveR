@@ -127,13 +127,15 @@ class WorkerLifetimeAndHookTests(unittest.TestCase):
     def test_previous_png_pixmap_is_released_before_next_render(self):
         previous = []
         class Pixmap:
-            def save(self, path):pass
+            width = height = 600
+            def save(self, path):path.write_bytes(b'PNG fixture')
         class Page:
+            rect = Mock(width=72, height=72)
             def get_pixmap(self, **kwargs):
                 if previous and previous[0]() is not None:
                     raise AssertionError('Previous full-page Pixmap still alive')
                 image = Pixmap();previous[:] = [weakref.ref(image)];return image
-        doc = Mock();doc.page_count = 3
+        doc = Mock();doc.page_count = 3;doc.needs_pass = False
         doc.__enter__ = Mock(return_value=doc);doc.__exit__ = Mock(return_value=False)
         doc.__iter__ = Mock(return_value=iter([Page(),Page(),Page()]))
         with tempfile.TemporaryDirectory() as tmp, patch('pdf_lover.features.png.service.pymupdf.open',return_value=doc):

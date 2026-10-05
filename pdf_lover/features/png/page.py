@@ -1,14 +1,15 @@
-"""PDF to PNG feature page. Rendering lives in service.py."""
+"""PDF to Image feature page. Rendering lives in service.py."""
 from __future__ import annotations
 import os
 import queue
+from decimal import Decimal, InvalidOperation
 import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox
 import customtkinter as ctk
 from pdf_lover.features.base import ToolPage
-from pdf_lover.features.png.service import convert_pdf
+from pdf_lover.features.png.service import convert_pdf, ImageOptions, FORMATS
 from pdf_lover.platform.paths import documents_folder
 from pdf_lover.ui.icons import document_icon
 from pdf_lover.ui.theme import COLORS as C, FONTS, RADIUS, SPACE as S
@@ -18,9 +19,18 @@ class PngPage(ToolPage):
     def __init__(self, parent, app):
         super().__init__(parent, app)
         self.files: list[Path] = []
-        self.events: queue.Queue[tuple] = queue.Queue()
+        self.events: queue.Queue[tuple] = queue.Queue(maxsize=32)
         self.output = tk.StringVar(value=str(documents_folder()))
         self.dpi = tk.StringVar(value="150")
+        self.file_type = tk.StringVar(value="PNG")
+        self.size_mode = tk.StringVar(value="DPI")
+        self.width_px = tk.StringVar()
+        self.height_px = tk.StringVar()
+        self.limit_size = tk.StringVar()
+        self.limit_unit = tk.StringVar(value="MB")
+        self.jpeg_quality = tk.StringVar(value="95")
+        self.warnings: list[str] = []
+        self.warning_count = 0
         self.status = tk.StringVar(value="เลือกไฟล์ PDF แล้วเริ่มแปลงได้เลย")
         self.errors: list[str] = []
         self.destination: Path | None = None
@@ -32,17 +42,18 @@ class PngPage(ToolPage):
         self.small_icon = document_icon(32, "muted")
         self._build()
         self._render_files()
+        self.update_image_settings()
 
     def _build(self):
         root = self
         root.grid_columnconfigure(0, weight=1)
         root.grid_rowconfigure(2, weight=1)
         from pdf_lover.ui.navigation import masthead
-        masthead(self, 'PDF เป็น PNG')
+        masthead(self, 'PDF to Image')
         intro = ctk.CTkFrame(root, fg_color="transparent")
         intro.grid(row=1, column=0, sticky="ew", padx=S["xl"], pady=S["sm"])
         self.label(intro, "เลือกเอกสาร · ตั้งค่า · ตรวจชื่อภาพ · บันทึก", font=ctk.CTkFont(family=FONTS["body"], size=20, weight="bold")).pack(anchor="w")
-        self.label(intro, "ทุกหน้าเป็นภาพ PNG · หนึ่งโฟลเดอร์ต่อเอกสาร · เก็บต้นฉบับไว้", color="muted").pack(anchor="w", pady=(S["xs"], 0))
+        self.label(intro, "PNG / JPG / WebP / TIFF · หนึ่งโฟลเดอร์ต่อเอกสาร", color="muted").pack(anchor="w", pady=(S["xs"], 0))
 
         body = ctk.CTkFrame(root, fg_color="transparent")
         body.grid(row=2, column=0, sticky="nsew", padx=S["xl"])
@@ -92,22 +103,64 @@ class PngPage(ToolPage):
         self.browse_button = self.button(output_row, "เลือก…", self.choose_output, width=80)
         self.browse_button.grid(row=0, column=1)
         self.controls.append(self.browse_button)
-        self.label(settings, "ความละเอียดภาพ (36–600 DPI)").grid(row=4, column=0, sticky="w", pady=(0, S["sm"]))
+        self.dpi_label = self.label(settings, "ความละเอียดภาพ (36–600 DPI)")
+        self.dpi_label.grid(row=10, column=0, sticky="w", pady=(S["sm"], S["xs"]))
         self.dpi_box = ctk.CTkComboBox(settings, variable=self.dpi, values=["72", "150", "200", "300"],
                                       height=44, corner_radius=RADIUS["control"], border_width=2,
                                       fg_color=C["surface"], border_color=C["rule"], button_color=C["rule"],
                                       button_hover_color=C["soft"], text_color=C["ink"], font=self.font_body,
                                       dropdown_font=self.font_body, dropdown_fg_color=C["surface"],
                                       dropdown_text_color=C["ink"], dropdown_hover_color=C["soft"], command=self.update_quality)
-        self.dpi_box.grid(row=5, column=0, sticky="ew")
+        self.dpi_box.grid(row=11, column=0, sticky="ew")
         self._entry_focus(self.dpi_box)
         self.controls.append(self.dpi_box)
         self.quality_hint = self.label(settings, "150 DPI · สมดุลระหว่างคุณภาพกับขนาดไฟล์", color="muted", font=self.font_small)
-        self.quality_hint.grid(row=6, column=0, sticky="w", pady=(S["xs"], S["xs"]))
+        self.quality_hint.grid(row=12, column=0, sticky="w", pady=(S["xs"], S["xs"]))
         self.dpi.trace_add("write", lambda *_: self.update_quality())
 
+        def option_label(text, row):
+            widget = self.label(settings, text, font=self.font_small)
+            widget.grid(row=row, column=0, sticky="w", pady=(S["sm"], S["xs"]))
+            return widget
+
+        def option_menu(variable, values, row, command=None):
+            widget = ctk.CTkOptionMenu(settings, variable=variable, values=values, command=command,
+                                       height=44, fg_color=C["graphite"], button_color=C["graphite"],
+                                       font=self.font_body, dropdown_font=self.font_body)
+            widget.grid(row=row, column=0, sticky="ew")
+            self.controls.append(widget)
+            return widget
+
+        def option_entry(variable, row):
+            widget = ctk.CTkEntry(settings, textvariable=variable, height=44, font=self.font_body,
+                                  fg_color=C["surface"], text_color=C["ink"], border_color=C["rule"])
+            widget.grid(row=row, column=0, sticky="ew")
+            self.controls.append(widget)
+            return widget
+
+        option_label("ประเภทไฟล์ปลายทาง", 4)
+        self.format_menu = option_menu(self.file_type, list(FORMATS), 5, self.update_image_settings)
+        self.format_hint = self.label(settings, "", color="muted", font=self.font_small, wraplength=285, justify="left")
+        self.format_hint.grid(row=6, column=0, sticky="w", pady=(S["xs"], 0))
+        self.jpeg_label = option_label("คุณภาพ JPG (1–100 · มีการสูญเสียคุณภาพ)", 15)
+        self.jpeg_entry = option_entry(self.jpeg_quality, 16)
+        option_label("กำหนดขนาดภาพด้วย", 8)
+        self.size_menu = option_menu(self.size_mode, ["DPI", "พิกเซล"], 9, self.update_image_settings)
+        self.width_label = option_label("ความกว้าง (px · เว้นว่างได้)", 10)
+        self.width_entry = option_entry(self.width_px, 11)
+        self.height_label = option_label("ความสูง (px · เว้นว่างได้)", 12)
+        self.height_entry = option_entry(self.height_px, 13)
+        self.pixel_hint = self.label(settings, "ล็อกสัดส่วนเสมอ · ใส่สองช่อง = กรอบสูงสุด\n1–20000 px / ไม่เกิน 40 ล้านพิกเซล", color="muted", font=self.font_small,
+                   wraplength=285, justify="left")
+        self.pixel_hint.grid(row=14, column=0, sticky="w", pady=(S["xs"], 0))
+        option_label("เพดานขนาดไฟล์ต่อภาพ (เว้นว่าง = ไม่จำกัด)", 17)
+        self.limit_entry = option_entry(self.limit_size, 18)
+        self.limit_menu = option_menu(self.limit_unit, ["KB", "MB"], 19)
+        self.label(settings, "เกินเพดาน: บันทึกคุณภาพเดิมแล้วแจ้งเตือน\nไม่ลดพิกเซลหรือคุณภาพเอง\nดูขนาดจริงทุกภาพใน image_report.csv", color="muted", font=self.font_small,
+                   wraplength=285, justify="left").grid(row=20, column=0, sticky="w", pady=(S["xs"], 0))
+
         naming = ctk.CTkFrame(settings, fg_color=C["graphite"], corner_radius=RADIUS["panel"])
-        naming.grid(row=8, column=0, sticky="ew", pady=(S["md"], S["sm"]))
+        naming.grid(row=22, column=0, sticky="ew", pady=(S["md"], S["sm"]))
         self.label(naming, "รูปแบบไฟล์ผลลัพธ์", color="accent-ink", font=self.font_bold).pack(anchor="w", padx=S["lg"], pady=(S["lg"], S["sm"]))
         self.name_example = self.label(naming, "ชื่อเอกสาร_page_001.png", color="graphite-muted", font=self.font_small)
         self.name_example.pack(anchor="w", padx=S["lg"])
@@ -125,14 +178,14 @@ class PngPage(ToolPage):
         self.progress.grid(row=1, column=0, columnspan=2, sticky="ew", padx=S["xl"], pady=S["sm"])
         self.status_label = self.label(activity, textvariable=self.status, text="", font=self.font_small, color="muted")
         self.status_label.grid(row=2, column=0, columnspan=2, sticky="w", padx=S["xl"], pady=(0, S["sm"]))
-        self.start_button = self.button(activity, "เริ่มแปลงเป็น PNG", self.start, primary=True, width=220)
+        self.start_button = self.button(activity, "เริ่มแปลงเป็นภาพ", self.start, primary=True, width=220)
         self.start_button.grid(row=0, column=2, rowspan=3, padx=(S["sm"], S["xl"]), pady=S["lg"])
 
         bottom = ctk.CTkFrame(root, fg_color="transparent")
         bottom.grid(row=4, column=0, sticky="ew", padx=S["xl"], pady=(0, S["md"]))
         bottom.grid_columnconfigure(0, weight=1)
         self.label(bottom, "Ctrl + O  เพิ่ม PDF     ·     Ctrl + Enter  เริ่มแปลง", font=self.font_small, color="muted").grid(row=0, column=0, sticky="w")
-        self.error_button = self.button(bottom, "ดูข้อผิดพลาด", self.show_errors, width=132)
+        self.error_button = self.button(bottom, "ดูคำเตือน", self.show_errors, width=120)
         self.open_button = self.button(bottom, "เปิดโฟลเดอร์ผลลัพธ์", self.open_output, width=200)
         self.open_button.grid(row=0, column=2)
         self.open_button.configure(state="disabled")
@@ -153,6 +206,42 @@ class PngPage(ToolPage):
                  "300": "300 DPI · รายละเอียดสูง ใช้พื้นที่มากขึ้น"}
         self.quality_hint.configure(text=hints.get(self.dpi.get(), "DPI สูงขึ้น ภาพละเอียดและไฟล์ใหญ่ขึ้น"), wraplength=290, justify="left")
 
+    def update_image_settings(self, *_):
+        if self.busy:
+            return
+        is_jpg = self.file_type.get() == "JPG"
+        self.format_hint.configure(text="JPG บีบอัดแบบสูญเสียคุณภาพ แม้ตั้ง 100" if is_jpg else "Lossless · รักษาพิกเซลของภาพที่เรนเดอร์")
+        for widget in (self.jpeg_label, self.jpeg_entry):
+            widget.grid() if is_jpg else widget.grid_remove()
+        self.jpeg_entry.configure(state="normal" if is_jpg else "disabled")
+        pixels = self.size_mode.get() == "พิกเซล"
+        for widget in (self.dpi_label, self.dpi_box, self.quality_hint):
+            widget.grid_remove() if pixels else widget.grid()
+        for widget in (self.width_label, self.width_entry, self.height_label, self.height_entry, self.pixel_hint):
+            widget.grid() if pixels else widget.grid_remove()
+        self.dpi_box.configure(state="disabled" if pixels else "normal")
+        self.width_entry.configure(state="normal" if pixels else "disabled")
+        self.height_entry.configure(state="normal" if pixels else "disabled")
+        stem = self.files[0].stem if self.files else "ชื่อเอกสาร"
+        self.name_example.configure(text=self.shorten(stem + "_page_001." + FORMATS[self.file_type.get()], 34))
+
+    def image_options(self):
+        pixels = self.size_mode.get() == "พิกเซล"
+        width = int(self.width_px.get()) if pixels and self.width_px.get().strip() else None
+        height = int(self.height_px.get()) if pixels and self.height_px.get().strip() else None
+        if pixels and width is None and height is None:
+            raise ValueError("ใส่ความกว้างหรือความสูงอย่างน้อยหนึ่งช่อง")
+        limit = None
+        if self.limit_size.get().strip():
+            value = Decimal(self.limit_size.get().strip())
+            if not value.is_finite() or value <= 0 or value > 1000000:
+                raise ValueError("เพดานขนาดไฟล์ต้องมากกว่า 0 และไม่เกิน 1000000 KB/MB")
+            limit = int(value * (1024 if self.limit_unit.get() == "KB" else 1024 * 1024))
+        options = ImageOptions(self.file_type.get(), width, height, limit,
+                               int(self.jpeg_quality.get()) if self.file_type.get() == "JPG" else 95)
+        options.validate()
+        return options
+
     def _render_files(self):
         for widget in self.file_area.winfo_children():
             widget.destroy()
@@ -169,7 +258,7 @@ class PngPage(ToolPage):
             empty_add = self.button(empty, "เลือกไฟล์ PDF…", self.add_files, width=176)
             empty_add.pack()
             self.total_label.configure(text="เลือก PDF ได้หลายไฟล์พร้อมกัน")
-            self.name_example.configure(text="ชื่อเอกสาร_page_001.png")
+            self.name_example.configure(text="ชื่อเอกสาร_page_001." + FORMATS[self.file_type.get()])
             return
         scroll = ctk.CTkScrollableFrame(self.file_area, fg_color="transparent", corner_radius=0,
                                         scrollbar_button_color=C["rule"], scrollbar_button_hover_color=C["muted"])
@@ -200,7 +289,7 @@ class PngPage(ToolPage):
             if self.busy:
                 remove.configure(state="disabled")
         self.total_label.configure(text=f"{len(self.files)} ไฟล์  ·  รวม {total_size / 1024 / 1024:.2f} MB")
-        self.name_example.configure(text=self.shorten(self.files[0].stem + "_page_001.png", 34))
+        self.name_example.configure(text=self.shorten(self.files[0].stem + "_page_001." + FORMATS[self.file_type.get()], 34))
 
     def add_files(self):
         if self.busy:
@@ -239,9 +328,11 @@ class PngPage(ToolPage):
         self.progress.set(0)
         self.percent_label.configure(text="0%")
         self.errors = []
+        self.warnings = []
+        self.warning_count = 0
         self.error_button.grid_remove()
-        self.start_button.configure(text="เริ่มแปลงเป็น PNG")
-        self.activity_title.configure(text="พร้อมแปลงเป็น PNG" if self.files else "พร้อมเริ่มเมื่อคุณเลือกไฟล์", text_color=C["ink"])
+        self.start_button.configure(text="เริ่มแปลงเป็นภาพ")
+        self.activity_title.configure(text="พร้อมแปลงเป็นภาพ" if self.files else "พร้อมเริ่มเมื่อคุณเลือกไฟล์", text_color=C["ink"])
         self.status.set(f"เลือกแล้ว {len(self.files)} ไฟล์ · ตั้งค่าปลายทางแล้วเริ่มแปลง" if self.files else "เลือกไฟล์ PDF แล้วเริ่มแปลงได้เลย")
 
     def choose_output(self):
@@ -269,11 +360,16 @@ class PngPage(ToolPage):
             self.validation_error("ยังไม่มี PDF · กดเพิ่ม PDF เพื่อเลือกอย่างน้อย 1 ไฟล์")
             return
         try:
-            dpi = int(self.dpi.get())
+            dpi = int(self.dpi.get()) if self.size_mode.get() == "DPI" else 150
             if not 36 <= dpi <= 600:
                 raise ValueError
         except ValueError:
             self.validation_error("DPI ไม่ถูกต้อง · ใส่จำนวนเต็มระหว่าง 36 ถึง 600", self.dpi_box)
+            return
+        try:
+            options = self.image_options()
+        except (ValueError, InvalidOperation) as error:
+            self.validation_error(f"ตั้งค่าภาพไม่ถูกต้อง · {error}")
             return
         if not self.output.get().strip():
             self.validation_error("ยังไม่มีปลายทาง · เลือกโฟลเดอร์สำหรับบันทึกภาพ", self.output_entry)
@@ -286,6 +382,8 @@ class PngPage(ToolPage):
             return
         self.busy = True
         self.errors = []
+        self.warnings = []
+        self.warning_count = 0
         self.error_button.grid_remove()
         self.open_button.configure(state="disabled")
         for control in self.controls:
@@ -299,15 +397,16 @@ class PngPage(ToolPage):
         self.status.set("กำลังเปิด PDF · โปรแกรมยังทำงานต่อได้ตามปกติ")
         self.output_entry.configure(border_color=C["rule"])
         self.dpi_box.configure(border_color=C["rule"])
-        threading.Thread(target=self.convert_all, args=(list(self.files), output_root, dpi), daemon=True).start()
+        threading.Thread(target=self.convert_all, args=(list(self.files), output_root, dpi, options), daemon=True).start()
 
-    def convert_all(self, files, output_root, dpi):
+    def convert_all(self, files, output_root, dpi, options):
         errors = []
         for number, pdf_path in enumerate(files, start=1):
             self.events.put(("file_start", pdf_path))
             try:
                 convert_pdf(pdf_path, output_root, dpi,
-                            lambda page, total, n=number, p=pdf_path: self.events.put(("progress", n, len(files), p, page, total)))
+                            lambda page, total, n=number, p=pdf_path: self.events.put(("progress", n, len(files), p, page, total)),
+                            options=options, warning=lambda path, size, limit: self.events.put(("warning", path, size, limit)))
                 self.events.put(("file_done", number, len(files), pdf_path, None))
             except Exception as error:
                 errors.append(f"{pdf_path.name}: {error}")
@@ -336,6 +435,11 @@ class PngPage(ToolPage):
                     self.set_progress((number - 1 + page / pages) / count)
                     self.set_row_status(path, f"หน้า {page}/{pages}", "accent")
                     self.status.set(f"ไฟล์ {number}/{count} · {self.shorten(path.name, 40)} · หน้า {page}/{pages}")
+                elif event[0] == "warning":
+                    _, path, size, limit = event
+                    self.warning_count += 1
+                    if len(self.warnings) < 50:
+                        self.warnings.append(f"{path.name}: {size / 1024:.2f} KB > {limit / 1024:.2f} KB")
                 elif event[0] == "file_done":
                     _, number, count, path, error = event
                     self.set_progress(number / count)
@@ -347,17 +451,24 @@ class PngPage(ToolPage):
                         control.configure(state="normal")
                     self.start_button.configure(state="normal", text="แปลงอีกครั้ง", fg_color=C["accent"], border_color=C["accent"])
                     self.open_button.configure(state="normal")
+                    self.update_image_settings()
                     self.activity_title.configure(text=f"แปลงสำเร็จ {succeeded} ไฟล์" + (f" · มีปัญหา {len(self.errors)} ไฟล์" if self.errors else " · พร้อมใช้งาน"),
                                                   text_color=C["error"] if self.errors else C["success"])
                     self.status.set("บันทึกแล้ว · เปิดโฟลเดอร์ผลลัพธ์เพื่อดูภาพ" if not self.errors else "บางไฟล์แปลงไม่ได้ · กดดูข้อผิดพลาดเพื่อตรวจสอบ")
-                    if self.errors:
+                    if self.warning_count:
+                        self.status.set((f"มีปัญหา {len(self.errors)} ไฟล์ · " if self.errors else "บันทึกแล้ว · ") + f"{self.warning_count} ภาพเกินเพดาน · ไม่ลดคุณภาพเอง · ดู image_report.csv")
+                    if self.errors or self.warning_count:
+                        self.error_button.configure(text="ดูคำเตือน")
                         self.error_button.grid(row=0, column=1, padx=(0, S["sm"]))
         except queue.Empty:
             pass
 
     def show_errors(self):
-        if self.errors:
-            messagebox.showwarning("ไฟล์ที่แปลงไม่ได้", "\n\n".join(self.errors), parent=self.root)
+        if self.errors or self.warnings:
+            details = self.errors + self.warnings
+            if self.warning_count:
+                details.append(f"รวม {self.warning_count} ภาพเกินเพดาน · แสดงไม่เกิน 50 รายการ\nดูขนาดจริงทั้งหมดใน image_report.csv แต่ละโฟลเดอร์\nบันทึกตามค่าที่เลือก ไม่มีการลดคุณภาพหรือพิกเซลอัตโนมัติ")
+            messagebox.showwarning("ผลการแปลงภาพ", "\n\n".join(details), parent=self.root)
 
     def open_output(self):
         if self.destination and not self.busy:

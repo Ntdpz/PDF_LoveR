@@ -182,3 +182,15 @@ Shift/Ctrl และลากครอบใช้ PageSelector ร่วม ไ
 ## โต๊ะเอกสารเต็มหน้า · 1.7.0
 
 Home compact task rows replace sidebar and tall cards; navigation uses App routing with no new worker. Render sizes/cache/coordinator limits unchanged. [Five-run source measurement](performance-after-1.7.0.json): home idle median 63.73 MiB vs 65.04 MiB in1.6.0, similar memory level; no material optimization claim. Still no physical2-core/4-GiB/HDD or Windows11, scanned export/cold frozen-start evidence. Final paint colors do not add resource allocations.
+
+## PDF to Image · 1.8.0
+
+หนึ่ง export worker ทีละหน้า คิว events จำกัด 32 รายการ คำเตือนเก็บรายละเอียด 50 รายการ
+CSV เขียนทีละแถว ไม่โหลดภาพทุกหน้า; preview coordinator/cache/virtualization เดิม
+ปฏิเสธภาพเกิน 40 ล้านพิกเซลอย่างชัดเจน ไม่ลดพิกเซลหรือคุณภาพเงียบ ๆ
+Pillow เดิมใช้ codec PNG/JPEG/WebP/TIFF; ไม่เพิ่ม dependency
+[วัด fresh process](image-resources-1.8.0.json): PNG A4 600 DPI 3 หน้า สองรอบต่อแบบ
+peak working set ก่อน 242.30–242.41 MiB หลัง 242.36–242.41 MiB; PNG hash ตรงเดิม
+codec ใหม่ที่ 300 DPI: JPG 127.02, WebP 197.36, TIFF 128.33 MiB ใน workload นี้
+ไม่อ้างการลด peak RAM; ยังไม่วัด scan ขนาดใหญ่/codec 40 ล้านพิกเซล/physical 4-GiB HDD
+[Native controls](image-ui-verification-1.8.0.json) ตรวจ 61 หน้าทุก codec ที่ 100%/125%

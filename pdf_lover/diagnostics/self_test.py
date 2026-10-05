@@ -60,6 +60,12 @@ def run(root, app_class, report):
             assert len(outputs) == 2, "Expected two PNGs"
             with Image.open(outputs[0]) as image:
                 assert image.size == (300, 150), image.size
+            from pdf_lover.features.png.service import convert_pdf, ImageOptions, FORMATS
+            for file_type, extension in FORMATS.items():
+                image_folder = convert_pdf(source, folder / "images", 150, lambda *_: None,
+                                           ImageOptions(file_type=file_type, width=200))
+                with Image.open(next(image_folder.glob("*." + extension))) as image:
+                    assert image.size == (200, 100), (file_type, image.size)
             second = folder / "เอกสารแรก.pdf"
             with pymupdf.open() as document:
                 page = document.new_page(width=144, height=72)

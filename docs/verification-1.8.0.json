@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "command": "python scripts/check.py",
+  "exit_code": 0,
+  "unit_tests": 83,
+  "native_ui_suites": 14,
+  "log": "build-verification/check-1.8.0.log",
+  "log_canonical_sha256": "cb29a32d08e266ab6e9da1a77765f8f56c8a32e8e0ba780de3d5b38a97628a0b",
+  "notes": [
+    "Initial legacy Ctrl+A focus check failed once; isolated retry and complete sequential rerun passed.",
+    "All four image formats tested in native UI; original hashes and lossless pixel identity covered by engine tests."
+  ]
+}

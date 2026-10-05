@@ -33,7 +33,7 @@ CATEGORIES = (
 )
 
 TOOLS = (
-    Tool("pdf-png", "PDF เป็น PNG", "from-pdf", "แปลงทุกหน้าเป็นภาพ PNG เลือกความละเอียดและหลายไฟล์ได้", "image", "ภาพ รูป photo picture", True),
+    Tool("pdf-png", "PDF to Image", "from-pdf", "แปลงเป็น PNG JPG WebP TIFF กำหนดพิกเซล DPI และเพดานไฟล์", "image", "ภาพ รูป photo picture png jpg jpeg webp tiff", True),
     Tool("merge", "รวม PDF", "organize", "รวมหลายเอกสารเป็นไฟล์เดียว ตามลำดับที่คุณเลือก", "pages", "merge combine รวมไฟล์", True),
     Tool("split", "แยก PDF", "organize", "แยกทุกหน้า ตามช่วง หรือทุก N หน้า พร้อมตรวจชื่อไฟล์ก่อนบันทึก", "split", "split แบ่ง ช่วงหน้า", True),
     Tool("delete-pages", "ลบหน้าออก", "organize", "เลือกหน้าที่ไม่ต้องการ แล้วบันทึกเอกสารที่เหลือ", "split", "delete remove ลบหน้า", True),
