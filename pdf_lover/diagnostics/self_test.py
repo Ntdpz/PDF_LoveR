@@ -271,6 +271,7 @@ def run(root, app_class, report):
                         assert after.get_text() == before.get_text()
             assert all(hashlib.sha256(path.read_bytes()).hexdigest() == value for path, value in rotation_hashes.items())
             assert not failures, failures
+            assert all(not view.activity_indicator.running for view in app.views.values())
             thumbnails = 2 + sum(len(pages) for pages in selector_pages.values()) + len(page.preview.cache)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
@@ -279,6 +280,7 @@ def run(root, app_class, report):
                       "delete_retained_pages": [1, 3], "original_unchanged": True,
                       "thumbnail_worker": "single shared process", "thumbnail_count": thumbnails,
                       "preview_process_limit": 1,
+                      "activity_indicators": "all six tools constructed; inactive after jobs",
                       "selector_layout": "vertical viewport grid",
                       "selector_preview_pages": {name: sorted(pages) for name, pages in selector_pages.items()},
                       "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],

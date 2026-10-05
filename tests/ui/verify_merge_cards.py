@@ -79,11 +79,19 @@ def main():
         page.add_paths(paths[:6])
         page.output.set('รวมเอกสาร.pdf')
         pump(root, 0.7)
+        grid.canvas.focus_force();pump(root, 0.05)
         assert grid.columns >= 4 and 0 < len(grid.visible) <= 15
         sx, sy = grid.card_center(paths[0])
         tx, ty = grid.card_center(paths[2], after=True)
-        pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
-        pointer(grid.canvas, '<B1-Motion>', tx, ty)
+        # Desktop focus can arrive late after earlier native suites close.
+        # Retry the gesture only if focus loss cancelled it; still require real painted state.
+        for attempt in range(3):
+            grid.canvas.focus_force();pump(root, 0.15)
+            pointer(grid.canvas, '<ButtonPress-1>', sx, sy)
+            pointer(grid.canvas, '<B1-Motion>', tx, ty)
+            pump(root, 0.3)
+            if grid.drag is not None:
+                break
         wait_for(root, lambda: grid.ghost is not None and grid.marker is not None
                  and grid.canvas.coords(grid.marker)[3] - grid.canvas.coords(grid.marker)[1] > 100 * grid.scaling)
         assert grid.ghost is not None and grid.marker is not None

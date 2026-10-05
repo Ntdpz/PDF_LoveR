@@ -90,3 +90,8 @@ PDF to Image ใช้ route `pdf-png` เดิม แต่รองรับ 
 เพดานไฟล์ต่อภาพเป็นคำเตือน และ CSV ขนาดจริง ไม่ลดพิกเซล/คุณภาพเพื่อให้ผ่านเพดาน
 ประมวลผลทีละหน้า คิว events ≤32 รายการ คำเตือนรายละเอียดบนหน้าจอ ≤50
 PNG/WebP/TIFF เป็น Lossless; JPG เป็น Lossy; ภาพเกิน 40 ล้านพิกเซลถูกปฏิเสธอย่างชัดเจน
+
+1.8.1 adds a shared masthead activity ring/elapsed badge on all six pages.
+App.busy controls its lifecycle; the existing 80-ms shell poll advances it.
+Idle/hidden badges do no animation work; Windows reduced motion retains static status.
+No additional worker/timer or export quality change.

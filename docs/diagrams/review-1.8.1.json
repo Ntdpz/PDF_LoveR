@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "diagrams": [
+    {
+      "name": "application",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "application.visual-check.2048x1320.light.png",
+        "application.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: labels clear; edges and cards visible; no overlaps/clipping in both themes.",
+      "artifact_canonical_sha256": "754e8d1d4b85180838ffe6aec92356004e51e3fbcb814cb441779771a8cd65cc",
+      "screenshots_sha256": {
+        "application.visual-check.2048x1320.light.png": "90b94e8117e1a29f3d29903d5b35ba113e0d4ee2ad2cfb620f5e995bb3c8edbe",
+        "application.visual-check.2048x1320.dark.png": "951b934d0b07a9a03590f807787e720cf8b284e9237fb9c751a57dcc20b01f36"
+      }
+    },
+    {
+      "name": "processing",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "processing.visual-check.2048x1320.light.png",
+        "processing.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: labels clear; edges and cards visible; no overlaps/clipping in both themes.",
+      "artifact_canonical_sha256": "ed2bb92b0d1b35210e134b41e6d77ca0c75f4d0bd2d1865202e2b53869686466",
+      "screenshots_sha256": {
+        "processing.visual-check.2048x1320.light.png": "b032dd0aaa80f3d5393e16c5b28bcc6816adb1c80603e92e29163c18b378340b",
+        "processing.visual-check.2048x1320.dark.png": "5d74b26aa3b69000995d9f99d3176ae76ecb99c909200bfbc53b7a7e1c46b633"
+      }
+    },
+    {
+      "name": "maintenance",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "maintenance.visual-check.2048x1320.light.png",
+        "maintenance.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: labels clear; edges and cards visible; no overlaps/clipping in both themes.",
+      "artifact_canonical_sha256": "20c6e88bc8eb59c6e7f8a33b37337a492c275b2576caa5559da03580113ed0ef",
+      "screenshots_sha256": {
+        "maintenance.visual-check.2048x1320.light.png": "b8cdfedc917f4858b50fbce11d61fddb3bd0a6aa105c730fc874a08433f43611",
+        "maintenance.visual-check.2048x1320.dark.png": "cb0955714b8cf9518f9950a08c9b7fe88a9b10405c2ffeb2f4499161f8c25b81"
+      }
+    }
+  ]
+}

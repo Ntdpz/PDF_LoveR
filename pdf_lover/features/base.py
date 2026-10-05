@@ -19,6 +19,8 @@ class ToolPage(ctk.CTkFrame, UIControls, ABC):
     def set_active(self, active):
         """Retain document/settings state, release preview resources on hidden pages."""
         self.page_visible = active
+        if hasattr(self, "activity_indicator"):
+            self.activity_indicator.set_active(active)
         def visit(widget):
             if hasattr(widget, "set_preview_active"):
                 widget.set_preview_active(active)

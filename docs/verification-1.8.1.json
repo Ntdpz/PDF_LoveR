@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "version": "1.8.1",
+  "command": "python scripts/check.py",
+  "exit_code": 0,
+  "unit_tests": 83,
+  "native_ui_suites": 15,
+  "log_canonical_sha256": "f4879456d924c8220dd86d430b1d0d7ffb084ad7baa6802e38a767344b863a28",
+  "notes": [
+    "All checks passed in final sequential run. Earlier desktop focus and capture timing failures reproduced and addressed with bounded test harness retries; actual gesture/tooltip assertions retained.",
+    "Development Windows host; not physical low-spec hardware certification."
+  ]
+}

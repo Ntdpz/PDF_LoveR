@@ -194,3 +194,15 @@ peak working set ก่อน 242.30–242.41 MiB หลัง 242.36–242.41 M
 codec ใหม่ที่ 300 DPI: JPG 127.02, WebP 197.36, TIFF 128.33 MiB ใน workload นี้
 ไม่อ้างการลด peak RAM; ยังไม่วัด scan ขนาดใหญ่/codec 40 ล้านพิกเซล/physical 4-GiB HDD
 [Native controls](image-ui-verification-1.8.0.json) ตรวจ 61 หน้าทุก codec ที่ 100%/125%
+
+## ตัวบอกสถานะงาน · 1.8.1
+
+loader ร่วมใช้ Canvas 3 ชิ้นและข้อความเล็กบนหัวหน้าแต่ละเครื่องมือ
+ใช้ poll 80 ms เดิม ไม่มี timer/worker/process/image ใหม่; หยุดวาดเมื่อ idle/ซ่อน
+ตัวอักษรเวลาอัปเดตวินาทีละครั้ง ใช้เวลาจริง เคารพ Windows reduced motion
+[ก่อน](performance-before-1.8.1.json) / [หลัง](performance-after-1.8.1.json): source workload
+240 หน้าสังเคราะห์ สอง fresh runs ต่อแบบ; home idle median 64.545 → 64.435 MiB
+หน่วยความจำระดับใกล้เคียงเดิม ไม่อ้างว่าลด RAM; fixture ไม่มี export/scan ขนาดใหญ่
+[ตรวจวงจรงาน](activity-verification-1.8.1.json) ทุก 6 เครื่องมือ เปิด/บันทึก/ผิดพลาด
+มีการหน่วง worker เพื่อจำลอง I/O ก่อนประมวลผลจริง ทดสอบที่ 100%/125%
+ยังไม่ใช่การรับรองเครื่อง 2-core/4-GiB/HDD จริง

@@ -98,7 +98,7 @@
       "id": "ui",
       "type": "frontend",
       "label": "องค์ประกอบ UI ร่วม",
-      "sublabel": "masthead · เปลี่ยนเครื่องมือ · controls",
+      "sublabel": "masthead · loader ร่วม · controls",
       "pos": [
         60,
         340
@@ -239,7 +239,7 @@
       "dot": "cyan",
       "title": "หน้าจอและเส้นทาง",
       "items": [
-        "Tk บน main thread; Workbench เลือก/ตรวจ/บันทึก",
+        "Tk main thread; loader ใช้ shell poll เดิม",
         "180×200 ภาพหน้า; cache ≤6 MiB; viewport ≤24"
       ]
     },

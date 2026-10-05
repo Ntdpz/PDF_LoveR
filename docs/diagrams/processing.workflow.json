@@ -73,7 +73,7 @@
       "col": 2,
       "type": "security",
       "label": "เริ่มงาน",
-      "sublabel": "busy = True · ล็อก controls",
+      "sublabel": "busy · ล็อกปุ่ม · loader",
       "width": 160
     },
     {
@@ -109,7 +109,7 @@
       "col": 4,
       "type": "frontend",
       "label": "พร้อมใช้งานต่อ",
-      "sublabel": "ผล / เกินเพดาน · คืน controls",
+      "sublabel": "หยุด loader · ผล / คืน controls",
       "width": 160
     },
     {
@@ -204,7 +204,7 @@
       "dot": "amber",
       "title": "จบงานและปิดโปรแกรม",
       "items": [
-        "ภาพมี CSV ขนาดจริง; คำเตือนหน้าจอ ≤50",
+        "loader + เวลาจริง; ลด motion ตาม Windows",
         "home/destroy ปิด preview; ทิ้งภาพเก่า"
       ]
     }

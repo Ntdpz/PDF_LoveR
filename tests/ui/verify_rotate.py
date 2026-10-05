@@ -43,8 +43,15 @@ def main():
         right.invoke();left.invoke();assert page.angle.get()=='0'
         right._canvas.focus_force();pump(root)
         right._canvas.event_generate('<Return>');pump(root,0.1);assert page.angle.get()=='90'
-        page.rotation_tooltips[1].schedule();pump(root,0.6)
-        assert page.rotation_tooltips[1].window and page.rotation_tooltips[1].window.winfo_viewable()
+        tip = page.rotation_tooltips[1]
+        # Native windows can lose foreground during mapping/scaling; verify the
+        # tooltip while its owner actually has keyboard focus, with a bounded retry.
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            right._canvas.focus_force();pump(root,0.05)
+            tip.schedule();pump(root,0.5)
+            if tip.window and tip.window.winfo_viewable():break
+        assert tip.window and tip.window.winfo_viewable()
         capture(root,'rotate-tooltip.png')
         page.rotation_tooltips[1].hide();assert page.rotation_tooltips[1].timer is None
         page.output.set(str(folder));page.selector.expression.set('2')

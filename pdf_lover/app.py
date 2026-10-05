@@ -51,6 +51,9 @@ class App(UIControls):
     def busy(self, value):
         self._busy = value
         self.preview_coordinator.paused = value
+        page = getattr(self, "views", {}).get(getattr(self, "route", None))
+        if page is not None and hasattr(page, "activity_indicator"):
+            page.activity_indicator.set_running(value)
 
     @property
     def active_page(self):
@@ -141,6 +144,8 @@ class App(UIControls):
         self.preview_coordinator.pump()
         if self.active_page:
             self.active_page.process_events()
+            if hasattr(self.active_page, "activity_indicator"):
+                self.active_page.activity_indicator.tick()
         delay = 80 if self.active_page or self.busy else 300
         self.event_timer = self.root.after(delay, self.process_events)
 

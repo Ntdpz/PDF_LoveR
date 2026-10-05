@@ -290,3 +290,17 @@ page dimensions, report bytes, password/invalid input and explicit memory guard.
 Native checks cover all formats, 61 over-limit pages, disabled controls, retained
 settings and 920×700 at 100%/125%. Packaged smoke exercises each Pillow codec.
 See IMAGE.md and image-resources-1.8.0.json for scope and measurement limits.
+
+## Shared activity feedback · 1.8.1
+
+`ui/activity.py` supplies a small Canvas ring and two-line running/elapsed badge in
+all six mastheads. App.busy transitions start/stop the active page's badge, covering
+both document inspection and export. App.process_events advances it using the
+existing 80-ms poll after reading worker results; the component has no after timer,
+worker or raster assets. Idle/hidden widgets do not tick. ToolPage.set_active controls
+visibility; existing root poll cancellation handles destruction. Time is monotonic,
+text updates only when the elapsed second changes. The Windows client-area animation
+preference disables ring motion while keeping running text and elapsed time. No
+percentage is invented and PDF engines, queues, quality and preview budgets are unchanged.
+Native tests exercise real inspection/export with bounded simulated I/O waits, all
+six tools, error recovery, elapsed time, idle/hidden stop and 100%/125% layout.
