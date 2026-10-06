@@ -1,4 +1,4 @@
-"""Native stop/retry checks: keep busy until real worker cleanup, all six tools."""
+"""Native stop/retry checks: keep busy until real worker cleanup, all seven tools."""
 import csv
 import hashlib
 import importlib
@@ -39,7 +39,7 @@ def main():
             ctk.set_widget_scaling(scale);ctk.set_window_scaling(scale)
             root=ctk.CTk();root.report_callback_exception=lambda k,v,t:errors.append(str(v))
             app=App(root);root.geometry('920x700+15+15')
-            for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate'):
+            for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate','organize'):
                 app.show_tool(tool);page=app.active_page;pump(root,0.1)
                 page.add_paths(sources if tool in ('merge','pdf-png') else [sources[0]])
                 wait(root,app)
@@ -128,7 +128,7 @@ def main():
             'limitations':['Development Windows PC, not physical 2-core/4-GiB/HDD certification',
                            'Gates at actual engine progress checkpoints simulate native I/O delay; native calls finish before stopping']}
     (ROOT/f'docs/cancellation-verification-{VERSION}.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
-    print('PASS: six tools stop/retry, five inspection paths, safe partial output, source hashes, 100%/125% layout and cleanup')
+    print('PASS: seven tools stop/retry, six inspection paths, safe partial output, source hashes, 100%/125% layout and cleanup')
 
 
 if __name__=='__main__':main()

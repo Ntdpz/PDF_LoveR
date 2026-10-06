@@ -30,11 +30,12 @@ class SelectionPage(ToolPage):
     inspect = staticmethod(inspect_document)
     export = staticmethod(export_pages)
     PREVIEW_LIMIT = 25
+    EVENT_LIMIT = 0
 
     def __init__(self, parent, app):
         super().__init__(parent, app)
         self.info = self.plan = self.destination = None
-        self.events = queue.Queue()
+        self.events = queue.Queue(maxsize=self.EVENT_LIMIT)
         self.mode = tk.StringVar(value="single")
         self.output = tk.StringVar(value=str(documents_folder()))
         self.prefix = tk.StringVar(value="เอกสารแยก")

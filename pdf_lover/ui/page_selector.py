@@ -381,6 +381,9 @@ class PageSelector(ctk.CTkFrame):
     def _key(self, page):
         return (self.info.path, self.info.signature[3], self.info.signature[2], page - 1, 0, 180, 200)
 
+    def page_label(self, page):
+        return f"หน้า {page}"
+
     def render(self):
         if not self.preview_active:
             return
@@ -412,7 +415,8 @@ class PageSelector(ctk.CTkFrame):
                 hit = intersects(card_box(page, self.columns, cell_width, self.step_y, gap), self._rectangle())
                 base = page in self.gesture["base"]
                 chosen = base != hit if self.gesture["state"] & 4 else base or hit if self.gesture["state"] & 1 else hit
-            if key not in self.cache and key not in self.pending and len(self.pending) < self.VISIBLE:
+            if (not getattr(self, 'previews_paused', False) and key not in self.cache
+                    and key not in self.pending and len(self.pending) < self.VISIBLE):
                 if self.worker.submit(key):
                     self.pending.add(key)
                 elif self.worker.failed:
@@ -423,7 +427,7 @@ class PageSelector(ctk.CTkFrame):
                 image = Image.frombytes("RGB", (pixel_width, pixel_height), samples)
                 factor = min((cell_width - 24 * scale) / pixel_width, (self.step_y - 48 * scale) / pixel_height)
                 self.images[key] = ImageTk.PhotoImage(image.resize((max(1, int(pixel_width * factor)), max(1, int(pixel_height * factor)))), master=self.canvas)
-            label = f"{'✓ ' if chosen else ''}หน้า {page}"
+            label = f"{'✓ ' if chosen else ''}{self.page_label(page)}"
             if key not in self.cache:
                 label += "\nกำลังโหลด…"
             elif payload is None:

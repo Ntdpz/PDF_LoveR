@@ -155,8 +155,8 @@ failure rolls back only unchanged files created by that job; an incomplete rollb
 is reported with the remaining names. The engine rejects original paths/aliases,
 existing targets and invalid Windows name prefixes. No worker reads Tk variables.
 
-PNG, merge, split, extract-pages and delete-pages and rotate are ready (6 of 34).
-Organize remains planned. Password PDFs, general zoom preview, cancellation and
+PNG, merge, split, extract-pages, delete-pages, rotate and organize are ready (7 of 34).
+Password PDFs and general zoom preview and
 document-level attachments/signatures remain outside the page tools' scope.
 See [Split](SPLIT.md) and [Page tools](PAGE_TOOLS.md) for precise behavior.
 
@@ -182,7 +182,7 @@ Neither operation edits the source. This is page selection, not redaction.
 
 Native checks cover both tools, Explorer drop, async inspection, retained state,
 validation/recovery, 240-page bounded previews, 920x700 and 125% scaling. Independent
-Poppler renders match the originals. Packaged smoke runs all six tool routes.
+Poppler renders match the originals. Packaged smoke runs all seven tool routes.
 Its withdrawn window has a tiny Canvas viewport, so the smoke scrolls every
 synthetic page through that viewport and verifies returned previews/cache budgets;
 it never assumes all document thumbnails were loaded at once. Mapped-layout,
@@ -213,7 +213,7 @@ with an independent Poppler render of reference /Rotate entries. A simple rotate
 bitmap cannot provide exact PDF pixel equivalence because raster edge sampling
 and no-rotate annotations differ. Source content is also checked after restoring
 its original orientation. Password PDFs and preserving digital signature validity
-are unsupported; general zoom/cancellation remain planned.
+are unsupported; general zoom remains planned.
 
 ### Rotation command toolbar
 
@@ -346,3 +346,35 @@ Image conversion keeps fully encoded pages and closed CSV rows; the queue stops
 remaining PDFs and reports cancelled, completed, and not-started rows separately.
 No worker is killed, no extra process/timer/dependency is introduced, and quality,
 DPI, pixel limits and the one-page memory model are unchanged.
+
+## Page ordering · 1.11.0
+
+The existing catalogue ID `organize` now registers OrganizePage, a SelectionPage
+subclass. `ui/page_order.py` extends the shared PageSelector viewport with a tuple
+of original page identities; preview keys map current slots to original pages.
+Shift/Ctrl/marquee select slots; pointer drag and Alt+arrows move selected identities
+as a stable block. The headless `core/page_order.py` model has no UI/feature imports.
+Restore resets the tuple. Drag holds preview application/submission, coalesces redraw
+at 16 ms and reuses edge-scroll cancellation on Escape/hide/resize/focus loss.
+
+The immutable PagePlan includes exactly one permutation of every original page.
+`features/organize/service.py` opens the source without saving it, moves existing
+page objects, remaps detailed bookmark destinations, stages a new PDF and verifies
+page xrefs/count before exclusive publication through shared rollback helpers.
+Widgets, annotations, contents, direct links and embedded streams retain original
+xrefs; no page rasterization or quality reduction. Source signatures and aliases
+are guarded before work and before publishing. Cancellation checkpoints occur
+between page moves and before/after save/publication. Native operations finish first.
+
+The page uses the existing metadata/export worker queue (bounded to 32 for organize), ToolPage cancel token,
+loader and one-export busy guard. Progress is emitted at most once per 20 moves
+plus completion, avoiding one queued event per page. One lazy shared preview process,
+24 visible cards, 16 requests/4 results and 32-entry/6-MiB cache remain unchanged.
+Only page identities/order mappings are O(page count); moving a long reversed
+permutation may incur quadratic engine/list work, off Tk in the worker.
+
+See [Order](ORDER.md) for interactions and PDF-action/signature limitations.
+The packaged self-test now verifies seven routes and terminates with a diagnostic
+on Tk callback error/timeout rather than hanging without a report.
+
+Idle Cancel uses grid_forget and explicit job placement so CustomTkinter scaling cannot restore a hidden button; the existing loader lifecycle is unchanged.

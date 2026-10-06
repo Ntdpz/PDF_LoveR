@@ -28,7 +28,10 @@ def run(root, app_class, report):
     folder = Path(sandbox.name)
     failures = []
     selector_pages = {}
-    root.report_callback_exception = lambda kind, value, trace: failures.append(str(value))
+    def callback_error(kind, value, trace):
+        failures.append(str(value))
+        root.after(0, lambda: complete({'passed': False, 'errors': failures}))
+    root.report_callback_exception = callback_error
     try:
         app = app_class(root)
         source = folder / "ทดสอบแพ็กเกจ.pdf"
@@ -102,6 +105,8 @@ def run(root, app_class, report):
             if not missing:
                 return True
             number = min(missing)
+            if hasattr(selector, 'order'):
+                number = selector.order.index(number) + 1
             rows = (selector.info.page_count + selector.columns - 1) // selector.columns
             total = max(selector.canvas.winfo_height(), rows * selector.step_y)
             selector._scroll("moveto", ((number - 1) // selector.columns * selector.step_y) / total)
@@ -299,7 +304,7 @@ def run(root, app_class, report):
             app.busy = False
             assert all(not view.cancel_button.winfo_ismapped() for view in app.views.values())
             thumbnails = 2 + sum(len(pages) for pages in selector_pages.values()) + len(page.preview.cache)
-            complete({"passed": True, "gui": "constructed", "converted_pages": 2,
+            summary.update({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
                       "split_groups": [1, 2], "split_preview": "verified", "split_order": "verified",
                       "extract_original_pages": [1, 3], "delete_removed_pages": [2],
@@ -314,8 +319,71 @@ def run(root, app_class, report):
                       "rotation_angle": 90, "rotation_icon_cycle": "verified", "rotation_preview": "verified",
                       "file_drop": "Windows native callbacks verified for all 6 tools",
                       "tkdnd_version": app.file_drop.version})
+            start_order()
         except Exception as error:
             complete({"passed": False, "errors": failures + [str(error)]})
 
+    summary = {}
+
+    def start_order():
+        assert app.show_tool('organize')
+        native_drop(root, [app.merge.destination])
+        root.after(100, prepare_order)
+
+    def prepare_order():
+        page = app.get_page('organize')
+        if app.busy and time.monotonic() - started < 125:
+            root.after(100, prepare_order)
+            return
+        try:
+            assert page.info and not app.busy
+            page.output.set(str(folder))
+            page.prefix.set('ordered')
+            page.selector.expression.set('1')
+            page.selector.nudge(1)
+            assert page.selector.order == (2,1,3)
+            page.start()
+            root.after(100, finish_order)
+        except Exception as error:
+            complete({'passed':False,'errors':failures+[str(error)]})
+
+    def finish_order():
+        page = app.get_page('organize')
+        if app.busy and time.monotonic() - started < 125:
+            root.after(100, finish_order)
+            return
+        try:
+            assert not app.busy and page.destination, page.status.get()
+            if not selector_preview_ready(page, 'organize', 125):
+                root.after(100, finish_order)
+                return
+            with pymupdf.open(app.merge.destination) as original, pymupdf.open(page.plan.outputs[0].path) as result:
+                for index, number in enumerate((2,1,3)):
+                    assert result[index].get_text() == original[number-1].get_text()
+                    assert result[index].get_pixmap().samples == original[number-1].get_pixmap().samples
+            assert hashlib.sha256(app.merge.destination.read_bytes()).hexdigest() == page_tool_source_hash
+            from pdf_lover.core.cancellation import Cancelled
+            from pdf_lover.features.organize.service import reorder_pdf
+            app.busy = True
+            page.cancel_button.invoke()
+            try:
+                reorder_pdf(page.plan, cancel=page.cancel_event)
+            except Cancelled:
+                pass
+            else:
+                raise AssertionError('Packaged reorder engine ignored cancellation')
+            app.busy = False
+            assert not failures, failures
+            summary.update(ordered_original_pages=[2,1,3], order_preview=True,
+                           activity_indicators='all seven tools constructed; inactive after jobs',
+                           cancellation='seven packaged engines honour token; busy restored',
+                           file_drop='Windows native callbacks verified for all 7 tools',
+                           selector_preview_pages={name:sorted(pages) for name,pages in selector_pages.items()})
+            complete(summary)
+        except Exception as error:
+            complete({'passed':False,'errors':failures+[str(error)]})
+
     root.after(150, finish)
+    root.after(120000, lambda: complete({'passed': False, 'errors': failures +
+                                       [f'Smoke timeout: route={app.route}, busy={app.busy}, status={app.active_page.status.get()}']}))
     root.mainloop()

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "version": "1.10.0",
+  "version": "1.11.0",
   "decision": "accepted",
   "target": {
     "cpu_cores": 2,
@@ -8,23 +8,24 @@
     "disk": "HDD"
   },
   "impact": {
-    "memory": "One threading.Event per active job, replaced on next start; no PDF/page cache or extra worker. Existing one-page image memory, one shared preview process and bounded32 image events remain. Two fresh240-page source runs: home idle64.85MiB before vs64.21MiB after; similar range, not a reduction claim.",
-    "cpu_ui": "Cancel sets an Event on Tk and workers check safe boundaries without polling sleeps or native termination. Busy/loader remain until cleanup; native stop/retry tests passed at100%/125%. Existing shell poll reused.",
-    "disk_startup": "No startup scan or additional dependency; PDF staging rollback uses existing output identities. Image stop retains complete images and a closed streaming CSV. EXE cold HDD startup still unmeasured.",
-    "dependencies": "Uses standard threading.Event and existing headless DocumentError/engines; no new dependency or spawned process. Default export concurrency remains one.",
-    "output_quality": "Cancellation never reduces DPI, pixels or encoder quality. Four codecs verify retained page dimensions, decoded lossless pixels and matching CSV bytes. PDF rollback preserves originals, existing files and externally changed outputs; retry uses exclusive publication."
+    "memory": "Ordering stores O(page count) integer identities, one open PDF during export and no page pixmaps. Reuses one coordinator,24 visible cards,32-entry/6-MiB cache and bounded32 event queue. Two240-page fresh runs: home idle66.125MiB before vs67.17MiB after adding seventh tool; organize stage111.015MiB including preview, not export peak. A separate two-logical-core1000-page reverse export measured process peak working set51.13MiB including fixture creation; synthetic/headless, not scan or frozen peak.",
+    "cpu_ui": "Page moves run on the existing worker with cancellation at each move; pointer motion coalesces16ms and drag pauses preview application/submission. Two-logical-core affinity test1000 pointer events max heartbeat gap33.3ms. Generic resource harness includes spawn/navigation max lateness579.18ms; this is not a blanket responsiveness certification. Layout and stop/retry cover100%/125%.",
+    "disk_startup": "One staged PDF beside output is reopened to verify every page xref before exclusive publication. No startup scan; registry lazily creates organize. Long reverse orders may incur quadratic page-tree/list work. HDD cold frozen launch/scanned exports remain unmeasured.",
+    "dependencies": "No new dependency/process: existing PyMuPDF moves page objects, shared SelectionPage worker/queue and ToolPage token/loader, standard pure ordering model. Export concurrency remains one. Hidden cache/request/grab/timers release through existing visibility lifecycle.",
+    "output_quality": "No rasterization, DPI/pixel or quality reduction. Original xrefs retain text/content streams, annotations/widgets/direct link destinations; detailed TOC remaps to new slots. Unit tests verify all24 four-page permutations, editable fields and direct links, source aliases/collisions/disk failure and cancellation rollback. Native Poppler comparisons match original pages."
   },
   "limitations": [
-    "Development Windows10 host; not physical2-core/4-GiB/HDD or Windows11 certification",
-    "Native insert/render/encode/save calls complete before cancellation; longest safe step determines stop latency",
-    "Warm240-page resource benchmark is not scanned-PDF/frozen peak or cold-HDD startup certification"
+    "Development Windows10 host; CPU affinity is not physical2-core/4-GiB/HDD or Windows11 certification",
+    "Native move/save calls finish before cancellation; reverse orders may have quadratic CPU cost",
+    "Warm240-page source preview benchmark is not scanned/frozen export peak or cold-HDD startup certification",
+    "JavaScript referring to fixed page numbers and specialized PDF actions are retained without semantic rewriting; digital signatures/password PDFs unsupported"
   ],
   "source_files": {
     ".githooks/pre-commit": "0a114d26a992729d568c080400e47a4d36a0ab557bd90257a3acf43c0be3383a",
     "AGENTS.md": "86b070e4181a71d507c5ece7511d84a36ea32f35a772b0e99db56471eb889e7a",
     "CONTRIBUTING.md": "015ddba8468452ca98ec2c46b23848eb12959805562c8837911ce2318c50fc97",
-    "docs/ARCHITECTURE.md": "fa715d7d5c1d6e0d6d40be4e7bd5dedc8d2925cd0858aa8ef08bf96e3898768a",
-    "docs/DIAGRAMS.md": "e21c11820be5f9162066179f814287d8862a53081c11f8458edb00169eaf8adb",
+    "docs/ARCHITECTURE.md": "bea2b135715916d1d70d442a10c5db4bc17db1c9091cb397d7ec3c30a66e9894",
+    "docs/DIAGRAMS.md": "d6f8590676d6d3f323164bff149e6a6816e1e830d39b6c43559041a41818fa07",
     "main.py": "f9930803372107e6bcb6ee64bc1cbae518ccb9221adfc34e8dce74de2d0fd1b0",
     "packaging/PDF_to_PNG.iss": "26cb2ccc0b932ac690e46ee912f71d7274d38cd1b67c16722d127ab319d50ecb",
     "packaging/build_release.ps1": "32ee24b5b77b37d34acfb6c9d64706687e40a302486df5dc1191e31754dbac21",
@@ -33,20 +34,21 @@
     "packaging/prepare_version.py": "9a9d44f8f408b15d8762847778db16b595b09132d6781426bafa5f935edbbf64",
     "packaging/spec_common.py": "ada64c347946f0ca152b7fcc067fa48511a618a1919a6fb0a53089574852c0c7",
     "packaging/verify_distribution.ps1": "71d91cbdfb3e171630c8038266b04cdc71a97a3045c71df6c12c7228d6333c22",
-    "packaging/version.iss": "317ee7766e8eb70c88ce1cdbdb292499705fca6baa7fda443c251c7767d35f30",
+    "packaging/version.iss": "d6ed102f705db0b0ee00fdabc88c770757225793241198b41212f470b8c4d328",
     "pdf_lover/__init__.py": "c1c4a7512266b8c4581b3b4780643c1b66028a4db7f3ab2e2eb9c95d7a730b25",
     "pdf_lover/__main__.py": "7f873c699d79cd83557c7a4c61c36309d6432fda17190d1734e186b770cc3b15",
     "pdf_lover/app.py": "6d8f2bb6035ef8b9de799da0744a5b6e35034d499e32187576c94172dc6310fb",
-    "pdf_lover/catalog.py": "5a55d3729a26294ae2ad90ee74e8d432b5a175958b11d320a6ca9ad1a2314286",
+    "pdf_lover/catalog.py": "2a28dfadd555abc699afc7eaf30adb464ef4576fca72d7ea44907c8a714fa754",
     "pdf_lover/core/__init__.py": "2fec6b86a83b1bb5171feb3aa08dd6f0dccf139df658d6ee42a00222f24e2ed2",
     "pdf_lover/core/cancellation.py": "4569679e92cd057b0c3211ebef3b4748a1295a66f773173e0b1c27d0f627dcfd",
     "pdf_lover/core/document.py": "c112aff0e2aba6c7ecf195627d917ed55a2e42bd8c51a49fa0efeb928e9fc016",
+    "pdf_lover/core/page_order.py": "188ecdb32f24daaa5dc785cd48e8a07bc9e12abe7cc1e2434bde6bdfc2733005",
     "pdf_lover/core/page_selection.py": "3dce97f5087c51ea94e3bed97b59923f1c3e89e705f15110fa9250102443aac2",
     "pdf_lover/core/pdf_output.py": "f7427857afba8031ff193b0591fdb64c5366a927c575a393ebb7d20bd4132b09",
     "pdf_lover/diagnostics/__init__.py": "6981b71b4746b5488116bc8877e92c1f573ef609517be29c28fef5ed14aea536",
-    "pdf_lover/diagnostics/self_test.py": "90952b58882308a2b2bd0aaa6b6f734f5ce762256918847d312ab7d123db9415",
+    "pdf_lover/diagnostics/self_test.py": "0893d14ef5b1c61b9177d7159d382d36658c28722d601e61ed51ec569ed2ab38",
     "pdf_lover/features/__init__.py": "213d7c2983870f1e7ce58c250baaaa5e0b7c7ce896ec32aefd598435200f1da0",
-    "pdf_lover/features/base.py": "55696a17d42b51bd6ab083f609df637b23a75f4e663effa64e647305c3a7e4dd",
+    "pdf_lover/features/base.py": "bb57f991ec19099ce3ac7f35ef7514d09de60a2ebbf7f8c586ad5cac51f98994",
     "pdf_lover/features/delete_pages/__init__.py": "f9711348133b94fc0a65aa615c685b8592cd5556b6ac90f559304f29a6a11bf4",
     "pdf_lover/features/delete_pages/page.py": "766ad88651c7748a082f1968eae6e9406dd6fcb8909064722faf8b0d305adcf7",
     "pdf_lover/features/delete_pages/service.py": "04d3fa289b268ab0d370ec29474b9a8e7a2de24eea486accc8caf54adf7e10da",
@@ -58,15 +60,18 @@
     "pdf_lover/features/merge/page.py": "132d6fdd1296c0e4045eff1c629928617b859e7db68dc0c8e490f1b74436fc31",
     "pdf_lover/features/merge/previews.py": "81c1181d22dd408992734a2190732e60d54a0fccb7ba02096514cc1e39eba5b9",
     "pdf_lover/features/merge/service.py": "07d285a15e6c022f2db20b0b5e0d29d26a8eb336404df339237625917a31c9fc",
+    "pdf_lover/features/organize/__init__.py": "919015dc273d0121fee84903237b2fb280d13d86c2115ab98280a08713cb3d06",
+    "pdf_lover/features/organize/page.py": "8d0bd2ec3dd312f63eb9e5c561bb2738fdc69ee276526b0816e5d03836a83ebf",
+    "pdf_lover/features/organize/service.py": "6c7593247150e1c306827abebf6f6a193e2d9a8c9a97a9f0241e838fd9d1e4df",
     "pdf_lover/features/png/__init__.py": "a7e43ac8da29538c32151a6d51b1ca674ce278d04e3d0f837c0c345e1e82daef",
     "pdf_lover/features/png/page.py": "625570564c84f251ac0b02820d9fed7f96f8e94582cb7922483445119086581e",
     "pdf_lover/features/png/selection.py": "d5e09060bfce06c6577bbc50e80d62938539ad13b93abccc81bb61a27b78821b",
     "pdf_lover/features/png/service.py": "563c7fcdce936a829e72cce08b5332cc75c5056e330d192788a8ec5a301ce62d",
-    "pdf_lover/features/registry.py": "d2e5aa84a320e4f97ead286d67873300aec9e17f87edc3c70b571a9930372143",
+    "pdf_lover/features/registry.py": "6161ea9cde198033509d5e2c0437c32116596356c4280b95d07d03a678a8ed90",
     "pdf_lover/features/rotate/__init__.py": "54560eac7d317abdb8a0c0f4af033181bb52ba26a6c7d81403cf9a5a5f0be67a",
     "pdf_lover/features/rotate/page.py": "dfa49b79b149cf4fd81fbc65e15548a811e08d193f3ac43a6cebb0a6b139459a",
     "pdf_lover/features/rotate/service.py": "9a4b4d5a4dcbcc9eadacc62c89250abe85312af62cf427ac5da4bf3de4560b30",
-    "pdf_lover/features/selection_page.py": "f1fa0975110885e9180c80b596dfea7dac742dc9434898828d7a4a729e2055ab",
+    "pdf_lover/features/selection_page.py": "dc3c13829c4736d2b39d68ae1a16a8431e63f3e0abc5eb7a8908a4c9b93cee32",
     "pdf_lover/features/split/__init__.py": "55b7b580d9b0ed8f88d609a9bfd2bd912e2a12464f2e9ecb538e7640b1347deb",
     "pdf_lover/features/split/page.py": "14c4812fc704759916d3ad8f8cc0bfe6f9f3828e9acb604df099ddd9a16469fa",
     "pdf_lover/features/split/service.py": "ee80978cc5930bc1880032f5611d673b4889f79cb615a92e84deaac96d5ba431",
@@ -78,116 +83,111 @@
     "pdf_lover/ui/controls.py": "8107fe9e7d4455d34f9ecd77d646079bcb12ef4ee1b045bfbddcec078ea4968a",
     "pdf_lover/ui/home.py": "c53abbb3c088cf9a183e56ca8c4935f0abd139c4eeb6797aba2b08f2ea3116e5",
     "pdf_lover/ui/icons.py": "beb7b0bf018edb4ef7e966ea56ae7c6bcb36901a5edfc650dc78383cce00a84c",
-    "pdf_lover/ui/navigation.py": "31b19d32054a68d4a8ab6ab4ebc470819e4ea79aebb4e092075c84711c58a5f3",
+    "pdf_lover/ui/navigation.py": "081ff1cb347ee212217d25938541fd4fb8ab6f76dfa91cfb1125e355157df1d1",
     "pdf_lover/ui/page_gestures.py": "9dee33051d87e01ef1c873c20cf7a4d6b2759e79944c94126989f43864197b72",
+    "pdf_lover/ui/page_order.py": "48878749768ad16b6fe1b756d87eb612454841926cd00bf0c15baf0b567cfe65",
     "pdf_lover/ui/page_preview.py": "d9f5791d96f0f3714200fe3227783f716c35fdb96134ce7f4880cd824601d96c",
-    "pdf_lover/ui/page_selector.py": "3ff06e5c163f75f97b12ec3b884d1205c4edf01187b21d50136ef42cd5ae64e4",
+    "pdf_lover/ui/page_selector.py": "abafb2bb59d77cb23ff757dfc2332331e5ee8b18237a01796bb8c46520758fd1",
     "pdf_lover/ui/pdf_previews.py": "6b34be6b397dbbeb4fc00f6d6dcf1647c52bdcb5abc0c74357c147d369462646",
     "pdf_lover/ui/theme.py": "0dbdb1aea9488d6229c1e2a6547f7ab043219881e850f6500862389c733986ff",
     "pdf_lover/ui/tooltip.py": "5d6fc214e697a809c37c0f3b9c929ce9cd96b08dd5966a996d066f67cb4a4c07",
-    "pdf_lover/ui/workbench.py": "2c77a442549198521a86468b5e47af65f045839950c956acd2facda933082790",
-    "pdf_lover/version.py": "4ed5a67e6a088d7350a834386adc3220ec5b19313b4285b257ffb0122ea1f09d",
+    "pdf_lover/ui/workbench.py": "7071765eae0846dc5f327aefa8096c1c7e2da6629958de06335e2b98f32d368f",
+    "pdf_lover/version.py": "dccf5509e86b8b26e04cead81b4a0e70ffb0794b005d882ee35cd8a8b633280c",
     "pyproject.toml": "ed660cc6c0b95676730cdc5044524e1730c362cfcf10dd9aa297ff883e6881ca",
     "requirements.txt": "6876beb4cdea0141ea89b9484fbc905e9c47388a9957afb72f3565534eef3f4c",
     "scripts/benchmark_image.py": "4f29087c5e07595acf87880ec4cc127a31860bc6966df66cfe941875bce20292",
     "scripts/benchmark_png_memory.py": "154165dd33a0a19ead2c4ad2776d713b7e76f461e45530b7b289ea959a68d04e",
-    "scripts/benchmark_resources.py": "ac3ed966d0e20503fcdd75e4abaaf1024a160fe0fd6428f43e4af52677eab9e2",
-    "scripts/check.py": "46c160c9f6b2028107ba1f2d72a93375fc5cd90aca836e24eedd46ff2fc0370b",
+    "scripts/benchmark_resources.py": "3ec57b93371fa86c4811855f5ae522141e5c3d64bfa559d802a5536a00dc8cac",
+    "scripts/check.py": "666a4113b521e346f481f8cfc9c2bc35c59aefaebaaa2d8664a13afe88721be6",
     "scripts/check_low_spec.py": "528757e3439aec1e213a154b4c61c5a115996de66b78147623ada9eecb271705",
     "scripts/clean_workspace.py": "e161140ac0b97f4894e75305dffc24599695195d92b9bcca1b8b571541ebeecd",
     "scripts/install_hooks.py": "49d0a118b0bd878dd106de475550e4cc5d2166a290ffabc5fdc9e37b663471e6",
     "scripts/update_diagrams.py": "3149059eff6ba1cf78f15c24243f9caa3fcd6c7e9ce11f40b0093401a5fa3cd8",
     "tests/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
     "tests/ui/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
-    "tests/ui/verify_activity.py": "986c057618d09ff7273a516c6b5702fcf5f25fe96a637db33756f022ca7f1557",
-    "tests/ui/verify_cancellation.py": "e22654f443936b3578b2b66cef56e8922ccb3c8f3581df435ddc98a6ca6ed9d4",
+    "tests/ui/verify_activity.py": "1f70cd5e216f60978d6aa5d406d894995c5a05645fd45bf6026f4c269ace30e4",
+    "tests/ui/verify_cancellation.py": "4053711efb6f92b3c0e3b7a0b560e08e11778e01bbe963214ea9f5314ab46087",
     "tests/ui/verify_drag_performance.py": "58b3da234b768b962070d83aef9bcccc97b285a42a34cdbad4f2910aa67c86c1",
     "tests/ui/verify_file_drop.py": "2d45642a8cc78d86eb2b3dcec1df1b289c21afbccf0814864f4d0719b4a1c963",
-    "tests/ui/verify_home.py": "7f76f033ed8c35588b55bdb5f61226a037b0f42507cdbd59ec02509439b0ab97",
+    "tests/ui/verify_home.py": "860c0db7117dff0eecf01d1cccc5be9b92680ddf7a4d466a0f4ba15508aa2d5d",
     "tests/ui/verify_image.py": "467eb63c1362ae58fbe644684be3bba9f29f803af6f4dd0df56ad72aba061c5f",
     "tests/ui/verify_image_selection.py": "5e31003d5c17f2312925c6d692ad2c8682f36dfd19017615b3c98f66eb120ac1",
-    "tests/ui/verify_merge.py": "6a7e6e9245bdaf1c7a44d1ad385059e0c3638a78d3e466cea18b46e662b394d9",
+    "tests/ui/verify_merge.py": "a39497e4e2c6e937399c215a2efafd008e78702360f97771d6fed625c0a94c8c",
     "tests/ui/verify_merge_cards.py": "305529c424d5cd5efe0e153ee71ce9491de6e02d12547504e6abd8d3e01803b0",
+    "tests/ui/verify_order.py": "deef2095becc553aea17f7ddf54d929b0fe8149fa997f07724962298170b0b96",
     "tests/ui/verify_page_gestures.py": "a9d70d7f96996175735b1c5e0c279ce81cf98af51b05e9252da8e72775133d8a",
     "tests/ui/verify_page_tools.py": "38170ce2650a5d8fe69e4248bc49f59525a6b60d25af9e1f30185c0bfdf3253f",
     "tests/ui/verify_png.py": "d68a43af40bfa1285c9f35310d31e6a5e1ab9b2e1bc111e57176bc7e4b342ca2",
-    "tests/ui/verify_resources.py": "a68fb52e55b973ecb4f4e65422ea9a6e04080c795170eed4aafb4486c2081bc9",
-    "tests/ui/verify_rotate.py": "3514ee6c4d3f5740b372f50726eceff9e1830cbaf856be642f3ef7a48edc3a43",
+    "tests/ui/verify_resources.py": "4f06d816bac13fe0a328e7bc47d4678ea139a072069ecacc7e49430afeb1309d",
+    "tests/ui/verify_rotate.py": "4b9b164872fcc66a8370f65b920c33ee02888ccb312bba233f65b91c6a3596f2",
     "tests/ui/verify_selector.py": "58e7be3cda271f45d2a9515e93eaa267e84d077d2918bd449008f751c50875ca",
     "tests/ui/verify_split.py": "11da711871c29e567df942ea4fd8e4bc260b3846ea5758929f6e06314bb13533",
-    "tests/ui/verify_workbench.py": "d41745259102f11b796c4bf180f0a7ac3fafbf0f6b2379db8918c17efb7ebf36",
+    "tests/ui/verify_workbench.py": "199c74b804087928777bad3614eb662d63ca9891d0fe32e3d74d4cb78dbaba3a",
     "tests/unit/__init__.py": "d1e23beb897d9074ef7684ca1b4266fae62c41cb9afcd49eced7618db4cf50c5",
-    "tests/unit/test_architecture.py": "00a09503bf033eb228d2be198ca8243aedf8251cce0e016896da13e2e16da24b",
+    "tests/unit/test_architecture.py": "faa9d32675164645e45ae421261d63b21cfca601f853e1bee711508540cb113b",
     "tests/unit/test_cancellation.py": "e2f9101c7eab473ff5adfe87fce4cba24287cf5475738556dd85435a6500e95b",
     "tests/unit/test_diagram_guard.py": "9eef074f951e4862d0db68392ffd86a2a027d15fc138707409fc86d2c26aae5d",
     "tests/unit/test_low_spec.py": "e4d79e45f36633ae6658d103311b2c243eef2827cc377ab13117eacf7475019e",
     "tests/unit/test_page_gestures.py": "31c26e2032126f2d1e02fe97a13ebcfbed24a76fff461942f42bd2f1d53a1847",
     "tests/unit/test_page_tools.py": "cf0b6a423a798b4d1bd97b7ebd9d142fd24aff2e85fb754df4fa5b59e5aa52cd",
     "tests/unit/test_pdf_merge.py": "a6c4ed7ca6b99b79e417ee71d2383b1b0d3cc13354c8503798f3451f11550a4c",
+    "tests/unit/test_pdf_order.py": "1f3fb387eece3d23c607af3e413077afd83a9ca1ac2ecfc963d7f7af4040e177",
     "tests/unit/test_pdf_png.py": "a61f3306d50a4605fedcbaa13444f5912930849a340e63cf4ba38c280b6a5a0c",
     "tests/unit/test_pdf_rotate.py": "d8ebf210b402450b0baaa3747d47962fc780ae9abf56c9aa2e9bcb05101d78c1",
     "tests/unit/test_pdf_split.py": "ec613f35d5da19f64c1b77f882f686c785118980b9c2c5432c9e087146a0e8e1"
   },
   "evidence": [
     {
-      "path": "docs/activity-verification-1.10.0.json",
-      "sha256": "0387a4a42c80dda1b29bab1357b034bf492aef5f8b7e06aafe20924acc6f1dd2"
+      "path": "docs/order-verification-1.11.0.json",
+      "sha256": "f68ce7574acb023acc737e742e4dd2947b14b7fae3fb1e495c7ced8be6bca398"
     },
     {
-      "path": "docs/cancellation-engine-verification-1.10.0.json",
-      "sha256": "98f21305016db51d07720b497c06bd41e5a38f075766e8cc56572cf928cf0680"
+      "path": "docs/order-affinity-verification-1.11.0.json",
+      "sha256": "c06ffba431b846ece8dcbc22a677c84cf8d1956af3fc5793d0598e2fc0e7c912"
     },
     {
-      "path": "docs/cancellation-verification-1.10.0.json",
-      "sha256": "bb01dac4575e3e2db98bc701e83068149b80bd5ba427c3bed88f0166d49fad3a"
+      "path": "docs/order-engine-resources-1.11.0.json",
+      "sha256": "0ebc8bcad28c498820cd4059cc573e71e53b7af187e15e89ddbce620b35dd3af"
     },
     {
-      "path": "docs/distribution-1.10.0.json",
-      "sha256": "b486401448b936625cc2476b5eac644ae014ddfc755d3265364a29b3beceb31f"
+      "path": "docs/workbench-verification-1.11.0.json",
+      "sha256": "ca8599b50eb334ee89a54060603bd9b086349719105d9816091c370f071246c7"
     },
     {
-      "path": "docs/drag-performance-1.10.0.json",
-      "sha256": "f32bc2df1fbc22890f8326e31c89ab03e506fec27eb5fa122471ab222bf9046f"
+      "path": "docs/performance-before-1.11.0.json",
+      "sha256": "b405ef37173ba79f35c815d4f13488e2e6c06164acd3b74aad5c99d21ce84e20"
     },
     {
-      "path": "docs/image-selection-verification-1.10.0.json",
-      "sha256": "546b08b311730c8e051f0114588ed4d01cb0fcf0afe6e0c5289430d9b4d12b69"
+      "path": "docs/performance-after-1.11.0.json",
+      "sha256": "461e6f30311a4a7a5f42995f408907d978485986df4a1ca86997777b3b513685"
     },
     {
-      "path": "docs/page-gestures-verification-1.10.0.json",
-      "sha256": "343c131fd3b4b9b5ed95ffe559038b1f027e7b1795a7a184de6a91887627d9e0"
+      "path": "docs/source-package-verification-1.11.0.json",
+      "sha256": "b9bd638ccb0b90efd06058f3c1ccca88022603c43ba5eb37844f2906f7752065"
     },
     {
-      "path": "docs/performance-after-1.10.0.json",
-      "sha256": "703d85a6e6da7936bc513c794bdafcc91ebbaf6b11ba1e00015872ed1390c59a"
+      "path": "docs/cancellation-verification-1.11.0.json",
+      "sha256": "ee2e59b9514300510d97e812c7b4e8250ae38568f786a5d2e103a884d03619bc"
     },
     {
-      "path": "docs/performance-before-1.10.0.json",
-      "sha256": "6ac6acbafa7a5b4f041e78374b7b2065ef67dabed1cf01ccd758a098207f5bb6"
+      "path": "docs/activity-verification-1.11.0.json",
+      "sha256": "d8d40b13dfbc673104bc355a026f12fbb33e404dedfcbabf2f247e1a0d18487b"
     },
     {
-      "path": "docs/resource-verification-1.10.0.json",
+      "path": "docs/distribution-1.11.0.json",
+      "sha256": "37fe8f7eeaf97d81c27d7073098df6c42d42ce758facd8da203fdde1dffe0f47"
+    },
+    {
+      "path": "docs/verification-1.11.0.json",
+      "sha256": "60b8bd2ecc39eed314855b8aad29f1b09a0d625bb19fceef313fc80e1127e95e"
+    },
+    {
+      "path": "docs/resource-verification-1.11.0.json",
       "sha256": "90b5f023feaa163992491cd8971cea083692f563aa67b89e730fc6f427915f5a"
     },
     {
-      "path": "docs/selector-verification-1.10.0.json",
-      "sha256": "e9ead47472fd11c3f83593c538960146ba9d2d4f076fdb06137dc858c3a50ee2"
-    },
-    {
-      "path": "docs/source-package-verification-1.10.0.json",
-      "sha256": "b47a6a8cfb6acfcb364458ce219d9c78278a33b5d7e08ab59a8fcd0bf4471577"
-    },
-    {
-      "path": "docs/unit-follow-up-1.10.0.json",
-      "sha256": "c2d8b49f14afbf439dd99c8b06d314f2065ff18d4285e033e9f43fc3ec51fa3b"
-    },
-    {
-      "path": "docs/verification-1.10.0.json",
-      "sha256": "8cd8b6b9d82b78297008898164f0eba5e0601529d41770834a2e230f599ccb38"
-    },
-    {
-      "path": "docs/workbench-verification-1.10.0.json",
-      "sha256": "111c3e9803741aba2db71524654d832a31eb11de99cae1b0c70fd8981a7c2dce"
+      "path": "docs/order-bookmark-verification-1.11.0.json",
+      "sha256": "6c36b6b3626dd93e743c1df34cde6d17025355dda0c5d06ca1f0f31cba055e62"
     }
   ]
 }

@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "diagrams": [
+    {
+      "name": "application",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "application.visual-check.1440x900.light.png",
+        "application.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: seven ready tools, ordering identities/xrefs, bounded queues and cancellation paths legible in light/dark; no clipped labels or route/node overlap. Topology unchanged for bounded native keyboard-focus retry.",
+      "artifact_canonical_sha256": "4438b42fd9cd8dfd4a93419d82dab5f6d94f1dcb1e875fbdb24022198f2456db",
+      "screenshots_sha256": {
+        "application.visual-check.1440x900.light.png": "f6efef82849c060b673fd28d0fa0e428fef05aa417d0cb5c99f760170fa1c59b",
+        "application.visual-check.2048x1320.dark.png": "3709b88167d907800ee2ba3cfaa91e2ac893dc3ab8fdd55995272b3c4b94c11d"
+      }
+    },
+    {
+      "name": "processing",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "processing.visual-check.1440x900.light.png",
+        "processing.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: seven ready tools, ordering identities/xrefs, bounded queues and cancellation paths legible in light/dark; no clipped labels or route/node overlap. Topology unchanged for bounded native keyboard-focus retry.",
+      "artifact_canonical_sha256": "16fb835fc21fc2a5415b069a8d1987232cf12f737eed1c1b122e75e55d65dd70",
+      "screenshots_sha256": {
+        "processing.visual-check.1440x900.light.png": "1d2979ae05fb2b5a0e5116a8a9ec10d75b8d422846b834bc9a0f2d17e300d562",
+        "processing.visual-check.2048x1320.dark.png": "4419c9fe23c0948869ee448223648244ad584ca09c2b14619916d26c687bf933"
+      }
+    },
+    {
+      "name": "maintenance",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "maintenance.visual-check.1440x900.light.png",
+        "maintenance.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image-capable review: seven ready tools, ordering identities/xrefs, bounded queues and cancellation paths legible in light/dark; no clipped labels or route/node overlap. Topology unchanged for bounded native keyboard-focus retry.",
+      "artifact_canonical_sha256": "cd3a103648f6054d6565d9b9a18e3034ca87c77ff4e62aee7cf5cfbdc1587c48",
+      "screenshots_sha256": {
+        "maintenance.visual-check.1440x900.light.png": "a9074b67ddd7cb407985ec29d9ed0c5c5ea6a0d6893fa84688cf7ca1fe502831",
+        "maintenance.visual-check.2048x1320.dark.png": "97878d29a53f4003057e83c67ca3d79cf37dfe177bc193b5c2b76f31e6c4848f"
+      }
+    }
+  ]
+}

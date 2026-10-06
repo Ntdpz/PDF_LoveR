@@ -1,7 +1,7 @@
 {
   "passed": true,
   "merged_pages": 3,
-  "ready_tools": 6,
+  "ready_tools": 7,
   "checks": [
     "adding/reordering/removing files",
     "invalid PDF rejected",

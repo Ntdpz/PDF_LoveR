@@ -23,7 +23,8 @@ PAGE_FACTORIES = {tool: LazyPageFactory(f"pdf_lover.features.{feature}.page", pa
                   for tool, feature, page in (
                       ("pdf-png", "png", "PngPage"), ("merge", "merge", "MergePage"),
                       ("split", "split", "SplitPage"), ("extract-pages", "extract", "ExtractPage"),
-                      ("delete-pages", "delete_pages", "DeletePagesPage"), ("rotate", "rotate", "RotatePage"))}
+                      ("delete-pages", "delete_pages", "DeletePagesPage"), ("rotate", "rotate", "RotatePage"),
+                      ("organize", "organize", "OrganizePage"))}
 
 
 def validate_registry(factories=PAGE_FACTORIES, tools=TOOLS):

@@ -75,7 +75,7 @@ def output_settings(page, rail, row, variable, title):
 
 
 def selection_workbench(page, *, split=False):
-    title = 'แยก PDF' if split else page.TITLE
+    title = 'แยก PDF' if split else 'จัดเรียงหน้า' if getattr(page, 'ORDER', False) else page.TITLE
     source, body, rail = shell(page, title, 'เลือกเอกสาร → เลือกหน้าและตั้งค่า → ตรวจผล → บันทึกไฟล์ใหม่')
     page.source_label = page.label(source, 'เลือก PDF หรือวางไฟล์จาก Explorer', font=page.font_bold)
     page.source_label.grid(row=0, column=0, sticky='ew', padx=(0, S['sm']))
@@ -84,7 +84,7 @@ def selection_workbench(page, *, split=False):
     page.controls.append(page.add_button)
     # Fit long Thai filenames inside their actual available space.
     source.bind('<Configure>', lambda e: page.source_label.configure(wraplength=max(200, e.width/page._get_widget_scaling()-170)), add='+')
-    page.selector = PageSelector(body, page.app, page._settings_changed,
+    page.selector = getattr(page, 'SELECTOR_CLASS', PageSelector)(body, page.app, page._settings_changed,
                                 title='หน้าเอกสาร' if split else 'หน้าที่จะลบ' if page.DELETE else 'หน้าที่จะบันทึก',
                                 hint='ช่วงหน้า เช่น 1-3,5,8-10', select_initial=split or not page.DELETE)
     page.selector.grid(row=0, column=0, sticky='nsew')
@@ -97,7 +97,7 @@ def selection_workbench(page, *, split=False):
     modes.grid_columnconfigure(0, weight=1)
     page.mode_buttons = []
     choices = (('pages','หนึ่งไฟล์ต่อหน้า'),('ranges','แบ่งตามช่วงหน้า'),('chunks','แบ่งทุก N หน้า')) if split else (
-        () if page.DELETE else (('single','PDF เดียวรวมหน้าที่เลือก'),('pages','หนึ่งไฟล์ต่อหน้าที่เลือก')))
+        () if page.DELETE or getattr(page, 'ORDER', False) else (('single','PDF เดียวรวมหน้าที่เลือก'),('pages','หนึ่งไฟล์ต่อหน้าที่เลือก')))
     if choices:
         page.label(modes, 'ตั้งค่าผลลัพธ์', font=page.font_bold, height=24).grid(row=0, column=0, sticky='w')
         titles=dict(choices)
@@ -121,7 +121,15 @@ def selection_workbench(page, *, split=False):
         page.mode.trace_add('write',sync)
         sync()
     else:
-        page.label(modes, 'เลือกหน้าที่จะลบ\nตรวจหน้าที่เหลือก่อนบันทึก', font=page.font_small, justify='left').grid(row=0,column=0,sticky='w')
+        if getattr(page, 'ORDER', False):
+            for index, (title, command) in enumerate((('ย้ายก่อน', lambda: page.selector.nudge(-1)),
+                                                    ('ย้ายหลัง', lambda: page.selector.nudge(1)),
+                                                    ('คืนลำดับเดิม', page.selector.reset_order))):
+                button = page.button(modes, title, command, width=130)
+                button.grid(row=index, column=0, sticky='ew', pady=S['xs'])
+                page.controls.append(button)
+        else:
+            page.label(modes, 'เลือกหน้าที่จะลบ\nตรวจหน้าที่เหลือก่อนบันทึก', font=page.font_small, justify='left').grid(row=0,column=0,sticky='w')
     if split:
         chunk = ctk.CTkFrame(modes, fg_color='transparent')
         chunk.grid(row=2,column=0,sticky='ew',pady=S['xs'])

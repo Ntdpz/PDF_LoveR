@@ -13,7 +13,7 @@
 ## รายละเอียดที่ต้องรักษาเมื่อพัฒนา
 
 - เริ่มผ่าน `__main__.py` ซึ่งเรียก `multiprocessing.freeze_support()` ก่อนโหลด Tk;
-  home แสดงเครื่องมือใน `catalog.py` แต่มี PDF to Image รวม PDF แยก PDF แยกหน้า ลบหน้าออก และหมุน PDF ที่พร้อมใช้
+  home แสดงเครื่องมือใน `catalog.py` แต่มี PDF to Image รวม PDF แยก PDF แยกหน้า ลบหน้าออก หมุน PDF และจัดเรียงหน้า PDF ที่พร้อมใช้
 - `registry.py` ตรวจ ready IDs; App สร้าง page เมื่อเปิดครั้งแรกและเก็บไว้
   การนำทางและเปลี่ยนรายการถูกป้องกันระหว่าง busy; ปิดโปรแกรมต้องรอจบงาน
 - เลือกไฟล์หรือรับ native TkDnD ผ่าน `accept_paths()`; drop บน home เปิดรวม PDF,
@@ -23,7 +23,7 @@
 - App เป็นเจ้าของ spawned preview process ร่วมหนึ่งตัว; request จำกัด 16 และ result จำกัด 4
   ใช้ client/generation เพื่อทิ้งภาพเก่า; ซ่อนหน้าแล้วคืน cache/timer แต่เก็บเอกสาร/ค่าผู้ใช้
   home ปิด process ทันที; merge/selector/comparison จำกัดจำนวนภาพและงบสำเนาภาพโดยประมาณ
-- เครื่องมือพร้อมใช้ทั้ง 6 มี worker thread และ event queue ของตนเอง แต่ใช้ busy ของ App ร่วมกัน;
+- เครื่องมือพร้อมใช้ทั้ง 7 มี worker thread และ event queue ของตนเอง แต่ใช้ busy ของ App ร่วมกัน;
   shell poll เฉพาะหน้าปัจจุบันทุก 80 ms และ home 300 ms, page อ่านไม่เกิน 100 events ต่อรอบ; worker ไม่แตะ Tk
 - แยกหน้า/ลบหน้าใช้ SelectionPage ร่วม, preview เลขหน้าใหม่/เดิมและชื่อไฟล์;
   core/document ตรวจต้นฉบับ, core/pdf_output ตรวจชุดชั่วคราวและคืนไฟล์ของงานเมื่อผิดพลาด
@@ -107,3 +107,10 @@ Shared ToolPage cancellation Event passes from Tk to the active worker. Processi
 shows safe checkpoints and a cancelled terminal path through the existing queue;
 PDFs roll back job-owned outputs, images keep complete pages and CSV. Busy and
 loader release after cleanup. Maintenance includes stop/retry and frozen-engine checks.
+
+## จัดเรียงหน้า · 1.11.0
+
+รายการ organize พร้อมใช้เป็นเครื่องมือที่ 7; PageOrder ใช้ viewport/coordinator เดิม
+ลากหลายหน้าและ Alt+ลูกศรย้าย identity ของหน้า; workers ย้าย page xref เดิม ไม่ rasterize
+ตรวจ permutation และ xrefs ก่อน staged publication; bookmark destinations เปลี่ยนตามลำดับใหม่
+maintenance รวม native order, packaged route, cancellation/retry และ source/output safety

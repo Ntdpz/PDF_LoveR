@@ -1,4 +1,4 @@
-"""Real job lifecycle checks for shared activity feedback on all six tools."""
+"""Real job lifecycle checks for shared activity feedback on all seven tools."""
 import hashlib
 import json
 from pathlib import Path
@@ -82,7 +82,7 @@ def main():
                 assert not badge.running and badge.started is None
                 assert badge.canvas.itemcget(badge.arc, 'state') == 'hidden'
                 count = badge.frame_count;pump(root,0.1);assert badge.frame_count == count
-            for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate'):
+            for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate','organize'):
                 assert app.show_tool(tool);page=app.active_page;pump(root,0.1)
                 if hasattr(page,'_inspect_worker'):
                     held(page,'_inspect_worker',lambda:page.add_paths([sources[0]]),'inspect')
@@ -111,7 +111,7 @@ def main():
             'heartbeat_gap_p95_ms':round(gaps[int(len(gaps)*0.95)],2),'heartbeat_gap_max_ms':round(max(gaps),2),
             'tk_errors':errors,'limitations':['Development Windows PC; not physical 2-core/4-GiB/HDD proof','Worker gates simulate I/O delay before real inspection/export; heartbeat includes screenshots and test overhead']}
     (ROOT/f'docs/activity-verification-{VERSION}.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
-    print('PASS: all six tools, inspection/export/error, elapsed time, idle/hidden cleanup, reduced motion and 100%/125% layout')
+    print('PASS: all seven tools, inspection/export/error, elapsed time, idle/hidden cleanup, reduced motion and 100%/125% layout')
 
 
 if __name__=='__main__':main()

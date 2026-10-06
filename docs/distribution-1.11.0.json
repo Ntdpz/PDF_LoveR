@@ -1,0 +1,299 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-06T10:41:42.4640161+07:00",
+  "host": "Windows 10 x64",
+  "standalone": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "activity_indicators": "all seven tools constructed; inactive after jobs",
+    "cancellation": "seven packaged engines honour token; busy restored",
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ],
+      "organize": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 7 tools",
+    "tkdnd_version": "2.9.4",
+    "ordered_original_pages": [
+      2,
+      1,
+      3
+    ],
+    "order_preview": true,
+    "preview_cleanup": true
+  },
+  "zip": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "activity_indicators": "all seven tools constructed; inactive after jobs",
+    "cancellation": "seven packaged engines honour token; busy restored",
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ],
+      "organize": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 7 tools",
+    "tkdnd_version": "2.9.4",
+    "ordered_original_pages": [
+      2,
+      1,
+      3
+    ],
+    "order_preview": true,
+    "preview_cleanup": true
+  },
+  "installed": {
+    "passed": true,
+    "gui": "constructed",
+    "converted_pages": 2,
+    "dpi": 150,
+    "png_size": [
+      300,
+      150
+    ],
+    "merged_pages": 3,
+    "merge_order": "verified",
+    "split_groups": [
+      1,
+      2
+    ],
+    "split_preview": "verified",
+    "split_order": "verified",
+    "extract_original_pages": [
+      1,
+      3
+    ],
+    "delete_removed_pages": [
+      2
+    ],
+    "delete_retained_pages": [
+      1,
+      3
+    ],
+    "original_unchanged": true,
+    "thumbnail_worker": "single shared process",
+    "thumbnail_count": 16,
+    "preview_process_limit": 1,
+    "activity_indicators": "all seven tools constructed; inactive after jobs",
+    "cancellation": "seven packaged engines honour token; busy restored",
+    "selector_layout": "vertical viewport grid",
+    "selector_preview_pages": {
+      "split": [
+        1,
+        2,
+        3
+      ],
+      "extract-pages": [
+        1,
+        2,
+        3
+      ],
+      "delete-pages": [
+        1,
+        2,
+        3
+      ],
+      "rotate": [
+        1,
+        2,
+        3
+      ],
+      "organize": [
+        1,
+        2,
+        3
+      ]
+    },
+    "rotation_files": 2,
+    "rotation_selected_pages": [
+      [
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "rotation_angle": 90,
+    "rotation_icon_cycle": "verified",
+    "rotation_preview": "verified",
+    "file_drop": "Windows native callbacks verified for all 7 tools",
+    "tkdnd_version": "2.9.4",
+    "ordered_original_pages": [
+      2,
+      1,
+      3
+    ],
+    "order_preview": true,
+    "preview_cleanup": true
+  },
+  "clean_process_path": true,
+  "uninstall": "passed",
+  "user_output_preserved": true,
+  "version": "1.11.0",
+  "limitations": [
+    "Windows10 development host; no Windows11 or physical4GiB/HDD machine tested",
+    "Installer unsigned"
+  ],
+  "artifacts": [
+    {
+      "name": "PDF_LoveR_1.11.0.exe",
+      "sha256": "7e4a80c2e794eea3a0c9d18603eae8a3905b8ea0576556a0f460f329cc6cd857",
+      "bytes": 37908486
+    },
+    {
+      "name": "PDF_LoveR_1.11.0_Portable.zip",
+      "sha256": "d40fad89b2909b056f6442b49369681591f84aa54a03b2ad8f3f8de933beb2fb",
+      "bytes": 38773568
+    },
+    {
+      "name": "PDF_LoveR_1.11.0_Setup.exe",
+      "sha256": "df6e32029f724454a560b8f9fb56b1e9669b8004bd88eacff43ecffd18bd5f43",
+      "bytes": 28143931
+    },
+    {
+      "name": "Quick_Start_TH.txt",
+      "sha256": "1368699782e61522d386ee67f4886357f476cc8850be65553a4ebe912b9ef173",
+      "bytes": 12664
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "sha256": "2f3fd807da6693b625ea8b9b8e2f277cd9af23d087bca49a0b914bf579b16da9",
+      "bytes": 365
+    }
+  ],
+  "windows_version_metadata": {
+    "file_version": "1.11.0.0",
+    "product_version": "1.11.0"
+  }
+}

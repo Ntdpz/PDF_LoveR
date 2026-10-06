@@ -1,7 +1,7 @@
 # แผน Optimize PDF LoveR สำหรับ PC หลายระดับ
 
 สถานะ: **ดำเนินการชุดแรกใน 1.5.2 แล้ว** ฐานก่อนปรับคือรุ่น 1.5.1, commit `fb51da245641bdf75086b3a5176a996224e2eff6` ณ 2 ตุลาคม 2026
-เครื่องมือพร้อมใช้ยังเป็น 6/34 รายการ แนะนำทำชุดนี้ก่อนจัดระเบียบ PDF เพื่อให้ฟีเจอร์ถัดไปใช้ระบบภาพตัวอย่างที่ประหยัดทรัพยากรร่วมกัน
+เครื่องมือพร้อมใช้เป็น 7/34 รายการใน 1.11.0 แนะนำทำชุดนี้ก่อนจัดระเบียบ PDF เพื่อให้ฟีเจอร์ถัดไปใช้ระบบภาพตัวอย่างที่ประหยัดทรัพยากรร่วมกัน
 
 เป้าหมายเบื้องต้นคือ PC CPU 2 คอร์, RAM 4 GB, HDD และเครื่อง RAM 8 GB, SSD บน Windows 10/11
 ยังไม่มีผลทดสอบบนเครื่องสเปกต่ำจริง จึงเป็นเป้าหมายสำหรับวัดและปรับ ไม่ใช่การรับรอง minimum requirements
@@ -231,3 +231,24 @@ busy/loader คงอยู่จน worker คืนไฟล์และส่
 ที่100%/125% ตรวจรอ cleanup, PDF rollback, ภาพ/CSVบางส่วน, retry และ source hash
 [Engine checks](cancellation-engine-verification-1.10.0.json) ตรวจ4codec/decoded lossless pixels
 และไฟล์ที่ถูกโปรแกรมอื่นแทนระหว่าง publication; ยังไม่รับรอง physical2-core/4-GiB/HDD
+
+## จัดเรียงหน้า · 1.11.0
+
+PageOrder ใช้ coordinator/viewport/cache เดิม ไม่ render ทุกหน้าล่วงหน้า
+order เป็น tuple ของเลขหน้า; ไม่มีภาพเต็มเอกสารหรือ dependency เพิ่ม
+worker ย้าย page xrefs ใน PDF ที่เปิดหนึ่งฉบับ ไม่ rasterize และไม่ลดคุณภาพ
+คิว events ของเครื่องมือใหม่จำกัด32 และรายงานทุก20หน้า; export concurrency หนึ่งงาน
+การย้ายและหา index อาจเป็น O(n²) เมื่อกลับลำดับเอกสารยาวมาก อยู่ใน worker และตรวจยกเลิกทุกหน้า
+การบันทึก native call ต้องจบก่อนหยุด; ใช้พื้นที่ staging สำหรับ PDF ใหม่หนึ่งไฟล์
+
+[ก่อน](performance-before-1.11.0.json) จาก archive commit88823fc /
+[หลัง](performance-after-1.11.0.json) สอง fresh source runs ต่อแบบ
+240 หน้าข้อความ; home idle median66.125 →67.17MiB หลังมี7เครื่องมือ
+organize stage median111.015MiB รวม parent/preview; ไม่ใช่ export peak
+[Native order](order-verification-1.11.0.json) ตรวจย้ายหลายหน้า/keyboard/คืนลำดับ/หยุดแล้วเริ่มใหม่
+Poppler pixels และ source hash; 920×700 ที่100%/125%
+ไม่ใช่ physical2-core/4-GiB/HDD หรือ Windows11 certification
+ยังไม่วัด scanned export peak หรือ frozen cold HDD startup
+
+[Headless reverse export](order-engine-resources-1.11.0.json):1,000หน้าข้อความ, affinity2, หยุดกลางทางแล้วเริ่มใหม่ผ่าน; export0.149s, process peak working set51.13MiBรวมสร้างfixture ไม่ใช่peakเอกสารสแกน/frozen
+Generic source benchmark มี max heartbeat lateness579.18msในช่วงspawn/navigation; จึงไม่อ้างผ่านงบตอบสนองทุกช่วงจาก P95 เพียงอย่างเดียว

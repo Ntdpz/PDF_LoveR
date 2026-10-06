@@ -1,0 +1,28 @@
+{
+  "version": "1.11.0",
+  "passed": true,
+  "cases": [
+    {
+      "scale": 1,
+      "passed": true
+    },
+    {
+      "scale": 1.25,
+      "passed": true
+    }
+  ],
+  "checks": [
+    "per-document ascending ranges",
+    "thumbnail toggle and all pages",
+    "invalid and empty selections",
+    "cancel and retained state",
+    "actual selected PNG pixels and original filenames",
+    "CSV selected rows",
+    "changed source refusal before output",
+    "1000-page viewport/cache bound",
+    "inspection errors and busy guards",
+    "dialog close on navigation/removal/destruction"
+  ],
+  "tk_errors": [],
+  "scope": "Windows development source app, synthetic PDFs; not physical low-spec certification"
+}

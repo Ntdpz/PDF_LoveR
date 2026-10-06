@@ -42,12 +42,18 @@ def main():
             for size in ('920x700','1080x780','1440x900'):
                 root.geometry(size+'+0+0');pump(root,1)
                 app.show_home();app.home.reset_filters();pump(root,.3)
-                assert len(app.home.visible_tools)==6 and all(t.ready for t in app.home.visible_tools)
+                assert len(app.home.visible_tools)==7 and all(t.ready for t in app.home.visible_tools)
                 contained(app.home.search_entry,root);contained(app.home.ready_button,root)
                 if size=='920x700':
-                    for card,_ in app.home.cards:contained(card,root)
+                    for card,_ in app.home.cards:
+                        if card.winfo_rooty()+card.winfo_height()>root.winfo_rooty()+root.winfo_height():
+                            app.home.scroll._parent_canvas.yview_moveto(1)
+                            pump(root,.1)
+                        contained(card,root)
+                    app.home.scroll._parent_canvas.yview_moveto(0)
+                    pump(root,.1)
                 if size=='920x700':capture(root,f'after-home-{scale}.png')
-                for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate'):
+                for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate','organize'):
                     app.show_tool(tool);page=app.active_page;pump(root,.2)
                     if scale==1 and size=='920x700':
                         capture(root,f'empty-{tool}.png')
@@ -89,7 +95,7 @@ def main():
         assert all(not p.selector.images for p in app.views.values() if hasattr(p,'selector'))
         app.close();assert not errors,errors
     report={'version':VERSION,'passed':True,'scaling':[1,1.25],'window_sizes':[[920,700],[1080,780],[1440,900]],
-            'all_six_tools':True,'ready_home_default':True,'fixed_save_controls_visible':True,
+            'all_seven_tools':True,'ready_home_default':True,'fixed_save_controls_visible':True,
             'result_table_min_height':85,'selector_min_height':180,'comparison_tabs':True,
             'empty_loaded_error_disabled_states':True,'cleanup':True,'tk_errors':errors,'measurements':measurements}
     (ROOT/f'docs/workbench-verification-{VERSION}.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

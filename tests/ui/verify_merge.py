@@ -16,6 +16,7 @@ import customtkinter as ctk
 import pymupdf
 from PIL import Image, ImageChops, ImageGrab
 from pdf_lover.app import App
+from pdf_lover.catalog import TOOLS
 from tests.unit.test_pdf_merge import make_pdf
 
 
@@ -148,7 +149,7 @@ def main():
                     assert ImageChops.difference(source_image, result_image).getbbox() is None
         finally:
             os.chdir(original_cwd)
-    report = {'passed': True, 'merged_pages': 3, 'ready_tools': 6,
+    report = {'passed': True, 'merged_pages': 3, 'ready_tools': sum(tool.ready for tool in TOOLS),
               'checks': ['adding/reordering/removing files', 'invalid PDF rejected', 'input/output overwrite guard',
                          'retained merge state across tools', 'busy navigation/reorder/start guards',
                          'successful merge and file order', 'missing source recovery', 'Poppler pixel equivalence',

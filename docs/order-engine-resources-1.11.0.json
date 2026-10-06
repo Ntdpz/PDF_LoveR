@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "pages": 1000,
+  "order": "reverse",
+  "cpu_affinity_logical_cores": 2,
+  "cancel_mid_order_then_restart": true,
+  "source_sha256": "c472910eef432047a906ee746a9fd925289bf6599df2a52029a4cf5e30f0500e",
+  "source_unchanged": true,
+  "all_page_text_order_verified": true,
+  "links_bookmarks_widgets_verified": true,
+  "elapsed_export_seconds": 0.149,
+  "private_mib_before": 45.5,
+  "private_mib_after": 46.02,
+  "process_peak_working_set_mib": 51.13,
+  "limitations": [
+    "Development Windows10,16 logical cores; affinity2 is not physical2-core/4GiB/HDD certification",
+    "1000-page synthetic text fixture; peak is process lifetime including fixture creation; not a scan or frozen benchmark"
+  ]
+}

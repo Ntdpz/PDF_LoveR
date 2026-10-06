@@ -33,5 +33,5 @@ def masthead(page, title):
     page.cancel_button=app.button(header,'ยกเลิก',page.request_cancel,width=88)
     page.cancel_button.configure(font=app.font_small)
     page.cancel_button.grid(row=0,column=3,padx=S['sm'])
-    page.cancel_button.grid_remove()
+    page.cancel_button.grid_forget()
     return header

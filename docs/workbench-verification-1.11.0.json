@@ -1,0 +1,243 @@
+{
+  "version": "1.11.0",
+  "passed": true,
+  "scaling": [
+    1,
+    1.25
+  ],
+  "window_sizes": [
+    [
+      920,
+      700
+    ],
+    [
+      1080,
+      780
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "all_seven_tools": true,
+  "ready_home_default": true,
+  "fixed_save_controls_visible": true,
+  "result_table_min_height": 85,
+  "selector_min_height": 180,
+  "comparison_tabs": true,
+  "empty_loaded_error_disabled_states": true,
+  "cleanup": true,
+  "tk_errors": [],
+  "measurements": [
+    {
+      "tool": "split",
+      "size": "920x700",
+      "scale": 1,
+      "viewport_height": 214.0,
+      "columns": 2
+    },
+    {
+      "tool": "extract-pages",
+      "size": "920x700",
+      "scale": 1,
+      "viewport_height": 214.0,
+      "columns": 2
+    },
+    {
+      "tool": "delete-pages",
+      "size": "920x700",
+      "scale": 1,
+      "viewport_height": 214.0,
+      "columns": 2
+    },
+    {
+      "tool": "rotate",
+      "size": "920x700",
+      "scale": 1,
+      "viewport_height": 214.0,
+      "columns": 2
+    },
+    {
+      "tool": "organize",
+      "size": "920x700",
+      "scale": 1,
+      "viewport_height": 214.0,
+      "columns": 2
+    },
+    {
+      "tool": "split",
+      "size": "1080x780",
+      "scale": 1,
+      "viewport_height": 294.0,
+      "columns": 3
+    },
+    {
+      "tool": "extract-pages",
+      "size": "1080x780",
+      "scale": 1,
+      "viewport_height": 294.0,
+      "columns": 3
+    },
+    {
+      "tool": "delete-pages",
+      "size": "1080x780",
+      "scale": 1,
+      "viewport_height": 294.0,
+      "columns": 3
+    },
+    {
+      "tool": "rotate",
+      "size": "1080x780",
+      "scale": 1,
+      "viewport_height": 294.0,
+      "columns": 3
+    },
+    {
+      "tool": "organize",
+      "size": "1080x780",
+      "scale": 1,
+      "viewport_height": 294.0,
+      "columns": 3
+    },
+    {
+      "tool": "split",
+      "size": "1440x900",
+      "scale": 1,
+      "viewport_height": 414.0,
+      "columns": 4
+    },
+    {
+      "tool": "extract-pages",
+      "size": "1440x900",
+      "scale": 1,
+      "viewport_height": 414.0,
+      "columns": 4
+    },
+    {
+      "tool": "delete-pages",
+      "size": "1440x900",
+      "scale": 1,
+      "viewport_height": 414.0,
+      "columns": 4
+    },
+    {
+      "tool": "rotate",
+      "size": "1440x900",
+      "scale": 1,
+      "viewport_height": 414.0,
+      "columns": 4
+    },
+    {
+      "tool": "organize",
+      "size": "1440x900",
+      "scale": 1,
+      "viewport_height": 414.0,
+      "columns": 4
+    },
+    {
+      "tool": "split",
+      "size": "920x700",
+      "scale": 1.25,
+      "viewport_height": 211.2,
+      "columns": 2
+    },
+    {
+      "tool": "extract-pages",
+      "size": "920x700",
+      "scale": 1.25,
+      "viewport_height": 211.2,
+      "columns": 2
+    },
+    {
+      "tool": "delete-pages",
+      "size": "920x700",
+      "scale": 1.25,
+      "viewport_height": 211.2,
+      "columns": 2
+    },
+    {
+      "tool": "rotate",
+      "size": "920x700",
+      "scale": 1.25,
+      "viewport_height": 211.2,
+      "columns": 2
+    },
+    {
+      "tool": "organize",
+      "size": "920x700",
+      "scale": 1.25,
+      "viewport_height": 211.2,
+      "columns": 2
+    },
+    {
+      "tool": "split",
+      "size": "1080x780",
+      "scale": 1.25,
+      "viewport_height": 291.2,
+      "columns": 3
+    },
+    {
+      "tool": "extract-pages",
+      "size": "1080x780",
+      "scale": 1.25,
+      "viewport_height": 291.2,
+      "columns": 3
+    },
+    {
+      "tool": "delete-pages",
+      "size": "1080x780",
+      "scale": 1.25,
+      "viewport_height": 291.2,
+      "columns": 3
+    },
+    {
+      "tool": "rotate",
+      "size": "1080x780",
+      "scale": 1.25,
+      "viewport_height": 291.2,
+      "columns": 3
+    },
+    {
+      "tool": "organize",
+      "size": "1080x780",
+      "scale": 1.25,
+      "viewport_height": 291.2,
+      "columns": 3
+    },
+    {
+      "tool": "split",
+      "size": "1440x900",
+      "scale": 1.25,
+      "viewport_height": 411.2,
+      "columns": 4
+    },
+    {
+      "tool": "extract-pages",
+      "size": "1440x900",
+      "scale": 1.25,
+      "viewport_height": 411.2,
+      "columns": 4
+    },
+    {
+      "tool": "delete-pages",
+      "size": "1440x900",
+      "scale": 1.25,
+      "viewport_height": 411.2,
+      "columns": 4
+    },
+    {
+      "tool": "rotate",
+      "size": "1440x900",
+      "scale": 1.25,
+      "viewport_height": 411.2,
+      "columns": 4
+    },
+    {
+      "tool": "organize",
+      "size": "1440x900",
+      "scale": 1.25,
+      "viewport_height": 411.2,
+      "columns": 4
+    }
+  ]
+}

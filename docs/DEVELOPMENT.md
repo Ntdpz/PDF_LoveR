@@ -95,7 +95,7 @@ and `build-portable*` separately.
 
 Verification copies the EXE into an isolated Thai-named path, extracts the exact
 ZIP and installs into a test directory. Each executable runs without Python in
-PATH and performs native file drops, conversion, merging, splitting, extraction, deletion, rotation and shared thumbnail rendering.
+PATH and performs native file drops, conversion, merging, splitting, extraction, deletion, rotation, ordering and shared thumbnail rendering.
 It then uninstalls and verifies that user-created output survives. Local logs
 are ignored; sanitized records are kept in `docs/`.
 
@@ -133,3 +133,5 @@ Low-spec policy and the staged evidence guard are documented in AGENTS.md and
 peak comparison with `python scripts/benchmark_png_memory.py --runs 5 --report <path.json>`.
 Review hardware/workload limitations before interpreting results; no physical
 4-GiB/HDD PC or Windows 11 machine has been certified by these source checks.
+
+1.11.0 adds `python tests/ui/verify_order.py` and headless permutation/fidelity/safety tests; current verification runs101 unit tests followed by18 native UI checks sequentially. See ORDER.md.

@@ -1,6 +1,6 @@
 # PDF LoveR — รายการงานพัฒนาต่อ
 
-ฐานปัจจุบัน: **1.10.0 · 34 เครื่องมือใน catalogue · พร้อมใช้ 6 · ยังต้องพัฒนา 28**
+ฐานปัจจุบัน: **1.11.0 · 34 เครื่องมือใน catalogue · พร้อมใช้ 7 · ยังต้องพัฒนา 27**
 
 ตรวจจาก `pdf_lover/catalog.py` และ `features/registry.py` รายการนี้เป็นแผนพัฒนา
 ลำดับด้านล่างเป็นข้อเสนอ ยังไม่กำหนดวันส่งหรือเปิดใช้เครื่องมือที่ยังไม่เสร็จ
@@ -18,7 +18,7 @@
 - [x] Worker queue, shared busy guard, การ์ดแบบ virtualized และ process ภาพตัวอย่าง
 - [x] ชุดแจก 1.7.0: EXE, Portable ZIP, installer และ SHA256
 - [x] แผนภาพ Archify, กติกา agent, freshness checker และ Git pre-commit hook
-- [x] การตรวจปัจจุบัน: 79 unit tests และ 13 ชุด native UI checks
+- [x] การตรวจปัจจุบัน: 101 unit tests และ 18 ชุด native UI checks
 
 ## Redesign 1.7.0 · ยกโครงหน้าจอใหม่
 
@@ -250,3 +250,9 @@ PageSelector ร่วมรองรับ Shift+คลิกเลือกช
 - [x] ปุ่มยกเลิกทั้ง 6 เครื่องมือและการอ่านข้อมูลใน worker
 - [x] PDF คืนชุดงานที่หยุด; ภาพเก็บหน้าที่เสร็จพร้อม CSV และไม่ทำ PDF ถัดไป
 - [x] คืน controls หลัง cleanup, token ใหม่เมื่อเริ่มอีกครั้ง และทดสอบหยุด/เริ่มใหม่ 100%/125%
+
+## จัดเรียงหน้า 1.11.0
+
+- [x] organize: ลากภาพตัวอย่าง/ย้ายหลายหน้า/คีย์บอร์ด/คืนลำดับเดิม · [คู่มือ](docs/ORDER.md)
+- [x] ตรวจ permutation และ xref; บันทึกใหม่แบบไม่ทับ; links/bookmarks/annotations/forms
+- [x] ใช้ loader/cancel/worker/coordinator เดิม; viewport/cache ไม่โหลดทุกหน้าล่วงหน้า

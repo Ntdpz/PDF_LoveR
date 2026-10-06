@@ -4,6 +4,7 @@ import threading
 import customtkinter as ctk
 from pdf_lover.ui.controls import UIControls
 from pdf_lover.ui.theme import COLORS
+from pdf_lover.ui.theme import SPACE
 
 
 class ToolPage(ctk.CTkFrame, UIControls, ABC):
@@ -24,10 +25,10 @@ class ToolPage(ctk.CTkFrame, UIControls, ABC):
         if hasattr(self, "cancel_button"):
             if running:
                 self.cancel_button.configure(state="normal", text="ยกเลิก")
-                self.cancel_button.grid()
+                self.cancel_button.grid(row=0, column=3, padx=SPACE['sm'])
                 self.tool_menu.configure(width=120)
             else:
-                self.cancel_button.grid_remove()
+                self.cancel_button.grid_forget()
                 self.tool_menu.configure(width=176)
 
     def report_progress(self, message):

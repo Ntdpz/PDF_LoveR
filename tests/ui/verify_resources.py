@@ -23,7 +23,7 @@ def main():
             doc.save(path)
         root = ctk.CTk();root.report_callback_exception = lambda kind,value,trace:errors.append(str(value))
         app = App(root)
-        for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate'):
+        for tool in ('pdf-png','merge','split','extract-pages','delete-pages','rotate','organize'):
             app.show_tool(tool);app.active_page.add_paths([path])
             end = time.monotonic()+20
             while app.busy and time.monotonic()<end:pump(root,.05)
@@ -38,7 +38,7 @@ def main():
                     assert widget.cache.resident_bytes<=widget.cache.max_bytes
                     if name!=tool:
                         assert not widget.pending and not widget.cache and not widget.worker.mailbox
-        rotate = app.active_page;rotate.selector.expression.set('2-3');rotate.angle.set('90')
+        rotate = app.get_page("rotate");app.show_tool("rotate");rotate.selector.expression.set('2-3');rotate.angle.set('90')
         for _ in range(20):
             app.show_tool('split');app.active_page.selector.move(1);pump(root,.02)
             app.show_tool('merge');pump(root,.02)

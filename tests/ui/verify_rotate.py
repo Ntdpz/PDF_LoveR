@@ -41,8 +41,13 @@ def main():
         for value in ('270','180','90','0'):
             left.invoke();assert page.angle.get()==value
         right.invoke();left.invoke();assert page.angle.get()=='0'
-        right._canvas.focus_force();pump(root)
-        right._canvas.event_generate('<Return>');pump(root,0.1);assert page.angle.get()=='90'
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            root.lift();right._canvas.focus_force();pump(root,0.05)
+            if root.focus_get() is right._canvas:
+                right._canvas.event_generate('<Return>');pump(root,0.1)
+                if page.angle.get() == '90':break
+        assert page.angle.get()=='90', 'Keyboard owner did not receive Return within focus deadline'
         tip = page.rotation_tooltips[1]
         # Native windows can lose foreground during mapping/scaling; verify the
         # tooltip while its owner actually has keyboard focus, with a bounded retry.
