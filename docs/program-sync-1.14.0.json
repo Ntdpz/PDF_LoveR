@@ -1,213 +1,23 @@
 {
   "passed": true,
   "version": "1.14.0",
-  "files_verified": 536,
-  "backup_folder": ".sync-backup/1.14.0-20261006-174807",
+  "files_verified": 537,
+  "backup_folder": ".sync-backup/1.14.0-20261006-174934",
   "backups": [
     {
       "path": "README.md",
-      "sha256": "541cccee57e3ab2cbb29fb224cf1a3fae56fe1576005d61722837f57974cab12",
-      "backup": ".sync-backup/1.14.0-20261006-174807/README.md"
+      "sha256": "6928e8008707cf0f21eb148c342ba26f9a4fae64dbc4584f256661baaa611b73",
+      "backup": ".sync-backup/1.14.0-20261006-174934/README.md"
     },
     {
       "path": "TASKS.md",
-      "sha256": "1209dbbc179f823bb78eaf37f3b45ab52bc9b33c5066ca96c0ec92415d1de00a",
-      "backup": ".sync-backup/1.14.0-20261006-174807/TASKS.md"
-    },
-    {
-      "path": "docs/ARCHITECTURE.md",
-      "sha256": "0f8118fcaa05f691d679aa52aa0d193a7b8b8ee7014693858d0491e812709b3c",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/ARCHITECTURE.md"
-    },
-    {
-      "path": "docs/DIAGRAMS.md",
-      "sha256": "9967f69ffd2a34befd6811a6875e90d7f2b551cad339b5279d21387858ef4a90",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/DIAGRAMS.md"
-    },
-    {
-      "path": "docs/PERFORMANCE_PLAN.md",
-      "sha256": "87d6c5aaf53445ab068ade58169c58fa0cb7a344406c1bec46099a1edf890098",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/PERFORMANCE_PLAN.md"
+      "sha256": "406134f759f3ed3697ab4d20d32253ada947b5c42c338e14fad4972066794959",
+      "backup": ".sync-backup/1.14.0-20261006-174934/TASKS.md"
     },
     {
       "path": "docs/SUPERAPP.md",
-      "sha256": "71a3ad1a13b19fcac01bdc2e9bd54c4b665a62b84f039e06002ba4d39cd57c58",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/SUPERAPP.md"
-    },
-    {
-      "path": "docs/diagrams/application.architecture.json",
-      "sha256": "295ff2846a1ee1dd96792b680fcd4aabcbcb15e6e77bd51a9cf761f0ba9b276b",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/application.architecture.json"
-    },
-    {
-      "path": "docs/diagrams/application.delivery.json",
-      "sha256": "66165c08602d7fa38ec5a719b048988bb7c176bd5f1728d9d333a98800a60a42",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/application.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/application.html",
-      "sha256": "6ef96db97db1a640c9b4042e6d7a59fd431644a3507f0bf166b627839f7334ff",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/application.html"
-    },
-    {
-      "path": "docs/diagrams/maintenance.architecture.json",
-      "sha256": "efc1620a1528228294ec38e76a1df8dcdeaceccbc6a73f31f566b4c8353342d8",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/maintenance.architecture.json"
-    },
-    {
-      "path": "docs/diagrams/maintenance.delivery.json",
-      "sha256": "9deb4cf449badcd0992cae28f85c0c90fd57487d219ae60ff1034d6ceffa4820",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/maintenance.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/maintenance.html",
-      "sha256": "6c00ee16adb6372627cd0df018dcf092bd72a0f384e45ed5de46fe721642b8be",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/maintenance.html"
-    },
-    {
-      "path": "docs/diagrams/manifest.json",
-      "sha256": "23f3c87eb06ba3df8d44b485e6a7400cbbba731be50ab803267734cef30e6c59",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/manifest.json"
-    },
-    {
-      "path": "docs/diagrams/processing.delivery.json",
-      "sha256": "d0c063ba5ad97056a686e9b7c5ad22e8234490ec06ae6fee8512096e880bd2e8",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/processing.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/processing.html",
-      "sha256": "c8505c35630b82f797c6ef7fc88747c42fd0ef96450021bb3163f5bc015f0f98",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/processing.html"
-    },
-    {
-      "path": "docs/diagrams/processing.workflow.json",
-      "sha256": "c04f6c258e78e0be21cfd43490e572010d1e6beb26390b91d31101f3e7aa6b3b",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/diagrams/processing.workflow.json"
-    },
-    {
-      "path": "docs/file-drop-verification.json",
-      "sha256": "f8013b8d96c66866476ab63d9fbf4b33b9a469edaa6a84311a5b774e6abb13d6",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/file-drop-verification.json"
-    },
-    {
-      "path": "docs/image-ui-verification-1.8.0.json",
-      "sha256": "eb5765088dc9b9351ecdb6159b64d70c2e6ae698bfde323302ab584fd80c5809",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/image-ui-verification-1.8.0.json"
-    },
-    {
-      "path": "docs/low-spec-review.json",
-      "sha256": "9ab30e591f5af9168da1eb76890b9373e64435b828f05ea845e2345e14ab9444",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/low-spec-review.json"
-    },
-    {
-      "path": "docs/merge-cards-verification.json",
-      "sha256": "34fd94c181f0732d69124ba6d98e9ce95c60ad20dacce3e3931ace76f65bb43b",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/merge-cards-verification.json"
-    },
-    {
-      "path": "docs/merge-verification.json",
-      "sha256": "d035687957da5e635d15b6ed7dcb4f46b41c9a15ffdb569c6f5cf8d81cb92141",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/merge-verification.json"
-    },
-    {
-      "path": "docs/order-verification-1.13.0.json",
-      "sha256": "4a0bbd3304decd5f81f11399ae361916de700d86fc42b47d2126d6997d28e367",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/order-verification-1.13.0.json"
-    },
-    {
-      "path": "docs/page-numbers-verification-1.12.0.json",
-      "sha256": "49879104346b02294338bd90670dfbdc492cdbcdd9ec69b42c0ab0f0c1bd4814",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/page-numbers-verification-1.12.0.json"
-    },
-    {
-      "path": "docs/page-tools-verification.json",
-      "sha256": "8ac8fc1450a3a3a3c861d25939ea3efbda6c1036f3319fa333a6e6fba57bd38c",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/page-tools-verification.json"
-    },
-    {
-      "path": "docs/rotate-verification.json",
-      "sha256": "74b181ce4abd50dc5837a4a34bf4bec545223a3dc32da2621fe96e7eae4048e0",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/rotate-verification.json"
-    },
-    {
-      "path": "docs/split-verification.json",
-      "sha256": "ddfb0d76623717191f709337aa22bcbd2d93a63bcde1b2a626453b33d28102cc",
-      "backup": ".sync-backup/1.14.0-20261006-174807/docs/split-verification.json"
-    },
-    {
-      "path": "packaging/README_Distribution.txt",
-      "sha256": "99e283f5510d3e363797bf0fb977de865b607fcab7900657e664574b2408a959",
-      "backup": ".sync-backup/1.14.0-20261006-174807/packaging/README_Distribution.txt"
-    },
-    {
-      "path": "packaging/version.iss",
-      "sha256": "2299a3d3c4a7e2460a12cc4ea7cf236d04d7fa7a087e796981f7f032fadb9d76",
-      "backup": ".sync-backup/1.14.0-20261006-174807/packaging/version.iss"
-    },
-    {
-      "path": "packaging/version_info.txt",
-      "sha256": "2cb3832bfc0da0d5b2bb85d9df16e6ea5421ab05b77f39c670c9830689def96f",
-      "backup": ".sync-backup/1.14.0-20261006-174807/packaging/version_info.txt"
-    },
-    {
-      "path": "pdf_lover/catalog.py",
-      "sha256": "3a3f9c57f0ab81a7e79e37ac59a2a30ba6cf8b33c9aed4e872c96bd8b9cb45d5",
-      "backup": ".sync-backup/1.14.0-20261006-174807/pdf_lover/catalog.py"
-    },
-    {
-      "path": "pdf_lover/diagnostics/self_test.py",
-      "sha256": "110e21e78ca29c8c2fac4d13d971cdb81aba8cdf39fd60b0926b1089c8a166e2",
-      "backup": ".sync-backup/1.14.0-20261006-174807/pdf_lover/diagnostics/self_test.py"
-    },
-    {
-      "path": "pdf_lover/features/registry.py",
-      "sha256": "aea62a98c45990f7f17fdf00367edad4f8e0f73c2301f31ca72c6a776cf3a172",
-      "backup": ".sync-backup/1.14.0-20261006-174807/pdf_lover/features/registry.py"
-    },
-    {
-      "path": "pdf_lover/ui/pdf_previews.py",
-      "sha256": "261618d27223f535599c4da25bcbb80a9ecd1f872d8bbcf1347a6f218a950de7",
-      "backup": ".sync-backup/1.14.0-20261006-174807/pdf_lover/ui/pdf_previews.py"
-    },
-    {
-      "path": "pdf_lover/version.py",
-      "sha256": "f87f8eba914a05e6764ad026ce1d98ac5d2f0ffa4350959373d178b3dc0d0086",
-      "backup": ".sync-backup/1.14.0-20261006-174807/pdf_lover/version.py"
-    },
-    {
-      "path": "scripts/benchmark_resources.py",
-      "sha256": "ceff69501ce118c4441239afd74001f03883ae8d9b6620c891e3892b0189ed76",
-      "backup": ".sync-backup/1.14.0-20261006-174807/scripts/benchmark_resources.py"
-    },
-    {
-      "path": "scripts/check.py",
-      "sha256": "5663bdfb217795aa24fd60fdae661434ca702f5c881fa5b028ec764cc6863c59",
-      "backup": ".sync-backup/1.14.0-20261006-174807/scripts/check.py"
-    },
-    {
-      "path": "tests/ui/verify_home.py",
-      "sha256": "84734db21e6cf9c146445662a079eb91973213bc8d6e7ca1514645558b2f3e50",
-      "backup": ".sync-backup/1.14.0-20261006-174807/tests/ui/verify_home.py"
-    },
-    {
-      "path": "tests/ui/verify_order.py",
-      "sha256": "5c81b2c8ed4de236b666accf75fc1d7a1786794a113440b31d5b2906b72cadbe",
-      "backup": ".sync-backup/1.14.0-20261006-174807/tests/ui/verify_order.py"
-    },
-    {
-      "path": "tests/ui/verify_selector.py",
-      "sha256": "bb43baf4a789a9391a8d1846817ea93462f6b9d83429719bcee30b1dae962965",
-      "backup": ".sync-backup/1.14.0-20261006-174807/tests/ui/verify_selector.py"
-    },
-    {
-      "path": "tests/ui/verify_workbench.py",
-      "sha256": "0b43d0371c83caf319f6df9d3c24b23fe5e55f30c27b5a1f6aa80e6855238b13",
-      "backup": ".sync-backup/1.14.0-20261006-174807/tests/ui/verify_workbench.py"
-    },
-    {
-      "path": "tests/unit/test_architecture.py",
-      "sha256": "92b9a4321885d880744243aa6f80434b379bc1a9cc1ba8e7ff1a8415d42ac435",
-      "backup": ".sync-backup/1.14.0-20261006-174807/tests/unit/test_architecture.py"
+      "sha256": "c355c0918ce76b72df5ae763ae8b0a083b1da311459331806b78ba3febc76c4d",
+      "backup": ".sync-backup/1.14.0-20261006-174934/docs/SUPERAPP.md"
     }
   ],
   "files": [
@@ -233,11 +43,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "6928e8008707cf0f21eb148c342ba26f9a4fae64dbc4584f256661baaa611b73"
+      "sha256": "0122c3df8c311001d06ded283a61c3fc7b3646aead0a218b89787ec0b6302acf"
     },
     {
       "path": "TASKS.md",
-      "sha256": "406134f759f3ed3697ab4d20d32253ada947b5c42c338e14fad4972066794959"
+      "sha256": "c8bac9579ae35414d69188f49e064429c86136fdafe2e8c129bd3c2efbd28358"
     },
     {
       "path": "design.md",
@@ -341,7 +151,7 @@
     },
     {
       "path": "docs/SUPERAPP.md",
-      "sha256": "c355c0918ce76b72df5ae763ae8b0a083b1da311459331806b78ba3febc76c4d"
+      "sha256": "8418685571d3c55582d0a5cc060113ef0d42abb392ea29ab206769b93d52bc14"
     },
     {
       "path": "docs/WATERMARK.md",
@@ -1544,6 +1354,10 @@
       "sha256": "6a594384560e8c5fbb95bbec7faea9dcf60632edd5d38ec6f9ed80cd5b938b27"
     },
     {
+      "path": "docs/release-1.14.0.json",
+      "sha256": "492aa03df0db3592b0d9bd546412d10d8ad5ab29d93868cd100521153711814e"
+    },
+    {
       "path": "docs/resource-verification-1.10.0.json",
       "sha256": "dfb9a550d6697899551b9627014c90b2aba4723c5a769e4bfac8e42eafd53ad0"
     },
@@ -2357,5 +2171,8 @@
     }
   ],
   "guard": "Every differing existing file SHA256 backed up before replacement; unrelated files retained",
-  "self_report": "Excluded from own hash inventory; copied and verified separately"
+  "self_report": "Excluded from own hash inventory; copied and verified separately",
+  "previous_sync_backup_folders": [
+    ".sync-backup/1.14.0-20261006-174807"
+  ]
 }

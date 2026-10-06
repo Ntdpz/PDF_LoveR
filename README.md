@@ -2,18 +2,18 @@
 
 <h1>PDF LoveR</h1>
 
-<p><strong>แปลงภาพ รวมเอกสาร จัดเรียงหน้า และใส่หมายเลขหน้า</strong><br>
-รุ่นล่าสุด 1.13.0 มี 8 เครื่องมือพร้อมใช้ พร้อมตัวเลือกช่วงหน้าและปุ่มยกเลิกงานทุกเครื่องมือ</p>
+<p><strong>แปลงภาพ รวมเอกสาร จัดเรียงหน้า ใส่หมายเลขหน้า และลายน้ำ</strong><br>
+รุ่นล่าสุด 1.14.0 มี 9 เครื่องมือพร้อมใช้ พร้อมตัวเลือกช่วงหน้าและปุ่มยกเลิกงานทุกเครื่องมือ</p>
 
 <p>Windows 10 / 11 · 64-bit · ใช้งานออฟไลน์ · ไม่ต้องติดตั้ง Python</p>
 
-<p><a href="https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.13.0">ดาวน์โหลดรุ่นล่าสุด 1.13.0</a> · EXE, Portable ZIP และตัวติดตั้ง</p>
+<p><a href="https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.14.0">ดาวน์โหลดรุ่นล่าสุด 1.14.0</a> · EXE, Portable ZIP และตัวติดตั้ง</p>
 
-<img src="docs/images/redesign-1.7.0/after-home-1.png" alt="หน้าแรกใหม่ PDF LoveR แสดงงานเอกสารทั้ง 6 งานเต็มความกว้าง" width="1080">
+<img src="docs/images/watermark-1.14.0/home.png" alt="หน้าแรก PDF LoveR 1.14.0 มี 9 เครื่องมือพร้อมใช้" width="1080">
 
 </div>
 
-## เครื่องมือที่พร้อมใช้ในซอร์ส 1.14.0
+## เครื่องมือที่พร้อมใช้ 1.14.0
 
 - **[ใส่หมายเลขหน้า PDF](docs/PAGE_NUMBERS.md)** — เลขไทย เลขเริ่มต้น สี ขนาด ตำแหน่ง รูปแบบ และ preview หน้าที่เลือก; ฝังฟอนต์และบันทึกใหม่
 - **[จัดเรียงหน้า PDF](docs/ORDER.md)** — ลากเรียงหน้า เพิ่มจาก PDF อื่น ลบหน้า Undo/Redo และบันทึกใหม่โดยไม่แปลงเป็นภาพ
@@ -25,7 +25,7 @@
 
 - **[ใส่ลายน้ำ PDF](docs/WATERMARK.md)** — ข้อความไทย/อังกฤษหรือภาพ PNG/JPG พร้อม alpha, ฟอนต์/ขนาด/สี/ความทึบ/มุม/ตำแหน่ง เลือกหน้า และ preview ตรงผลบันทึก
 
-ดาวน์โหลดชุดแจกปัจจุบันได้จาก [GitHub Release 1.13.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.13.0)
+ดาวน์โหลดชุดแจกปัจจุบันได้จาก [GitHub Release 1.14.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.14.0)
 
 ## จากเอกสารสู่ภาพ พร้อมจัดเก็บ
 
@@ -44,9 +44,9 @@
 
 | รูปแบบ | เหมาะกับ | เริ่มใช้งาน |
 | --- | --- | --- |
-| **[Portable — แนะนำ](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.13.0/PDF_LoveR_1.13.0.exe)** | ต้องการเปิดทันที หรือส่งไปอีกเครื่อง | ดาวน์โหลดไฟล์เดียว แล้วดับเบิลคลิก |
-| **[Installer](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.13.0/PDF_LoveR_1.13.0_Setup.exe)** | ต้องการทางลัดใน Start Menu / Desktop | เปิดตัวติดตั้ง แล้วทำตามขั้นตอน |
-| **[ZIP โฟลเดอร์](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.13.0/PDF_LoveR_1.13.0_Portable.zip)** | ต้องการเก็บโปรแกรมไว้เป็นโฟลเดอร์ | แตกไฟล์ทั้งหมด แล้วเปิด `PDF_LoveR_1.13.0.exe` |
+| **[Portable — แนะนำ](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.14.0/PDF_LoveR_1.14.0.exe)** | ต้องการเปิดทันที หรือส่งไปอีกเครื่อง | ดาวน์โหลดไฟล์เดียว แล้วดับเบิลคลิก |
+| **[Installer](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.14.0/PDF_LoveR_1.14.0_Setup.exe)** | ต้องการทางลัดใน Start Menu / Desktop | เปิดตัวติดตั้ง แล้วทำตามขั้นตอน |
+| **[ZIP โฟลเดอร์](https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.14.0/PDF_LoveR_1.14.0_Portable.zip)** | ต้องการเก็บโปรแกรมไว้เป็นโฟลเดอร์ | แตกไฟล์ทั้งหมด แล้วเปิด `PDF_LoveR_1.14.0.exe` |
 
 ทุกแบบใช้ได้โดยไม่ต้องติดตั้ง Python หรือโปรแกรมอ่าน PDF เพิ่ม
 โปรเจกต์นี้เป็น Private: ดาวน์โหลดด้วยบัญชี GitHub ที่ได้รับสิทธิ์เข้าถึง
@@ -133,10 +133,10 @@ Python · CustomTkinter · PyMuPDF · Pillow<br>
 โครงสร้างและการเพิ่มเครื่องมือใหม่ดูได้ใน [Architecture](docs/ARCHITECTURE.md), [แผนภาพการทำงาน](docs/DIAGRAMS.md) และ [Contributing](CONTRIBUTING.md) · [รายการงานพัฒนาต่อ](TASKS.md)
 ซอร์สปัจจุบัน **1.14.0** มี 9 เครื่องมือ พร้อมจัดเรียงหน้า PDF, PDF to Image, Loader แสดงเวลา และปุ่มยกเลิกงาน
 ลาก PDF จาก File Explorer มาวางเพื่อเพิ่มเข้าเครื่องมือรวมไฟล์หรือแปลงภาพได้
-ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.13.0/` — ลิงก์ดาวน์โหลดด้านบนตรงกับ Release 1.13.0
+ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.14.0/` — ลิงก์ดาวน์โหลดด้านบนตรงกับ Release 1.14.0
 ดูรายละเอียดใน [ชุดเครื่องมือ PDF](docs/SUPERAPP.md)
-ค่า SHA-256 สำหรับตรวจไฟล์ดาวน์โหลดอยู่ใน [Releases](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.13.0)
+ค่า SHA-256 สำหรับตรวจไฟล์ดาวน์โหลดอยู่ใน [Releases](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.14.0)
 
 </details>
 
-รุ่น 1.13.0 เพิ่ม/ลบหน้าและ Undo/Redo ในหน้าจอจัดหน้า PDF; ตรวจ113 unit +19 UI และชุดแจกครบ ดาวน์โหลดกลับตรวจ SHA256 ตรงทั้ง5ไฟล์
+รุ่น 1.14.0 เพิ่มลายน้ำข้อความไทย/อังกฤษและ PNG/JPG พร้อม preview ตรงผลบันทึก ตรวจ 119 unit tests + 20 ชุด native UI และ EXE/ZIP/Installer รวมติดตั้ง/ถอนติดตั้งรักษาไฟล์ผู้ใช้ ดาวน์โหลดกลับตรวจ SHA256 ตรงทั้ง 5 ไฟล์

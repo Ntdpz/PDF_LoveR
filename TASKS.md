@@ -16,7 +16,7 @@
 - [x] รับ PDF ที่ลากจาก Explorer, ปลายทางเริ่ม Documents, เก็บสถานะเมื่อสลับหน้าฟีเจอร์
 - [x] แยกโค้ดเป็น package/feature, shared UI, registry และ services ที่ไม่พึ่งหน้าจอ
 - [x] Worker queue, shared busy guard, การ์ดแบบ virtualized และ process ภาพตัวอย่าง
-- [x] ชุดแจก 1.13.0: EXE, Portable ZIP, installer และ SHA256
+- [x] ชุดแจก 1.14.0: EXE, Portable ZIP, installer และ SHA256
 - [x] แผนภาพ Archify, กติกา agent, freshness checker และ Git pre-commit hook
 - [x] การตรวจรุ่น 1.14.0: 119 unit tests และ 20 ชุด native UI checks
 
@@ -158,7 +158,7 @@
 - [ ] **ทดสอบ Windows 11 บนอีกเครื่อง**: เปิด EXE, Portable, ติดตั้ง/ถอนการติดตั้ง, Documents ที่ย้ายตำแหน่งและชื่อไฟล์ไทย
 - [ ] **ทดสอบเส้นทางการแจก**: เครื่องไม่มี Python/Office, สิทธิ์ผู้ใช้ปกติ, ชื่อโฟลเดอร์ไทย/ช่องว่าง, ไฟล์ read-only และพื้นที่ไม่พอ
 - [x] **กระบวนการ release**: changelog, checksum, rollback และตรวจชุดแจกทุกชนิดเมื่อเพิ่ม dependencies
-- [x] **อัปเดตตัวดาวน์โหลดบน GitHub**: เผยแพร่รุ่นที่ตรวจแล้วตามคำสั่งผู้ใช้; รุ่นล่าสุด1.13.0ดาวน์โหลดกลับตรวจSHA256แล้ว
+- [x] **อัปเดตตัวดาวน์โหลดบน GitHub**: เผยแพร่รุ่นที่ตรวจแล้วตามคำสั่งผู้ใช้; รุ่นล่าสุด 1.14.0 ดาวน์โหลดกลับตรวจ SHA256 ตรงทั้ง 5 ไฟล์แล้ว
 - [ ] **การลงนาม installer/EXE**: เลือกแนวทางและ certificate ก่อนเปิดให้ผู้ใช้จำนวนมาก; ปัจจุบันยัง unsigned
 - [ ] **ตรวจ dependencies/licenses**: ก่อนเพิ่ม engine ใหม่ ระบุขนาด, สิทธิ์การแจก, platform และวิธีอัปเดต
 - [ ] **ชุดเอกสารทดสอบ**: ข้อความไทย/อังกฤษ, สแกน, หน้าแนวนอน/หมุน, ฟอนต์ฝัง, ตาราง, ฟอร์ม, ลิงก์, ภาพและไฟล์เสีย
@@ -289,5 +289,5 @@ PageSelector ร่วมรองรับ Shift+คลิกเลือกช
 - [x] EXE/ZIP/Installer รวมติดตั้ง/ถอนติดตั้งรักษาไฟล์ผู้ใช้; distribution-1.14.0.json
 - [x] Archify light/dark และ staged freshness/low-spec review; overlay reuse 1000หน้าลด peak393.66→49.79MiB บน affinity2 ใน single before/after synthetic run
 
-ชุดแจกและการตรวจรุ่นนี้ผ่านแล้ว; รอเผยแพร่ Release ตามลำดับส่งมอบ
+เผยแพร่ [Release 1.14.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.14.0) แล้ว ดาวน์โหลดกลับตรวจ SHA256 ตรงทั้ง 5 ไฟล์; ดู release-1.14.0.json และ program-sync-1.14.0.json
 ข้อจำกัดยังคงเดิม: Windows10 เครื่องพัฒนา, ไม่รับรองเครื่องจริง4GB/HDD, Windows11 หรืออีกเครื่อง; unsigned/private/signatures/scripts. ลายน้ำใหม่ไม่ใช่ลบลายน้ำ; widget/annotation อาจวาดเหนือ overlay. Text extraction ของลายน้ำที่เอียง/Thai shaping อาจแยกสระหรือคืนวรรณยุกต์ไม่ครบแม้แสดงผลถูกต้อง ไม่รับรอง copy/search ตรงทุกตัวอักษร.
