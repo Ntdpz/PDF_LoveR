@@ -186,6 +186,10 @@
     {
       "path": "docs/verification-1.12.0.json",
       "sha256": "611219e0a4bdfc48241ef653247e411ac3593f19087b86374fd1c03282cd26d4"
+    },
+    {
+      "path": "docs/release-1.12.0.json",
+      "sha256": "9ec96ce8d8c2b0430f6709ed967738f758ae33517acec899faca5bb251c5c3a1"
     }
   ]
 }

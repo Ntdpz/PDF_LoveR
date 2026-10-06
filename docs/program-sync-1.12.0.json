@@ -1,21 +1,32 @@
 {
   "passed": true,
   "version": "1.12.0",
-  "files_verified": 473,
-  "backup_folder": ".sync-backup/1.12.0-20261006-113019",
+  "files_verified": 474,
+  "backup_folder": ".sync-backup/1.12.0-20261006-113245",
   "previous_sync_reports": [
-    ".sync-backup/1.12.0-20261006-112948/docs/program-sync-1.12.0.json"
+    ".sync-backup/1.12.0-20261006-112948/docs/program-sync-1.12.0.json",
+    ".sync-backup/1.12.0-20261006-113019/docs/program-sync-1.12.0.json"
   ],
   "backups": [
     {
-      "path": "docs/distribution-1.12.0.json",
-      "sha256": "555f4ab1b3464abae474d4693aafd97bb8745799c46a8362fa19337c2af6c0e2",
-      "backup": ".sync-backup/1.12.0-20261006-113019/docs/distribution-1.12.0.json"
+      "path": "README.md",
+      "sha256": "b4e704a82de8a5a11d5e59ef70aef6e7849e92e6a35a4cc7a7d33d845a88d8b5",
+      "backup": ".sync-backup/1.12.0-20261006-113245/README.md"
+    },
+    {
+      "path": "TASKS.md",
+      "sha256": "25ca60d52868ae0db1025aeca12c6b3b18d542ed21ac2b0d430afddcbdb8dcfc",
+      "backup": ".sync-backup/1.12.0-20261006-113245/TASKS.md"
+    },
+    {
+      "path": "docs/DEVELOPMENT.md",
+      "sha256": "0b2d810dafa8f31860c24f868de65704ac906ce9cb157c0a9bd31da34655f805",
+      "backup": ".sync-backup/1.12.0-20261006-113245/docs/DEVELOPMENT.md"
     },
     {
       "path": "docs/low-spec-review.json",
-      "sha256": "97e3bfbf033f7db207e41107c39e7b544ff7fa57e293c341908b94bd27aad2a2",
-      "backup": ".sync-backup/1.12.0-20261006-113019/docs/low-spec-review.json"
+      "sha256": "93e7175b776ac12128271f5dddd74bbd239e78c8a60e62004cb77f605d31bdff",
+      "backup": ".sync-backup/1.12.0-20261006-113245/docs/low-spec-review.json"
     }
   ],
   "guard": "Every differing existing file backed up and SHA256 verified before replacement; unrelated files retained",
@@ -48,13 +59,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "b4e704a82de8a5a11d5e59ef70aef6e7849e92e6a35a4cc7a7d33d845a88d8b5",
-      "bytes": 13258
+      "sha256": "b97024933c090a3712c10df0984048bfb1620ad14c56b6f8ebf887ed0256fd37",
+      "bytes": 13300
     },
     {
       "path": "TASKS.md",
-      "sha256": "25ca60d52868ae0db1025aeca12c6b3b18d542ed21ac2b0d430afddcbdb8dcfc",
-      "bytes": 43244
+      "sha256": "d3b890ad5d99792b06b60892f0409d3e5642bbaba9006b39eed223f8caf23fce",
+      "bytes": 43539
     },
     {
       "path": "design.md",
@@ -98,8 +109,8 @@
     },
     {
       "path": "docs/DEVELOPMENT.md",
-      "sha256": "0b2d810dafa8f31860c24f868de65704ac906ce9cb157c0a9bd31da34655f805",
-      "bytes": 6609
+      "sha256": "c6a2388421d21b682e1d9933bef57bd6052c654c220524e621fe9a6251b58a4e",
+      "bytes": 6613
     },
     {
       "path": "docs/DIAGRAMS.md",
@@ -1228,8 +1239,8 @@
     },
     {
       "path": "docs/low-spec-review.json",
-      "sha256": "93e7175b776ac12128271f5dddd74bbd239e78c8a60e62004cb77f605d31bdff",
-      "bytes": 17305
+      "sha256": "76e41ba69c56a03ff7634b0ff55f34e90043ff7890bc077132ca4e78a5583943",
+      "bytes": 17447
     },
     {
       "path": "docs/maintenance-verification.json",
@@ -1490,6 +1501,11 @@
       "path": "docs/release-1.11.0.json",
       "sha256": "ccc39298f5776b860dbde5798ea0ff98ddeb73e9ffc7294ef4b84fc7440a21e1",
       "bytes": 1862
+    },
+    {
+      "path": "docs/release-1.12.0.json",
+      "sha256": "789b059c4adf31b3e1ea8d0c317b29147aa16f684660680f1d9ea5679f02015c",
+      "bytes": 1972
     },
     {
       "path": "docs/resource-verification-1.10.0.json",
