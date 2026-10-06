@@ -111,26 +111,116 @@ def main():
                     images.append(image.convert('RGB'))
             assert images[0].size == images[1].size and ImageChops.difference(*images).getbbox() is None
         assert hashlib.sha256(source.read_bytes()).hexdigest() == digest
+        # Multi-source editing uses original identities; history includes import/delete/move/reset.
+        page.add_paths([source], replace=True)
+        wait(root, app)
+        extra = folder/'เพิ่มหน้าจากไฟล์อื่น.pdf'
+        make_pdf(extra, ['EXTRA 1', 'EXTRA 2', 'EXTRA 3'], width=380, height=240, field='Independent')
+        with pymupdf.open(extra) as document:
+            document[1].set_cropbox(pymupdf.Rect(20,10,360,220))
+            document[1].set_rotation(270)
+            document.saveIncr()
+        extra_digest = hashlib.sha256(extra.read_bytes()).hexdigest()
+        selector.expression.set('2')
+        page.add_paths([extra])
+        wait(root, app)
+        imported = (1,9,10,11,2,3,4,5,6,7,8)
+        assert selector.order == imported, selector.order
+        assert len(selector.sources) == 2 and selector.info.page_count == 11
+        selector.expression.set('2,4')
+        selector.delete_selected()
+        edited = (1,10,2,3,4,5,6,7,8)
+        assert selector.order == edited
+        selector.undo()
+        assert selector.order == imported and selector.selection() == (2,4)
+        selector.undo(redo=True)
+        assert selector.order == edited
+        selector.reset_order()
+        assert selector.order == tuple(range(1,9))
+        selector.undo()
+        assert selector.order == edited
+        selector.expression.set('1-9')
+        selector.delete_selected()
+        assert selector.order == edited  # No empty output.
+        selector.expression.set('')
+        page.add_paths([extra])
+        wait(root,app)
+        assert selector.order == edited and 'อยู่ในโต๊ะงาน' in page.status.get()
+        # Inspection cancellation preserves all committed edits and can restart.
+        inspected = threading.Event()
+        original_inspect = page.inspect
+        def held(path):
+            inspected.set()
+            page.cancel_event.wait(5)
+            checkpoint(page.cancel_event)
+            return original_inspect(path)
+        with patch.object(page, 'inspect', held):
+            page.add_paths([source], replace=True)
+            pump(root,.1)
+            assert inspected.is_set() and app.busy
+            page.request_cancel()
+            wait(root,app)
+        assert selector.order == edited and not app.busy
+        page.prefix.set('mixed')
+        mixed_plan = page.plan
+        page.start()
+        wait(root,app)
+        assert page.progress.get() == 1, page.status.get()
+        for index,identity in enumerate(edited,1):
+            source_index,number = selector.references[identity]
+            pdf = selector.sources[source_index].path
+            images=[]
+            for name,path,number in [('source',pdf,number),('mixed',mixed_plan.outputs[0].path,index)]:
+                prefix=folder/name
+                subprocess.run(['pdftoppm','-f',str(number),'-l',str(number),'-singlefile','-r','72','-png',str(path),str(prefix)],check=True,capture_output=True)
+                with Image.open(str(prefix)+'.png') as image:
+                    images.append(image.convert('RGB'))
+            assert images[0].size == images[1].size and ImageChops.difference(*images).getbbox() is None
+        assert hashlib.sha256(extra.read_bytes()).hexdigest() == extra_digest
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == digest
         large = folder/'240 หน้า.pdf'
         make_pdf(large,[f'PAGE {p}' for p in range(1,241)])
-        page.add_paths([large])
+        page.add_paths([large], replace=True)
         wait(root,app)
         page.prefix.set('large')
         for scale in (1,1.25):
             ctk.set_widget_scaling(scale)
             ctk.set_window_scaling(scale)
-            root.geometry('920x700+20+20')
+            root.minsize(round(920/scale), round(700/scale))
+            root.geometry(f'{round(920/scale)}x{round(700/scale)}+20+20')
             pump(root,.3)
+            assert abs(root.winfo_width()-920)<=2 and abs(root.winfo_height()-700)<=2
+            selector.expression.set('2')
+            selector.delete_selected()
+            assert len(selector.order)==239
+            selector.canvas.focus_force()
+            selector.canvas.event_generate('<KeyPress>',keycode=90,state=4)
+            pump(root,.1)
+            assert len(selector.order)==240
+            selector.canvas.event_generate('<KeyPress>',keycode=89,state=4)
+            pump(root,.1)
+            assert len(selector.order)==239
+            selector.undo()
             for _ in range(5):
                 selector.move(1)
                 pump(root,.08)
             assert len(selector.visible) <= 24
             assert len(selector.pending) <= 16
             assert len(selector.cache) <= 32 and selector.cache.resident_bytes <= 6*1048576
-            for widget in (selector,page.results,page.start_button,page.open_button,page.output_entry):
+            assert page.results.winfo_height() >= 60, page.results.winfo_height()
+            for widget in (selector,page.results,page.start_button,page.open_button,page.output_entry,page.prev_outputs,page.next_outputs):
                 assert widget.winfo_rootx() >= root.winfo_rootx()
                 assert widget.winfo_rootx()+widget.winfo_width() <= root.winfo_rootx()+root.winfo_width()
                 assert widget.winfo_rooty()+widget.winfo_height() <= root.winfo_rooty()+root.winfo_height()
+            for widget in page.order_focus:
+                if widget.cget('state') != 'disabled':
+                    widget.focus_force()
+                    pump(root,.04)
+                    canvas = page.order_options._parent_canvas
+                    assert widget.winfo_rooty() >= canvas.winfo_rooty(), (widget, 'above')
+                    assert widget.winfo_rooty()+widget.winfo_height() <= canvas.winfo_rooty()+canvas.winfo_height(), (widget, 'below')
+            page.order_options._parent_canvas.yview_moveto(0)
+            pump(root,.2)
             capture(root,f'order-{scale}.png')
             assert not page.cancel_button.winfo_ismapped()
         # Coalesced rapid pointer input under a two-logical-core affinity when requested.
@@ -163,11 +253,13 @@ def main():
         assert not errors,errors
     report = {'passed':True,'order':list(order),'source_unchanged':True,'poppler_pixels_match':True,
               'multi_drag':True,'keyboard_move':True,'cancel_retry':True,'escape':True,
+              'multi_source_insert_delete':True,'undo_redo_reset':True,'inspection_cancel_preserves_edits':True,
+              'duplicate_source_rejected':True,'mixed_poppler_pixels_match':True,
               'document_pages':240,'visible_limit':24,'requests_limit':16,'cache_bytes_limit':6*1048576,
               'minimum_window':[920,700],'scaling':[1,1.25],'worker_cleanup':True,'tk_errors':errors}
     report['interaction']=interaction
     report['limitations']=['Development Windows host; affinity is not physical 2-core / 4-GiB / HDD certification']
-    (ROOT/'docs/order-verification-1.11.0.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    (ROOT/'docs/order-verification-1.13.0.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False))
 
 

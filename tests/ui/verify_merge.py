@@ -29,15 +29,17 @@ def pump(root, seconds=0.3):
 
 def capture(root, name):
     ARTIFACTS.mkdir(parents=True, exist_ok=True)
-    for attempt in range(3):
+    for attempt in range(5):
         root.update()
         hwnd = ctypes.windll.user32.GetParent(root.winfo_id())
         try:
             ImageGrab.grab(window=hwnd).save(ARTIFACTS/name)
             return
         except OSError:
-            if attempt == 2:raise
-            pump(root,0.1)
+            if attempt == 4:raise
+            if root.state() == 'iconic':
+                root.deiconify()
+            pump(root,0.5)
 
 
 def wait_for_merge(root, app):

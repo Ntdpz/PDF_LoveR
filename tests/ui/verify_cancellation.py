@@ -102,7 +102,7 @@ def main():
                 cases.append({'tool':tool,'scale':scale,'phase':'export-stop-retry','passed':True})
                 # Inspection stop must not apply metadata or open a selection dialog.
                 if tool!='merge':
-                    method='_inspect_selection' if tool=='pdf-png' else '_inspect_worker'
+                    method='_inspect_selection' if tool=='pdf-png' else '_read_documents' if tool=='organize' else '_inspect_worker'
                     worker=getattr(page,method);ready=threading.Event();gate=threading.Event()
                     def delayed_inspection(*args):ready.set();assert gate.wait(15);worker(*args)
                     with patch.object(page,method,delayed_inspection):
@@ -113,6 +113,8 @@ def main():
                         finally:gate.set();wait(root,app)
                     assert 'ยกเลิก' in page.status.get()
                     if tool=='pdf-png':assert page.selection_window is None
+                    elif tool=='organize':
+                        assert page.info.path==sources[0] and len(page.selector.sources)==1
                     elif tool!='rotate':assert page.info is None
                     else:assert all(info.path!=sources[1] for info in page.inputs)
                     cases.append({'tool':tool,'scale':scale,'phase':'inspection-stop','passed':True})

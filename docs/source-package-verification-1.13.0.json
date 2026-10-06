@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "version": "1.13.0",
+  "wheel_files_exact": 65,
+  "font_license_included": true,
+  "headless_service": true,
+  "wheel_sha256": "eba986786edce654d808be333347cd0fd5a1f40ae38cf61adc0ce0a274b47300"
+}

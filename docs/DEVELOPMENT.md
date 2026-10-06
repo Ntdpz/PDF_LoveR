@@ -99,7 +99,7 @@ PATH and performs native file drops, conversion, merging, splitting, extraction,
 It then uninstalls and verifies that user-created output survives. Local logs
 are ignored; sanitized records are kept in `docs/`.
 
-Current record: [distribution-1.12.0.json](distribution-1.12.0.json). Tests run on
+Current record: [distribution-1.13.0.json](distribution-1.13.0.json). Tests run on
 Windows 10 x64; a separate Windows 11 machine has not been used. Installers are
 unsigned.
 
@@ -107,8 +107,8 @@ unsigned.
 
 Edit only `pdf_lover/version.py`. Package metadata, UI and Windows filenames read
 that source. `prepare_version.py` generates the Windows metadata and Inno
-version definitions. Current outputs are `PDF_LoveR_1.12.0.exe`,
-`PDF_LoveR_1.12.0_Setup.exe` and `PDF_LoveR_1.12.0_Portable.zip`.
+version definitions. Current outputs are `PDF_LoveR_1.13.0.exe`,
+`PDF_LoveR_1.13.0_Setup.exe` and `PDF_LoveR_1.13.0_Portable.zip`.
 
 Keep binaries, build tools and local logs outside Git. Recompute hashes when
 rebuilding an asset. GitHub Release 1.0.0 remains the older PNG application;
@@ -137,3 +137,5 @@ Review hardware/workload limitations before interpreting results; no physical
 1.11.0 adds `python tests/ui/verify_order.py` and headless permutation/fidelity/safety tests; current verification runs101 unit tests followed by18 native UI checks sequentially. See ORDER.md.
 
 1.12.0 adds `python tests/ui/verify_page_numbers.py` and `python scripts/benchmark_page_numbers.py`. Current suite:108 unit +19 native UI checks, plus packaged8-tool font/preview smoke and isolated install/uninstall. See PAGE_NUMBERS.md and distribution-1.12.0.json.
+
+1.13.0 extends verify_order.py with multi-source edits, atomic inspection cancellation, bounded history, physical920×700 at125%, focus scroll and mixed Poppler fidelity. Suite113 unit +19 native UI. Run python scripts/benchmark_organize.py for a1000-page text import/delete/reverse/cancel/retry audit; no hardware certification.

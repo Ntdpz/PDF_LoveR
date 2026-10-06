@@ -118,3 +118,12 @@ maintenance รวม native order, packaged route, cancellation/retry และ
 ## ใส่เลขหน้า · 1.12.0
 
 พร้อมใช้8/34; SelectionPage worker/events32 + PageSelector เดิม; NumberPreview ส่ง tagged key เข้า renderer ร่วมและเรียก stamp_page เดียวกับ export. Story ฝัง Noto Sans Thai OFL; vector overlay รักษา CropBox/rotation. หน้าที่ซ่อนและแท็บที่ไม่แสดงคืน cache. Maintenance เพิ่มเลขไทย/preview/Poppler และ bundled-font smoke ทั้งสามชุดแจก. Viewer UI ยังคงภาษาอังกฤษ; authored content เป็นไทย.
+
+## จัดระเบียบหลายต้นทาง · 1.13.0
+
+OrganizePage อ่านชุดไฟล์ใน worker แล้ว commit ผ่าน events32; หยุด/ผิดพลาดเก็บโต๊ะงานเดิม
+PageOrder อ้างไฟล์/หน้าเดิมสำหรับ preview; Undo/Redo เก็บ identities ≤32 คำสั่ง / ≤100,000 ต่อทิศทาง
+เพิ่มก่อนหน้าที่เลือก ลบ ย้าย และคืนต้นฉบับในหน้าจอเดียว; ไม่มีภาพ/PDF ในประวัติ
+EditPlan เก็บ sources/references; engine แทรก native pages ลบ/ย้าย xrefs และ remap bookmarks
+checks ครอบคลุม links ที่ปลายทางถูกลบ ฟอร์มอิสระ Poppler และ packaged import/delete/history/cancel
+จำนวนพร้อมใช้ยัง8/34; coordinator/worker/publication ร่วมเดิม

@@ -388,3 +388,34 @@ Idle Cancel uses grid_forget and explicit job placement so CustomTkinter scaling
 PageSelector Ctrl+A also recognizes Windows virtual key65, so Thai keyboard layouts do not depend on a Latin keysym. The generic Control binding forwards navigation/Return and lets other shortcuts continue to the shell. Native gesture evidence generates the real virtual key rather than an unmappable Latin symbol.
 
 Numbering uses a compact masthead title at125% and reveals scrolled settings on keyboard focus without another timer/worker. Preview navigation stays within the chosen pages; the Thai-digit checkbox accepts Space/Return.
+
+## Multi-source organization · 1.13.0
+
+OrganizePage retains the ToolPage/SelectionPage export lifecycle. One worker
+inspects an import batch and commits it through events32. Cancel/error keeps the
+existing desk; replacement clears history only after successful inspection.
+Imports insert before the first selected slot or append if none. PageOrder maps
+stable identities to (source, original page), with a synthetic viewport count.
+Preview keys refer to original files through the existing coordinator; stale
+non-required results are discarded. Hidden cleanup and image budgets are unchanged.
+
+OrderHistory holds immutable identity/selection snapshots: 32 entries and 100,000
+identities per Undo/Redo stack. New edits clear Redo. Import/delete/move/restore are
+reversible; source references stay available to history. Desk limits: 64 files /
+100,000 original pages. No image/PDF copies in history. Control shortcuts recognize
+Windows Z/Y keys on the card canvas; text entries keep native Undo. Focus reveals
+scrolling options synchronously; compact header/options preserve result/actions
+at 920×700 physical pixels and 125% scaling.
+
+Immutable EditPlan records all sources, retained references and one target.
+Permutation callers retain PagePlan/reorder_pdf. The edit engine opens the primary
+PDF, appends each used source once with independent form names, deletes omitted
+pages and moves retained xrefs. Direct links follow page objects; deleted targets
+disappear. Detailed bookmarks remap and normalize hierarchy. Save/reopen checks
+xrefs; all source signatures and target aliases/collisions are rechecked before
+shared exclusive publication/rollback. Native calls finish before cancellation.
+Original metadata/attachments remain; imported document-level items are outside
+scope. Deletion is not redaction; scripts/signatures are not rewritten. Long
+reversals may incur quadratic native move/list work off Tk. No new dependency.
+
+Native drag performance harness waits for a real shared-renderer reply and focuses the Canvas before measuring pause/resume. This isolates Windows spawn focus changes; production focus-loss cancellation remains covered by the native merge-card suite.

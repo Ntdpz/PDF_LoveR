@@ -10,8 +10,8 @@ from unittest.mock import patch
 import pymupdf
 from pdf_lover.core.document import inspect_document, DocumentError
 from pdf_lover.core.cancellation import Cancelled
-from pdf_lover.core.page_order import move_selected
-from pdf_lover.features.organize.service import build_plan, reorder_pdf
+from pdf_lover.core.page_order import move_selected, OrderHistory
+from pdf_lover.features.organize.service import build_plan, reorder_pdf, build_edit_plan, organize_pdf
 from test_pdf_merge import make_pdf
 
 
@@ -130,6 +130,101 @@ class OrderTests(unittest.TestCase):
         with patch('pymupdf.Document.save',save), self.assertRaises(Cancelled):
             reorder_pdf(plan, cancel=event)
         self.assertFalse(plan.outputs[0].path.exists())
+
+    def edit_plan(self, refs, name='edited'):
+        extra = self.folder / 'เพิ่ม.pdf'
+        if not extra.exists():
+            make_pdf(extra, ['EXTRA 1', 'EXTRA 2', 'EXTRA 3'], width=380, height=240, field='Extra field')
+            with pymupdf.open(extra) as document:
+                document[0].set_cropbox(pymupdf.Rect(10, 10, 360, 225))
+                document[0].set_rotation(270)
+                pixels = pymupdf.Pixmap(pymupdf.csRGB, pymupdf.IRect(0,0,8,8), False)
+                pixels.set_rect(pixels.irect, (20,60,180))
+                document[2].insert_image(pymupdf.Rect(20,50,90,90), stream=pixels.tobytes('png'))
+                document.saveIncr()
+        return build_edit_plan((self.info, inspect_document(extra)), self.folder, name, refs)
+
+    def test_insert_delete_native_links_bookmarks_independent_forms(self):
+        refs = ((1, 2), (0, 1), (1, 1), (0, 2), (1, 3))
+        plan = self.edit_plan(refs)
+        extra_bytes = plan.sources[1].path.read_bytes()
+        organize_pdf(plan)
+        with pymupdf.open(plan.outputs[0].path) as result:
+            self.assertEqual([p.get_text().splitlines()[0] for p in result], ['EXTRA 2', 'PAGE 1', 'EXTRA 1', 'PAGE 2', 'EXTRA 3'])
+            for slot, (source, number) in enumerate(refs):
+                with pymupdf.open(plan.sources[source].path) as original:
+                    a, b = original[number-1], result[slot]
+                    self.assertEqual(a.get_pixmap().samples, b.get_pixmap().samples)
+                    self.assertEqual((a.mediabox, a.cropbox, a.rotation), (b.mediabox, b.cropbox, b.rotation))
+            self.assertTrue(any(link.get('page') == 3 for link in result[1].get_links()))
+            self.assertTrue(any(link.get('page') == 0 for link in result[2].get_links()))
+            self.assertEqual(next(result[0].annots()).info['content'], 'Preserve annotation')
+            self.assertEqual(next(result[3].annots()).info['content'], 'Preserve annotation')
+            self.assertTrue(result[4].get_images())
+            fields = [widget for page in result for widget in page.widgets()]
+            self.assertEqual(len({field.field_name for field in fields}), 2)
+            self.assertEqual(sorted(field.field_value for field in fields), ['Extra field', 'Keep value'])
+            field_page = result[2]
+            field = next(field_page.widgets())
+            field.field_value = 'Changed independently'
+            field.update()
+            self.assertEqual(next(result[1].widgets()).field_value, 'Keep value')
+            result.save(self.folder/'editable.pdf')
+            self.assertEqual(result.get_toc(), [[1,'Start',2],[1,'Start',3],[2,'End',5]])
+        self.assertEqual(plan.sources[1].path.read_bytes(), extra_bytes)
+
+    def test_deleted_link_destination_and_outline_are_removed(self):
+        plan = self.edit_plan(((0,1), (1,1)))
+        organize_pdf(plan)
+        with pymupdf.open(plan.outputs[0].path) as result:
+            self.assertFalse(any(link['kind'] == pymupdf.LINK_GOTO for page in result for link in page.get_links()))
+            self.assertTrue(all(1 <= entry[2] <= 2 for entry in result.get_toc()))
+            self.assertEqual(len([w for p in result for w in p.widgets()]), 2)
+        imported_only = self.edit_plan(((1,1),), name='only-imported')
+        organize_pdf(imported_only)
+        with pymupdf.open(imported_only.outputs[0].path) as result:
+            self.assertEqual(result.page_count, 1)
+            self.assertIn('EXTRA 1', result[0].get_text())
+            self.assertEqual(next(result[0].widgets()).field_value, 'Extra field')
+
+    def test_edit_cancel_restart_failure_and_source_races(self):
+        plan = self.edit_plan(((1,2),(0,1),(1,1)))
+        event = threading.Event()
+        with self.assertRaises(Cancelled):
+            organize_pdf(plan, lambda *_: event.set(), event)
+        self.assertFalse(plan.outputs[0].path.exists())
+        with patch('pymupdf.Document.save', side_effect=OSError('full')), self.assertRaises(DocumentError):
+            organize_pdf(plan)
+        self.assertFalse(plan.outputs[0].path.exists())
+        stale = replace(plan, sources=(plan.sources[0], replace(plan.sources[1], signature=(0,0,0,0))))
+        with self.assertRaises(DocumentError):
+            organize_pdf(stale)
+        event.clear()
+        organize_pdf(plan, cancel=event)
+        with self.assertRaises(DocumentError):
+            organize_pdf(plan)
+
+    def test_edit_invalid_refs_and_source_targets(self):
+        for refs in ((), ((0,1),(0,1)), ((2,1),), ((1,4),), ((True,1),)):
+            with self.assertRaises(DocumentError):
+                self.edit_plan(refs)
+        with self.assertRaises(DocumentError):
+            self.edit_plan(((0,1),(1,1)), name='เพิ่ม')
+
+    def test_history_limits_branches_and_round_trip(self):
+        history = OrderHistory()
+        state = ((1,2,3), '2')
+        changed = ((1,3), '')
+        history.record(state)
+        self.assertEqual(history.step(changed), state)
+        self.assertEqual(history.step(state, redo=True), changed)
+        history.step(changed)
+        history.record(state)
+        self.assertFalse(history.redo_stack)
+        for _ in range(60):
+            history.record((tuple(range(5000)), ''))
+        self.assertLessEqual(len(history.undo_stack), 32)
+        self.assertLessEqual(sum(len(s[0]) for s in history.undo_stack), 100000)
 
 
 if __name__ == '__main__':

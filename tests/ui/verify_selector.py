@@ -69,7 +69,9 @@ def main():
         for _ in range(120):selector.canvas.event_generate('<MouseWheel>',delta=-120)
         pump(root,.2);settled(root,selector)
         assert selector.offset>before and len(selector.pending)<=16 and selector.cache.resident_bytes<=6*1048576
-        selector.canvas.focus_force();selector.canvas.event_generate('<End>');pump(root,.1);settled(root,selector)
+        selector.canvas.focus_force();pump(root,.1)
+        assert selector.canvas.focus_get() is selector.canvas
+        selector.canvas.event_generate('<End>');pump(root,.1);settled(root,selector)
         assert 1000 in selector.visible and selector.focused==1000
         for key in selector.worker.required:
             with pymupdf.open(large) as doc:

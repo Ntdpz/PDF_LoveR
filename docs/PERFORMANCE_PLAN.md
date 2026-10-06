@@ -259,3 +259,9 @@ Generic source benchmark มี max heartbeat lateness579.18msในช่วง
 ผลสองรอบ source240หน้า: home idle รุ่น1.11.0เดิม67.17MiB เทียบ1.12.0ที่69.43MiB; หน้าเลข112.845MiBรวม preview เป็นค่ากลางจากคนละรอบ/idle harness2กับ5วินาที จึงเป็นหลักฐานเปรียบเทียบจำกัด.
 1000หน้าข้อความ, affinity2 logical cores:42.839วินาที, peak working set385.89MiBรวมสร้างfixture, PDFประมาณ1.48MiBหลังรวมfont streamsซ้ำ. นี่ไม่ใช่ peak ของเอกสารสแกน/frozen/HDD; PDF native save/dedupอาจใช้เวลาและRAMเพิ่มตามขนาดเอกสาร ยกเลิกรอcallปัจจุบันจบ.
 ดู page-numbers-resources-1.12.0.json และ performance-after-1.12.0.json; ไม่มีการลดDPI/คุณภาพ/ขนาดตัวอักษรเอง และยังไม่รับรองphysical4GiB/HDDหรือWindows11.
+
+## จัดระเบียบหลายต้นทาง · 1.13.0
+
+ประวัติ32คำสั่ง/100000identitiesต่อทิศทาง ไม่มีภาพ/PDF copies; โต๊ะงาน64ไฟล์/100000หน้าต้นทาง. coordinator/cache/queueร่วมเท่าเดิม ไม่มีdependency. appendแต่ละต้นทางที่ใช้ครั้งเดียวและย้ายxref; native callsรอจบก่อนหยุด, reversalอาจquadraticในworker.
+1000หน้าข้อความสองไฟล์ ลบทุกหน้าที่5และสลับย้อนเหลือ800หน้า:0.128s, peak working set45.82MiBรวมสร้างfixture, cancel/restartผ่าน (organize-resources-1.13.0.json).
+สองfresh source runs240หน้า: home idle1.12.0=69.43→1.13.0=71.66MiB; organize111.555MiBรวมpreview. ไม่ใช่export peakหรือphysical4GiB/HDD/Windows11; warm textไม่แทนscan/frozen/coldHDD; baseline idle2sเทียบรุ่นใหม่5sจึงเทียบได้จำกัด.

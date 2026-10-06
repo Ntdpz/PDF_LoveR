@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "version": "1.13.0",
+  "host": "Windows-10-10.0.19045-SP0",
+  "logical_cpus": 16,
+  "affinity_logical_cpus": 2,
+  "input_pages": 1000,
+  "output_pages": 800,
+  "export_seconds": 0.128,
+  "output_bytes": 361447,
+  "counters": {
+    "private_mib": 41.296875,
+    "working_set_mib": 43.7890625,
+    "peak_working_set_mib": 45.82421875,
+    "cpu_seconds": 1.109375
+  },
+  "cancel_restart": true,
+  "sources_unchanged": true,
+  "history_entries": 32,
+  "history_identity_budget": 100000,
+  "limitations": [
+    "Synthetic text PDFs; process peak includes fixture creation",
+    "Not physical 2-core/4-GiB/HDD or Windows11 certification",
+    "Native insert/delete/save calls must finish before cancellation; no scan/frozen/HDD peak measured"
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "passed": true,
+  "version": "1.13.0",
+  "cases": [
+    {
+      "tool": "pdf-png",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "pdf-png",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "merge",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "split",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "split",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "extract-pages",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "extract-pages",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "delete-pages",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "delete-pages",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "rotate",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "rotate",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "organize",
+      "scale": 1,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "organize",
+      "scale": 1,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "pdf-png",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "pdf-png",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "merge",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "split",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "split",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "extract-pages",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "extract-pages",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "delete-pages",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "delete-pages",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "rotate",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "rotate",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    },
+    {
+      "tool": "organize",
+      "scale": 1.25,
+      "phase": "export-stop-retry",
+      "passed": true
+    },
+    {
+      "tool": "organize",
+      "scale": 1.25,
+      "phase": "inspection-stop",
+      "passed": true
+    }
+  ],
+  "source_hashes_preserved": true,
+  "pdf_rollback": true,
+  "image_partial_csv_retained": true,
+  "single_cancel_token_per_job": true,
+  "busy_until_cleanup": true,
+  "preview_cleanup": true,
+  "tk_errors": [],
+  "limitations": [
+    "Development Windows PC, not physical 2-core/4-GiB/HDD certification",
+    "Gates at actual engine progress checkpoints simulate native I/O delay; native calls finish before stopping"
+  ]
+}

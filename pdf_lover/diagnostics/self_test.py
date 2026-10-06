@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pymupdf
 from PIL import Image
+from pdf_lover.core.cancellation import Cancelled
 
 
 def native_drop(root, paths):
@@ -380,8 +381,71 @@ def run(root, app_class, report):
                            cancellation='seven packaged engines honour token; busy restored',
                            file_drop='Windows native callbacks verified for all 7 tools',
                            selector_preview_pages={name:sorted(pages) for name,pages in selector_pages.items()})
-            start_numbers()
+            # Exercise new edit operations in every frozen distribution.
+            extra = folder / 'packaged-extra.pdf'
+            with pymupdf.open() as document:
+                for index in range(2):
+                    document.new_page(width=240, height=160).insert_text((20,30), f'IMPORTED {index+1}')
+                document.save(extra)
+            page.selector.expression.set('2')
+            page.add_paths([extra])
+            root.after(100, finish_edit_import)
         except Exception as error:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def finish_edit_import():
+        page = app.get_page('organize')
+        if app.busy and time.monotonic() - started < 125:
+            root.after(100, finish_edit_import)
+            return
+        try:
+            selector = page.selector
+            assert selector.order == (2,4,5,1,3), selector.order
+            selector.expression.set('3')
+            selector.delete_selected()
+            assert selector.order == (2,4,1,3)
+            selector.undo()
+            assert selector.order == (2,4,5,1,3)
+            selector.undo(redo=True)
+            assert selector.order == (2,4,1,3)
+            selector.reset_order()
+            assert selector.order == (1,2,3)
+            selector.undo()
+            assert selector.order == (2,4,1,3)
+            page.prefix.set('organized-with-import')
+            page.start()
+            root.after(100, finish_edit_export)
+        except Exception:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def finish_edit_export():
+        page = app.get_page('organize')
+        if app.busy and time.monotonic() - started < 125:
+            root.after(100, finish_edit_export)
+            return
+        try:
+            assert page.destination and not app.busy, page.status.get()
+            from pdf_lover.features.organize.service import organize_pdf
+            with pymupdf.open(page.plan.outputs[0].path) as result:
+                assert result.page_count == 4
+                assert 'IMPORTED 1' in result[1].get_text()
+                for slot, identity in enumerate(page.selector.order):
+                    source_index, number = page.selector.references[identity]
+                    with pymupdf.open(page.selector.sources[source_index].path) as source_document:
+                        assert result[slot].get_pixmap().samples == source_document[number-1].get_pixmap().samples
+            app.busy = True
+            page.cancel_button.invoke()
+            try:
+                organize_pdf(page.plan, cancel=page.cancel_event)
+            except Cancelled:
+                pass
+            else:
+                raise AssertionError('Packaged edit engine ignored cancellation')
+            app.busy = False
+            summary.update(organize_import_delete_undo_redo=True, organize_native_pixels=True,
+                           organize_cancel=True)
+            start_numbers()
+        except Exception:
             complete({'passed':False,'errors':failures+[traceback.format_exc()]})
 
     def start_numbers():

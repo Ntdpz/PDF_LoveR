@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "version": "1.13.0",
+  "assets": [
+    {
+      "name": "PDF_LoveR_1.13.0.exe",
+      "sha256": "0fb10da450c22c18dab5873a243db53ad54f0c634c75f71aa53c092b1bd59341",
+      "bytes": 38065128
+    },
+    {
+      "name": "PDF_LoveR_1.13.0_Portable.zip",
+      "sha256": "72e882b7973fe134d1b13fc9aa8b4feb91fafa3317e1d7b465302767c82d120d",
+      "bytes": 38930509
+    },
+    {
+      "name": "PDF_LoveR_1.13.0_Setup.exe",
+      "sha256": "217bb62dac01739d797d87d6cf2a8cd6f07eefc74db1978d32124ebd59e5b53f",
+      "bytes": 28268277
+    },
+    {
+      "name": "Quick_Start_TH.txt",
+      "sha256": "60bc54aab8ce99ae0d133b01a786ec8aefc94436762375b96bec6c29db8471f0",
+      "bytes": 14762
+    }
+  ],
+  "zip_font_license": true,
+  "windows_product_version": "1.13.0",
+  "windows_file_version": "1.13.0.0"
+}

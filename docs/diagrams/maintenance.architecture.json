@@ -176,16 +176,16 @@
       "dot": "emerald",
       "title": "เครื่องมือพัฒนา",
       "items": [
-        "108 unit + 19 UI; เลขไทย / preview / หยุด",
-        "Archify 9/9; ตรวจภาพจริง light/dark"
+        "113 unit +19 UI; เพิ่ม/ลบ/Undo/หยุด/Poppler",
+        "Archify9/9; ตรวจภาพจริงlight/dark"
       ]
     },
     {
       "dot": "amber",
       "title": "การแจกโปรแกรม",
       "items": [
-        "8 งาน + ฟอนต์ OFL ใน EXE / ZIP / installer",
-        "ซิงก์ Program แบบตรวจ hash; repo คง Private"
+        "8งาน; frozenตรวจเพิ่มหน้า/ลบ/Undoและฟอนต์",
+        "ซิงก์Programตรวจhash; repoคงPrivate"
       ]
     }
   ]

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "version": "1.13.0",
+  "command": "python scripts/check.py",
+  "unit_tests": 113,
+  "sequential_native_ui_checks": 19,
+  "exit_code": 0,
+  "log_sha256": "dc7dfb8a82d67434ccd41c1ced1fe268484997dd6dead9670b70cfdfbf7ad8bf",
+  "scope": "Windows10 development host; source app and synthetic PDFs; no physical4GiB/HDD or Windows11 certification",
+  "harness_notes": "Native focus is awaited before keyboard input; drag trial retries only explicit external focus interruptions. Capture retries screen-grab OSError, without lifting a normal window during active gesture. Earlier failed trials retained in local build-verification logs."
+}

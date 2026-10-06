@@ -92,6 +92,9 @@ def selection_workbench(page, *, split=False):
                                     scrollbar_button_color=C['rule'])
     options.grid(row=0,column=0,sticky='ew',padx=S['xs'])
     options.grid_columnconfigure(0,weight=1)
+    if getattr(page, 'ORDER', False):
+        page.order_options = options
+        options.configure(height=100)
     modes = ctk.CTkFrame(options, fg_color='transparent')
     modes.grid(row=0, column=0, sticky='ew', padx=S['md'], pady=S['xs'])
     modes.grid_columnconfigure(0, weight=1)
@@ -122,12 +125,20 @@ def selection_workbench(page, *, split=False):
         sync()
     else:
         if getattr(page, 'ORDER', False):
-            for index, (title, command) in enumerate((('ย้ายก่อน', lambda: page.selector.nudge(-1)),
-                                                    ('ย้ายหลัง', lambda: page.selector.nudge(1)),
-                                                    ('คืนลำดับเดิม', page.selector.reset_order))):
+            modes.grid_columnconfigure(1, weight=1)
+            page.edit_buttons = []
+            for index, (title, command) in enumerate((('เริ่ม PDF ใหม่…', page.replace_document),
+                                                    ('Undo · Ctrl+Z', page.selector.undo),
+                                                    ('Redo · Ctrl+Y', lambda: page.selector.undo(redo=True)),
+                                                    ('ลบที่เลือก', page.selector.delete_selected),
+                                                    ('คืนต้นฉบับ', page.selector.reset_order),
+                                                    ('ย้ายก่อน', lambda: page.selector.nudge(-1)),
+                                                    ('ย้ายหลัง', lambda: page.selector.nudge(1)))):
                 button = page.button(modes, title, command, width=130)
-                button.grid(row=index, column=0, sticky='ew', pady=S['xs'])
+                button.grid(row=0 if index == 0 else 1+(index-1)//2, column=0 if index == 0 else (index-1)%2,
+                            columnspan=2 if index == 0 else 1, sticky='ew', pady=S['xs'], padx=2)
                 page.controls.append(button)
+                page.edit_buttons.append(button)
         else:
             page.label(modes, 'เลือกหน้าที่จะลบ\nตรวจหน้าที่เหลือก่อนบันทึก', font=page.font_small, justify='left').grid(row=0,column=0,sticky='w')
     if split:
@@ -140,6 +151,8 @@ def selection_workbench(page, *, split=False):
         chunk.grid_forget()
     page.prefix_entry = output_settings(page,options,1,page.prefix,'ชื่อชุดไฟล์' if split else 'ชื่อไฟล์ (ไม่ต้องใส่ .pdf)')
     rail.grid_rowconfigure(2,weight=1)
+    if getattr(page, 'ORDER', False):
+        rail.grid_rowconfigure(2, minsize=90)
     page.summary = page.label(rail,'ไฟล์ที่จะได้',font=page.font_bold,wraplength=300,justify='left')
     page.summary.grid(row=1,column=0,sticky='ew',padx=S['md'])
     table = ctk.CTkFrame(rail,fg_color='transparent')

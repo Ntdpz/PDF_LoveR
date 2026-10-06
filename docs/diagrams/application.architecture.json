@@ -239,16 +239,16 @@
       "dot": "cyan",
       "title": "หน้าจอและเส้นทาง",
       "items": [
-        "Tk main thread; Ctrl+A รองรับคีย์บอร์ดไทย",
-        "180×200 ภาพหน้า; cache ≤6 MiB; viewport ≤24"
+        "Tk main thread; Ctrl+A/Z/Y รองรับคีย์บอร์ดไทย",
+        "viewport≤24; history32 / identities≤100000"
       ]
     },
     {
       "dot": "emerald",
       "title": "การทำงานเบื้องหลัง",
       "items": [
-        "เลขหน้า: preview/export ใช้ stamp_page เดียวกัน",
-        "App ดูแล preview ร่วม; home ปิด process"
+        "จัดหน้า: เพิ่ม/ลบ/Undo; ไม่เก็บภาพในประวัติ",
+        "previewร่วม1; อ่านต้นทางในworker/events32"
       ]
     },
     {

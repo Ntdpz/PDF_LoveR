@@ -11,7 +11,11 @@ import customtkinter as ctk
 import pymupdf
 from pdf_lover.app import App
 from pdf_lover.version import VERSION
-from verify_merge_cards import pointer, pump
+from verify_merge_cards import pointer, pump, wait_for
+
+
+class NativeFocusInterrupted(RuntimeError):
+    """Another desktop window interrupted a synthetic native drag."""
 
 
 def main():
@@ -28,12 +32,27 @@ def main():
         root = ctk.CTk()
         root.report_callback_exception = lambda kind, value, trace: errors.append(str(value))
         app = App(root)
+        def cleanup():
+            # Every timer here belongs to this isolated verification root.
+            for timer in root.tk.call('after', 'info'):
+                root.after_cancel(timer)
+            app.close()
         app.show_tool('merge')
         root.geometry('1080x900+40+40')
         app.merge.add_paths(paths)
         pump(root, 0.35)
         grid = app.merge.cards
         canvas = grid.canvas
+        # Spawn can change desktop focus. Measure a drag after a real renderer
+        # reply, then make thumbnails pending again to verify pause/resume.
+        wait_for(root, lambda: bool(grid.cache), timeout=15)
+        root.lift()
+        canvas.focus_force()
+        wait_for(root, lambda: canvas.focus_get() is canvas)
+        pump(root, 0.3)
+        grid.cache.clear()
+        grid.render()
+        root.update_idletasks()
         assert len(grid.visible) < 30 and len(canvas.find_all()) < 250
         source = paths[0]
         pointer(canvas, '<ButtonPress-1>', *grid.card_center(source))
@@ -44,7 +63,10 @@ def main():
             pointer(canvas, '<B1-Motion>', target_x, target_y)
         dispatch_ms = (time.perf_counter() - start) * 1000
         assert grid.frame_timer and grid.drag['pointer'] == (int(target_x), int(target_y))
-        pump(root, 0.08)
+        wait_for(root, lambda: grid.ghost is not None or grid.drag is None)
+        if grid.drag is None and canvas.focus_get() is not canvas:
+            cleanup()
+            raise NativeFocusInterrupted('Desktop focus changed before drag frame')
         assert grid.ghost is not None
         assert grid.paints - before <= 6, grid.paints - before
         before = grid.paints
@@ -78,6 +100,9 @@ def main():
             root.update()
             time.sleep(0.005)
         live = False
+        if grid.drag is None and canvas.focus_get() is not canvas:
+            cleanup()
+            raise NativeFocusInterrupted('Desktop focus changed during drag measurement')
         assert len(heartbeat) >= 10, heartbeat
         assert len(grid.cache) == cache_size, 'Images were applied during drag'
         max_gap_ms = max(b - a for a, b in zip(heartbeat, heartbeat[1:])) * 1000
@@ -146,4 +171,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    for attempt in range(5):
+        try:
+            main()
+            break
+        except NativeFocusInterrupted:
+            if attempt == 4:
+                raise
+            print('External desktop focus interrupted native drag; restarting clean trial', flush=True)
