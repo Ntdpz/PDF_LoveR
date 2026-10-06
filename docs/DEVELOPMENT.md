@@ -112,7 +112,7 @@ version definitions. Current outputs are `PDF_LoveR_1.13.0.exe`,
 
 Keep binaries, build tools and local logs outside Git. Recompute hashes when
 rebuilding an asset. GitHub Release 1.0.0 remains the older PNG application;
-1.12.0 is published with remote-download SHA256 evidence in release-1.12.0.json.
+1.13.0 is published with remote-download SHA256 evidence in release-1.13.0.json.
 
 ## Responsiveness
 

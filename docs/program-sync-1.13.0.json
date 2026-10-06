@@ -1,189 +1,24 @@
 {
   "passed": true,
   "version": "1.13.0",
-  "files_verified": 493,
-  "backup_folder": ".sync-backup/1.13.0-20261006-160349",
+  "files_verified": 494,
+  "backup_folder": ".sync-backup/1.13.0-20261006-160533",
   "previous_sync_reports": [],
   "backups": [
     {
       "path": "README.md",
-      "sha256": "b97024933c090a3712c10df0984048bfb1620ad14c56b6f8ebf887ed0256fd37",
-      "backup": ".sync-backup/1.13.0-20261006-160349/README.md"
+      "sha256": "3f56032af9316b88d4b6875a2c1500d7df461c323f844b7f36c1125fda6cf37b",
+      "backup": ".sync-backup/1.13.0-20261006-160533/README.md"
     },
     {
       "path": "TASKS.md",
-      "sha256": "d3b890ad5d99792b06b60892f0409d3e5642bbaba9006b39eed223f8caf23fce",
-      "backup": ".sync-backup/1.13.0-20261006-160349/TASKS.md"
-    },
-    {
-      "path": "docs/ARCHITECTURE.md",
-      "sha256": "cc818c444c4ead7aed6d8b73972ac469e71178cb01fc10967ba85ddca3989b7f",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/ARCHITECTURE.md"
+      "sha256": "e8b0d70a4efe5a8abf84daf2583e39d3608245fdb3b072604301748413a1ab9f",
+      "backup": ".sync-backup/1.13.0-20261006-160533/TASKS.md"
     },
     {
       "path": "docs/DEVELOPMENT.md",
-      "sha256": "c6a2388421d21b682e1d9933bef57bd6052c654c220524e621fe9a6251b58a4e",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/DEVELOPMENT.md"
-    },
-    {
-      "path": "docs/DIAGRAMS.md",
-      "sha256": "b73baa9f5904ddf4d152ce3be1f9fc0777dcbddd9c8a958d83815a8a92aa7052",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/DIAGRAMS.md"
-    },
-    {
-      "path": "docs/ORDER.md",
-      "sha256": "abc278b61618b73a107c7a02a6694867de90c1314309bf6279122afdcde0dd12",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/ORDER.md"
-    },
-    {
-      "path": "docs/PERFORMANCE_PLAN.md",
-      "sha256": "0d991b442884fbaeadb2571425e952bfc815e51c99e5a2f54313c26040c23a63",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/PERFORMANCE_PLAN.md"
-    },
-    {
-      "path": "docs/diagrams/application.architecture.json",
-      "sha256": "a47e00a49fbbb515025c71388cacf0c29eeff835bef9c55cc879b067865d37a7",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/application.architecture.json"
-    },
-    {
-      "path": "docs/diagrams/application.delivery.json",
-      "sha256": "d7c93e6276a0fc04f40826dd41d136f0344d3c913ebf5e83f234a9a9cf753a75",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/application.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/application.html",
-      "sha256": "b68a9adb2df5c5a461314ea51cb9c297ea4f873ace47a43a4c4827ec7a548c25",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/application.html"
-    },
-    {
-      "path": "docs/diagrams/maintenance.architecture.json",
-      "sha256": "29b65f997843e3545833a55b5df1636bc24b2d5a76a5934694a3a5d44bf0eea1",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/maintenance.architecture.json"
-    },
-    {
-      "path": "docs/diagrams/maintenance.delivery.json",
-      "sha256": "a16704af5367c8e1d74a0ef666f181f5c7607a957faeeee36a2e9fb58ab73003",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/maintenance.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/maintenance.html",
-      "sha256": "5cbe3c25d48e0bd8cd5ae32e62b4456b9daad6fe89f08a34ea29f7618bdb915b",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/maintenance.html"
-    },
-    {
-      "path": "docs/diagrams/manifest.json",
-      "sha256": "c66db91e820f938f0f77243139ec26471bc42d1ea5d670069440b649254cdac6",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/manifest.json"
-    },
-    {
-      "path": "docs/diagrams/processing.delivery.json",
-      "sha256": "97f1d8a96171014cd043e18571326aa3c9c19c5ca2efb3336181998097adb768",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/processing.delivery.json"
-    },
-    {
-      "path": "docs/diagrams/processing.html",
-      "sha256": "dc4e92b4a8189cd3a3c7dbea14d4d358fcad40f6337149cd15edb8793fbfee60",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/processing.html"
-    },
-    {
-      "path": "docs/diagrams/processing.workflow.json",
-      "sha256": "e02938709a132e46e0713c983dcf0bc43c2673f1df1287e45ead3e6dbed430d2",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/diagrams/processing.workflow.json"
-    },
-    {
-      "path": "docs/low-spec-review.json",
-      "sha256": "76e41ba69c56a03ff7634b0ff55f34e90043ff7890bc077132ca4e78a5583943",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/low-spec-review.json"
-    },
-    {
-      "path": "docs/order-verification-1.11.0.json",
-      "sha256": "cc841ed8be8eb8a65d676a63e37ab968471362735bf2bab9d6153bb899925b74",
-      "backup": ".sync-backup/1.13.0-20261006-160349/docs/order-verification-1.11.0.json"
-    },
-    {
-      "path": "packaging/README_Distribution.txt",
-      "sha256": "db5e21310b2fc2b7970549097fb67ccd59276e26780308afbac6f23756a5e478",
-      "backup": ".sync-backup/1.13.0-20261006-160349/packaging/README_Distribution.txt"
-    },
-    {
-      "path": "packaging/version.iss",
-      "sha256": "e9a9d4d5c9cb745e3bdd974767c0706d3a0b8dc676f11e4a4baa95078148dcf2",
-      "backup": ".sync-backup/1.13.0-20261006-160349/packaging/version.iss"
-    },
-    {
-      "path": "packaging/version_info.txt",
-      "sha256": "e69fc54e842c58bd761921c87c0c553cda3a73a0cdeaecd3b6a2fe0740fb9de3",
-      "backup": ".sync-backup/1.13.0-20261006-160349/packaging/version_info.txt"
-    },
-    {
-      "path": "pdf_lover/catalog.py",
-      "sha256": "e523c810f3f5a4bd6f96cef280e26f64d3f99ece366cea31fa836f63117e3d03",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/catalog.py"
-    },
-    {
-      "path": "pdf_lover/core/page_order.py",
-      "sha256": "905fddd96367c130e109a2458070f723fbfe054c0d1452d50a18e5d5ac0365bc",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/core/page_order.py"
-    },
-    {
-      "path": "pdf_lover/diagnostics/self_test.py",
-      "sha256": "d0b6faef68a436d7a591a3701be2a3b674afb109057b4928d21304fab1e44dcf",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/diagnostics/self_test.py"
-    },
-    {
-      "path": "pdf_lover/features/organize/page.py",
-      "sha256": "8d0bd2ec3dd312f63eb9e5c561bb2738fdc69ee276526b0816e5d03836a83ebf",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/features/organize/page.py"
-    },
-    {
-      "path": "pdf_lover/features/organize/service.py",
-      "sha256": "4f82b4e96b0e40f1e12f67d0abb45790556c84146839933331c3bcf9bd1f53ae",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/features/organize/service.py"
-    },
-    {
-      "path": "pdf_lover/ui/page_order.py",
-      "sha256": "699539174dd7e2335b9b21305501e8b42866ca1cc1c313f997790301c91e95c2",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/ui/page_order.py"
-    },
-    {
-      "path": "pdf_lover/ui/workbench.py",
-      "sha256": "f50503ff7db0af30c0cce5620c9ea7434ae1d40fa782cf73dc9b710621515a69",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/ui/workbench.py"
-    },
-    {
-      "path": "pdf_lover/version.py",
-      "sha256": "4ef41bbc20e518771d5c01cfafa00842fd0f3681c96afe125e681008ae3b57ba",
-      "backup": ".sync-backup/1.13.0-20261006-160349/pdf_lover/version.py"
-    },
-    {
-      "path": "tests/ui/verify_cancellation.py",
-      "sha256": "0d64221cc42e4045a468d6f4f2b74f33d958797080eb215585d1f0b20dffb62d",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/ui/verify_cancellation.py"
-    },
-    {
-      "path": "tests/ui/verify_drag_performance.py",
-      "sha256": "2ca9909b24f88356bfb4af0ba781f8f952be01d768baca3109319de15c9d8558",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/ui/verify_drag_performance.py"
-    },
-    {
-      "path": "tests/ui/verify_merge.py",
-      "sha256": "8c2f528cce970efc2a24820b5125d3f28d52fc98d86ade992ba41088cfaf1421",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/ui/verify_merge.py"
-    },
-    {
-      "path": "tests/ui/verify_order.py",
-      "sha256": "441161eba7c75b5df1a4767b374d8bb33a8f617ae4f6fb7981405d90c1884aa5",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/ui/verify_order.py"
-    },
-    {
-      "path": "tests/ui/verify_selector.py",
-      "sha256": "61f92b0ed97765b47c0d537478757c78a493ab002400b559ee097a5d61853bb7",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/ui/verify_selector.py"
-    },
-    {
-      "path": "tests/unit/test_pdf_order.py",
-      "sha256": "1f3fb387eece3d23c607af3e413077afd83a9ca1ac2ecfc963d7f7af4040e177",
-      "backup": ".sync-backup/1.13.0-20261006-160349/tests/unit/test_pdf_order.py"
+      "sha256": "1dc1522b1f3345c31a16b696c6f8c9a3e0b0a5ede759a91e3c17be17a6f9a038",
+      "backup": ".sync-backup/1.13.0-20261006-160533/docs/DEVELOPMENT.md"
     }
   ],
   "guard": "Every differing existing file backed up and SHA256 verified before replacement; unrelated files retained",
@@ -216,13 +51,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "3f56032af9316b88d4b6875a2c1500d7df461c323f844b7f36c1125fda6cf37b",
-      "bytes": 13525
+      "sha256": "541cccee57e3ab2cbb29fb224cf1a3fae56fe1576005d61722837f57974cab12",
+      "bytes": 13518
     },
     {
       "path": "TASKS.md",
-      "sha256": "e8b0d70a4efe5a8abf84daf2583e39d3608245fdb3b072604301748413a1ab9f",
-      "bytes": 44566
+      "sha256": "1209dbbc179f823bb78eaf37f3b45ab52bc9b33c5066ca96c0ec92415d1de00a",
+      "bytes": 44753
     },
     {
       "path": "design.md",
@@ -266,7 +101,7 @@
     },
     {
       "path": "docs/DEVELOPMENT.md",
-      "sha256": "1dc1522b1f3345c31a16b696c6f8c9a3e0b0a5ede759a91e3c17be17a6f9a038",
+      "sha256": "e7c63221fb990e8df59dec215836b043fe72dd3d8b49cbd2772a2b1bed1bc461",
       "bytes": 6946
     },
     {
@@ -1722,6 +1557,11 @@
     {
       "path": "docs/release-1.12.0.json",
       "sha256": "789b059c4adf31b3e1ea8d0c317b29147aa16f684660680f1d9ea5679f02015c",
+      "bytes": 1972
+    },
+    {
+      "path": "docs/release-1.13.0.json",
+      "sha256": "6a594384560e8c5fbb95bbec7faea9dcf60632edd5d38ec6f9ed80cd5b938b27",
       "bytes": 1972
     },
     {

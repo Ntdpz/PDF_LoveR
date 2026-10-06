@@ -277,4 +277,4 @@ PageSelector ร่วมรองรับ Shift+คลิกเลือกช
 - [x] PDF native objects, links/bookmarks/annotations/forms, source safety และ Poppler
 - [x] หน้าต่าง920×700จริง100%/125% และคีย์บอร์ด · [คู่มือ](docs/ORDER.md)
 
-ตรวจ113 unit +19 UI และ EXE/ZIP/Installer รวมติดตั้ง/ถอนติดตั้งรักษาไฟล์ผู้ใช้แล้ว · verification-1.13.0.json และ distribution-1.13.0.json; Release รอเผยแพร่ · จำนวนเครื่องมือยัง8/34
+ตรวจ113 unit +19 UI และ EXE/ZIP/Installer รวมติดตั้ง/ถอนติดตั้งรักษาไฟล์ผู้ใช้แล้ว · verification-1.13.0.json และ distribution-1.13.0.json; [Release 1.13.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.13.0) เผยแพร่แล้ว ดาวน์โหลดกลับตรวจSHA256ตรงทั้ง5ไฟล์ · release-1.13.0.json · จำนวนเครื่องมือยัง8/34
