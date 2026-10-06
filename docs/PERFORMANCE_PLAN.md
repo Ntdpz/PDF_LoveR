@@ -252,3 +252,10 @@ Poppler pixels และ source hash; 920×700 ที่100%/125%
 
 [Headless reverse export](order-engine-resources-1.11.0.json):1,000หน้าข้อความ, affinity2, หยุดกลางทางแล้วเริ่มใหม่ผ่าน; export0.149s, process peak working set51.13MiBรวมสร้างfixture ไม่ใช่peakเอกสารสแกน/frozen
 Generic source benchmark มี max heartbeat lateness579.18msในช่วงspawn/navigation; จึงไม่อ้างผ่านงบตอบสนองทุกช่วงจาก P95 เพียงอย่างเดียว
+
+## ใส่หมายเลขหน้า · 1.12.0
+
+ยังใช้ coordinator1 / requests16 / results4, selector32/6MiB, comparison12/6MiB และ event queue32; ไม่มี dependency หนักเพิ่ม ฟอนต์ OFL ประมาณ214KiBอยู่ในชุดแจก เริ่มใช้เมื่อวางเลขเท่านั้น.
+ผลสองรอบ source240หน้า: home idle รุ่น1.11.0เดิม67.17MiB เทียบ1.12.0ที่69.43MiB; หน้าเลข112.845MiBรวม preview เป็นค่ากลางจากคนละรอบ/idle harness2กับ5วินาที จึงเป็นหลักฐานเปรียบเทียบจำกัด.
+1000หน้าข้อความ, affinity2 logical cores:42.839วินาที, peak working set385.89MiBรวมสร้างfixture, PDFประมาณ1.48MiBหลังรวมfont streamsซ้ำ. นี่ไม่ใช่ peak ของเอกสารสแกน/frozen/HDD; PDF native save/dedupอาจใช้เวลาและRAMเพิ่มตามขนาดเอกสาร ยกเลิกรอcallปัจจุบันจบ.
+ดู page-numbers-resources-1.12.0.json และ performance-after-1.12.0.json; ไม่มีการลดDPI/คุณภาพ/ขนาดตัวอักษรเอง และยังไม่รับรองphysical4GiB/HDDหรือWindows11.

@@ -1,5 +1,6 @@
 """Hidden packaged-app smoke check, isolated from user documents."""
 import json
+import traceback
 import hashlib
 import tempfile
 import time
@@ -345,7 +346,7 @@ def run(root, app_class, report):
             page.start()
             root.after(100, finish_order)
         except Exception as error:
-            complete({'passed':False,'errors':failures+[str(error)]})
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
 
     def finish_order():
         page = app.get_page('organize')
@@ -379,9 +380,69 @@ def run(root, app_class, report):
                            cancellation='seven packaged engines honour token; busy restored',
                            file_drop='Windows native callbacks verified for all 7 tools',
                            selector_preview_pages={name:sorted(pages) for name,pages in selector_pages.items()})
+            start_numbers()
+        except Exception as error:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def start_numbers():
+        assert app.show_tool('page-numbers')
+        native_drop(root, [app.merge.destination])
+        root.after(100, prepare_numbers)
+
+    def prepare_numbers():
+        page = app.get_page('page-numbers')
+        if app.busy and time.monotonic()-started < 125:
+            root.after(100, prepare_numbers)
+            return
+        try:
+            assert page.info and not app.busy
+            page.output.set(str(folder)); page.prefix.set('numbered')
+            page.selector.expression.set('1,3')
+            page.number_format.set('page');page.thai_digits.set(True)
+            page.number_sequence.set('selected')
+            page.show_view('preview')
+            page.start()
+            root.after(100, finish_numbers)
+        except Exception as error:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def finish_numbers():
+        page = app.get_page('page-numbers')
+        if app.busy and time.monotonic()-started < 125:
+            root.after(100, finish_numbers)
+            return
+        try:
+            assert page.destination and not app.busy, page.status.get()
+            page.preview.render()
+            if not all(page.preview.cache.get(k) for k in page.preview.keys()) and time.monotonic()-started < 125:
+                root.after(100, finish_numbers)
+                return
+            assert all(page.preview.cache.get(k) for k in page.preview.keys())
+            from pdf_lover.features.page_numbers.service import number_pdf, stamp_page
+            from pdf_lover.core.cancellation import Cancelled
+            with pymupdf.open(page.plan.outputs[0].path) as doc,pymupdf.open(app.merge.destination) as before:
+                assert 'หน้า ๑' in doc[0].get_text() and 'หน้า ๒' in doc[2].get_text()
+                assert doc[1].get_pixmap().samples == before[1].get_pixmap().samples
+                key=page.preview.keys()[1]
+                p=doc[key[3]];factor=min(key[5]/p.rect.width,key[6]/p.rect.height)
+                pix=p.get_pixmap(matrix=pymupdf.Matrix(factor,factor),alpha=False,colorspace=pymupdf.csRGB)
+                assert page.preview.cache[key] == (pix.width,pix.height,pix.samples)
+                fonts=[font for font in doc[0].get_fonts(full=True) if 'NotoSansThai' in font[3].replace(' ', '')]
+                assert fonts and all(doc.extract_font(f[0])[3] for f in fonts)
+            assert hashlib.sha256(app.merge.destination.read_bytes()).hexdigest() == page_tool_source_hash
+            app.busy=True;page.cancel_button.invoke()
+            try:number_pdf(page.plan,cancel=page.cancel_event)
+            except Cancelled:pass
+            else:raise AssertionError('Packaged numbering ignored cancellation')
+            app.busy=False
+            summary.update(page_numbers=True,numbered_selected_pages=[1,3],thai_font_embedded=True,
+                numbered_preview_matches_output=True,activity_indicators='all eight tools',
+                cancellation='eight packaged engines honour token; busy restored',
+                file_drop='Windows native callbacks verified for all8 tools')
+            assert not failures,failures
             complete(summary)
         except Exception as error:
-            complete({'passed':False,'errors':failures+[str(error)]})
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
 
     root.after(150, finish)
     root.after(120000, lambda: complete({'passed': False, 'errors': failures +

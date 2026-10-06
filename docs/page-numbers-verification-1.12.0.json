@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "scaling": [
+    1,
+    1.25
+  ],
+  "window": [
+    920,
+    700
+  ],
+  "preview_matches_output": true,
+  "poppler_unchanged_regions": true,
+  "thai_embedded": true,
+  "rotations": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "cropbox": true,
+  "cancel_retry": true,
+  "source_unchanged": true,
+  "limitations": [
+    "Windows10 development host; no physical4GB/HDD or Windows11 certification",
+    "Poppler independent renderer; another physical computer not used"
+  ]
+}

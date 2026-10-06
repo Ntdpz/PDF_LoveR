@@ -64,7 +64,7 @@ def main():
         while root.focus_get() != c and time.monotonic() < deadline:
             root.lift(); root.focus_force(); c.focus_force(); pump(root, .05)
         assert root.focus_get() == c, 'Canvas did not receive native keyboard focus'
-        c.event_generate('<Control-a>', state=4); assert s.expression.get() == '1-8', (s.expression.get(),s.enabled,s.editable,app.busy,root.focus_get())
+        c.event_generate('<KeyPress>', keycode=65, state=4); assert s.expression.get() == '1-8', (s.expression.get(),s.enabled,s.editable,app.busy,root.focus_get())
         click(2); c.event_generate('<Shift-Right>'); assert s.expression.get() == '2-3'
         c.event_generate('<Shift-Right>'); assert s.expression.get() == '2-4'
         c.event_generate('<Shift-Left>'); assert s.expression.get() == '2-3'

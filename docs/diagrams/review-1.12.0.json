@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "artifact_checks": "all3 diagrams9/9;0errors/0warnings",
+  "browser_containment": "1440x900,1600x1000,1920x1080,2048x1320",
+  "perceptual_review": "Viewed all3 diagrams light/dark at2048x1320; readable Thai and labels, no observed collisions",
+  "viewer_language": "English; authored Thai"
+}

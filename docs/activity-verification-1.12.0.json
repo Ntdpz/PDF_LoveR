@@ -1,0 +1,174 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "cases": [
+    {
+      "tool": "pdf-png",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "merge",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "split",
+      "phase": "inspect",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "split",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "extract-pages",
+      "phase": "inspect",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "extract-pages",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "delete-pages",
+      "phase": "inspect",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "delete-pages",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "rotate",
+      "phase": "inspect",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "rotate",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "organize",
+      "phase": "inspect",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "organize",
+      "phase": "export",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "split",
+      "phase": "error",
+      "scale": 1,
+      "motion": true
+    },
+    {
+      "tool": "pdf-png",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "merge",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "split",
+      "phase": "inspect",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "split",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "extract-pages",
+      "phase": "inspect",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "extract-pages",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "delete-pages",
+      "phase": "inspect",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "delete-pages",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "rotate",
+      "phase": "inspect",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "rotate",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "organize",
+      "phase": "inspect",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "organize",
+      "phase": "export",
+      "scale": 1.25,
+      "motion": false
+    },
+    {
+      "tool": "split",
+      "phase": "error",
+      "scale": 1.25,
+      "motion": false
+    }
+  ],
+  "idle_hidden_frames": 0,
+  "animation_uses_existing_shell_poll": true,
+  "elapsed_time_verified": true,
+  "reduced_motion_verified": true,
+  "source_hashes_preserved": true,
+  "heartbeat_gap_p95_ms": 16.0,
+  "heartbeat_gap_max_ms": 78.0,
+  "tk_errors": [],
+  "limitations": [
+    "Development Windows PC; not physical 2-core/4-GiB/HDD proof",
+    "Worker gates simulate I/O delay before real inspection/export; heartbeat includes screenshots and test overhead"
+  ]
+}

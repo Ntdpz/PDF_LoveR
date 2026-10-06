@@ -135,3 +135,5 @@ Review hardware/workload limitations before interpreting results; no physical
 4-GiB/HDD PC or Windows 11 machine has been certified by these source checks.
 
 1.11.0 adds `python tests/ui/verify_order.py` and headless permutation/fidelity/safety tests; current verification runs101 unit tests followed by18 native UI checks sequentially. See ORDER.md.
+
+1.12.0 adds `python tests/ui/verify_page_numbers.py` and `python scripts/benchmark_page_numbers.py`. Current suite:108 unit +19 native UI checks, plus packaged8-tool font/preview smoke and isolated install/uninstall. See PAGE_NUMBERS.md and distribution-1.12.0.json.

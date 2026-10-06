@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "command": "python scripts/check.py",
+  "exit_code": 0,
+  "unit_tests": 108,
+  "native_ui_suites": 19,
+  "commands": [
+    "scripts/update_diagrams.py --check",
+    "scripts/check_low_spec.py",
+    "-m unittest discover -s tests/unit -v",
+    "tests/ui/verify_png.py",
+    "tests/ui/verify_image.py",
+    "tests/ui/verify_image_selection.py",
+    "tests/ui/verify_activity.py",
+    "tests/ui/verify_cancellation.py",
+    "tests/ui/verify_home.py",
+    "tests/ui/verify_merge.py",
+    "tests/ui/verify_merge_cards.py",
+    "tests/ui/verify_file_drop.py",
+    "tests/ui/verify_drag_performance.py",
+    "tests/ui/verify_split.py",
+    "tests/ui/verify_page_tools.py",
+    "tests/ui/verify_order.py",
+    "tests/ui/verify_page_numbers.py",
+    "tests/ui/verify_rotate.py",
+    "tests/ui/verify_resources.py",
+    "tests/ui/verify_selector.py",
+    "tests/ui/verify_page_gestures.py",
+    "tests/ui/verify_workbench.py"
+  ],
+  "log_sha256": "380116975c4a836cf3aac3fb01c3dded94f2b19e6d3b366c5ec76eb142f9aa44",
+  "follow_up": "Latest numbering keyboard focus/scroll and preview endpoint changes verified with tests/ui/verify_page_numbers.py at100%/125% after full runner completed",
+  "limitations": [
+    "Windows10 development host; not physical4GB/HDD orWindows11 certification"
+  ]
+}

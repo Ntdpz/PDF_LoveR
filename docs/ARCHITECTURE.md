@@ -26,6 +26,8 @@ PDF_LoveR/
 │   │   ├── selection_page.py       Shared extract/delete workbench
 │   │   ├── extract/                Extract page and headless service
 │   │   ├── rotate/                 Relative rotation, per-document selection, batch export
+│   │   ├── organize/               Original page reordering
+│   │   ├── page_numbers/           Numbering and shared vector stamp preview
 │   │   └── delete_pages/           Delete page and headless service
 │   └── diagnostics/                Packaged application smoke check
 ├── tests/
@@ -155,7 +157,7 @@ failure rolls back only unchanged files created by that job; an incomplete rollb
 is reported with the remaining names. The engine rejects original paths/aliases,
 existing targets and invalid Windows name prefixes. No worker reads Tk variables.
 
-PNG, merge, split, extract-pages, delete-pages, rotate and organize are ready (7 of 34).
+PNG, merge, split, extract-pages, delete-pages, rotate and organize and page-numbers are ready (8 of 34).
 Password PDFs and general zoom preview and
 document-level attachments/signatures remain outside the page tools' scope.
 See [Split](SPLIT.md) and [Page tools](PAGE_TOOLS.md) for precise behavior.
@@ -378,3 +380,11 @@ The packaged self-test now verifies seven routes and terminates with a diagnosti
 on Tk callback error/timeout rather than hanging without a report.
 
 Idle Cancel uses grid_forget and explicit job placement so CustomTkinter scaling cannot restore a hidden button; the existing loader lifecycle is unchanged.
+
+## Page numbering · 1.12.0
+
+`features/page_numbers/page.py` extends SelectionPage with the existing PageSelector and a NumberPreview subclass of PagePreview. NumberSettings/NumberPlan are immutable snapshots; validation and PDF work live in the headless service. The child renderer accepts a tagged key containing one label/settings and calls the same stamp_page as export. No Tk/PDF work runs across worker boundaries. Six visible-page positions use rotated CropBox dimensions; insertion temporarily restores rotation zero to account for PyMuPDF CropBox transforms and restores the original rotation in finally. Story shapes the packaged OFL Noto Sans Thai font; vector forms overlay the original pages. Garbage4 merges duplicate embedded font streams; the reopened output verifies all page geometry. Source signature, exclusive staging/publication and cancellation reuse core guards. Export concurrency1, events32, selector32/6MiB and comparison12/6MiB remain bounded; hidden tabs release their previews. See PAGE_NUMBERS.md for numbering/denominator semantics and limitations.
+
+PageSelector Ctrl+A also recognizes Windows virtual key65, so Thai keyboard layouts do not depend on a Latin keysym. The generic Control binding forwards navigation/Return and lets other shortcuts continue to the shell. Native gesture evidence generates the real virtual key rather than an unmappable Latin symbol.
+
+Numbering uses a compact masthead title at125% and reveals scrolled settings on keyboard focus without another timer/worker. Preview navigation stays within the chosen pages; the Thai-digit checkbox accepts Space/Return.

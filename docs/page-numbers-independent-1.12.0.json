@@ -1,0 +1,347 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "reader": "Poppler pdfinfo/pdffonts/pdftotext/pdftoppm",
+  "checks": "All6 visible-page positions x4 rotations; varied MediaBox/CropBox; Thai extraction and embedded fonts; differences confined to requested text location",
+  "cases": [
+    {
+      "position": "top-left",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        14,
+        13,
+        56,
+        30
+      ]
+    },
+    {
+      "position": "top-left",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        14,
+        13,
+        57,
+        30
+      ]
+    },
+    {
+      "position": "top-left",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        14,
+        13,
+        56,
+        30
+      ]
+    },
+    {
+      "position": "top-left",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        14,
+        13,
+        56,
+        30
+      ]
+    },
+    {
+      "position": "top-center",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        159,
+        13,
+        201,
+        30
+      ]
+    },
+    {
+      "position": "top-center",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        241,
+        13,
+        284,
+        30
+      ]
+    },
+    {
+      "position": "top-center",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        169,
+        13,
+        211,
+        30
+      ]
+    },
+    {
+      "position": "top-center",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        247,
+        13,
+        289,
+        30
+      ]
+    },
+    {
+      "position": "top-right",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        305,
+        13,
+        346,
+        30
+      ]
+    },
+    {
+      "position": "top-right",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        468,
+        13,
+        511,
+        30
+      ]
+    },
+    {
+      "position": "top-right",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        324,
+        13,
+        366,
+        30
+      ]
+    },
+    {
+      "position": "top-right",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        480,
+        13,
+        522,
+        30
+      ]
+    },
+    {
+      "position": "bottom-left",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        14,
+        465,
+        56,
+        482
+      ]
+    },
+    {
+      "position": "bottom-left",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        14,
+        315,
+        57,
+        332
+      ]
+    },
+    {
+      "position": "bottom-left",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        14,
+        475,
+        56,
+        492
+      ]
+    },
+    {
+      "position": "bottom-left",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        14,
+        335,
+        56,
+        352
+      ]
+    },
+    {
+      "position": "bottom-center",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        159,
+        465,
+        201,
+        482
+      ]
+    },
+    {
+      "position": "bottom-center",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        241,
+        315,
+        284,
+        332
+      ]
+    },
+    {
+      "position": "bottom-center",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        169,
+        475,
+        211,
+        492
+      ]
+    },
+    {
+      "position": "bottom-center",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        247,
+        335,
+        289,
+        352
+      ]
+    },
+    {
+      "position": "bottom-right",
+      "rotation": 0,
+      "size": [
+        360,
+        520
+      ],
+      "changed_bbox": [
+        305,
+        465,
+        346,
+        482
+      ]
+    },
+    {
+      "position": "bottom-right",
+      "rotation": 90,
+      "size": [
+        525,
+        370
+      ],
+      "changed_bbox": [
+        468,
+        315,
+        511,
+        332
+      ]
+    },
+    {
+      "position": "bottom-right",
+      "rotation": 180,
+      "size": [
+        380,
+        530
+      ],
+      "changed_bbox": [
+        324,
+        475,
+        366,
+        492
+      ]
+    },
+    {
+      "position": "bottom-right",
+      "rotation": 270,
+      "size": [
+        535,
+        390
+      ],
+      "changed_bbox": [
+        480,
+        335,
+        522,
+        352
+      ]
+    }
+  ],
+  "limitations": [
+    "Independent renderer on development Windows10 host; another physical computer not tested"
+  ]
+}

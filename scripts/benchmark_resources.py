@@ -92,7 +92,7 @@ def once(idle_seconds):
             for i in range(240):
                 doc.new_page().insert_text((72, 72), f"Page {i + 1}")
             doc.save(path)
-        for tool in ("pdf-png", "merge", "split", "extract-pages", "delete-pages", "rotate", "organize"):
+        for tool in ("pdf-png", "merge", "split", "extract-pages", "delete-pages", "rotate", "organize", "page-numbers"):
             app.show_tool(tool); app.active_page.add_paths([path])
             end = time.monotonic() + 20
             while app.busy and time.monotonic() < end:

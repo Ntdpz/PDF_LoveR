@@ -41,7 +41,7 @@ def main():
     assert len({tool.id for tool in TOOLS}) == len(TOOLS) == 34
     assert len({category.id for category in CATEGORIES}) == 7
     assert all(tool.category in {item.id for item in CATEGORIES} for tool in TOOLS)
-    assert [tool.id for tool in find_tools(ready_only=True)] == ['pdf-png', 'merge', 'split', 'delete-pages', 'extract-pages', 'organize', 'rotate']
+    assert [tool.id for tool in find_tools(ready_only=True)] == ['pdf-png', 'merge', 'split', 'delete-pages', 'extract-pages', 'organize', 'rotate', 'page-numbers']
     assert {tool.id for tool in find_tools('excel')} == {'pdf-excel', 'excel-pdf'}
     assert {tool.id for tool in find_tools(' PPTX ')} == {'pdf-ppt', 'ppt-pdf'}
     assert [tool.id for tool in find_tools('รวม PDF', category='organize')] == ['merge']
@@ -91,7 +91,7 @@ def main():
     capture(root, 'home-empty.png')
     app.home.reset_filters()
     assert app.home.ready_only
-    assert [tool.id for tool in app.home.visible_tools] == ['pdf-png', 'merge', 'split', 'delete-pages', 'extract-pages', 'organize', 'rotate']
+    assert [tool.id for tool in app.home.visible_tools] == ['pdf-png', 'merge', 'split', 'delete-pages', 'extract-pages', 'organize', 'rotate', 'page-numbers']
     assert not app.show_tool('unknown')
     with tempfile.TemporaryDirectory(prefix='pdf-lover-navigation-') as sandbox:
         folder = Path(sandbox)
@@ -141,7 +141,7 @@ def main():
     capture(root, 'home-scaled.png')
     assert not errors, errors
     dispose(root)
-    report = {'passed': True, 'tools': len(TOOLS), 'categories': len(CATEGORIES), 'ready': 7,
+    report = {'passed': True, 'tools': len(TOOLS), 'categories': len(CATEGORIES), 'ready': 8,
               'checks': ['lazy page creation and retained instances', 'shell owns the only event polling timer', 'Thai/English search', 'category/status filtering', 'planned details', 'empty state',
                          'queue/settings retained', 'busy navigation guard', 'real two-page PNG conversion',
                          '920/1080/1440 widths', '100%/125% scaling', 'no callback errors']}

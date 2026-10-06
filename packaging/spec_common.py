@@ -16,7 +16,7 @@ def analysis_options():
         pathex=[str(ROOT)],
         binaries=[],
         datas=collect_data_files("customtkinter") + collect_data_files("tkinterdnd2")
-              + [(ICON, "pdf_lover/assets")],
+              + [(ICON, "pdf_lover/assets"), (str(ROOT / "pdf_lover/assets/fonts"), "pdf_lover/assets/fonts")],
         # The registry defers imports at runtime; explicitly bundle every ready page.
         hiddenimports=[factory.module for factory in PAGE_FACTORIES.values()],
         hookspath=[], hooksconfig={}, runtime_hooks=[],

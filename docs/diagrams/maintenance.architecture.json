@@ -176,7 +176,7 @@
       "dot": "emerald",
       "title": "เครื่องมือพัฒนา",
       "items": [
-        "101 unit + 18 UI; เรียง / หยุด / เริ่มใหม่",
+        "108 unit + 19 UI; เลขไทย / preview / หยุด",
         "Archify 9/9; ตรวจภาพจริง light/dark"
       ]
     },
@@ -184,7 +184,7 @@
       "dot": "amber",
       "title": "การแจกโปรแกรม",
       "items": [
-        "7 งาน + cancellation ใน EXE / ZIP / installer",
+        "8 งาน + ฟอนต์ OFL ใน EXE / ZIP / installer",
         "ซิงก์ Program แบบตรวจ hash; repo คง Private"
       ]
     }

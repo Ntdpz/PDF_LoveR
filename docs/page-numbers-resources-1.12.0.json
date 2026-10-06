@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "version": "1.12.0",
+  "host": "Windows-10-10.0.19045-SP0",
+  "logical_cpus": 16,
+  "affinity_logical_cpus": 2,
+  "pages": 1000,
+  "elapsed_seconds": 42.839,
+  "output_bytes": 1556413,
+  "counters": {
+    "private_mib": 45.54296875,
+    "working_set_mib": 46.9453125,
+    "peak_working_set_mib": 385.88671875,
+    "cpu_seconds": 42.5
+  },
+  "quality": "vector overlay; duplicate font streams merged; no rasterization or typography reduction",
+  "limitations": [
+    "Synthetic text export; peak includes fixture creation",
+    "Logical CPU affinity does not emulate4GB RAM/HDD",
+    "No physical low-spec or Windows11 test"
+  ]
+}

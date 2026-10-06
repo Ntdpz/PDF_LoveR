@@ -1,0 +1,5 @@
+Noto Sans Thai, upstream unmodified variable font.
+Source: https://github.com/google/fonts/tree/main/ofl/notosansthai
+Font: https://raw.githubusercontent.com/google/fonts/main/ofl/notosansthai/NotoSansThai%5Bwdth%2Cwght%5D.ttf
+License: SIL Open Font License 1.1, see OFL.txt.
+Downloaded 2026-10-06. Included offline in source, wheel, EXE and installer.

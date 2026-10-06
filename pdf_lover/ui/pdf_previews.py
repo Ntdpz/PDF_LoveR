@@ -20,6 +20,9 @@ def render_previews(requests, results):
                 page = document[key[3] if len(key) > 3 else 0]
                 if len(key) > 4:
                     page.set_rotation((page.rotation + key[4]) % 360)
+                if len(key) > 7 and key[7] == 'page-numbers':
+                    from pdf_lover.features.page_numbers.service import stamp_page
+                    stamp_page(page, key[8], key[9])
                 width, height = key[5:7] if len(key) > 6 else (224, 144)
                 factor = min(width / page.rect.width, height / page.rect.height)
                 pix = page.get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=False,

@@ -82,6 +82,8 @@ class PageSelector(ctk.CTkFrame):
         self.canvas.bind("<FocusOut>", self._focus_out)
         for key in ("Left", "Right", "Up", "Down", "Home", "End", "Prior", "Next", "space", "Return", "Escape", "a"):
             self.canvas.bind(f"<{key}>", self._keyboard)
+        # Windows virtual-key A is stable across Thai/English keyboard layouts.
+        self.canvas.bind('<Control-KeyPress>', self._control_keyboard)
         self.expression.trace_add("write", self._changed)
         self.render()
 
@@ -339,12 +341,19 @@ class PageSelector(ctk.CTkFrame):
         self._cancel_gesture()
         self.render()
 
+    def _control_keyboard(self, event):
+        if event.keysym.lower() == 'a' or getattr(event, 'keycode', None) == 65:
+            return self._keyboard(event)
+        if event.keysym in ('Left', 'Right', 'Up', 'Down', 'Home', 'End', 'Prior', 'Next', 'space', 'Return', 'Escape'):
+            return self._keyboard(event)
+        return None
+
     def _keyboard(self, event):
         if event.keysym == "Escape":
             self._cancel_gesture()
             self.render()
             return "break"
-        if event.state & 4 and event.keysym.lower() == "a":
+        if event.state & 4 and (event.keysym.lower() == "a" or getattr(event, 'keycode', None) == 65):
             self.select_all()
             return "break"
         # Let the shell handle Ctrl+Enter rather than treating it as page selection.

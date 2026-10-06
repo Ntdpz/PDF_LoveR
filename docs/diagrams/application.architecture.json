@@ -56,7 +56,7 @@
       "id": "home",
       "type": "frontend",
       "label": "หน้าเลือกเครื่องมือ",
-      "sublabel": "โต๊ะงานเต็มหน้า · 7 งานพร้อมใช้",
+      "sublabel": "โต๊ะงานเต็มหน้า · 8 งานพร้อมใช้",
       "pos": [
         60,
         190
@@ -84,7 +84,7 @@
       "id": "pages",
       "type": "frontend",
       "label": "หน้าฟีเจอร์ที่พร้อมใช้",
-      "sublabel": "7 เครื่องมือ · เลือก / หมุน / เรียง",
+      "sublabel": "8 เครื่องมือ · เลือก / เรียง / ใส่เลข",
       "pos": [
         940,
         190
@@ -126,7 +126,7 @@
       "id": "services",
       "type": "backend",
       "label": "ส่วนประมวลผล PDF",
-      "sublabel": "services + core เลือก / เรียง / บันทึก",
+      "sublabel": "services · overlay ไทยฝังฟอนต์",
       "pos": [
         940,
         340
@@ -239,7 +239,7 @@
       "dot": "cyan",
       "title": "หน้าจอและเส้นทาง",
       "items": [
-        "Tk main thread; loader ใช้ shell poll เดิม",
+        "Tk main thread; Ctrl+A รองรับคีย์บอร์ดไทย",
         "180×200 ภาพหน้า; cache ≤6 MiB; viewport ≤24"
       ]
     },
@@ -247,7 +247,7 @@
       "dot": "emerald",
       "title": "การทำงานเบื้องหลัง",
       "items": [
-        "worker รับ Event; หยุดเมื่อขั้นตอนจบ",
+        "เลขหน้า: preview/export ใช้ stamp_page เดียวกัน",
         "App ดูแล preview ร่วม; home ปิด process"
       ]
     },
@@ -255,7 +255,7 @@
       "dot": "amber",
       "title": "ขอบเขตปัจจุบัน",
       "items": [
-        "7 พร้อมใช้; catalogue 27 รายการยังอยู่ในแผน",
+        "8 พร้อมใช้; catalogue 26 รายการยังอยู่ในแผน",
         "ภาพ 4 ชนิด · เลือกหน้าต่อ PDF · DPI / px"
       ]
     }

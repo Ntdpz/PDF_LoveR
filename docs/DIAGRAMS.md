@@ -114,3 +114,7 @@ loader release after cleanup. Maintenance includes stop/retry and frozen-engine 
 ลากหลายหน้าและ Alt+ลูกศรย้าย identity ของหน้า; workers ย้าย page xref เดิม ไม่ rasterize
 ตรวจ permutation และ xrefs ก่อน staged publication; bookmark destinations เปลี่ยนตามลำดับใหม่
 maintenance รวม native order, packaged route, cancellation/retry และ source/output safety
+
+## ใส่เลขหน้า · 1.12.0
+
+พร้อมใช้8/34; SelectionPage worker/events32 + PageSelector เดิม; NumberPreview ส่ง tagged key เข้า renderer ร่วมและเรียก stamp_page เดียวกับ export. Story ฝัง Noto Sans Thai OFL; vector overlay รักษา CropBox/rotation. หน้าที่ซ่อนและแท็บที่ไม่แสดงคืน cache. Maintenance เพิ่มเลขไทย/preview/Poppler และ bundled-font smoke ทั้งสามชุดแจก. Viewer UI ยังคงภาษาอังกฤษ; authored content เป็นไทย.

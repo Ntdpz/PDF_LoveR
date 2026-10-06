@@ -12,7 +12,8 @@ def masthead(page, title):
     header=ctk.CTkFrame(page,fg_color=C['graphite'],corner_radius=0)
     header.grid(row=0,column=0,sticky='ew');header.grid_columnconfigure(1,weight=1)
     app.label(header,'PDF LoveR',font=app.font_bold,color='accent-ink').grid(row=0,column=0,padx=(S['xl'],S['xl']),pady=S['md'])
-    app.label(header,title,font=app.font_title,color='accent-ink').grid(row=0,column=1,sticky='w',pady=S['md'])
+    page.masthead_title=app.label(header,title,font=app.font_title,color='accent-ink')
+    page.masthead_title.grid(row=0,column=1,sticky='w',pady=S['md'])
     page.activity_indicator = ActivityIndicator(header, app.font_small)
     page.activity_indicator.grid(row=0, column=2, padx=S['sm'])
     tools={t.title:t.id for t in TOOLS if t.ready}

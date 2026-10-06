@@ -32,8 +32,8 @@
   "tk_errors": [],
   "interaction": {
     "pointer_events": 1000,
-    "elapsed_ms": 912.48,
-    "heartbeat_max_gap_ms": 29.56,
+    "elapsed_ms": 979.28,
+    "heartbeat_max_gap_ms": 31.9,
     "cpu_affinity_logical_cores": null
   },
   "limitations": [

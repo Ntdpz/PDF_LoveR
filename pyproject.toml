@@ -28,4 +28,4 @@ version = {attr = "pdf_lover.version.VERSION"}
 include = ["pdf_lover*"]
 
 [tool.setuptools.package-data]
-pdf_lover = ["assets/*.ico"]
+pdf_lover = ["assets/*.ico", "assets/fonts/*.ttf", "assets/fonts/*.txt"]
