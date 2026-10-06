@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "version": "1.11.0",
+  "tag": "v1.11.0",
+  "url": "https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.11.0",
+  "draft": false,
+  "latest": true,
+  "private_repository": true,
+  "target_commit": "e28c632b073e0876bc9a69efb898fc69f85fd6de",
+  "assets": [
+    {
+      "name": "PDF_LoveR_1.11.0.exe",
+      "sha256": "7e4a80c2e794eea3a0c9d18603eae8a3905b8ea0576556a0f460f329cc6cd857",
+      "bytes": 37908486,
+      "download_url": "https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.11.0/PDF_LoveR_1.11.0.exe",
+      "remote_download_verified": true
+    },
+    {
+      "name": "PDF_LoveR_1.11.0_Portable.zip",
+      "sha256": "d40fad89b2909b056f6442b49369681591f84aa54a03b2ad8f3f8de933beb2fb",
+      "bytes": 38773568,
+      "download_url": "https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.11.0/PDF_LoveR_1.11.0_Portable.zip",
+      "remote_download_verified": true
+    },
+    {
+      "name": "PDF_LoveR_1.11.0_Setup.exe",
+      "sha256": "df6e32029f724454a560b8f9fb56b1e9669b8004bd88eacff43ecffd18bd5f43",
+      "bytes": 28143931,
+      "download_url": "https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.11.0/PDF_LoveR_1.11.0_Setup.exe",
+      "remote_download_verified": true
+    },
+    {
+      "name": "Quick_Start_TH.txt",
+      "sha256": "1368699782e61522d386ee67f4886357f476cc8850be65553a4ebe912b9ef173",
+      "bytes": 12664,
+      "download_url": "https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.11.0/Quick_Start_TH.txt",
+      "remote_download_verified": true
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "sha256": "2f3fd807da6693b625ea8b9b8e2f277cd9af23d087bca49a0b914bf579b16da9",
+      "bytes": 365,
+      "download_url": "https://github.com/Ntdpz/PDF_LoveR/releases/download/v1.11.0/SHA256SUMS.txt",
+      "remote_download_verified": true
+    }
+  ]
+}

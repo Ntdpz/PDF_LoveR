@@ -1,31 +1,13 @@
 {
   "passed": true,
   "version": "1.11.0",
-  "files_verified": 444,
-  "backup_folder": ".sync-backup/1.11.0-20261006-105039",
+  "files_verified": 445,
+  "backup_folder": ".sync-backup/1.11.0-20261006-105312",
   "backups": [
     {
-      "path": "docs/diagrams/manifest.json",
-      "sha256": "14a629324883e2f2be17899ed41d9a2325054cd758fc8e3ce82f49774a9fa019",
-      "backup": ".sync-backup/1.11.0-20261006-105039/docs/diagrams/manifest.json",
-      "different_from_initial_repo": true
-    },
-    {
-      "path": "docs/low-spec-review.json",
-      "sha256": "45fcc93162847ba72d66b63c8b773614e155ba68acd64c25be80b01191879b98",
-      "backup": ".sync-backup/1.11.0-20261006-105039/docs/low-spec-review.json",
-      "different_from_initial_repo": true
-    },
-    {
-      "path": "docs/verification-1.11.0.json",
-      "sha256": "ddbab5806a820c99c4b13c4dd44d2df3abb2c605b3cbf29d750c02cdf3163397",
-      "backup": ".sync-backup/1.11.0-20261006-105039/docs/verification-1.11.0.json",
-      "different_from_initial_repo": true
-    },
-    {
-      "path": "pdf_lover/core/page_order.py",
-      "sha256": "8b45d7146caf0eb0ec0c22c740545b420f49022cd7c5aeacf9bb67e6d88cd2c3",
-      "backup": ".sync-backup/1.11.0-20261006-105039/pdf_lover/core/page_order.py",
+      "path": "README.md",
+      "sha256": "a69b336901eff494ea66fcf75ab5f9f8cd021a4289bb5bff22873b168a7fabf3",
+      "backup": ".sync-backup/1.11.0-20261006-105312/README.md",
       "different_from_initial_repo": true
     }
   ],
@@ -59,8 +41,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "a69b336901eff494ea66fcf75ab5f9f8cd021a4289bb5bff22873b168a7fabf3",
-      "bytes": 12922
+      "sha256": "c93f90414f3127e7c2fccf351a5f070f9afde1f6f2b46cedac420c0b99ac4729",
+      "bytes": 12942
     },
     {
       "path": "TASKS.md",
@@ -1431,6 +1413,11 @@
       "path": "docs/release-1.10.0.json",
       "sha256": "7c0188a6898bef6b9a3efef3f1ae058021724c9328e15dbf9e98b467920ac163",
       "bytes": 1115
+    },
+    {
+      "path": "docs/release-1.11.0.json",
+      "sha256": "ccc39298f5776b860dbde5798ea0ff98ddeb73e9ffc7294ef4b84fc7440a21e1",
+      "bytes": 1862
     },
     {
       "path": "docs/resource-verification-1.10.0.json",
