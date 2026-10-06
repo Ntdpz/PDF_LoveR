@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "angles": [
+    90,
+    180,
+    270
+  ],
+  "icon_commands": true,
+  "repeated_quarter_turns": true,
+  "starts_unrotated": true,
+  "four_clicks_restore_original": true,
+  "keyboard_and_tooltips": true,
+  "relative_to_existing_rotation": true,
+  "multi_file": true,
+  "per_document_selection": true,
+  "preview_pixels_match_engine": true,
+  "poppler_pixel_equivalence": true,
+  "originals_unchanged": true,
+  "overwrite_guard": true,
+  "bounded_preview": {
+    "selector_visible_limit": 24,
+    "shared_requests": 16,
+    "comparison_pending": 2,
+    "comparison_cache": 12,
+    "document_pages": 240
+  },
+  "minimum_window": [
+    920,
+    700
+  ],
+  "scaling": [
+    1,
+    1.25
+  ],
+  "tk_errors": [],
+  "worker_cleanup": true,
+  "version": "1.14.0"
+}

@@ -28,6 +28,7 @@ PDF_LoveR/
 │   │   ├── rotate/                 Relative rotation, per-document selection, batch export
 │   │   ├── organize/               Original page reordering
 │   │   ├── page_numbers/           Numbering and shared vector stamp preview
+│   │   ├── watermark/              Text/image overlays and exact saved-page preview
 │   │   └── delete_pages/           Delete page and headless service
 │   └── diagnostics/                Packaged application smoke check
 ├── tests/
@@ -157,7 +158,7 @@ failure rolls back only unchanged files created by that job; an incomplete rollb
 is reported with the remaining names. The engine rejects original paths/aliases,
 existing targets and invalid Windows name prefixes. No worker reads Tk variables.
 
-PNG, merge, split, extract-pages, delete-pages, rotate and organize and page-numbers are ready (8 of 34).
+PNG, merge, split, extract-pages, delete-pages, rotate and organize, page-numbers and watermark are ready (9 of 34).
 Password PDFs and general zoom preview and
 document-level attachments/signatures remain outside the page tools' scope.
 See [Split](SPLIT.md) and [Page tools](PAGE_TOOLS.md) for precise behavior.
@@ -419,3 +420,15 @@ scope. Deletion is not redaction; scripts/signatures are not rewritten. Long
 reversals may incur quadratic native move/list work off Tk. No new dependency.
 
 Native drag performance harness waits for a real shared-renderer reply and focuses the Canvas before measuring pause/resume. This isolates Windows spawn focus changes; production focus-loss cancellation remains covered by the native merge-card suite.
+
+## ลายน้ำใหม่ · 1.14.0
+
+`features/watermark` ใช้ SelectionPage/ToolPage, selector, scroll review และ worker/events32 เดิม
+WatermarkSettings/WatermarkPlan เป็น immutable; image metadata ถูกตรวจ/decode ใน worker≤20MiB/16MP
+`stamp_page` ร่วม preview/export วาง Story ไทย (OFL) หรือภาพ alpha ลง native PDF ตาม rotated CropBox
+9ตำแหน่ง/12pt, text pt, image % visible width; ปฏิเสธกรอบที่ไม่พอดี ไม่มี shrink เงียบ
+Preview save/read เฉพาะ requested page เพื่อให้ PNG alpha rounding ตรงไฟล์บันทึก ไม่ serialize PDF ทั้งเล่ม
+Coordinator1/request16/result4/cache12/6MiB เดิม; hidden cleanup; export staging/exclusive rollback
+9/34 พร้อมใช้; อีก25รายการอยู่ในแผน · [คู่มือ](WATERMARK.md)
+
+แคช overlay สำหรับ export: ข้อความ≤8 / ภาพ≤2; ปิดทั้งหมดเมื่อสำเร็จ ผิดพลาด หรือยกเลิก.

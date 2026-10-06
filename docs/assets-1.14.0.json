@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "version": "1.14.0",
+  "assets": [
+    {
+      "name": "PDF_LoveR_1.14.0.exe",
+      "sha256": "7997c4bb421e61d2a03a4c73cf6fcaa1c05acbb4a0c376a94e3fe0f3ba5e17af",
+      "bytes": 38078774
+    },
+    {
+      "name": "PDF_LoveR_1.14.0_Portable.zip",
+      "sha256": "06f39dddd0d463e58033ddf66f59564f0ae8a8e3068cf080958bfe498c15bcf7",
+      "bytes": 38947367
+    },
+    {
+      "name": "PDF_LoveR_1.14.0_Setup.exe",
+      "sha256": "830094dbb5ba9e5efd44560db56b0d0554453189ea711f0ac7759e3418375517",
+      "bytes": 28297928
+    },
+    {
+      "name": "Quick_Start_TH.txt",
+      "sha256": "756bbabd64f0ebc0413cc207cab3ed48d90a4df709cc683c15b6ff4c015fc6c5",
+      "bytes": 16523
+    }
+  ],
+  "zip_font_license": true,
+  "font_sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+  "license_sha256": "2e98fd23a52d253db8612cd5942c8f2ff4111b21d2367050fdca91d8ccc374a0",
+  "dependencies_added": [],
+  "windows_product_version": "1.14.0",
+  "windows_file_version": "1.14.0.0",
+  "exe_signature": "NotSigned",
+  "zip_crc_verified": true,
+  "installer_signature": "NotSigned"
+}

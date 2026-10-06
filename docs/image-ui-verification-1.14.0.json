@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "scaling": 1,
+      "format": "PNG",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1,
+      "format": "JPG",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1,
+      "format": "WebP",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1,
+      "format": "TIFF",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1.25,
+      "format": "PNG",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1.25,
+      "format": "JPG",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1.25,
+      "format": "WebP",
+      "pages": 61,
+      "warnings": 61
+    },
+    {
+      "scaling": 1.25,
+      "format": "TIFF",
+      "pages": 61,
+      "warnings": 61
+    }
+  ],
+  "event_queue_capacity": 32,
+  "warning_preview_limit": 50,
+  "source_settings_retained": true,
+  "native_callback_errors": [],
+  "limitations": [
+    "Development Windows PC; physical low-spec HDD machine not tested"
+  ],
+  "version": "1.14.0"
+}

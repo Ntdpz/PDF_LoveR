@@ -55,7 +55,7 @@ TOOLS = (
     Tool("pdf-a", "PDF เป็น PDF/A", "from-pdf", "เตรียมเอกสารสำหรับจัดเก็บระยะยาวในรูปแบบ PDF/A", "export", "archive pdfa จัดเก็บ", note="ต้องเพิ่มตัวแปลงและตัวตรวจมาตรฐาน PDF/A ก่อนเปิดใช้งาน"),
     Tool("rotate", "หมุน PDF", "edit", "ปรับทิศทางของหน้าที่เลือก หรือหมุนหลายไฟล์พร้อมกัน", "pages", "rotate orientation", True),
     Tool("page-numbers", "ใส่หมายเลขหน้า PDF", "edit", "เพิ่มเลขหน้า พร้อมเลือกตำแหน่ง ขนาด สี และรูปแบบ", "text", "number pagination เลขหน้า", True),
-    Tool("watermark", "ใส่ลายน้ำ", "edit", "วางข้อความหรือรูปภาพ พร้อมปรับตำแหน่งและความโปร่งใส", "image", "watermark"),
+    Tool("watermark", "ใส่ลายน้ำ", "edit", "วางข้อความหรือรูปภาพ พร้อมปรับตำแหน่งและความโปร่งใส", "image", "watermark", True),
     Tool("crop", "ครอบตัด PDF", "edit", "เลือกพื้นที่หน้าเอกสาร เพื่อตัดขอบที่ไม่ต้องการ", "crop", "crop margin ขอบ"),
     Tool("editor", "แก้ไข PDF", "edit", "เพิ่มข้อความ รูปภาพ รูปร่าง และหมายเหตุในเอกสาร", "edit", "edit annotation วาด"),
     Tool("forms", "แบบฟอร์ม PDF", "edit", "กรอกและจัดการช่องข้อมูลในแบบฟอร์ม PDF", "table", "form fill กรอก"),

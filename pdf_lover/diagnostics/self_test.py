@@ -503,9 +503,94 @@ def run(root, app_class, report):
                 numbered_preview_matches_output=True,activity_indicators='all eight tools',
                 cancellation='eight packaged engines honour token; busy restored',
                 file_drop='Windows native callbacks verified for all8 tools')
+            start_watermark()
+        except Exception as error:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def start_watermark():
+        assert app.show_tool('watermark')
+        native_drop(root,[app.merge.destination])
+        root.after(100,prepare_watermark)
+
+    def prepare_watermark():
+        page=app.get_page('watermark')
+        if app.busy and time.monotonic()-started<125:
+            root.after(100,prepare_watermark);return
+        try:
+            assert page.info and not app.busy
+            page.output.set(str(folder));page.prefix.set('watermark-text')
+            page.watermark_text.set('ไทย COPY');page.watermark_size.set('8')
+            page.watermark_angle.set('30');page.selector.expression.set('1,3')
+            page.show_view('preview');page.start()
+            root.after(100,finish_watermark_text)
+        except Exception:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def finish_watermark_text():
+        page=app.get_page('watermark')
+        if app.busy and time.monotonic()-started<125:
+            root.after(100,finish_watermark_text);return
+        try:
+            assert page.destination and not app.busy,page.status.get()
+            page.preview.render()
+            if not all(page.preview.cache.get(k) for k in page.preview.keys()) and time.monotonic()-started<125:
+                root.after(100,finish_watermark_text);return
+            assert all(page.preview.cache.get(k) for k in page.preview.keys())
+            with pymupdf.open(page.plan.outputs[0].path) as doc,pymupdf.open(app.merge.destination) as original:
+                assert 'ไทย COPY' in doc[0].get_text() and 'ไทย COPY' in doc[2].get_text()
+                assert doc[1].get_pixmap().samples==original[1].get_pixmap().samples
+                key=page.preview.keys()[1];p=doc[key[3]];factor=min(key[5]/p.rect.width,key[6]/p.rect.height)
+                pix=p.get_pixmap(matrix=pymupdf.Matrix(factor,factor),alpha=False,colorspace=pymupdf.csRGB)
+                assert page.preview.cache[key]==(pix.width,pix.height,pix.samples)
+                fonts=[f for f in doc[0].get_fonts(full=True) if 'NotoSansThai' in f[3].replace(' ','')]
+                assert fonts and all(doc.extract_font(f[0])[3] for f in fonts)
+            from PIL import Image
+            image=folder/'watermark-alpha.png';Image.new('RGBA',(100,50),(255,0,0,128)).save(image)
+            page.prefix.set('watermark-image');page.add_image(image)
+            root.after(100,prepare_watermark_image)
+        except Exception:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def prepare_watermark_image():
+        page=app.get_page('watermark')
+        if app.busy and time.monotonic()-started<125:
+            root.after(100,prepare_watermark_image);return
+        try:
+            assert page.image_info and page.plan,page.status.get()
+            page.watermark_width.set('25');page.start()
+            root.after(100,finish_watermark_image)
+        except Exception:
+            complete({'passed':False,'errors':failures+[traceback.format_exc()]})
+
+    def finish_watermark_image():
+        page=app.get_page('watermark')
+        if app.busy and time.monotonic()-started<125:
+            root.after(100,finish_watermark_image);return
+        try:
+            assert page.destination and not app.busy,page.status.get()
+            page.preview.render()
+            if not all(page.preview.cache.get(k) for k in page.preview.keys()) and time.monotonic()-started<125:
+                root.after(100,finish_watermark_image);return
+            key=page.preview.keys()[1]
+            with pymupdf.open(page.plan.outputs[0].path) as doc:
+                p=doc[key[3]];assert p.get_images()[0][1]>0
+                factor=min(key[5]/p.rect.width,key[6]/p.rect.height)
+                pix=p.get_pixmap(matrix=pymupdf.Matrix(factor,factor),alpha=False,colorspace=pymupdf.csRGB)
+                assert page.preview.cache[key]==(pix.width,pix.height,pix.samples)
+            from pdf_lover.features.watermark.service import watermark_pdf
+            from pdf_lover.core.cancellation import Cancelled
+            app.busy=True;page.cancel_button.invoke()
+            try:watermark_pdf(page.plan,cancel=page.cancel_event)
+            except Cancelled:pass
+            else:raise AssertionError('Packaged watermark ignored cancellation')
+            app.busy=False
+            assert hashlib.sha256(app.merge.destination.read_bytes()).hexdigest()==page_tool_source_hash
+            summary.update(watermark_text=True,watermark_image_alpha=True,watermark_preview_matches_saved=True,
+                           activity_indicators='all nine tools',cancellation='nine packaged engines honour token',
+                           file_drop='Windows native callbacks verified for all9 tools')
             assert not failures,failures
             complete(summary)
-        except Exception as error:
+        except Exception:
             complete({'passed':False,'errors':failures+[traceback.format_exc()]})
 
     root.after(150, finish)

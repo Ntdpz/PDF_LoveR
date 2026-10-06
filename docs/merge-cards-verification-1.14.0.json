@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "files_tested": 30,
+  "merged_pages": 6,
+  "checks": [
+    "native Canvas press/drag/drop",
+    "cross-row reorder",
+    "keyboard and remove",
+    "escape/outside/navigation cancellation",
+    "edge autoscroll",
+    "busy guard",
+    "920/1080/1440 widths",
+    "125% scaling",
+    "visible-card virtualization",
+    "reduced motion uses final visual state",
+    "merged PDF follows card order",
+    "no callback errors"
+  ],
+  "version": "1.14.0"
+}

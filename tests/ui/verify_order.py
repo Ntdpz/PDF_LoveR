@@ -23,6 +23,18 @@ from verify_merge import pump, capture, dispose
 from verify_split import wait
 
 
+def native_focus(root, widget):
+    """Acquire focus before a gesture/key; never lift during an active gesture."""
+    hwnd=ctypes.windll.user32.GetAncestor(root.winfo_id(),2)
+    deadline=time.monotonic()+10
+    while (root.focus_get()!=widget or ctypes.windll.user32.GetForegroundWindow()!=hwnd) and time.monotonic()<deadline:
+        if root.state()=='iconic':
+            root.deiconify()
+        root.lift();root.focus_force();widget.focus_force();pump(root,.05)
+    assert root.focus_get()==widget and ctypes.windll.user32.GetForegroundWindow()==hwnd,('Native focus unavailable before input', str(root.focus_get()), str(widget), hwnd, ctypes.windll.user32.GetForegroundWindow(), root.state(), widget.winfo_ismapped(), root.grab_current())
+    return hwnd
+
+
 def main():
     errors = []
     affinity = '--two-core' in sys.argv
@@ -62,10 +74,28 @@ def main():
         target = min(selector.visible.keys(), key=lambda p: -p)
         tx1,ty1,tx2,ty2 = selector.visible[target]
         tx,ty = int(tx2-3), int((ty1+ty2)/2-selector.canvas.canvasy(0))
-        selector.canvas.event_generate('<ButtonPress-1>', x=sx, y=sy)
-        selector.canvas.event_generate('<B1-Motion>', x=tx, y=ty)
-        pump(root,.08)
-        assert selector.drag and selector.drag['active']
+        interruptions=[]
+        hwnd=native_focus(root,selector.canvas)
+        def focus_out(_):
+            foreground=ctypes.windll.user32.GetForegroundWindow()
+            if foreground!=hwnd:interruptions.append(foreground)
+        focus_binding=selector.canvas.bind('<FocusOut>',focus_out,add='+')
+        try:
+            for attempt in range(3):
+                native_focus(root,selector.canvas)
+                start_interruptions=len(interruptions)
+                selector.canvas.event_generate('<ButtonPress-1>', x=sx, y=sy)
+                selector.canvas.event_generate('<B1-Motion>', x=tx, y=ty)
+                pump(root,.08)
+                if selector.drag and selector.drag['active']:
+                    break
+                foreground=ctypes.windll.user32.GetForegroundWindow()
+                external=len(interruptions)>start_interruptions or foreground!=hwnd
+                assert external and attempt<2,'Drag failed without proven external focus interruption'
+                assert selector.order==tuple(range(1,9)),'Interrupted gesture unexpectedly committed'
+            assert selector.drag and selector.drag['active']
+        finally:
+            selector.canvas.unbind('<FocusOut>',focus_binding)
         selector.canvas.event_generate('<ButtonRelease-1>', x=tx, y=ty)
         assert selector.order != tuple(range(1,9))
         assert selector.order.index(3) == selector.order.index(1)+1
@@ -193,10 +223,11 @@ def main():
             selector.expression.set('2')
             selector.delete_selected()
             assert len(selector.order)==239
-            selector.canvas.focus_force()
+            native_focus(root,selector.canvas)
             selector.canvas.event_generate('<KeyPress>',keycode=90,state=4)
             pump(root,.1)
             assert len(selector.order)==240
+            native_focus(root,selector.canvas)
             selector.canvas.event_generate('<KeyPress>',keycode=89,state=4)
             pump(root,.1)
             assert len(selector.order)==239
@@ -214,7 +245,7 @@ def main():
                 assert widget.winfo_rooty()+widget.winfo_height() <= root.winfo_rooty()+root.winfo_height()
             for widget in page.order_focus:
                 if widget.cget('state') != 'disabled':
-                    widget.focus_force()
+                    native_focus(root,widget)
                     pump(root,.04)
                     canvas = page.order_options._parent_canvas
                     assert widget.winfo_rooty() >= canvas.winfo_rooty(), (widget, 'above')
@@ -252,7 +283,7 @@ def main():
         assert app.preview_coordinator.process is None
         assert not errors,errors
     report = {'passed':True,'order':list(order),'source_unchanged':True,'poppler_pixels_match':True,
-              'multi_drag':True,'keyboard_move':True,'cancel_retry':True,'escape':True,
+              'multi_drag':True,'native_focus_wait':True,'external_focus_interruptions':len(interruptions),'keyboard_move':True,'cancel_retry':True,'escape':True,
               'multi_source_insert_delete':True,'undo_redo_reset':True,'inspection_cancel_preserves_edits':True,
               'duplicate_source_rejected':True,'mixed_poppler_pixels_match':True,
               'document_pages':240,'visible_limit':24,'requests_limit':16,'cache_bytes_limit':6*1048576,

@@ -14,6 +14,7 @@ from pdf_lover.app import App
 from pdf_lover.version import VERSION
 from verify_merge import pump, capture
 from verify_split import wait
+from verify_order import native_focus
 
 
 def settled(root, selector):
@@ -55,7 +56,7 @@ def main():
         selector.canvas.event_generate('<Motion>',x=x,y=y);pump(root,.05);assert selector.hovered==8
         selector.canvas.event_generate('<ButtonPress-1>',x=x,y=y);assert selector.pressed==8
         selector.canvas.event_generate('<ButtonRelease-1>',x=x,y=y);assert selector.expression.get()=='1-3,8'
-        selector.canvas.focus_force();pump(root,.05)
+        native_focus(root,selector.canvas)
         selector.canvas.event_generate('<Home>');selector.canvas.event_generate('<Right>')
         selector.canvas.event_generate('<space>');assert selector.expression.get()=='1,3,8'
         called=[];start=page.start;page.start=lambda:called.append(True)
@@ -69,7 +70,7 @@ def main():
         for _ in range(120):selector.canvas.event_generate('<MouseWheel>',delta=-120)
         pump(root,.2);settled(root,selector)
         assert selector.offset>before and len(selector.pending)<=16 and selector.cache.resident_bytes<=6*1048576
-        selector.canvas.focus_force();pump(root,.1)
+        native_focus(root,selector.canvas)
         assert selector.canvas.focus_get() is selector.canvas
         selector.canvas.event_generate('<End>');pump(root,.1);settled(root,selector)
         assert 1000 in selector.visible and selector.focused==1000
@@ -89,9 +90,10 @@ def main():
             if tool!='delete-pages':p.add_paths([small]);wait(root,app)
             for scaling in (1,1.25):
                 ctk.set_widget_scaling(scaling);ctk.set_window_scaling(scaling);root.geometry('920x700+0+0');pump(root,.3)
-                s=p.selector;assert 1<=s.columns<=4 and s.canvas.xview()==(0.,1.)
+                s=p.selector;native_focus(root,s.canvas);pump(root,.1)
+                assert 1<=s.columns<=4 and s.canvas.xview()==(0.,1.)
                 assert s.counter.winfo_rooty()+s.counter.winfo_height()<=s.winfo_rooty()+s.winfo_height()
-                assert s.canvas.winfo_rooty()+s.canvas.winfo_height()<=s.counter.winfo_rooty()
+                assert s.canvas.winfo_rooty()+s.canvas.winfo_height()<=s.counter.winfo_rooty(), (tool,scaling,s.canvas.winfo_rooty(),s.canvas.winfo_height(),s.counter.winfo_rooty(),s.counter.winfo_ismapped())
         assert hashlib.sha256(small.read_bytes()).hexdigest()==original
         app.close();assert not errors,errors
     report={'version':VERSION,'passed':True,'layout':'responsive vertical viewport grid','eight_pages_in_two_rows':True,

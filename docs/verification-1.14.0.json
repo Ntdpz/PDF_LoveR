@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "version": "1.14.0",
+  "command": "python scripts/check.py",
+  "unit_tests": 119,
+  "sequential_native_ui_checks": 20,
+  "exit_code": 0,
+  "log_sha256": "63b0a509c3e59678370e403c7acbbc3c201b64cf3ab06010742283f994636538",
+  "scope": "Windows10 development host; source app and synthetic PDFs; no physical4GiB/HDD, Windows11 or another physical computer certification",
+  "harness_notes": "All original assertions retained. Await native focus before keys/gestures and layout measurement; restore iconic test window only before input/measurement, never during gesture. Initial drag retries require proven external focus loss. Earlier failed trials were not counted as full passes.",
+  "earlier_failed_trials": [
+    "Outdated ready count8 assertions corrected to9",
+    "Initial organize drag external focus interruption; pre-input native focus wait",
+    "Selector geometry assertion lacked mapped-window diagnostics; assertions retained",
+    "Native focus unavailable: diagnostic confirmed root iconic and canvas unmapped; bounded pre-input restore added"
+  ],
+  "prior_failure_logs": [
+    {
+      "name": "check-fifth-1.14.0.log",
+      "sha256": "00ecaf382c0c506409ccd41b612f46626667d953c6485143b492c3d7fac04a8b"
+    },
+    {
+      "name": "check-first-1.14.0.log",
+      "sha256": "c33f6e601746ba2d9a90891c9e8090682694d5b707ccf729921e7dfb99341fd3"
+    },
+    {
+      "name": "check-fourth-1.14.0.log",
+      "sha256": "a2dcc4d9e94082aa9934a82b782885123406cf00d9adadf6fcdc6a1e34110fb0"
+    },
+    {
+      "name": "check-second-1.14.0.log",
+      "sha256": "550ab1be926e0d2a1f9c9775f71aa7477956e760f2a4f4459168487c06b15b2f"
+    },
+    {
+      "name": "check-sixth-1.14.0.log",
+      "sha256": "ca2b7c5c5722b18bd7850f6e7253553ec1d9f8eae92a76fbf6d764574bdbe880"
+    },
+    {
+      "name": "check-third-1.14.0.log",
+      "sha256": "9baaf53814da3ccf693e4852b2f6f11e84a6ff22da98239948277e9bede19a06"
+    }
+  ]
+}

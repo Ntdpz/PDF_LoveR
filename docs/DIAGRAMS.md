@@ -13,7 +13,7 @@
 ## รายละเอียดที่ต้องรักษาเมื่อพัฒนา
 
 - เริ่มผ่าน `__main__.py` ซึ่งเรียก `multiprocessing.freeze_support()` ก่อนโหลด Tk;
-  home แสดงเครื่องมือใน `catalog.py` แต่มี PDF to Image รวม PDF แยก PDF แยกหน้า ลบหน้าออก หมุน PDF และจัดเรียงหน้า PDF ที่พร้อมใช้
+  home แสดงเครื่องมือใน `catalog.py` แต่มี PDF to Image รวม PDF แยก PDF แยกหน้า ลบหน้าออก หมุน PDF จัดเรียงหน้า PDF ใส่หมายเลขหน้า และใส่ลายน้ำที่พร้อมใช้
 - `registry.py` ตรวจ ready IDs; App สร้าง page เมื่อเปิดครั้งแรกและเก็บไว้
   การนำทางและเปลี่ยนรายการถูกป้องกันระหว่าง busy; ปิดโปรแกรมต้องรอจบงาน
 - เลือกไฟล์หรือรับ native TkDnD ผ่าน `accept_paths()`; drop บน home เปิดรวม PDF,
@@ -127,3 +127,15 @@ PageOrder อ้างไฟล์/หน้าเดิมสำหรับ pr
 EditPlan เก็บ sources/references; engine แทรก native pages ลบ/ย้าย xrefs และ remap bookmarks
 checks ครอบคลุม links ที่ปลายทางถูกลบ ฟอร์มอิสระ Poppler และ packaged import/delete/history/cancel
 จำนวนพร้อมใช้ยัง8/34; coordinator/worker/publication ร่วมเดิม
+
+## ลายน้ำใหม่ · 1.14.0
+
+`features/watermark` ใช้ SelectionPage/ToolPage, selector, scroll review และ worker/events32 เดิม
+WatermarkSettings/WatermarkPlan เป็น immutable; image metadata ถูกตรวจ/decode ใน worker≤20MiB/16MP
+`stamp_page` ร่วม preview/export วาง Story ไทย (OFL) หรือภาพ alpha ลง native PDF ตาม rotated CropBox
+9ตำแหน่ง/12pt, text pt, image % visible width; ปฏิเสธกรอบที่ไม่พอดี ไม่มี shrink เงียบ
+Preview save/read เฉพาะ requested page เพื่อให้ PNG alpha rounding ตรงไฟล์บันทึก ไม่ serialize PDF ทั้งเล่ม
+Coordinator1/request16/result4/cache12/6MiB เดิม; hidden cleanup; export staging/exclusive rollback
+9/34 พร้อมใช้; อีก25รายการอยู่ในแผน · [คู่มือ](WATERMARK.md)
+
+แคช overlay สำหรับ export: ข้อความ≤8 / ภาพ≤2; ปิดทั้งหมดเมื่อสำเร็จ ผิดพลาด หรือยกเลิก.

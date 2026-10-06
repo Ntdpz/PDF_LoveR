@@ -176,7 +176,7 @@
       "dot": "emerald",
       "title": "เครื่องมือพัฒนา",
       "items": [
-        "113 unit +19 UI; เพิ่ม/ลบ/Undo/หยุด/Poppler",
+        "119 unit +20 UI; ลายน้ำ/alpha/ไทย/Poppler",
         "Archify9/9; ตรวจภาพจริงlight/dark"
       ]
     },
@@ -184,7 +184,7 @@
       "dot": "amber",
       "title": "การแจกโปรแกรม",
       "items": [
-        "8งาน; frozenตรวจเพิ่มหน้า/ลบ/Undoและฟอนต์",
+        "9งาน; frozenตรวจลายน้ำข้อความ/ภาพ/ฟอนต์",
         "ซิงก์Programตรวจhash; repoคงPrivate"
       ]
     }

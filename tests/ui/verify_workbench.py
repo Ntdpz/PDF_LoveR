@@ -42,7 +42,7 @@ def main():
             for size in ('920x700','1080x780','1440x900'):
                 root.geometry(size+'+0+0');pump(root,1)
                 app.show_home();app.home.reset_filters();pump(root,.3)
-                assert len(app.home.visible_tools)==8 and all(t.ready for t in app.home.visible_tools)
+                assert len(app.home.visible_tools)==9 and all(t.ready for t in app.home.visible_tools)
                 contained(app.home.search_entry,root);contained(app.home.ready_button,root)
                 if size=='920x700':
                     for card,_ in app.home.cards:

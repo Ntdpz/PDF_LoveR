@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "version": "1.14.0",
+  "renderer": "Poppler pdftoppm",
+  "text_reader": "Poppler pdftotext -raw",
+  "font_inspection": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nNoto Sans Thai Regular               CID TrueType      Identity-H       yes no  yes     12  0\n",
+  "embedded_thai": true,
+  "fontconfig": "isolated configuration containing one empty font directory",
+  "font_installation_performed": false,
+  "scope": "Same Windows10 development host, not another physical computer",
+  "png_sha256": "9647b7b9fad98228815d9c691560ef691aa21013b009c5cde2738f8ed7f6d6bc",
+  "visual_review": "Poppler PNG inspected: Thai vowel and tone marks, English and digits render correctly; text extraction may decompose vowels/omit tone mapping",
+  "rendered_image": {
+    "path": "docs/images/watermark-1.14.0/thai-no-system-fonts.png",
+    "sha256": "9647b7b9fad98228815d9c691560ef691aa21013b009c5cde2738f8ed7f6d6bc"
+  },
+  "sample_text": "สวัสดี น้ำ ภาษาไทย English ๑๒๓",
+  "extracted_text": "สวัสดี นํา ภาษาไทย English ๑๒๓\n\f",
+  "exact_unicode_roundtrip": false,
+  "pdf_sha256": "38951c40688f20e832a3254f8b5d8dc02fc3ebd77b395781bd74bd1579a7535a"
+}

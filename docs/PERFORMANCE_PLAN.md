@@ -265,3 +265,14 @@ Generic source benchmark มี max heartbeat lateness579.18msในช่วง
 ประวัติ32คำสั่ง/100000identitiesต่อทิศทาง ไม่มีภาพ/PDF copies; โต๊ะงาน64ไฟล์/100000หน้าต้นทาง. coordinator/cache/queueร่วมเท่าเดิม ไม่มีdependency. appendแต่ละต้นทางที่ใช้ครั้งเดียวและย้ายxref; native callsรอจบก่อนหยุด, reversalอาจquadraticในworker.
 1000หน้าข้อความสองไฟล์ ลบทุกหน้าที่5และสลับย้อนเหลือ800หน้า:0.128s, peak working set45.82MiBรวมสร้างfixture, cancel/restartผ่าน (organize-resources-1.13.0.json).
 สองfresh source runs240หน้า: home idle1.12.0=69.43→1.13.0=71.66MiB; organize111.555MiBรวมpreview. ไม่ใช่export peakหรือphysical4GiB/HDD/Windows11; warm textไม่แทนscan/frozen/coldHDD; baseline idle2sเทียบรุ่นใหม่5sจึงเทียบได้จำกัด.
+
+## ลายน้ำ · 1.14.0
+
+หนึ่ง worker และ preview coordinator ร่วม ไม่มี dependency ใหม่ ใช้ PyMuPDF/Pillow/Noto Sans Thai เดิม
+เก็บเฉพาะ image path/signature/size ไม่เก็บ decoded bitmap ใน Tk หรือแผน การอ่านภาพมีขอบเขต20MiB/16MP
+render และ PDF save/read เฉพาะหน้า preview ที่ร้องขอ; queue16/result4/cache12/6MiB/events32 และ hidden cleanup เดิม
+export เพิ่ม native overlay ทีละหน้า รักษาคุณภาพ ไม่ pre-render ทุกหน้า ภาพใหญ่/ต้นฉบับสแกนอาจใช้ RAM สูงกว่า fixture
+[benchmark ลายน้ำ1000หน้า](watermark-resources-1.14.0.json) บน2 logical affinity ไม่รับรอง4GB/HDDจริง
+Windows11/อีกเครื่อง/large scans/coldHDD ยังไม่ทดสอบ · [คู่มือ](WATERMARK.md)
+
+แคช overlay สำหรับ export: ข้อความ≤8 / ภาพ≤2; ปิดทั้งหมดเมื่อสำเร็จ ผิดพลาด หรือยกเลิก.

@@ -23,10 +23,21 @@ def render_previews(requests, results):
                 if len(key) > 7 and key[7] == 'page-numbers':
                     from pdf_lover.features.page_numbers.service import stamp_page
                     stamp_page(page, key[8], key[9])
+                if len(key) > 7 and key[7] == 'watermark':
+                    from pdf_lover.features.watermark.service import stamp_page
+                    stamp_page(page, key[8])
                 width, height = key[5:7] if len(key) > 6 else (224, 144)
                 factor = min(width / page.rect.width, height / page.rect.height)
-                pix = page.get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=False,
-                                      colorspace=pymupdf.csRGB)
+                if len(key) > 7 and key[7] == 'watermark':
+                    # Only the requested page crosses the PDF save/read boundary.
+                    # PNG alpha rounding must match exported PDF, not cached source pixels.
+                    with pymupdf.open() as single:
+                        single.insert_pdf(document, from_page=key[3], to_page=key[3], widgets=True)
+                        with pymupdf.open(stream=single.tobytes(), filetype='pdf') as saved:
+                            pix = saved[0].get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=False, colorspace=pymupdf.csRGB)
+                else:
+                    pix = page.get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=False,
+                                          colorspace=pymupdf.csRGB)
                 payload = (pix.width, pix.height, pix.samples)
                 del pix
             results.put((client, generation, key, payload))

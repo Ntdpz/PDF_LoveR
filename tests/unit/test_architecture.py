@@ -35,7 +35,7 @@ class ArchitectureTests(unittest.TestCase):
             "import pdf_lover.features.merge.service; "
             "import pdf_lover.features.split.service; import pdf_lover.core.page_selection; "
             "import pdf_lover.features.extract.service; import pdf_lover.features.delete_pages.service; "
-            "import pdf_lover.features.rotate.service; import pdf_lover.features.organize.service; assert 'tkinter' not in sys.modules; assert 'customtkinter' not in sys.modules"],
+            "import pdf_lover.features.watermark.service; import pdf_lover.features.rotate.service; import pdf_lover.features.organize.service; assert 'tkinter' not in sys.modules; assert 'customtkinter' not in sys.modules"],
             cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
