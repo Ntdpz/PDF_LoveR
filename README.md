@@ -3,17 +3,17 @@
 <h1>PDF LoveR</h1>
 
 <p><strong>แปลงภาพ รวมเอกสาร แยก PDF และเลือกหน้าที่ต้องการ</strong><br>
-รุ่นล่าสุด 1.9.0 มี 6 เครื่องมือพร้อมใช้ พร้อมตัวเลือกช่วงหน้าและตรวจผลลัพธ์ก่อนบันทึก</p>
+รุ่นล่าสุด 1.10.0 มี 6 เครื่องมือพร้อมใช้ พร้อมตัวเลือกช่วงหน้าและปุ่มยกเลิกงานทุกเครื่องมือ</p>
 
 <p>Windows 10 / 11 · 64-bit · ใช้งานออฟไลน์ · ไม่ต้องติดตั้ง Python</p>
 
-<p><a href="https://github.com/Ntdpz/PDF_LoveR/releases/latest">ดาวน์โหลดรุ่นล่าสุด 1.9.0</a> · EXE, Portable ZIP และตัวติดตั้ง</p>
+<p><a href="https://github.com/Ntdpz/PDF_LoveR/releases/latest">ดาวน์โหลดรุ่นล่าสุด 1.10.0</a> · EXE, Portable ZIP และตัวติดตั้ง</p>
 
 <img src="docs/images/redesign-1.7.0/after-home-1.png" alt="หน้าแรกใหม่ PDF LoveR แสดงงานเอกสารทั้ง 6 งานเต็มความกว้าง" width="1080">
 
 </div>
 
-## เครื่องมือที่พร้อมใช้ใน 1.9.0
+## เครื่องมือที่พร้อมใช้ใน 1.10.0
 
 - **[รวม PDF](docs/MERGE.md)** — ลากการ์ดจัดลำดับ พร้อมภาพตัวอย่าง
 - **[แยก PDF](docs/SPLIT.md)** — ทุกหน้า, ช่วงหน้า เช่น `1-3,5,8-10` หรือทุก N หน้า; ดูชื่อไฟล์ก่อนบันทึก
@@ -21,7 +21,7 @@
 - **[หมุน PDF](docs/ROTATE.md)** — ทุกหน้า/หน้าที่เลือก/หลายไฟล์ พร้อมภาพก่อน–หลังมุมหมุน
 - **[PDF to Image](docs/IMAGE.md)** — PNG / JPG / WebP / TIFF เลือกหน้าต่อ PDF พร้อมพิกเซล DPI และเพดานไฟล์ต่อภาพ
 
-ดาวน์โหลดชุดแจกปัจจุบันได้จาก [GitHub Release 1.9.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.9.0)
+ดาวน์โหลดชุดแจกปัจจุบันได้จาก [GitHub Release 1.10.0](https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.10.0)
 
 ## จากเอกสารสู่ภาพ พร้อมจัดเก็บ
 
@@ -40,9 +40,9 @@
 
 | รูปแบบ | เหมาะกับ | เริ่มใช้งาน |
 | --- | --- | --- |
-| **[Portable — แนะนำ](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.9.0.exe)** | ต้องการเปิดทันที หรือส่งไปอีกเครื่อง | ดาวน์โหลดไฟล์เดียว แล้วดับเบิลคลิก |
-| **[Installer](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.9.0_Setup.exe)** | ต้องการทางลัดใน Start Menu / Desktop | เปิดตัวติดตั้ง แล้วทำตามขั้นตอน |
-| **[ZIP โฟลเดอร์](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.9.0_Portable.zip)** | ต้องการเก็บโปรแกรมไว้เป็นโฟลเดอร์ | แตกไฟล์ทั้งหมด แล้วเปิด `PDF_LoveR_1.9.0.exe` |
+| **[Portable — แนะนำ](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.10.0.exe)** | ต้องการเปิดทันที หรือส่งไปอีกเครื่อง | ดาวน์โหลดไฟล์เดียว แล้วดับเบิลคลิก |
+| **[Installer](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.10.0_Setup.exe)** | ต้องการทางลัดใน Start Menu / Desktop | เปิดตัวติดตั้ง แล้วทำตามขั้นตอน |
+| **[ZIP โฟลเดอร์](https://github.com/Ntdpz/PDF_LoveR/releases/latest/download/PDF_LoveR_1.10.0_Portable.zip)** | ต้องการเก็บโปรแกรมไว้เป็นโฟลเดอร์ | แตกไฟล์ทั้งหมด แล้วเปิด `PDF_LoveR_1.10.0.exe` |
 
 ทุกแบบใช้ได้โดยไม่ต้องติดตั้ง Python หรือโปรแกรมอ่าน PDF เพิ่ม
 โปรเจกต์นี้เป็น Private: ดาวน์โหลดด้วยบัญชี GitHub ที่ได้รับสิทธิ์เข้าถึง
@@ -129,7 +129,7 @@ Python · CustomTkinter · PyMuPDF · Pillow<br>
 โครงสร้างและการเพิ่มเครื่องมือใหม่ดูได้ใน [Architecture](docs/ARCHITECTURE.md), [แผนภาพการทำงาน](docs/DIAGRAMS.md) และ [Contributing](CONTRIBUTING.md) · [รายการงานพัฒนาต่อ](TASKS.md)
 ซอร์สปัจจุบัน **1.10.0** มี 6 เครื่องมือ พร้อม PDF to Image, Loader แสดงเวลา และปุ่มยกเลิกงาน
 ลาก PDF จาก File Explorer มาวางเพื่อเพิ่มเข้าเครื่องมือรวมไฟล์หรือแปลงภาพได้
-ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.9.0/` — ลิงก์ดาวน์โหลดด้านบนตรงกับ Release 1.9.0
+ไฟล์ที่สร้างในเครื่องจัดไว้ใน `dist/PDF_LoveR_1.10.0/` — ลิงก์ดาวน์โหลดด้านบนตรงกับ Release 1.10.0
 ดูรายละเอียดใน [ชุดเครื่องมือ PDF](docs/SUPERAPP.md)
 ค่า SHA-256 สำหรับตรวจไฟล์ดาวน์โหลดอยู่ใน [Releases](https://github.com/Ntdpz/PDF_LoveR/releases/latest)
 

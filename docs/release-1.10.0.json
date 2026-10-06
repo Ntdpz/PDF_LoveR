@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "version": "1.10.0",
+  "target_commit": "bdd4814cbb6ce7e90bd42963f06cdbce928fb1a5",
+  "url": "https://github.com/Ntdpz/PDF_LoveR/releases/tag/v1.10.0",
+  "assets": [
+    {
+      "name": "PDF_LoveR_1.10.0.exe",
+      "size": 37898818,
+      "sha256": "7d832a67da34b391799507339aa72512ec25698b87b25ef38874b82f62b24113"
+    },
+    {
+      "name": "PDF_LoveR_1.10.0_Portable.zip",
+      "size": 38764346,
+      "sha256": "ef33e9cd9d01d373be1be121c054d2077c07c0ab1d22d2ae5644e71855f2b0f0"
+    },
+    {
+      "name": "PDF_LoveR_1.10.0_Setup.exe",
+      "size": 28133846,
+      "sha256": "f41e45f9f854b23389560ac640c68c3de602cb1c0d852b2a3b45721f34d1136c"
+    },
+    {
+      "name": "Quick_Start_TH.txt",
+      "size": 11831,
+      "sha256": "90d042cc1afd07bdef83a13bd94634682e296d0142f4731fa43501963461b1ba"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 279,
+      "sha256": "cd369154f86258636d3899bfafcbc6d193e4c6a76637e25f291faf2be638322a"
+    }
+  ],
+  "latest_verified": true,
+  "tag_commit_verified": true,
+  "readme_asset_links_verified": true
+}

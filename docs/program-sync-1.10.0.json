@@ -5,7 +5,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "aa3826ff7b1ca7cbfddee7b05ce4d22e366d240df31ffbb2575158efe1f950d1"
+      "sha256": "23dd529516d4fe7e3fdd0446c83b87986212b2a72975dd0b2314648ed2bd70ab"
     },
     {
       "path": "TASKS.md",
@@ -274,6 +274,11 @@
     {
       "path": "tests/unit/test_cancellation.py",
       "sha256": "e2f9101c7eab473ff5adfe87fce4cba24287cf5475738556dd85435a6500e95b"
+    },
+    {
+      "path": "docs/release-1.10.0.json",
+      "sha256": "7c0188a6898bef6b9a3efef3f1ae058021724c9328e15dbf9e98b467920ac163"
     }
-  ]
+  ],
+  "latest_download_links": "Verified against published GitHub latest v1.10.0 and asset SHA256"
 }
