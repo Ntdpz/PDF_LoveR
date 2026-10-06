@@ -10,6 +10,7 @@ import threading
 import tkinter as tk
 from tkinter import filedialog, ttk
 
+from pdf_lover.core.cancellation import Cancelled, checkpoint
 import customtkinter as ctk
 
 from pdf_lover.features.base import ToolPage
@@ -125,7 +126,12 @@ class SplitPage(ToolPage):
 
     def _inspect_worker(self, path):
         try:
-            self.events.put(("loaded", inspect_document(path)))
+            checkpoint(self.cancel_event)
+            info = inspect_document(path)
+            checkpoint(self.cancel_event)
+            self.events.put(("loaded", info))
+        except Cancelled as error:
+            self.events.put(("cancelled", str(error)))
         except Exception as error:
             self.events.put(("error", str(error)))
 
@@ -159,8 +165,10 @@ class SplitPage(ToolPage):
 
     def _split_worker(self, plan):
         try:
-            outputs = split_pdf(plan, lambda done, total, name: self.events.put(("progress", done, total, name)))
+            outputs = split_pdf(plan, lambda done, total, name: self.events.put(("progress", done, total, name)), cancel=self.cancel_event)
             self.events.put(("done", outputs))
+        except Cancelled as error:
+            self.events.put(("cancelled", str(error)))
         except Exception as error:
             self.events.put(("error", str(error)))
 
@@ -171,7 +179,7 @@ class SplitPage(ToolPage):
                 event = self.events.get_nowait()
                 if event[0] == "progress":
                     self.progress.set(event[1] / event[2] * 0.9)
-                    self.status.set(f"เตรียมไฟล์ {event[1]}/{event[2]} · {event[3]}")
+                    self.report_progress(f"เตรียมไฟล์ {event[1]}/{event[2]} · {event[3]}")
                     continue
                 self.busy = False
                 for control in self.controls:
@@ -198,7 +206,7 @@ class SplitPage(ToolPage):
                     else:
                         self.progress.set(0)
                         self.status.set(event[1])
-                        self.status_label.configure(text_color=C["error"])
+                        self.status_label.configure(text_color=C["muted"] if event[0] == "cancelled" else C["error"])
         except queue.Empty:
             pass
 

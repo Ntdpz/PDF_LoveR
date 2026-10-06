@@ -1,4 +1,5 @@
 """Headless relative rotation, batch planning and staged exclusive publication."""
+from pdf_lover.core.cancellation import checkpoint
 from dataclasses import dataclass
 from pathlib import Path
 import tempfile
@@ -71,19 +72,22 @@ def validate_plan(plan, check_source=False):
             raise DocumentError(f'{job.info.path.name}: ต้นฉบับเปลี่ยนหลังแสดงตัวอย่าง · เลือกไฟล์ใหม่')
 
 
-def rotate_pdf(plan, progress=None):
+def rotate_pdf(plan, progress=None, cancel=None):
+    checkpoint(cancel)
     published=[]
     try:
         validate_plan(plan,check_source=True)
         with tempfile.TemporaryDirectory(prefix='.pdf-lover-rotate-',dir=plan.jobs[0].output.path.parent) as staging:
             staged=[]
             for index,job in enumerate(plan.jobs,1):
+                checkpoint(cancel)
                 temporary=Path(staging)/f'{index}.pdf'
                 with pymupdf.open(job.info.path) as document:
                     if document.needs_pass or not document.is_pdf or document.page_count!=job.info.page_count:
                         raise DocumentError('ต้นฉบับเปลี่ยนหลังแสดงตัวอย่าง · เลือกไฟล์ใหม่')
                     expected=[p.rotation for p in document]
                     for number in job.selected:
+                        checkpoint(cancel)
                         page=document[number-1]
                         expected[number-1]=(page.rotation+plan.angle)%360
                         page.set_rotation(expected[number-1])
@@ -94,7 +98,7 @@ def rotate_pdf(plan, progress=None):
                 staged.append((temporary,job.output.path,signature(temporary)))
                 if progress:progress(index,len(plan.jobs),job.output.path.name)
             validate_plan(plan,check_source=True)
-            publish_staged(staged,published)
+            publish_staged(staged,published,cancel)
         return tuple(job.output.path for job in plan.jobs)
     except Exception as error:
         publication_error(published,error)

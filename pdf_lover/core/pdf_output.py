@@ -1,4 +1,5 @@
 """Selected-page exports with staged, exclusive publication; no GUI imports."""
+from pdf_lover.core.cancellation import checkpoint
 from dataclasses import dataclass
 import os
 from pathlib import Path
@@ -53,8 +54,9 @@ def publish_exclusive(temporary, target):
         os.link(temporary, target)
 
 
-def export_pages(plan, progress=None):
+def export_pages(plan, progress=None, cancel=None):
     """Preserve retained-page links/widgets/annotations and rollback this job on failure."""
+    checkpoint(cancel)
     validate_targets(plan)
     info = plan.document
     published = []
@@ -67,6 +69,7 @@ def export_pages(plan, progress=None):
                 if source.needs_pass or not source.is_pdf or source.page_count != info.page_count:
                     raise DocumentError("ต้นฉบับเปลี่ยนหลังแสดงตัวอย่าง · เลือกไฟล์ใหม่")
                 for index, output in enumerate(plan.outputs, 1):
+                    checkpoint(cancel)
                     temporary = Path(staging) / f'{index}.pdf'
                     with pymupdf.open() as result:
                         pages = output.pages
@@ -96,18 +99,21 @@ def export_pages(plan, progress=None):
                         progress(index, len(plan.outputs), output.path.name)
             if signature(info.path) != info.signature:
                 raise DocumentError("ต้นฉบับเปลี่ยนระหว่างทำงาน · เลือกไฟล์ใหม่")
+            checkpoint(cancel)
             validate_targets(plan)
-            publish_staged(staged, published)
+            publish_staged(staged, published, cancel)
         return tuple(output.path for output in plan.outputs)
     except Exception as error:
         publication_error(published, error)
 
 
-def publish_staged(staged, published):
+def publish_staged(staged, published, cancel=None):
     """Publish exclusively, tracking identities for rollback by the caller."""
     for temporary, target, identity in staged:
+        checkpoint(cancel)
         publish_exclusive(temporary, target)
         published.append((target, identity))
+    checkpoint(cancel)
 
 
 def publication_error(published, error):

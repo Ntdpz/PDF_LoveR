@@ -5164,7 +5164,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="lane" data-composition-frame-id="lane-2" x="40" y="300" width="1157" height="104" rx="10" class="c-lane" stroke-width="1"/>
         <rect data-graph-role="structural-frame" data-composition-frame-kind="exception-lane" data-composition-frame-id="lane-2-exception" x="46" y="306" width="1145" height="92" rx="8" class="c-security-group" stroke-width="1"/>
-        <text x="54" y="322" class="t-security" font-size="10" font-weight="600">EX / ข้อผิดพลาด</text>
+        <text x="54" y="322" class="t-security" font-size="10" font-weight="600">EX / ผิดพลาด / ยกเลิก</text>
 
         <!-- Phase headers -->
 
@@ -5173,9 +5173,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 
         <!-- Edge paths -->
-        <path data-edge-from="engine" data-edge-to="error" data-edge-label="ประมวลผลไม่ได้" data-edge-key="0" data-composition-points="585.6,269;585.6,367;717.2,367" d="M 585.6 269 L 585.6 367 L 717.2 367" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="engine" data-edge-to="error" data-edge-label="ผิดพลาด / ยกเลิก" data-edge-key="0" data-composition-points="585.6,269;585.6,367;717.2,367" d="M 585.6 269 L 585.6 367 L 717.2 367" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <path data-edge-from="engine" data-edge-to="publish" data-edge-label="PyMuPDF" data-edge-key="1" data-composition-points="665.6,243;717.2,243" d="M 665.6 243 L 717.2 243" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="error" data-edge-to="events" data-edge-label="error / done" data-edge-key="2" data-composition-points="797.2,393;797.2,420;893.2,420;893.2,119;877.2,119" d="M 797.2 393 L 797.2 420 L 893.2 420 L 893.2 119 L 877.2 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="error" data-edge-to="events" data-edge-label="error / cancelled" data-edge-key="2" data-composition-points="797.2,393;797.2,420;893.2,420;893.2,119;877.2,119" d="M 797.2 393 L 797.2 420 L 893.2 420 L 893.2 119 L 877.2 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <path data-edge-from="events" data-edge-to="restore" data-edge-label="อัปเดต Tk" data-edge-key="3" data-composition-points="797.2,93;797.2,77;1018.4000000000001,77;1018.4000000000001,93" d="M 797.2 93 L 797.2 77 L 1018.4000000000001 77 L 1018.4000000000001 93" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <path data-edge-from="input" data-edge-to="validate" data-edge-label="ตั้งค่า / ตรวจแผน" data-edge-key="4" data-composition-points="208,119;307.6,119" d="M 208 119 L 307.6 119" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
         <path data-edge-from="lock" data-edge-to="engine" data-edge-label="snapshot รายการ" data-edge-key="5" data-composition-points="665.6,119;681.6,119;681.6,166;585.6,166;585.6,217" d="M 665.6 119 L 681.6 119 L 681.6 166 L 585.6 166 L 585.6 217" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
@@ -5209,8 +5209,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="387.6" y="131" class="t-muted" font-size="8" text-anchor="middle">ภาพ / DPI / ช่วงหน้า / ปลายทาง</text>
         </g>
 
-        <g id="node-lock" data-node-id="lock" data-node-label="เริ่มงาน" tabindex="0" role="button" aria-label="Focus เริ่มงาน, busy · ล็อกปุ่ม · loader, หน้าจอ · main thread" aria-pressed="false" data-node-kind="security" data-node-sublabel="busy · ล็อกปุ่ม · loader" data-node-context="หน้าจอ · main thread">
-          <title>เริ่มงาน · busy · ล็อกปุ่ม · loader · หน้าจอ · main thread</title>
+        <g id="node-lock" data-node-id="lock" data-node-label="เริ่มงาน" tabindex="0" role="button" aria-label="Focus เริ่มงาน, busy · loader · cancel Event, หน้าจอ · main thread" aria-pressed="false" data-node-kind="security" data-node-sublabel="busy · loader · cancel Event" data-node-context="หน้าจอ · main thread">
+          <title>เริ่มงาน · busy · loader · cancel Event · หน้าจอ · main thread</title>
           <rect x="505.6" y="93" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="505.6" y="93" width="160" height="52" rx="6" class="c-security" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="security" class="semantic-sigil s-security" transform="translate(511.6 99) scale(0.6875)">
@@ -5218,7 +5218,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="m5.8 8 1.5 1.5 3-3"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="585.6" y="114" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">เริ่มงาน</text>
-          <text data-detail="context" x="585.6" y="131" class="t-muted" font-size="8" text-anchor="middle">busy · ล็อกปุ่ม · loader</text>
+          <text data-detail="context" x="585.6" y="131" class="t-muted" font-size="8" text-anchor="middle">busy · loader · cancel Event</text>
         </g>
 
         <g id="node-events" data-node-id="events" data-node-label="อ่าน event queue" tabindex="0" role="button" aria-label="Focus อ่าน event queue, ภาพ: คิว ≤32 · อ่านทีละ ≤100, หน้าจอ · main thread" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="ภาพ: คิว ≤32 · อ่านทีละ ≤100" data-node-context="หน้าจอ · main thread">
@@ -5249,15 +5249,15 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="1018.4000000000001" y="131" class="t-muted" font-size="8" text-anchor="middle">หยุด loader · ผล / คืน controls</text>
         </g>
 
-        <g id="node-engine" data-node-id="engine" data-node-label="ประมวลผล PDF" tabindex="0" role="button" aria-label="Focus ประมวลผล PDF, แปลง / รวม / เลือกหน้า / หมุน, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="backend" data-node-sublabel="แปลง / รวม / เลือกหน้า / หมุน" data-node-context="ประมวลผล · worker thread">
-          <title>ประมวลผล PDF · แปลง / รวม / เลือกหน้า / หมุน · ประมวลผล · worker thread</title>
+        <g id="node-engine" data-node-id="engine" data-node-label="ประมวลผล PDF" tabindex="0" role="button" aria-label="Focus ประมวลผล PDF, งานเดียว · ตรวจจุดหยุดปลอดภัย, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="backend" data-node-sublabel="งานเดียว · ตรวจจุดหยุดปลอดภัย" data-node-context="ประมวลผล · worker thread">
+          <title>ประมวลผล PDF · งานเดียว · ตรวจจุดหยุดปลอดภัย · ประมวลผล · worker thread</title>
           <rect x="505.6" y="217" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="505.6" y="217" width="160" height="52" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(511.6 223) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="585.6" y="238" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ประมวลผล PDF</text>
-          <text data-detail="context" x="585.6" y="255" class="t-muted" font-size="8" text-anchor="middle">แปลง / รวม / เลือกหน้า / หมุน</text>
+          <text data-detail="context" x="585.6" y="255" class="t-muted" font-size="8" text-anchor="middle">งานเดียว · ตรวจจุดหยุดปลอดภัย</text>
         </g>
 
         <g id="node-publish" data-node-id="publish" data-node-label="บันทึกไฟล์" tabindex="0" role="button" aria-label="Focus บันทึกไฟล์, PDF / ภาพ + CSV; ไม่ทับเดิม, ประมวลผล · worker thread" aria-pressed="false" data-node-kind="external" data-node-sublabel="PDF / ภาพ + CSV; ไม่ทับเดิม" data-node-context="ประมวลผล · worker thread">
@@ -5272,8 +5272,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="797.2" y="255" class="t-muted" font-size="8" text-anchor="middle">PDF / ภาพ + CSV; ไม่ทับเดิม</text>
         </g>
 
-        <g id="node-reject" data-node-id="reject" data-node-label="แก้ข้อมูลก่อนเริ่ม" tabindex="0" role="button" aria-label="Focus แก้ข้อมูลก่อนเริ่ม, แจ้งปัญหา · ยังไม่สร้าง worker, ข้อผิดพลาด" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="แจ้งปัญหา · ยังไม่สร้าง worker" data-node-context="ข้อผิดพลาด">
-          <title>แก้ข้อมูลก่อนเริ่ม · แจ้งปัญหา · ยังไม่สร้าง worker · ข้อผิดพลาด</title>
+        <g id="node-reject" data-node-id="reject" data-node-label="แก้ข้อมูลก่อนเริ่ม" tabindex="0" role="button" aria-label="Focus แก้ข้อมูลก่อนเริ่ม, แจ้งปัญหา · ยังไม่สร้าง worker, ผิดพลาด / ยกเลิก" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="แจ้งปัญหา · ยังไม่สร้าง worker" data-node-context="ผิดพลาด / ยกเลิก">
+          <title>แก้ข้อมูลก่อนเริ่ม · แจ้งปัญหา · ยังไม่สร้าง worker · ผิดพลาด / ยกเลิก</title>
           <rect x="307.6" y="341" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="307.6" y="341" width="160" height="52" rx="6" class="c-frontend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(313.6 347) scale(0.6875)">
@@ -5286,8 +5286,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="387.6" y="379" class="t-muted" font-size="8" text-anchor="middle">แจ้งปัญหา · ยังไม่สร้าง worker</text>
         </g>
 
-        <g id="node-error" data-node-id="error" data-node-label="ส่งสถานะผิดพลาด" tabindex="0" role="button" aria-label="Focus ส่งสถานะผิดพลาด, error / คืนไฟล์ของงานนี้, ข้อผิดพลาด" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="error / คืนไฟล์ของงานนี้" data-node-context="ข้อผิดพลาด">
-          <title>ส่งสถานะผิดพลาด · error / คืนไฟล์ของงานนี้ · ข้อผิดพลาด</title>
+        <g id="node-error" data-node-id="error" data-node-label="หยุดงาน / ส่งปัญหา" tabindex="0" role="button" aria-label="Focus หยุดงาน / ส่งปัญหา, คืน PDF / เก็บภาพ + CSV, ผิดพลาด / ยกเลิก" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="คืน PDF / เก็บภาพ + CSV" data-node-context="ผิดพลาด / ยกเลิก">
+          <title>หยุดงาน / ส่งปัญหา · คืน PDF / เก็บภาพ + CSV · ผิดพลาด / ยกเลิก</title>
           <rect x="717.2" y="341" width="160" height="52" rx="6" class="c-mask"/>
           <rect x="717.2" y="341" width="160" height="52" rx="6" class="c-messagebus" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(723.2 347) scale(0.6875)">
@@ -5296,22 +5296,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
             <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="797.2" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">ส่งสถานะผิดพลาด</text>
-          <text data-detail="context" x="797.2" y="379" class="t-muted" font-size="8" text-anchor="middle">error / คืนไฟล์ของงานนี้</text>
+          <text data-node-label="" data-detail-anchor="" x="797.2" y="362" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">หยุดงาน / ส่งปัญหา</text>
+          <text data-detail="context" x="797.2" y="379" class="t-muted" font-size="8" text-anchor="middle">คืน PDF / เก็บภาพ + CSV</text>
         </g>
 
         <!-- Edge labels -->
-        <g data-detail="context" data-edge-from="engine" data-edge-to="error" data-edge-label="ประมวลผลไม่ได้" data-edge-key="0">
-          <rect x="612.8000000000001" y="347" width="77.2" height="14" rx="3" class="c-mask"/>
-          <text x="651.4000000000001" y="357" class="t-muted" font-size="8" text-anchor="middle">ประมวลผลไม่ได้</text>
+        <g data-detail="context" data-edge-from="engine" data-edge-to="error" data-edge-label="ผิดพลาด / ยกเลิก" data-edge-key="0">
+          <rect x="608.0000000000001" y="347" width="86.8" height="14" rx="3" class="c-mask"/>
+          <text x="651.4000000000001" y="357" class="t-muted" font-size="8" text-anchor="middle">ผิดพลาด / ยกเลิก</text>
         </g>
         <g data-detail="context" data-edge-from="engine" data-edge-to="publish" data-edge-label="PyMuPDF" data-edge-key="1">
           <rect x="669.6000000000001" y="223" width="43.6" height="14" rx="3" class="c-mask"/>
           <text x="691.4000000000001" y="233" class="t-muted" font-size="8" text-anchor="middle">PyMuPDF</text>
         </g>
-        <g data-detail="context" data-edge-from="error" data-edge-to="events" data-edge-label="error / done" data-edge-key="2">
-          <rect x="811.4000000000001" y="400" width="67.6" height="14" rx="3" class="c-mask"/>
-          <text x="845.2" y="410" class="t-muted" font-size="8" text-anchor="middle">error / done</text>
+        <g data-detail="context" data-edge-from="error" data-edge-to="events" data-edge-label="error / cancelled" data-edge-key="2">
+          <rect x="799.4000000000001" y="400" width="91.6" height="14" rx="3" class="c-mask"/>
+          <text x="845.2" y="410" class="t-muted" font-size="8" text-anchor="middle">error / cancelled</text>
         </g>
         <g data-detail="context" data-edge-from="events" data-edge-to="restore" data-edge-label="อัปเดต Tk" data-edge-key="3">
           <rect x="881.2" y="57" width="53.199999999999996" height="14" rx="3" class="c-mask"/>
@@ -5576,7 +5576,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <h3>จบงานและปิดโปรแกรม</h3>
         </div>
         <ul>
-          <li>&bull; loader + เวลาจริง; ลด motion ตาม Windows</li>
+          <li>&bull; ยกเลิกรอ cleanup; ค่อยคืน busy / loader</li>
           <li>&bull; home/destroy ปิด preview; ทิ้งภาพเก่า</li>
         </ul>
       </div>

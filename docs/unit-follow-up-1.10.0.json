@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "version": "1.10.0",
+  "command": "python scripts/check.py --unit-only",
+  "unit_tests": 92,
+  "log_canonical_sha256": "aab411e6a808f5b20cb26f4429f644171b41f6624728ac454e7f5d429c3e6d55",
+  "scope": "Final source, diagram and low-spec guards; package diagnostic correction tested separately by source/frozen smoke"
+}

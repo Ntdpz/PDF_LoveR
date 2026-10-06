@@ -100,3 +100,10 @@ No additional worker/timer or export quality change.
 inspection and export use its existing queue/busy guard; Apply commits a snapshot,
 close cancels draft edits, hiding/destroying releases previews. Image output names
 keep original page numbers; progress/CSV cover only selected pages.
+
+## Cancellation review 1.10.0
+
+Shared ToolPage cancellation Event passes from Tk to the active worker. Processing
+shows safe checkpoints and a cancelled terminal path through the existing queue;
+PDFs roll back job-owned outputs, images keep complete pages and CSV. Busy and
+loader release after cleanup. Maintenance includes stop/retry and frozen-engine checks.

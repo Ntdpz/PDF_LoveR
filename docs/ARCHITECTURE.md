@@ -328,3 +328,21 @@ A changed source or invalid selection fails that document; the batch continues.
 Defaults retain the existing all-page iterator and PNG output behavior. Native
 checks cover 1,000-page bounded previews, per-file retention/cancel, error recovery,
 source hashes, actual selected PNG pixels and 100%/125% layout.
+
+## Cooperative cancellation (1.10.0)
+
+App's busy transition creates one fresh threading.Event on the active ToolPage.
+The shared masthead exposes Cancel while busy; requesting a stop sets the event,
+disables only Cancel and keeps the loader, navigation lock and preview pause until
+worker cleanup and its terminal queue event. A new job uses a fresh token. Workers
+never mutate Tk. Metadata inspection checks before/after reading each document.
+
+Headless core/cancellation.py provides Cancelled(DocumentError) and checkpoint.
+Services check at file/page boundaries; native insert, render, encode and save calls
+finish before stopping. PDF batches clean staging and roll back only unchanged
+outputs owned by this job, preserving externally replaced files and reporting them.
+Merge checks before exclusive publication; cancellation after commit is success.
+Image conversion keeps fully encoded pages and closed CSV rows; the queue stops
+remaining PDFs and reports cancelled, completed, and not-started rows separately.
+No worker is killed, no extra process/timer/dependency is introduced, and quality,
+DPI, pixel limits and the one-page memory model are unchanged.

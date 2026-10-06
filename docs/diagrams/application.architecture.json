@@ -28,7 +28,7 @@
       "id": "shell",
       "type": "frontend",
       "label": "ศูนย์ควบคุม App",
-      "sublabel": "เส้นทาง · busy · event polling",
+      "sublabel": "เส้นทาง · busy · cancel · polling",
       "pos": [
         500,
         40
@@ -98,7 +98,7 @@
       "id": "ui",
       "type": "frontend",
       "label": "องค์ประกอบ UI ร่วม",
-      "sublabel": "masthead · loader ร่วม · controls",
+      "sublabel": "masthead · loader · ปุ่มยกเลิก",
       "pos": [
         60,
         340
@@ -247,7 +247,7 @@
       "dot": "emerald",
       "title": "การทำงานเบื้องหลัง",
       "items": [
-        "services ไม่พึ่ง Tk; แปลงภาพทีละหน้า",
+        "worker รับ Event; หยุดเมื่อขั้นตอนจบ",
         "App ดูแล preview ร่วม; home ปิด process"
       ]
     },

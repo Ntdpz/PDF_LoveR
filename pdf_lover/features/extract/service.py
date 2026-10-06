@@ -23,5 +23,5 @@ def build_plan(info, directory, prefix, expression, mode='single'):
     return plan
 
 
-def extract_pdf(plan, progress=None):
-    return export_pages(plan, progress)
+def extract_pdf(plan, progress=None, cancel=None):
+    return export_pages(plan, progress, cancel)

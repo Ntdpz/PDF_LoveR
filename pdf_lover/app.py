@@ -49,11 +49,13 @@ class App(UIControls):
 
     @busy.setter
     def busy(self, value):
+        new_job = value and not getattr(self, "_busy", False)
         self._busy = value
         self.preview_coordinator.paused = value
         page = getattr(self, "views", {}).get(getattr(self, "route", None))
         if page is not None and hasattr(page, "activity_indicator"):
             page.activity_indicator.set_running(value)
+            page.set_job_running(value, new_job)
 
     @property
     def active_page(self):
@@ -130,7 +132,9 @@ class App(UIControls):
         return "break"
 
     def active_status(self, message):
-        (self.active_page or self.png).status.set(message)
+        page = self.active_page or self.png
+        if not (self.busy and page.cancel_event.is_set()):
+            page.status.set(message)
 
     def _search_shortcut(self, _=None):
         if self.show_home():

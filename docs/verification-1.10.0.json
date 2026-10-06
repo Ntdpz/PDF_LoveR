@@ -1,0 +1,11 @@
+{
+  "version": "1.10.0",
+  "passed": true,
+  "command": "python scripts/check.py",
+  "exit_code": 0,
+  "unit_tests": 92,
+  "native_ui_suites": 17,
+  "log_canonical_sha256": "e570a98d156f4b2a515e91f98dfe5d2e5ff6e7c5a30153e3d7df65e057602154",
+  "scope": "Sequential Windows development-host source checks; no physical low-spec certification",
+  "follow_up": "Packaged diagnostic scope correction after full UI run verified by source --self-test and release distribution checks; production UI/engines unchanged."
+}

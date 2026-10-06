@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "diagrams": [
+    {
+      "name": "application",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "application.visual-check.2048x1320.light.png",
+        "application.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image review: cancellation state and safe stop/rollback paths legible; no clipping or label overlaps in light/dark.",
+      "artifact_canonical_sha256": "f2559235f9c1a1abbd295d2c78f1a0ec8ca54446d4f5c56dae0fba0b2b178bb9",
+      "screenshots_sha256": {
+        "application.visual-check.2048x1320.light.png": "880051bcdf19cfdcf3b83046fda316bd85a93dc2157dfc02c1b9a274ff30dadd",
+        "application.visual-check.2048x1320.dark.png": "0ba122ca5ddbca10f71a7addba43561785b579d951ad89caf51d42f226971034"
+      }
+    },
+    {
+      "name": "processing",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "processing.visual-check.2048x1320.light.png",
+        "processing.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image review: cancellation state and safe stop/rollback paths legible; no clipping or label overlaps in light/dark.",
+      "artifact_canonical_sha256": "666fe85762dcfcc6e8e940a78fba65dcbbe31a76c5919f6b9d11a4b87d1ddd5a",
+      "screenshots_sha256": {
+        "processing.visual-check.2048x1320.light.png": "af3cf746f3abaeb9bc1d4086aa7f38fc6b34dca63e05422b7d672417778eea64",
+        "processing.visual-check.2048x1320.dark.png": "9a0f185e850905f95ba36da0a8983efa0a5a5ecf9b2d475a84953648dc60ebbc"
+      }
+    },
+    {
+      "name": "maintenance",
+      "showcase_checks": "9/9",
+      "composition": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "browser_status": "pass",
+      "visual_review": "passed",
+      "reviewed_screenshots": [
+        "maintenance.visual-check.2048x1320.light.png",
+        "maintenance.visual-check.2048x1320.dark.png"
+      ],
+      "notes": "Image review: cancellation state and safe stop/rollback paths legible; no clipping or label overlaps in light/dark.",
+      "artifact_canonical_sha256": "b6c8fa1b6edcfc600a3d71ae5d78e64d2d90a9bcf2e61669e40c574d7a588329",
+      "screenshots_sha256": {
+        "maintenance.visual-check.2048x1320.light.png": "21600d05129d0698e5e07d7dd606728a1fd90f187519a27abe07e12bbd373e46",
+        "maintenance.visual-check.2048x1320.dark.png": "2072d1aabcc76321f783b91bfdfd754bd1226e10e3ca057cd1c61c1b438564bc"
+      }
+    }
+  ]
+}

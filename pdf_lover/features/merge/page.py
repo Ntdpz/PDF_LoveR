@@ -6,6 +6,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog
 
+from pdf_lover.core.cancellation import Cancelled
 import customtkinter as ctk
 
 from pdf_lover.ui.icons import tool_icon
@@ -242,8 +243,10 @@ class MergePage(ToolPage):
 
     def _worker(self, paths, target):
         try:
-            pages = merge_pdfs(paths, target, lambda done, total, pages, all_pages, name: self.events.put(("progress", done, total, pages, all_pages, name)))
+            pages = merge_pdfs(paths, target, lambda done, total, pages, all_pages, name: self.events.put(("progress", done, total, pages, all_pages, name)), cancel=self.cancel_event)
             self.events.put(("done", target, pages))
+        except Cancelled as error:
+            self.events.put(("cancelled", str(error)))
         except MergeError as error:
             self.events.put(("error", str(error)))
         except OSError:
@@ -258,7 +261,7 @@ class MergePage(ToolPage):
                 if event[0] == "progress":
                     _, done, total, pages, all_pages, name = event
                     self.progress.set(done / total * 0.9)
-                    self.status.set(f"อ่านแล้ว {done}/{total} ไฟล์ · {pages}/{all_pages} หน้า · กำลังเตรียมบันทึก")
+                    self.report_progress(f"อ่านแล้ว {done}/{total} ไฟล์ · {pages}/{all_pages} หน้า · กำลังเตรียมบันทึก")
                 else:
                     self.busy = self.app.busy = False
                     for control in self.controls:
@@ -271,6 +274,11 @@ class MergePage(ToolPage):
                         self.activity_title.configure(text=f"รวมสำเร็จ · {event[2]} หน้า", text_color=C["success"])
                         self.status.set(f"บันทึกแล้ว · {self.app.shorten(event[1].name, 48)}")
                         self.open_button.configure(state="normal")
+                    elif event[0] == "cancelled":
+                        self.destination = None
+                        self.progress.set(0)
+                        self.activity_title.configure(text="ยกเลิกงานแล้ว", text_color=C["muted"])
+                        self.status.set(event[1])
                     else:
                         self.progress.set(0)
                         self.error(event[1])

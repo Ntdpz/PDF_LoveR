@@ -59,8 +59,12 @@ def main():
         click(6, 1); assert s.expression.get() == '6-8', 'Reverse range from Ctrl-click anchor'
         click(2, 5); assert s.expression.get() == '2-8'
         click(6, 4); assert s.expression.get() == '2-5,7-8'
-        c.focus_force(); pump(root, .05)
-        c.event_generate('<Control-a>'); assert s.expression.get() == '1-8'
+        # Native focus can arrive asynchronously after a previous UI suite closes.
+        deadline = time.monotonic() + 3
+        while root.focus_get() != c and time.monotonic() < deadline:
+            root.lift(); root.focus_force(); c.focus_force(); pump(root, .05)
+        assert root.focus_get() == c, 'Canvas did not receive native keyboard focus'
+        c.event_generate('<Control-a>', state=4); assert s.expression.get() == '1-8', (s.expression.get(),s.enabled,s.editable,app.busy,root.focus_get())
         click(2); c.event_generate('<Shift-Right>'); assert s.expression.get() == '2-3'
         c.event_generate('<Shift-Right>'); assert s.expression.get() == '2-4'
         c.event_generate('<Shift-Left>'); assert s.expression.get() == '2-3'

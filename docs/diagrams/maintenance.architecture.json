@@ -176,7 +176,7 @@
       "dot": "emerald",
       "title": "เครื่องมือพัฒนา",
       "items": [
-        "85 unit + 16 native UI; 920×700 / 125%",
+        "92 unit + 17 native UI; หยุด / เริ่มใหม่",
         "Archify 9/9; ตรวจภาพจริง light/dark"
       ]
     },
@@ -184,7 +184,7 @@
       "dot": "amber",
       "title": "การแจกโปรแกรม",
       "items": [
-        "ตรวจทั้ง 6 เครื่องมือใน EXE / ZIP / installer",
+        "6 งาน + cancellation ใน EXE / ZIP / installer",
         "ซิงก์ Program แบบตรวจ hash; repo คง Private"
       ]
     }

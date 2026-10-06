@@ -273,6 +273,31 @@ def run(root, app_class, report):
             assert all(hashlib.sha256(path.read_bytes()).hexdigest() == value for path, value in rotation_hashes.items())
             assert not failures, failures
             assert all(not view.activity_indicator.running for view in app.views.values())
+            from pdf_lover.core.cancellation import Cancelled
+            from pdf_lover.features.merge.service import merge_pdfs
+            from pdf_lover.features.split.service import split_pdf
+            from pdf_lover.features.extract.service import extract_pdf
+            from pdf_lover.features.delete_pages.service import delete_pdf
+            from pdf_lover.features.rotate.service import rotate_pdf
+            from pdf_lover.features.png.service import convert_pdf
+            app.busy = True
+            page.cancel_button.invoke()
+            token = page.cancel_event
+            assert token.is_set() and app.busy
+            checks = [
+                lambda: convert_pdf(source, folder, 72, lambda *_: None, cancel=token),
+                lambda: merge_pdfs(list(app.merge.files), folder/'cancelled.pdf', cancel=token),
+                lambda: split_pdf(app.get_page('split').plan, cancel=token),
+                lambda: extract_pdf(app.get_page('extract-pages').plan, cancel=token),
+                lambda: delete_pdf(app.get_page('delete-pages').plan, cancel=token),
+                lambda: rotate_pdf(page.plan, cancel=token),
+            ]
+            for check in checks:
+                try:check()
+                except Cancelled:pass
+                else:raise AssertionError('Packaged engine ignored cancellation')
+            app.busy = False
+            assert all(not view.cancel_button.winfo_ismapped() for view in app.views.values())
             thumbnails = 2 + sum(len(pages) for pages in selector_pages.values()) + len(page.preview.cache)
             complete({"passed": True, "gui": "constructed", "converted_pages": 2,
                       "dpi": 150, "png_size": [300, 150], "merged_pages": 3, "merge_order": "verified",
@@ -282,6 +307,7 @@ def run(root, app_class, report):
                       "thumbnail_worker": "single shared process", "thumbnail_count": thumbnails,
                       "preview_process_limit": 1,
                       "activity_indicators": "all six tools constructed; inactive after jobs",
+                      "cancellation": "button requests stop; six packaged engines honour token; busy restored",
                       "selector_layout": "vertical viewport grid",
                       "selector_preview_pages": {name: sorted(pages) for name, pages in selector_pages.items()},
                       "rotation_files": 2, "rotation_selected_pages": [[2], [1, 2]],

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "version": "1.10.0",
+  "unit_tests": 7,
+  "command": "python -m unittest discover -s tests/unit -p test_cancellation.py -v",
+  "scope": "Real headless safe-boundary stop, rollback/retry, exclusive output ownership, all image codecs and CSV"
+}

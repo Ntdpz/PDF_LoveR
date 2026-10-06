@@ -218,3 +218,16 @@ viewport ≤24, requests ≤16, cache 32/6 MiB โดยประมาณ; ป�
 อยู่ระดับใกล้เคียงกัน ไม่อ้างการลด RAM; baseline ไม่เปิด dialog และไม่วัด peak export
 [Native selection](image-selection-verification-1.9.0.json) ตรวจ dialog 1,000 หน้า
 และการคืน preview บนเครื่องพัฒนา ยังไม่ใช่การรับรอง physical 2-core/4-GiB/HDD
+
+## ยกเลิกงาน · 1.10.0
+
+เพิ่ม threading.Event หนึ่งตัวต่อ job และปุ่มบน masthead เดิม ไม่มี timer/process/dependency เพิ่ม
+busy/loader คงอยู่จน worker คืนไฟล์และส่ง terminal event; ไม่ฆ่า native calls ระหว่างเขียนไฟล์
+คิวภาพยัง ≤32, export ทีละงานและทีละหน้า, preview ร่วมหนึ่ง process ตามเดิม
+[ก่อน](performance-before-1.10.0.json) / [หลัง](performance-after-1.10.0.json):
+240 หน้าสังเคราะห์ source app สอง fresh runs; home idle median 64.85 → 64.21 MiB
+เป็นระดับใกล้เคียงเดิม ไม่อ้างลด RAM; ไม่ใช่ peak ของเอกสารสแกนหรือ EXE/HDD cold start
+[ตรวจยกเลิก](cancellation-verification-1.10.0.json) 22 กรณีรวม6เครื่องมือ/5เส้นทางอ่านข้อมูล
+ที่100%/125% ตรวจรอ cleanup, PDF rollback, ภาพ/CSVบางส่วน, retry และ source hash
+[Engine checks](cancellation-engine-verification-1.10.0.json) ตรวจ4codec/decoded lossless pixels
+และไฟล์ที่ถูกโปรแกรมอื่นแทนระหว่าง publication; ยังไม่รับรอง physical2-core/4-GiB/HDD

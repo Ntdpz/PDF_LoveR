@@ -1,4 +1,5 @@
 """Lossless page concatenation with exclusive publication of the output file."""
+from pdf_lover.core.cancellation import checkpoint
 from pathlib import Path
 import os
 import tempfile
@@ -27,12 +28,13 @@ def inspect_pdf(path):
         raise MergeError(f"{path.name}: เปิด PDF ไม่ได้ · ตรวจว่าไฟล์เปิดอ่านได้") from error
 
 
-def merge_pdfs(paths, destination, progress=None):
+def merge_pdfs(paths, destination, progress=None, cancel=None):
     """Merge in list order; never replace an existing file or any input.
 
     The temporary PDF is fully written and reopened before publication. Windows
     rename refuses an existing destination; POSIX uses an exclusive hard link.
     """
+    checkpoint(cancel)
     sources = [Path(path).resolve() for path in paths]
     target = Path(destination).expanduser().resolve()
     if len(sources) < 2:
@@ -45,13 +47,18 @@ def merge_pdfs(paths, destination, progress=None):
         raise MergeError("ชื่อไฟล์นี้มีอยู่แล้ว · เลือกชื่อใหม่เพื่อเก็บไฟล์เดิมไว้")
     if not target.parent.is_dir():
         raise MergeError("ไม่พบโฟลเดอร์ปลายทาง · เลือกโฟลเดอร์ที่มีอยู่")
-    counts = [inspect_pdf(path) for path in sources]
+    counts = []
+    for path in sources:
+        checkpoint(cancel)
+        counts.append(inspect_pdf(path))
+    checkpoint(cancel)
     total = sum(counts)
     temporary = None
     try:
         with pymupdf.open() as result:
             bookmarks = []
             for index, path in enumerate(sources):
+                checkpoint(cancel)
                 offset = result.page_count
                 # Open again in case a source changed after preflight inspection.
                 with pymupdf.open(path) as source:
@@ -67,6 +74,7 @@ def merge_pdfs(paths, destination, progress=None):
                             previous_level = adjusted_level
                 if progress:
                     progress(index + 1, len(sources), result.page_count, total, path.name)
+            checkpoint(cancel)
             result.set_toc(bookmarks)
             result.set_metadata({"title": target.stem, "creator": "PDF LoveR"})
             handle = tempfile.NamedTemporaryFile(prefix=".pdf-lover-", suffix=".pdf", dir=target.parent, delete=False)
@@ -76,6 +84,7 @@ def merge_pdfs(paths, destination, progress=None):
         with pymupdf.open(temporary) as check:
             if check.page_count != total:
                 raise MergeError("ตรวจผลลัพธ์ไม่ผ่าน · ยังไม่ได้บันทึกไฟล์ปลายทาง")
+        checkpoint(cancel)
         if os.name == "nt":
             os.rename(temporary, target)
         else:

@@ -9,6 +9,7 @@ import queue
 import threading
 import tkinter as tk
 from tkinter import filedialog, ttk
+from pdf_lover.core.cancellation import Cancelled, checkpoint
 import customtkinter as ctk
 from pdf_lover.features.base import ToolPage
 from pdf_lover.features.rotate.service import inspect_document, build_plan, rotate_pdf
@@ -146,9 +147,12 @@ class RotatePage(ToolPage):
         try:
             seen=set(existing);infos=[]
             for path in paths:
+                checkpoint(self.cancel_event)
                 resolved=Path(path).expanduser().resolve()
                 if resolved not in seen:infos.append(inspect_document(resolved));seen.add(resolved)
+            checkpoint(self.cancel_event)
             self.events.put(("loaded",tuple(infos)))
+        except Cancelled as error:self.events.put(("cancelled",str(error)))
         except Exception as error:self.events.put(("error",str(error)))
 
     def choose_output(self):
@@ -175,8 +179,9 @@ class RotatePage(ToolPage):
 
     def _export_worker(self,plan):
         try:
-            outputs=rotate_pdf(plan,lambda done,total,name:self.events.put(("progress",done,total,name)))
+            outputs=rotate_pdf(plan,lambda done,total,name:self.events.put(("progress",done,total,name)),cancel=self.cancel_event)
             self.events.put(("done",outputs))
+        except Cancelled as error:self.events.put(("cancelled",str(error)))
         except Exception as error:self.events.put(("error",str(error)))
 
     def process_events(self):
@@ -185,7 +190,7 @@ class RotatePage(ToolPage):
             for _ in range(100):
                 event=self.events.get_nowait()
                 if event[0]=="progress":
-                    self.progress.set(event[1]/event[2]*0.9);self.status.set(f"เตรียมไฟล์ {event[1]}/{event[2]} · {event[3]}");continue
+                    self.progress.set(event[1]/event[2]*0.9);self.report_progress(f"เตรียมไฟล์ {event[1]}/{event[2]} · {event[3]}");continue
                 self.busy=False
                 for control in self.controls:control.configure(state="normal")
                 self.documents.configure(state="readonly")
@@ -207,7 +212,7 @@ class RotatePage(ToolPage):
                         self.status_label.configure(text_color=C["success"])
                         self.open_button.configure(state="normal");self.start_button.configure(state="disabled")
                     else:
-                        self.progress.set(0);self.status.set(event[1]);self.status_label.configure(text_color=C["error"])
+                        self.progress.set(0);self.status.set(event[1]);self.status_label.configure(text_color=C["muted"] if event[0]=="cancelled" else C["error"])
         except queue.Empty:pass
 
     def preview_rows(self):

@@ -7,6 +7,7 @@ import threading
 import tkinter as tk
 from pathlib import Path
 from tkinter import filedialog, messagebox
+from pdf_lover.core.cancellation import Cancelled, checkpoint
 import customtkinter as ctk
 from pdf_lover.features.base import ToolPage
 from pdf_lover.features.png.service import convert_pdf, ImageOptions, FORMATS
@@ -373,7 +374,12 @@ class PngPage(ToolPage):
 
     def _inspect_selection(self, path):
         try:
-            self.events.put(("selection_loaded", inspect_document(path)))
+            checkpoint(self.cancel_event)
+            info = inspect_document(path)
+            checkpoint(self.cancel_event)
+            self.events.put(("selection_loaded", info))
+        except Cancelled as error:
+            self.events.put(("selection_cancelled", str(error)))
         except Exception as error:
             self.events.put(("selection_error", str(error)))
 
@@ -468,17 +474,23 @@ class PngPage(ToolPage):
 
     def convert_all(self, files, output_root, dpi, options, selections=None):
         errors = []
+        succeeded = 0
         for number, pdf_path in enumerate(files, start=1):
-            self.events.put(("file_start", pdf_path))
             try:
+                checkpoint(self.cancel_event)
+                self.events.put(("file_start", pdf_path))
                 selected = (selections or {}).get(pdf_path)
                 info, expression = selected if selected else (None, None)
                 pages = selected_pages(expression, info.page_count) if info else None
                 convert_pdf(pdf_path, output_root, dpi,
                             lambda page, total, n=number, p=pdf_path: self.events.put(("progress", n, len(files), p, page, total)),
                             options=options, warning=lambda path, size, limit: self.events.put(("warning", path, size, limit)),
-                            pages=pages, info=info)
+                            pages=pages, info=info, cancel=self.cancel_event)
+                succeeded += 1
                 self.events.put(("file_done", number, len(files), pdf_path, None))
+            except Cancelled as error:
+                self.events.put(("cancelled", succeeded, errors, output_root, pdf_path, str(error), bool(error.output_folder)))
+                return
             except Exception as error:
                 errors.append(f"{pdf_path.name}: {error}")
                 self.events.put(("file_done", number, len(files), pdf_path, str(error)))
@@ -501,7 +513,7 @@ class PngPage(ToolPage):
             # Bound each batch so long documents cannot starve the UI event loop.
             for _ in range(100):
                 event = self.events.get_nowait()
-                if event[0] in ("selection_loaded", "selection_error"):
+                if event[0] in ("selection_loaded", "selection_error", "selection_cancelled"):
                     self.busy = False
                     for control in self.controls:
                         control.configure(state="normal")
@@ -511,6 +523,8 @@ class PngPage(ToolPage):
                     if event[0] == "selection_loaded":
                         self._open_selection(event[1])
                         self.status.set("เลือกหน้าต่อเอกสาร · กดยืนยัน หรือปิดเพื่อยกเลิก")
+                    elif event[0] == "selection_cancelled":
+                        self.status.set(event[1])
                     else:
                         self.validation_error(event[1])
                 elif event[0] == "file_start":
@@ -519,7 +533,7 @@ class PngPage(ToolPage):
                     _, number, count, path, page, pages = event
                     self.set_progress((number - 1 + page / pages) / count)
                     self.set_row_status(path, f"หน้า {page}/{pages}", "accent")
-                    self.status.set(f"ไฟล์ {number}/{count} · {self.shorten(path.name, 40)} · หน้า {page}/{pages}")
+                    self.report_progress(f"ไฟล์ {number}/{count} · {self.shorten(path.name, 40)} · หน้า {page}/{pages}")
                 elif event[0] == "warning":
                     _, path, size, limit = event
                     self.warning_count += 1
@@ -529,6 +543,25 @@ class PngPage(ToolPage):
                     _, number, count, path, error = event
                     self.set_progress(number / count)
                     self.set_row_status(path, "ผิดพลาด" if error else "เสร็จแล้ว", "error" if error else "success")
+                elif event[0] == "cancelled":
+                    _, succeeded, self.errors, output_root, active, message, partial = event
+                    self.busy = False
+                    for control in self.controls:
+                        control.configure(state="normal")
+                    self.start_button.configure(state="normal", text="แปลงอีกครั้ง", fg_color=C["accent"], border_color=C["accent"])
+                    self.destination = output_root if succeeded or partial else None
+                    self.open_button.configure(state="normal" if self.destination else "disabled")
+                    for path in self.files:
+                        if self.file_states.get(path) == "รอแปลง":
+                            self.file_states[path] = "ไม่ได้เริ่ม"
+                    self.file_states[active] = "หยุดแล้ว"
+                    self.update_image_settings()
+                    self._render_files()
+                    self.activity_title.configure(text=f"ยกเลิกงานแล้ว · เสร็จ {succeeded} เอกสาร", text_color=C["muted"])
+                    self.status.set(message)
+                    if self.errors or self.warning_count:
+                        self.error_button.configure(text="ดูคำเตือน")
+                        self.error_button.grid(row=0, column=1, padx=(0, S["sm"]))
                 elif event[0] == "done":
                     _, succeeded, self.errors, self.destination = event
                     self.busy = False

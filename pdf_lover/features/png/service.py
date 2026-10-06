@@ -6,6 +6,7 @@ from pathlib import Path
 import pymupdf
 from PIL import Image, features
 from pdf_lover.core.document import signature
+from pdf_lover.core.cancellation import checkpoint
 
 FORMATS = {"PNG": "png", "JPG": "jpg", "WebP": "webp", "TIFF": "tiff"}
 MAX_PIXELS = 40_000_000
@@ -60,7 +61,8 @@ def available_folder(parent: Path, name: str) -> Path:
 
 
 def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
-                options: ImageOptions | None = None, warning=None, *, pages=None, info=None) -> Path:
+                options: ImageOptions | None = None, warning=None, *, pages=None, info=None, cancel=None) -> Path:
+    checkpoint(cancel)
     options = options or ImageOptions()
     options.validate()
     if type(dpi) is not int or not 36 <= dpi <= 600:
@@ -86,6 +88,7 @@ def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
             raise ValueError("เลือกอย่างน้อยหนึ่งหน้า")
         if info is not None and signature(pdf_path) != info.signature:
             raise ValueError("ไฟล์เปลี่ยนหลังเลือกหน้า · เลือกหน้าใหม่ก่อนแปลง")
+        checkpoint(cancel)
         output_folder = available_folder(output_root, pdf_path.stem)
         digits = max(3, len(str(document.page_count)))
         # Stream rows instead of retaining all results in RAM.
@@ -94,6 +97,7 @@ def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
             writer.writerow(("file", "width_px", "height_px", "bytes", "limit_bytes", "over_limit"))
             source_pages = enumerate(document, start=1) if pages is None else ((n, document[n - 1]) for n in selected)
             for done, (index, page) in enumerate(source_pages, start=1):
+                checkpoint(cancel, output_folder)
                 size = pixel_dimensions(page, dpi, options)
                 if options.width is not None or options.height is not None:
                     scale = max(size[0] / page.rect.width, size[1] / page.rect.height)
@@ -134,4 +138,5 @@ def convert_pdf(pdf_path: Path, output_root: Path, dpi: int, progress,
                 if over and warning:
                     warning(path, byte_count, options.max_bytes)
                 progress(done, len(selected))
+                checkpoint(cancel, output_folder)
     return output_folder

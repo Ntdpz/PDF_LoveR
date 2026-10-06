@@ -35,7 +35,7 @@
     },
     {
       "id": "failure",
-      "label": "ข้อผิดพลาด",
+      "label": "ผิดพลาด / ยกเลิก",
       "variant": "exception"
     }
   ],
@@ -73,7 +73,7 @@
       "col": 2,
       "type": "security",
       "label": "เริ่มงาน",
-      "sublabel": "busy · ล็อกปุ่ม · loader",
+      "sublabel": "busy · loader · cancel Event",
       "width": 160
     },
     {
@@ -82,7 +82,7 @@
       "col": 2,
       "type": "backend",
       "label": "ประมวลผล PDF",
-      "sublabel": "แปลง / รวม / เลือกหน้า / หมุน",
+      "sublabel": "งานเดียว · ตรวจจุดหยุดปลอดภัย",
       "width": 160
     },
     {
@@ -126,8 +126,8 @@
       "lane": "failure",
       "col": 3,
       "type": "messagebus",
-      "label": "ส่งสถานะผิดพลาด",
-      "sublabel": "error / คืนไฟล์ของงานนี้",
+      "label": "หยุดงาน / ส่งปัญหา",
+      "sublabel": "คืน PDF / เก็บภาพ + CSV",
       "width": 160
     }
   ],
@@ -173,13 +173,13 @@
     {
       "from": "engine",
       "to": "error",
-      "label": "ประมวลผลไม่ได้",
+      "label": "ผิดพลาด / ยกเลิก",
       "role": "error"
     },
     {
       "from": "error",
       "to": "events",
-      "label": "error / done",
+      "label": "error / cancelled",
       "role": "return"
     }
   ],
@@ -204,7 +204,7 @@
       "dot": "amber",
       "title": "จบงานและปิดโปรแกรม",
       "items": [
-        "loader + เวลาจริง; ลด motion ตาม Windows",
+        "ยกเลิกรอ cleanup; ค่อยคืน busy / loader",
         "home/destroy ปิด preview; ทิ้งภาพเก่า"
       ]
     }

@@ -1,0 +1,279 @@
+{
+  "passed": true,
+  "version": "1.10.0",
+  "guard": "Compared every existing destination to HEAD or desired contents before copy; backed up prior files",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "aa3826ff7b1ca7cbfddee7b05ce4d22e366d240df31ffbb2575158efe1f950d1"
+    },
+    {
+      "path": "TASKS.md",
+      "sha256": "817aa58d5634fb5153e8ab0aab8d52fbfb2573330b22d982a8707942200fe488"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.10.0/PDF_LoveR_1.10.0.exe",
+      "sha256": "7d832a67da34b391799507339aa72512ec25698b87b25ef38874b82f62b24113"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.10.0/PDF_LoveR_1.10.0_Portable.zip",
+      "sha256": "ef33e9cd9d01d373be1be121c054d2077c07c0ab1d22d2ae5644e71855f2b0f0"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.10.0/PDF_LoveR_1.10.0_Setup.exe",
+      "sha256": "f41e45f9f854b23389560ac640c68c3de602cb1c0d852b2a3b45721f34d1136c"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.10.0/README_เริ่มใช้งาน.txt",
+      "sha256": "90d042cc1afd07bdef83a13bd94634682e296d0142f4731fa43501963461b1ba"
+    },
+    {
+      "path": "dist/PDF_LoveR_1.10.0/SHA256SUMS.txt",
+      "sha256": "cd369154f86258636d3899bfafcbc6d193e4c6a76637e25f291faf2be638322a"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "ce0a88b33ca825db1accaedd8d9a8d10e10bb04e6bfdef8d404b244b60ab8595"
+    },
+    {
+      "path": "docs/DIAGRAMS.md",
+      "sha256": "bc0330cf43b6fbbb2044142a8abfc774191fe30af8106e2040b298347b66bafa"
+    },
+    {
+      "path": "docs/IMAGE.md",
+      "sha256": "2d55c766aef0a8e87de8cd473c1ad42b2872c14923c1f33044de0817ee815a1e"
+    },
+    {
+      "path": "docs/MERGE.md",
+      "sha256": "038cf07866708567b456ce3e27b9817e77189c92c46a4d71208d9178f3d7c962"
+    },
+    {
+      "path": "docs/PAGE_TOOLS.md",
+      "sha256": "c6073e35b185aebe8b6e957c5a8cc145e2e50deaa0d68ca2d4605cb8127134b6"
+    },
+    {
+      "path": "docs/PERFORMANCE_PLAN.md",
+      "sha256": "0e8308a80770f6c0560fa768cb55aa929b31774cb278bb247dc2eb378eb57ed0"
+    },
+    {
+      "path": "docs/ROTATE.md",
+      "sha256": "5cb0c1f174be4d7a9a6a609acc31152caa9ec97763dd26f873ce963dede9423e"
+    },
+    {
+      "path": "docs/SPLIT.md",
+      "sha256": "b6793a69814d882cf3b657e5a6c9de2f7959a022a5278388c8cf96e2f4e7517d"
+    },
+    {
+      "path": "docs/activity-verification-1.10.0.json",
+      "sha256": "49c14cc5ce5d4b4d4d1758a00f46918ff73aad48741c39fada1fb69592741cf5"
+    },
+    {
+      "path": "docs/cancellation-engine-verification-1.10.0.json",
+      "sha256": "94fb2b680248e221b33a62864304346e129b590f72c7e2264109d9a71cbd662d"
+    },
+    {
+      "path": "docs/cancellation-verification-1.10.0.json",
+      "sha256": "a1627db4d57be639313a1c45c0a3c8d020a3dceb1d059a4c0d749a9c9727007c"
+    },
+    {
+      "path": "docs/diagrams/application.architecture.json",
+      "sha256": "8467fc020dc1229604ff5c44bb91f14e3fccc162eed63d3d1f5f068b32d099b7"
+    },
+    {
+      "path": "docs/diagrams/application.delivery.json",
+      "sha256": "11c91bb58c8183c5cfb5dd2e3fdb709a9e7e7af825b111d112f80ec4fed64025"
+    },
+    {
+      "path": "docs/diagrams/application.html",
+      "sha256": "f2559235f9c1a1abbd295d2c78f1a0ec8ca54446d4f5c56dae0fba0b2b178bb9"
+    },
+    {
+      "path": "docs/diagrams/maintenance.architecture.json",
+      "sha256": "1b6bad3f84fe48a3290bf5fd067b08056524cb69ca8419b39c26a7a12076c355"
+    },
+    {
+      "path": "docs/diagrams/maintenance.delivery.json",
+      "sha256": "e63097d08426defd248e3b225e21cfd4fd85b19fb436bc68f38d5676ca601960"
+    },
+    {
+      "path": "docs/diagrams/maintenance.html",
+      "sha256": "b6c8fa1b6edcfc600a3d71ae5d78e64d2d90a9bcf2e61669e40c574d7a588329"
+    },
+    {
+      "path": "docs/diagrams/manifest.json",
+      "sha256": "8f6e8ae849eb01eb88993e3e577b8da350ff2597d532cac5a42f6bf0d510be7a"
+    },
+    {
+      "path": "docs/diagrams/processing.delivery.json",
+      "sha256": "63ea15f06d8b1d8b6627e5d44b655f37295ab5697fbb4937c8707403e9bb806d"
+    },
+    {
+      "path": "docs/diagrams/processing.html",
+      "sha256": "666fe85762dcfcc6e8e940a78fba65dcbbe31a76c5919f6b9d11a4b87d1ddd5a"
+    },
+    {
+      "path": "docs/diagrams/processing.workflow.json",
+      "sha256": "f3c7554d09b16d926492f5b1a7c8b86b877495c94998a82cdfa419c366089370"
+    },
+    {
+      "path": "docs/diagrams/review-1.10.0.json",
+      "sha256": "b5d04e1de714d8f75797ad886d89b7ae375be70253c8d96a7cef2aee5fbd4878"
+    },
+    {
+      "path": "docs/distribution-1.10.0.json",
+      "sha256": "469e41a0798e302d123e30397658d33337659355050ce63eb308395a5c9a8a26"
+    },
+    {
+      "path": "docs/drag-performance-1.10.0.json",
+      "sha256": "40ba7e63655f1caeade589f7df8583f3a4b21ebf543ce0bf7ab8bc65d0540e93"
+    },
+    {
+      "path": "docs/image-selection-verification-1.10.0.json",
+      "sha256": "e67fc64e10ff93f2f0dc34a4a2ac6c593b0481198b93fc5e141b4f14bb40d54d"
+    },
+    {
+      "path": "docs/images/cancellation-1.10.0.png",
+      "sha256": "4ee30e5826c7027c41b0b7830682fe266f5182ad6bc44c48cd418ba5094e3786"
+    },
+    {
+      "path": "docs/low-spec-review.json",
+      "sha256": "8f4a28ce822f50b5a5b1cdc1631c009ffaab51c6055cd64a2ed1b867a3d4fc4a"
+    },
+    {
+      "path": "docs/page-gestures-verification-1.10.0.json",
+      "sha256": "06099c3ccaca574408567a716c1dd1c2aa27f5b1d90581ae0ecdc16db805f0bc"
+    },
+    {
+      "path": "docs/performance-after-1.10.0.json",
+      "sha256": "5302df6ceb205f72b9c0510522bd8f993919481882ac7056bacb98c10ec63903"
+    },
+    {
+      "path": "docs/performance-before-1.10.0.json",
+      "sha256": "a8717ec3c0a9019276f0f6126a46bacc03e1ece07f7347007b0abec34460da61"
+    },
+    {
+      "path": "docs/resource-verification-1.10.0.json",
+      "sha256": "dfb9a550d6697899551b9627014c90b2aba4723c5a769e4bfac8e42eafd53ad0"
+    },
+    {
+      "path": "docs/selector-verification-1.10.0.json",
+      "sha256": "bf23c4af245a8e18c7cea31d6f420ae0da94670e4f86bb56b3ed5a8b84312f00"
+    },
+    {
+      "path": "docs/source-package-verification-1.10.0.json",
+      "sha256": "f6a61aaa61ed8f6a97f4d57c92d7990328d400199557028f46f8ab48acf27c07"
+    },
+    {
+      "path": "docs/unit-follow-up-1.10.0.json",
+      "sha256": "f8d9882eda419de95356dc0ca187bff0054f91ac77700f6540d0dd1528f0c4a3"
+    },
+    {
+      "path": "docs/verification-1.10.0.json",
+      "sha256": "8a72f79b2f5d55d6f24c3f159792d31466fe1f949d361beb5fe60ca8e7f13a19"
+    },
+    {
+      "path": "docs/workbench-verification-1.10.0.json",
+      "sha256": "7299bc5da7dfc00e965dcffb2874e9139084ac0ccbdf91c1e5e571e4cf0a593b"
+    },
+    {
+      "path": "packaging/README_Distribution.txt",
+      "sha256": "1cf183e1dedea8c26be617291f486863fe030e359d52472f6c4c87db7341f3be"
+    },
+    {
+      "path": "packaging/version.iss",
+      "sha256": "165dc86f6c4fba8e7c6d84947b84f1d9a1cfe161e82aa24cd47910fa1f45af36"
+    },
+    {
+      "path": "packaging/version_info.txt",
+      "sha256": "4ddc12948c056a49c5fa7938b2d5de4474b4e51549062923dcfed947adf6237e"
+    },
+    {
+      "path": "pdf_lover/app.py",
+      "sha256": "2a38eb29c29cefb0d4d8e06af558e602cafd17000bca2a84f91d7a77bf87b15c"
+    },
+    {
+      "path": "pdf_lover/core/cancellation.py",
+      "sha256": "4569679e92cd057b0c3211ebef3b4748a1295a66f773173e0b1c27d0f627dcfd"
+    },
+    {
+      "path": "pdf_lover/core/pdf_output.py",
+      "sha256": "c7e72ea9fc8602790958f476e1c0cd41e62b71cb5e5da638dd62b86e636c130c"
+    },
+    {
+      "path": "pdf_lover/diagnostics/self_test.py",
+      "sha256": "a184fe12467d3cd2a62625814c833ac3cdc2047c9a9171a463112ce58333768a"
+    },
+    {
+      "path": "pdf_lover/features/base.py",
+      "sha256": "5290bd834741d3d7d5f54b239f4d5eafa9e5c87b374465677d939810b1b07af4"
+    },
+    {
+      "path": "pdf_lover/features/delete_pages/service.py",
+      "sha256": "ec87a05ac02e3533e0b45ea18ecafc1985ea1e044f150a3bc0afeea30d9c1502"
+    },
+    {
+      "path": "pdf_lover/features/extract/service.py",
+      "sha256": "c7adcbb938d5b9b3da3eb07d7bf9d160f3d633a9da6538faf54d99e773d6dc32"
+    },
+    {
+      "path": "pdf_lover/features/merge/page.py",
+      "sha256": "2a5887f461931bcf799311751b152e626e448f6bc60668cebee5a98dc6e4f7ca"
+    },
+    {
+      "path": "pdf_lover/features/merge/service.py",
+      "sha256": "3e548dd3079a1ea7f6249affbcd8a0c5f45f9523dcc841f07f917512b7485c63"
+    },
+    {
+      "path": "pdf_lover/features/png/page.py",
+      "sha256": "3a32ebb47ff4a2f5bbde186f7b8a3939051b8152ef0dabc9318abffa007bec2b"
+    },
+    {
+      "path": "pdf_lover/features/png/service.py",
+      "sha256": "5c2089f982247a6019f028a2adbf330cedb3ba3c5044d0b541c0428878226cb6"
+    },
+    {
+      "path": "pdf_lover/features/rotate/page.py",
+      "sha256": "4ee2df997be235584836f7b753277db7ba615df7f5b4394507008c83c467468f"
+    },
+    {
+      "path": "pdf_lover/features/rotate/service.py",
+      "sha256": "f1418bb7892987ff654b07f0ce6bf1e8787e818ca001e49e0cecca11dca25c50"
+    },
+    {
+      "path": "pdf_lover/features/selection_page.py",
+      "sha256": "33bf91758a4427a81296b5da41640372af904a95e828682c86ddd3cc84f569e9"
+    },
+    {
+      "path": "pdf_lover/features/split/page.py",
+      "sha256": "b154fa97d685b692ce72458ceac61130b3762c24e68e8e89769afcd8d7f9bfd4"
+    },
+    {
+      "path": "pdf_lover/features/split/service.py",
+      "sha256": "45d9f0a411fdb8608da6e080a5b5eed0ab4de09e3662280d38d4a24e87f12a9c"
+    },
+    {
+      "path": "pdf_lover/ui/navigation.py",
+      "sha256": "1866febf1b6da4628cbce225cd99c9ee1add5f42b0264caddc0b873064679b96"
+    },
+    {
+      "path": "pdf_lover/version.py",
+      "sha256": "47d30a287607b5e28db09ea37785f43c67d91a6fcd1a0353e7e2ea71aff44b48"
+    },
+    {
+      "path": "scripts/check.py",
+      "sha256": "2a69bbddf417c7028915afa34fe4fa3b1304bc0e4bf82b821b051715ce098cbc"
+    },
+    {
+      "path": "tests/ui/verify_cancellation.py",
+      "sha256": "72580f8c02bc2c7db9dec13aeb120b79c8966cf56f2fba0830c477a82e5e3830"
+    },
+    {
+      "path": "tests/ui/verify_page_gestures.py",
+      "sha256": "560d17474d57067434958eea73202c6389c9d114003a8067972002c5fbd69f93"
+    },
+    {
+      "path": "tests/unit/test_cancellation.py",
+      "sha256": "e2f9101c7eab473ff5adfe87fce4cba24287cf5475738556dd85435a6500e95b"
+    }
+  ]
+}

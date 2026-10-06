@@ -23,11 +23,15 @@ def masthead(page, title):
         fg_color=C['graphite'],button_color=C['graphite'],button_hover_color=C['accent'],text_color=C['accent-ink'],
         dropdown_fg_color=C['surface'],dropdown_text_color=C['ink'],command=change_tool)
     page.tool_menu=menu
-    menu.set('เปลี่ยนเครื่องมือ');menu.grid(row=0,column=3,padx=S['sm']);page.controls.append(menu)
+    menu.set('เปลี่ยนเครื่องมือ');menu.grid(row=0,column=4,padx=S['sm']);page.controls.append(menu)
     menu._canvas.configure(takefocus=1)
     menu._canvas.bind('<FocusIn>',lambda _:menu.configure(button_color=C['accent']))
     menu._canvas.bind('<FocusOut>',lambda _:menu.configure(button_color=C['graphite']))
     for key in ('<Return>','<space>','<Alt-Down>'):menu._canvas.bind(key,lambda _:menu._open_dropdown_menu())
     page.home_button=app.button(header,'หน้าแรก',app.show_home,width=104)
-    page.home_button.grid(row=0,column=4,padx=(S['sm'],S['xl']),pady=S['sm']);page.controls.append(page.home_button)
+    page.home_button.grid(row=0,column=5,padx=(S['sm'],S['xl']),pady=S['sm']);page.controls.append(page.home_button)
+    page.cancel_button=app.button(header,'ยกเลิก',page.request_cancel,width=88)
+    page.cancel_button.configure(font=app.font_small)
+    page.cancel_button.grid(row=0,column=3,padx=S['sm'])
+    page.cancel_button.grid_remove()
     return header

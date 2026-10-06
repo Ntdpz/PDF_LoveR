@@ -1,5 +1,6 @@
 """Common page contract: shell owns navigation and the job lock."""
 from abc import ABC, abstractmethod
+import threading
 import customtkinter as ctk
 from pdf_lover.ui.controls import UIControls
 from pdf_lover.ui.theme import COLORS
@@ -15,6 +16,29 @@ class ToolPage(ctk.CTkFrame, UIControls, ABC):
         self.font_bold = app.font_bold
         self.font_title = app.font_title
         self.page_visible = False
+        self.cancel_event = threading.Event()
+
+    def set_job_running(self, running, new_job=False):
+        if new_job:
+            self.cancel_event = threading.Event()
+        if hasattr(self, "cancel_button"):
+            if running:
+                self.cancel_button.configure(state="normal", text="ยกเลิก")
+                self.cancel_button.grid()
+                self.tool_menu.configure(width=120)
+            else:
+                self.cancel_button.grid_remove()
+                self.tool_menu.configure(width=176)
+
+    def report_progress(self, message):
+        if not self.cancel_event.is_set():
+            self.status.set(message)
+
+    def request_cancel(self):
+        if self.busy and not self.cancel_event.is_set():
+            self.cancel_event.set()
+            self.cancel_button.configure(state="disabled", text="กำลังหยุด…")
+            self.status.set("กำลังยกเลิก · รอขั้นตอนที่กำลังเขียนไฟล์…")
 
     def set_active(self, active):
         """Retain document/settings state, release preview resources on hidden pages."""
